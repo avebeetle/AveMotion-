@@ -689,6 +689,16 @@ if(BUILD_TESTING)
         avemotion_set_warnings(avemotion_runtime_seams_tests)
         add_test(NAME avemotion.runtime.seams COMMAND avemotion_runtime_seams_tests)
 
+        find_package(Threads REQUIRED)
+        add_executable(avemotion_reference_session_tests tests/reference_session_tests.cpp)
+        target_link_libraries(avemotion_reference_session_tests
+            PRIVATE AveMotion::Runtime AveMotion::Reference Threads::Threads)
+        target_compile_definitions(avemotion_reference_session_tests PRIVATE
+            AVEMOTION_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus"
+            AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
+        avemotion_set_warnings(avemotion_reference_session_tests)
+        add_test(NAME avemotion.runtime.reference_sessions COMMAND avemotion_reference_session_tests)
+
         if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
             add_executable(avemotion_property_parity_tests
                 tests/property_parity_tests.cpp)
