@@ -68,7 +68,7 @@ void verifyReferenceDiagnostics() {
     const auto exact = created.instance->evaluateFrame(0U, 128U, 128U);
     require(static_cast<bool>(exact), "diagnostic exact scene evaluation failed");
     counters = runtime.diagnostics();
-    // Task 3 replaces this pre-optimization characterization with zero hot-path creations.
+    // Protect current fresh sampling until a separately proved reuse implementation changes the contract.
     require(counters.referenceSceneSessionsCreated == 2U,
             "current exact scene evaluation must create a scene-role session");
     require(counters.referenceSceneSamples == 1U
