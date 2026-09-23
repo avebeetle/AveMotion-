@@ -23,8 +23,18 @@ Ledger: .superpowers/sdd/2026-09-23-native-ellipse-admission/progress.md.
 Spec7c5dbd8 and plan/refinementd72fbd3 are committed locally; stage/task1 base
 d72fbd32f9c732ceb2cc22da603f10a3ef3403f5. Sole product implementer
 /root/native_ellipse_admission owns four scoped files. Root owns reports/STATE.
-Task1 TDD and independent review precede Task2 full Windows/none gates and final
-review. Check ledger/live agents before dispatch; do not duplicate this worker.
+Task1 initial implementation334782b passed ordinary suites but independent review
+reproduced exact-decimal false acceptance. Numeric design amendment1cd73a5 keeps
+the mathematical grammar and permits a same-reader raw-number metadata pass.
+Fix4248910 addressed the initial cases, but scoped review/root reproduction found
+downstream integer truncation selecting the wrong grammar branch. Fixae72a8b
+derives outputs from exact values; independent scoped review accepts both fixes
+with no open findings. Task1 is complete. No product implementer is active.
+Task2 fresh configure/build/full gates pass onae72a8b: Telegram69/69 (82.94s),
+preview63/63 (84.62s),none31/31 (3.37s); vendor/corpus integrity and private
+boundary checks pass. Report docs/PART25I_NATIVE_ELLIPSE_ADMISSION_REPORT.md.
+Independent whole-stage review and ordinary push remain pending. Check ledger/
+live agents before dispatch; do not repeat Task1 or same-code gates unnecessarily.
 Automation remains deleted, no scheduled background continuation is implied.
 
 ## Prior interactive G/H continuation
