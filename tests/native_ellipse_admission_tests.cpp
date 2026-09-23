@@ -128,6 +128,22 @@ void testAcceptedVariants(const std::string& baseline) {
 
 void testExactDecimalNumbers(const std::string& baseline) {
     using C = NativeEllipseAdmissionCode;
+    expectAccepted(replaceOnce(baseline, "\"op\": 61,\n  \"w\"",
+        "\"op\": 6100000000000000000000000000e-26,\n  \"w\""),
+        "exact sixty-one root op preserves final keyframe time");
+    expectRejected(replaceBetween(baseline, "\"p\": {\n                \"a\": 1,",
+        "\n              },\n              \"nm\": \"Animated Ellipse\"",
+        "\"p\": {\"a\": 10000000000000000000000000e-25, \"k\": [0, 0]},\n              \"nm\": \"Animated Ellipse\""),
+        C::InvalidType, "exact one must select animated keyframe grammar");
+    expectAccepted(replaceOnce(baseline, "\"a\": 1,\n                \"k\": [",
+        "\"a\": 10000000000000000000000000e-25,\n                \"k\": ["),
+        "exact one retains valid animated keyframe grammar");
+    expectRejected(replaceOnce(baseline, "\"ip\": 0,\n      \"op\": 61",
+        "\"ip\": 10000000000000000000000000e-25,\n      \"op\": 1"),
+        C::UnsupportedValue, "exact one layer ip cannot equal op");
+    expectAccepted(replaceOnce(baseline, "\"ip\": 0,\n      \"op\": 61",
+        "\"ip\": 60,\n      \"op\": 6100000000000000000000000000e-26"),
+        "exact sixty-one layer op keeps interval active");
     expectRejected(replaceOnce(baseline, "\"w\": 512", "\"w\": 1.0000000000000001"),
         C::UnsupportedValue, "nonintegral width hidden by double rounding");
     expectRejected(replaceOnce(baseline, "\"fr\": 60", "\"fr\": 240.00000000000001"),

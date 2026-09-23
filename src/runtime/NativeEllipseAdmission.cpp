@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <cstddef>
 #include <initializer_list>
+#include <limits>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -166,6 +167,44 @@ int compareDecimal(const ExactDecimal& left, const ExactDecimal& right) {
         }
     }
     return left.negative ? -comparison : comparison;
+}
+
+bool boundedInteger(const ExactDecimal& decimal, std::int64_t low,
+                    std::int64_t high, std::int64_t& output) {
+    const auto magnitude = [](std::int64_t value) -> std::uint64_t {
+        return value < 0 ? static_cast<std::uint64_t>(-(value + 1)) + 1
+                         : static_cast<std::uint64_t>(value);
+    };
+    const auto limit = (std::max)(magnitude(low), magnitude(high));
+    std::uint64_t value = 0;
+    for (const char digitCharacter : decimal.digits) {
+        const auto digit = static_cast<std::uint64_t>(digitCharacter - '0');
+        if (digit > limit || value > (limit - digit) / 10) return false;
+        value = value * 10 + digit;
+    }
+    const auto maxZeros = std::to_string(limit).size();
+    std::size_t zeros = 0;
+    for (const char digitCharacter : decimal.power.magnitude) {
+        const auto digit = static_cast<std::size_t>(digitCharacter - '0');
+        if (digit > maxZeros || zeros > (maxZeros - digit) / 10) return false;
+        zeros = zeros * 10 + digit;
+        if (zeros > maxZeros) return false;
+    }
+    for (; zeros != 0; --zeros) {
+        if (value > limit / 10) return false;
+        value *= 10;
+    }
+    if (value > static_cast<std::uint64_t>((std::numeric_limits<std::int64_t>::max)())) {
+        if (!decimal.negative
+            || value != static_cast<std::uint64_t>((std::numeric_limits<std::int64_t>::max)()) + 1) {
+            return false;
+        }
+        output = (std::numeric_limits<std::int64_t>::min)();
+    } else {
+        const auto signedValue = static_cast<std::int64_t>(value);
+        output = decimal.negative ? -signedValue : signedValue;
+    }
+    return true;
 }
 
 enum class EventKind { Null, Boolean, Number, String, Object, Array };
@@ -407,7 +446,9 @@ private:
         ExactDecimal numeric;
         if (!number(value, path, low, high, &numeric)) return false;
         if (!numeric.integral()) return reject(Code::UnsupportedValue, std::move(path));
-        if (output) *output = static_cast<std::int64_t>(value.GetDouble());
+        if (output && !boundedInteger(numeric, low, high, *output)) {
+            return reject(Code::InvalidJson, "/");
+        }
         return true;
     }
 
