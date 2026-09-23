@@ -1,8 +1,9 @@
 # Part25B — reference lifecycle foundations
 
-Status: implementation and verification in progress,2026-09-23.
-Continuation base:273f2b3. Design/plan:51bee54. This report does not claim a
-completed optimization until the verification and measurement sections are filled.
+Date: 2026-09-23. Status: bounded implementation, task reviews, measurements and
+full Windows gates complete; final whole-change review pending.
+Continuation base: `273f2b3`. Design/plan: `51bee54`.
+General persistent scene/model reuse remains unimplemented; Samsung is not all-green.
 
 ## Scope and contract
 
@@ -113,14 +114,74 @@ Raw controller logs:
 out/part25b-final/task1-controller-*-d4217a4.txt; full worker RED/GREEN record:
 .superpowers/sdd/2026-09-23-reference-lifecycle-foundations/task-1-report.md.
 
-Pending Task2 permanent regressions and independent review.
-Pending final whole-change review and fresh complete gates.
+Task2 permanent regressions committed at58236a9fec8e55de136ed319841c47ad690231c9;
+independent task review approved spec/quality with no Critical/Important findings.
+The three nested fixture bytes match the scratch
+sources and indexed Git blobs. The retained-session probe against the copied
+files still produces15/9 on each variant; permanent fresh-path tests pass.
+Controller rebuilt/reran reference_sessions under the official Telegram and Samsung
+presets:1/1 each (16.96s and12.26s). Controller's strict corpus check verifies16
+assets and SHA256 checks confirm source/copy identity. The stale CPU-isolation
+PASS text now correctly reports2Scene sessions. Full comparator/assertions remain.
+Task2 raw logs:out/part25b-active-state/task2-{red,green,direct}-*.log;
+controller logs:out/part25b-final/task2-controller-*-58236a9.txt.
+### Full Windows verification
+
+The controller freshly configured, built and ran complete CTest suites at
+`58236a9` using the installed VS2022 BuildTools x64 environment:
+
+| Preset | Configure/build | CTest | Duration |
+|---|---|---|---:|
+|windows-msvc-telegram-debug|PASS|61/61|79.13s|
+|windows-msvc-samsung-debug|PASS|39/41, two baseline golden failures|67.40s|
+|windows-msvc-win32-preview|PASS|55/55|48.20s|
+|windows-msvc-direct2d|PASS|29/29|22.68s|
+
+The explicit preview preset passes `avemotion.direct2d.capture`,
+`avemotion.direct2d.capture_preflight` and `avemotion.win32.preview.selftest`
+(hidden WARP/device-recreation path), not merely the general debug tests.
+The no-reference install to a fresh local output prefix and external
+`tests/consumer` find_package configure/build/run passed, exit 0. An additional
+optimized Release mapping test passed 1/1 in 0.09s.
+
+Each full gate used the following commands after
+`VsDevCmd.bat -arch=x64 -host_arch=x64`, with the preset from the table:
+
+```text
+cmake --preset <preset>
+cmake --build --preset <preset> --parallel 4
+ctest --preset <preset> --parallel 4 --no-tests=error --output-on-failure
+```
+
+Install/consumer commands (prefix and build directories are new local paths):
+
+```text
+cmake --install out/build/windows-msvc-direct2d --prefix out/part25b-final/install-58236a9
+cmake -S tests/consumer -B out/part25b-final/consumer-58236a9 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=C:/Users/USER/Desktop/AveMotion-CorpusLab-Part24/out/part25b-final/install-58236a9
+cmake --build out/part25b-final/consumer-58236a9 --parallel 4
+out/part25b-final/consumer-58236a9/avemotion_installed_consumer.exe
+```
+
+Complete outputs are retained at `out/part25b-final/*-58236a9.txt`, including
+installed-consumer and release-frame-mapping logs. All full-gate test failures
+remain visible; no test was excluded. Final whole-change review is pending.
 
 Known pre-existing limitation: Samsung scene.golden and plan.golden disagree with
 stored Polystar endpoint hashes on this MSVC runtime. Part25A reproduced the exact
 same failures at clean baseline cda415c. No goldens or allowances are changed.
 The current full Samsung result must still be reported explicitly, never called
 all-green based on focused tests.
+The controller compared all four complete expected/actual Samsung rows from this
+new full run against the saved pre-task baseline: exact match. Changed fields in
+the failing Polystar p100/frame150 case remain:
+
+| Field | Stored expected | MSVC actual |
+|---|---|---|
+|Scene fingerprint|0cca4a4d4395c248|d16b938d33790784|
+|Geometry fingerprint|c52135375f4b4fd9|4c0fb2275b3068ab|
+|Plan fingerprint|4e7835d97cd1de98|43cc77e5cb56f0e1|
+|Plan geometry identity|f392889bad747440|4992a725d8c4bd2c|
+|Plan presentation|83bafa6dc131d21b|38cbdf9a188f397b|
 The existing pinned Telegram rlottie.h C4251 DLL-interface warning remains in
 MSVC builds; it is not hidden, promoted to a new failure, or fixed by vendor edits.
 
@@ -138,9 +199,66 @@ CPU-repeats0,128square viewport, strict validation. Baseline setup count1 and
 candidate0 are validated explicitly. Fresh-process working-set observations use
 1/16/64 instances for StickAndBall and firework in the same A-B-B-A order.
 No agent builds/tests/probes may overlap the timings.
+There is also one separate first frame before warm-up. The unchanged instrument's
+percentiles contain that first sample plus the1000 steady samples; warm-up samples
+are excluded. Per-phase diagnostics keep the first and steady counts separate.
 
-Results pending. The expected structural reduction is one setup mapping tree per
-ordinary instance, not fewer exact-scene sessions. No2x frame speedup, representative
+Measurements completed at05:50UTC, using source state58236a9 with docs-only working
+changes. Candidate binary was built atd4217a4; its SHA256 is
+be9b98b42fd0f610665163da3c676316bc14725a6cdf862c87ee2208f418da69.
+All four runs validated16 assets and their manifests were byte-identical. Setup
+Scene sessions were exactly1 for baseline and0 for candidate; first sample1,
+steady1000, and model constructions equal model samples in every run. All observed
+evaluator/projector retained bytes and storage generations stayed unchanged from
+prepare through warm-up and measured phases. Planner allocations are not measured.
+
+| Run | Median of16 exact medians(ns) | Median of16 exact p95s(ns) | Median of16 pipeline medians(ns) | Median of16 pipeline p95s(ns) |
+|---|---:|---:|---:|---:|
+|A1|21550|32350|34300|53550|
+|B1|20600|32250|32900|50700|
+|B2|20700|33000|33050|51150|
+|A2|20650|36100|33800|58100|
+
+Mean of the two run-level summaries:A exact21100ns versus B20650ns(-2.13%);
+pipeline34050ns versus32975ns(-3.16%). These are descriptive observations of one
+A-B-B-A sequence, not pooled distributions or a statistically established
+improvement. The code deliberately leaves fresh per-frame construction unchanged;
+do not market the small timing differences as a steady-state speedup.
+
+Working-set observations (bytes; order within each cell is A1/B1/B2/A2):
+
+| Asset | Instances | Current bytes | Peak bytes | Mean B-A current bytes |
+|---|---:|---|---|---:|
+|StickAndBall|1|4542464/4542464/4550656/4538368|4546560/4546560/4554752/4542464|+6144|
+|StickAndBall|16|4599808/4542464/4538368/4612096|4603904/4546560/4542464/4616192|-65536|
+|StickAndBall|64|4759552/4550656/4542464/4755456|4763648/4554752/4546560/4759552|-210944|
+|1667-firework|1|24961024/23969792/24829952/24424448|26357760/24027136/24834048/25468928|-292864|
+|1667-firework|16|26648576/24649728/23855104/27430912|26652672/25276416/23859200/27435008|-2787328|
+|1667-firework|64|34598912/21856256/24829952/35790848|34603008/23789568/24834048/35794944|-11851776|
+
+At64 instances, mean observed reduction is206KiB for StickAndBall and about11.30MiB
+for firework. The one-instance StickAndBall comparison instead rises6KiB, showing
+the fixed/noisy process background is not a per-object allocation measurement.
+Raw per-asset median/p95 data, all memory observations, input hashes, binary/compiler
+context, orchestration and analysis scripts are retained under
+out/benchmarks/part25b. summary.md lists every per-asset percentile in run order.
+
+The four timing processes use the same CLI arguments, changing only executable
+and a new output directory:
+
+```text
+<baseline-or-candidate.exe> --input tests/compatibility/tgs --output <new-run-dir> --samples 1000 --warmup-samples 20 --load-repeats 1 --cpu-repeats 0 --render-size 128 --strict
+python scripts/test_corpus_lab_output.py --output <new-run-dir> --expected-assets 16 --expected-samples 1000 --expected-warmup-samples 20 --expected-render-size 128 --expected-setup-scene-sessions <1-for-A-or-0-for-B>
+<baseline-or-candidate.exe> --input tests/compatibility/tgs/<asset>.tgs --output <new-memory-dir> --memory-instances <1-or-16-or-64> --render-size 128 --strict
+```
+
+The controller confirmed no active build/test/probe process before starting and
+ran no builds/tests/probes until all timing and memory processes finished. Four
+timing validations and all24 memory-report validations passed. These are synthetic
+public corpus observations, not measurements of a representative private corpus.
+
+The proven structural reduction is one setup mapping tree per ordinary instance,
+not fewer exact-scene sessions. No2x frame speedup, representative
 private-corpus performance, zero-allocation guarantee, or TSan result is claimed.
 The instrument's load_model_median_us measures asset load/model preparation and
 excludes createInstance; it must not be presented as instance-creation timing.

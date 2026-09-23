@@ -4,6 +4,12 @@ Date: 2026-09-23. **Status: safe partial delivery; full Windows verification
 and independent whole-change review complete. Persistent scene/model reuse is
 not implemented. Samsung's full suite is not green.**
 
+Historical report: [Part25B](PART25B_REFERENCE_LIFECYCLE_REPORT.md) subsequently
+removes the ordinary retained mapping-only tree at `d4217a4`. Its setup Scene
+count is zero instead of this report's one; exact scene/model sampling remains
+fresh. The measurements and incomplete reuse claims below describe Part25A and
+are not rewritten as candidate results.
+
 ## Outcome and boundary
 
 The current fresh-per-sample boundary is retained. Direct reuse fails both seek

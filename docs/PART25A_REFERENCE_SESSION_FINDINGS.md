@@ -5,6 +5,11 @@ Telegram and Samsung rlottie variants. The probes did not change product or
 vendor sources. This report rejects **unmodified persistent reuse**, not all
 possible future implementations of persistent evaluation.
 
+Successor: [Part25B](PART25B_REFERENCE_LIFECYCLE_REPORT.md) adds active-state
+tolerance reproductions and removes only the ordinary mapping tree. Fresh scene
+sampling and the reuse rejection below remain unchanged; the mapping tree was
+not the tree used for those exact samples.
+
 ## Result
 
 The existing fresh-tree-per-sample policy is necessary for the current exact
