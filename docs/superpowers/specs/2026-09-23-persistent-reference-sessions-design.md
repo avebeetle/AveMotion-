@@ -1,10 +1,39 @@
 # AveMotion Part 25A — Persistent Reference Sessions Design
 
-**Status:** Proposed for user review
+**Status:** Approved for autonomous execution; persistent reuse gated by correctness investigation
 
 **Date:** 2026-09-23
 
 **Baseline:** `cda415c` (`chore: import AveMotion Part 24 baseline`)
+
+## Execution Amendment — 2026-09-23
+
+The user approved the design, delegated detailed planning and routine technical
+decisions, and authorized ordinary commits/pushes to `main`. The five-to-six-hour
+run retains its deadline of 08:32 UTC / 11:32 Moscow.
+
+Plan review surfaced `docs/known-issues/RLOTTIE_RENDER_TREE_STATE.md`: fresh
+per-sample trees are an intentional Part 3 correctness containment, not merely
+an overlooked allocation. A current MSVC Telegram probe has reproduced scene
+history differences. Therefore the lifetime described below is a target, not a
+safe mechanical substitution. Both arbitrary scene seeks and ascending model
+scans must pass independent parity gates before persistent reuse can ship.
+
+The execution plan first diagnoses the mutable-tree lifecycle. A bounded fix
+to existing upstream integration requires a written ownership/provenance/test
+addendum and regression evidence; it must preserve visual semantics, existing
+licenses and dependency versions. If such a fix cannot be proved within the
+run, retain fresh sampling on affected paths and deliver verified diagnostics,
+stronger regression coverage, baseline evidence and a precise deferred-work
+report. This outcome is partial completion, never a claim that Part 25A's
+persistent-session target has been achieved.
+
+The measurement patch is neutral to runtime and visual semantics. Corpus
+report schema 2 may change the sampled frame distribution and telemetry totals,
+with those changes documented and shared by baseline/candidate. Asset
+classifications and semantic goldens remain unchanged. Workspace growth is
+measured through actual available counters; absent planner allocation telemetry
+must be reported as unverified, not inferred to be zero.
 
 ## Intent
 

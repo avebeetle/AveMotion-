@@ -14,16 +14,31 @@ Updated: 2026-09-23
 
 ## Current stage
 
-The Part 25A written design is ready for user review:
+The user approved Part 25A and delegated autonomous planning/execution:
 
 `docs/superpowers/specs/2026-09-23-persistent-reference-sessions-design.md`
 
-The design scopes the first implementation to persistent reference sessions,
-session diagnostics, parity/concurrency tests, and measured performance
-evidence. No product implementation is allowed until the user approves this
-written design. After approval, the next action is to create and self-review the
-detailed implementation plan with the `writing-plans` workflow, present it for
-review, and then execute the user-selected method.
+Implementation plan:
+`docs/superpowers/plans/2026-09-23-persistent-reference-sessions.md`
+
+Execution method: subagent-driven implementation with a fresh reviewer per
+task, directly on `main` as the user authorized. No routine approval is pending.
+
+Current work: Task 0, investigating documented `renderTree()` history coupling;
+Task 1 diagnostic instrumentation may proceed independently. A scratch MSVC
+Telegram probe reproduced differences on firework, LoudMute and multi-trim.
+Naive scene reuse must not ship. Ascending model scan reuse has its own gate.
+The authoritative diagnostic report will be `out/part25a-probe/findings.md`.
+
+The plan has been corrected for explicit WARP/preview presets, actual CTest
+names, measured workspace growth, corpus schema changes, model-result errors,
+and a safe deferred-reuse branch. The spec contains the execution amendment.
+
+SDD ledger:
+`.superpowers/sdd/2026-09-23-persistent-reference-sessions/progress.md`
+
+Deadline: 2026-09-23 08:32 UTC / 11:32 Moscow. Start no major block after
+08:12 UTC. Reserve the final block for review, verification and handoff.
 
 ## Fresh baseline verification
 
@@ -38,7 +53,15 @@ review, and then execute the user-selected method.
 
 ## Duplicate-run rule
 
-Scheduled and interactive runs must read this file before acting. While the
-stage is `written design awaiting user review`, do not create a second spec,
-implementation plan, branch, worktree, or product-code change. Report the
-review request once, then remain quiet until user input changes the stage.
+Scheduled and interactive runs read this file and the plan-scoped ledger first.
+Resume the next incomplete task; do not regenerate the plan or redispatch
+completed work. A heartbeat in this same task is normally a continuation after
+the preceding turn ended. A stale "running" note alone is not proof of a second
+controller. Check live agents and ledger ownership before deciding to skip;
+collect a finished worker's report and continue its review. Skip only a proven
+duplicate controller or already-running identical worker.
+
+Automation `avemotion-6` remains active every 15 minutes until the deadline.
+Routine unchanged status remains quiet; report completion, material failure or
+required user action. At completion/deadline, deliver evidence and stop this
+automation through the app tool.
