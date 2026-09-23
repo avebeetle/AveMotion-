@@ -1,5 +1,6 @@
 /third_party/** -text
 /patches/** -text
 /tests/corpus/** -text
+/tests/golden/** -text
 /tests/compatibility/tgs/** -text
 /tests/fixtures/** -text
