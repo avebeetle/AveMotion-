@@ -112,6 +112,34 @@ normally; the API is not noexcept and does not claim a zero-allocation guarantee
 
 ## Acceptance gates and non-goals
 
+### Numeric correctness amendment (independent review, 2026-09-23)
+
+Native probes proved that DOM double rounding admits nonintegral width
+`1.0000000000000001`, frame rate above the cap `240.00000000000001`, and fill
+alpha `1.0000000000000001`. These must reject. Integrality, range/fixed-value
+checks and terminal position continuity therefore use exact original decimal
+number values, not rounded DOM doubles, float tolerances or long-double guesses.
+Equivalent forms such as `61.0`, `6.1e1` and `61` remain numerically equal.
+
+The DOM syntax/encoding parser and its two flags remain unchanged. A bounded
+additional pass through the SAME pinned RapidJSON reader is permitted to capture
+original numeric tokens using RawNumber/kParseNumbersAsStringsFlag plus the same
+iterative/UTF-8 rules. This is metadata collection, not another JSON grammar,
+dependency or handwritten permissive scanner. Associate tokens unambiguously
+with the numeric DOM values, preserving original input order and ignoring digits
+inside strings. Capture owned token/normalized data; never retain a temporary
+reader buffer. Reject internal token-count/kind inconsistency, never guess.
+
+Normalize decimal sign, significant digits and power of ten for exact comparisons
+without exponent overflow or expansion into an enormous zero-padded number.
+Existing input/value/depth limits still bound work; do not weaken them, add an
+arbitrary precision library, or silently narrow accepted precision/exponents to
+avoid the bug. No new public behavior, routing or eligibility claim is enabled.
+New tests cover all three repros, numbers just inside/outside both signs of a
+bound, exact exponent/integral equivalence, underflow tokens versus fixed zero,
+very large exponent strings without integer overflow, and nearly equal terminal
+keyframe values that collapse to the same double. Existing positive cases stay.
+
 Functional RED must exercise real JSON through a compilable reject-all initial
 seam before implementing semantics. Then test the baseline, meaningful accepted
 variants and rejection mutations at every grammar level, duplicates, malformed

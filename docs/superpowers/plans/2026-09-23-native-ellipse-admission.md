@@ -68,7 +68,7 @@ NativeEllipseAdmission auditNativeEllipseInput(std::string_view) {
 }
 ```
 
-CTest name: `avemotion.runtime.native_ellipse_admission`. Executable: `avemotion_native_ellipse_admission_tests`. Link only `AveMotion::Runtime`; private include `src/runtime`, fixture macro like neighboring tests. Add this executable only under Telegram and AVEMOTION_BUILD_TESTS. Do not create a new library target or export.
+CTest name: `avemotion.runtime.native_ellipse_admission`. Executable: `avemotion_native_ellipse_admission_tests`. Link only `AveMotion::Runtime`; private include `src/runtime`, fixture macro like neighboring tests. Add this executable only under Telegram and the existing BUILD_TESTING option. Do not create a new library target or export.
 
 - [ ] Implement the pure audit. Include the pinned `rapidjson/document.h` only from the `.cpp`, via Runtime's existing private Telegram include path. Reject literal NUL/byte limit before parse; parse with `kParseIterativeFlag | kParseValidateEncodingFlag`, never permissive flags. Use the explicit input length.
 
