@@ -21,9 +21,9 @@ Read-only preflight completed: source audit supports metadata mapping for ordina
 counts with a legacy outlier path. Active-state probe reproduces21 mismatches in50
 comparisons on EACH variant, with three passing controls. Reports
 out/part25b-frame-mapping/audit.md and out/part25b-active-state/findings.md.
-Design/plan approved under delegated authority; Task1 implementation is next.
+Design/plan approved under delegated authority; Tasks1 and2 are complete.
 General persistent reuse remains disabled. Three future-reuse regression fixtures
-will cover near-default translation, width and opacity. Task1 intentionally removes
+cover near-default translation, width and opacity. Task1 intentionally removes
 ordinary setup Scene construction1→0 and its duplicate-load failure opportunity.
 Task1 complete:d4217a4, ordinary mapping tree removed with variant-exact metadata
 mapping and legacy large-count path. Independent task review approved code; its
