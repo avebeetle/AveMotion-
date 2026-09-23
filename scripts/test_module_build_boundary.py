@@ -31,7 +31,17 @@ class ModuleBoundaryTests(unittest.TestCase):
 
     def test_forbidden_reference_output(self) -> None:
         (self.build / "avemotion_reference.lib").write_bytes(b"lab")
-        with self.assertRaisesRegex(ValueError, "unexpected AveMotion archives"):
+        with self.assertRaisesRegex(ValueError, "unexpected.*archives"):
+            boundary.check(self.build, "none", False)
+
+    def test_unexpected_nonproduct_msvc_archive(self) -> None:
+        (self.build / "extra.lib").write_bytes(b"forbidden")
+        with self.assertRaisesRegex(ValueError, "unexpected.*archives"):
+            boundary.check(self.build, "none", False)
+
+    def test_unexpected_nonproduct_unix_archive(self) -> None:
+        (self.build / "libsamsung_payload.a").write_bytes(b"forbidden")
+        with self.assertRaisesRegex(ValueError, "unexpected.*archives"):
             boundary.check(self.build, "none", False)
 
     def test_missing_product_archive(self) -> None:

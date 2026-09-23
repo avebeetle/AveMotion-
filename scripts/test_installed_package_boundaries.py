@@ -76,10 +76,25 @@ def check(prefix: Path, direct2d: bool) -> None:
     require(len(archive_paths) == len(expected_archives) and
             all(path.parent in lib_dirs for _, path in archive_paths),
             "product archive outside library layout or duplicated")
+    product_header_roots = {"backends", "core", "evaluation", "formats", "model",
+                            "player", "render", "runtime", "validation"}
     for path in files:
         relative = path.relative_to(prefix).as_posix().lower()
         require(not any(word in relative for word in ("corpus", "characterize", "preview", "probe", "_tests")),
                 f"laboratory/test payload installed: {relative}")
+        if path.is_relative_to(include):
+            parts = path.relative_to(include).parts
+            allowed_layout = (len(parts) >= 2 and parts[0] in product_header_roots
+                              and path.suffix.lower() in (".h", ".hpp"))
+        elif path.parent in lib_dirs:
+            allowed_layout = archive_stem(path) in expected_archives
+        elif path.parent == cmake_dir:
+            allowed_layout = (path.name in ("AveMotionConfig.cmake", "AveMotionConfigVersion.cmake",
+                                            "AveMotionTargets.cmake") or
+                              (path.name.startswith("AveMotionTargets-") and path.suffix == ".cmake"))
+        else:
+            allowed_layout = False
+        require(allowed_layout, f"unexpected installed payload outside product layout: {relative}")
     for path in cmake_dir.glob("*.cmake"):
         content = path.read_text(encoding="utf-8")
         active = "\n".join(line for line in content.splitlines()
@@ -143,6 +158,7 @@ def synthetic_self_test() -> None:
             "reference_header": lambda p: (p / "include/avemotion/reference/ReferenceRuntime.hpp"),
             "reference_archive": lambda p: (p / "lib/avemotion_reference.lib"),
             "executable": lambda p: (p / "bin/avemotion_probe.exe"),
+            "suffixless_executable": lambda p: (p / "libexec/avemotion_helper"),
             "upstream": lambda p: (p / "lib/rlottie.lib"),
         }
         for label, path_fn in mutations.items():
@@ -191,6 +207,7 @@ def real_prefix_mutations(prefix: Path, direct2d: bool) -> None:
             "reference_header": ("include/avemotion/reference/ReferenceRuntime.hpp", b"forbidden"),
             "reference_archive": (f"{lib_name}/avemotion_reference.lib", b"forbidden"),
             "executable": ("bin/avemotion_probe.exe", b"forbidden"),
+            "suffixless_executable": ("libexec/avemotion_helper", b"forbidden"),
             "path_leak": (f"{lib_name}/cmake/AveMotion/AveMotionTargets.cmake", b'\nset(LEAK "C:/source/build/Runtime.cpp")\n'),
         }
         for label, (relative, content) in mutations.items():
@@ -231,7 +248,7 @@ def real_prefix_mutations(prefix: Path, direct2d: bool) -> None:
             pass
         else:
             raise ValueError("real-prefix missing Runtime archive not rejected")
-    print("INSTALLED_BOUNDARY_REAL_MUTATIONS_OK cases=6")
+    print("INSTALLED_BOUNDARY_REAL_MUTATIONS_OK cases=7")
 
 
 def main() -> int:

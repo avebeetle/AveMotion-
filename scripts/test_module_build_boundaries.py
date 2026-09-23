@@ -70,14 +70,12 @@ def check(build_dir: Path, variant: str, direct2d: bool) -> None:
                 for stem in (archive_stem(path),) if stem is not None}
     missing = required - archives
     require(not missing, f"missing product archives: {sorted(missing)}")
-    actual_avemotion = {stem for stem in archives if stem.startswith("avemotion_")}
-    extra = actual_avemotion - required
-    require(not extra, f"unexpected AveMotion archives: {sorted(extra)}")
-    require("avemotion_reference" not in archives and "avemotion_corpus_analysis" not in archives,
-            "laboratory archive exists")
     has_rlottie = "rlottie" in archives
     require(has_rlottie == (variant == "telegram"),
             f"selected upstream archive mismatch: rlottie present={has_rlottie}")
+    allowed = required | ({"rlottie"} if variant == "telegram" else set())
+    extra = archives - allowed
+    require(not extra, f"unexpected archives: {sorted(extra)}")
     forbidden_exe = [str(path.relative_to(build_dir)) for path in build_dir.rglob("*")
                      if path.is_file() and path.suffix.lower() in (".exe", "")
                      and path.name.lower().startswith("avemotion_")
