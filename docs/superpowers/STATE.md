@@ -79,9 +79,15 @@ review and scoped fix review accepted both findings. FullTelegram67/67,none30/30
 controller fresh5/5; corrected checker mutation7/7 and real build/original+
 relocated prefix checksPASS. Its report is
 .superpowers/sdd/2026-09-23-lean-module-boundaries/task-1-report.md.
-No E product worker active at acceptance. Task2 scoped integrity/optional CI is
-next; read task-2-brief.md plus completed verifier/workflow preflight audits in
-the same ledger directory. Capture new dispatchBASE after this handoff commit.
+Task1 handoff47c338c ordinarily pushed with remote equality verified. Task2
+scoped integrity/optional CI is complete atd567d75: independent review approves
+spec/quality, no Critical/Important findings. Synthetic9/9, selectedCTest4/4each,
+fullTelegram68/68; controller fresh fullTelegram68/68,preview62/62,none31/31.
+Gate logs and immutable LastTest copies are inout/part25e-final. No E product
+implementer active; Task3 clean module/package/relocation/provenance checks and
+final whole-stage review are next. Preserve these fullsuite results if only
+docs change; read ledger and liveagents before dispatch. Deferredminor: an inert
+legacy MANIFEST mock in selectiontest; report native-exit clarification requested.
 Check ledger/live agents before dispatch; do not repeat Task1.
 The spec distinguishes a Telegram-backed internal build from an offline installed
 package, preserves the installation prohibition, and keeps lab presets/source.
@@ -94,8 +100,18 @@ a claim that they match the two local Samsung golden failures. Earlier ghHTTP401
 only blocked that client; it did not prove public status was inaccessible.
 Read-only /root/cloud_ci_diagnosis investigates job errors/baseline comparison;
 report .superpowers/sdd/2026-09-23-lean-module-boundaries/ci-diagnosis/findings.md.
-Do not change credentials/dependencies, dispatch workflows or guess a fix; keep
-local pass and observed cloud failure distinct. No second product writer.
+The existing authorized Chrome session exposed exact console logs without login
+or settings changes: LinuxGCC Telegram63/66, failures sourcegeometry/scene/plan
+raw golden hashes (displayed portable hashes equal); WindowsTelegramDebug61/67,
+six silent model/evaluation/validation compare_files failures. Both have passing
+persistent session/lifecycle/source ownership/model session tests. Capture's
+focused graphics6/6 and preview selftest/WARP pass; both scripts stop on three
+validation golden comparisons. Selected console excerpts are preserved beside
+the findings. Equal portable hashes are not sufficient proof of numerical parity.
+Scratch checkout reproduced LF->CRLF golden conversion causing exact comparison
+failure, but cloudbytes/config remain unobserved; do not guess or weaken
+comparators/goldens. Keep local pass and observed cloud failure distinct; no
+credential/dependency/settings changes, workflow dispatch or second product writer.
 
 ## Part25C completed foundation and execution history
 

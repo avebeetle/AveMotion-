@@ -248,6 +248,25 @@ investigation is separate from the successful local gates above; this is not
 established to be only the known Samsung failures. The earlier HTTP401 applied
 to the CLI, not every means of observing public CI. No credentials were changed.
 
+An existing authorized browser session subsequently exposed selected console
+logs. Linux GCC Telegram Release passed63/66: the three failures are source
+geometry, scene and plan raw golden fingerprints; displayed portable hashes
+and structural counts match, but the raw-bit cause is not yet established.
+Windows Telegram Debug passed61/67, failing six exact model/evaluation/validation
+file comparisons. Persistent-session/lifecycle/source-ownership/model-session
+tests passed in both sampled jobs. Capture's focused graphics6/6 and the
+preview WARP selftest passed; their scripts stop on three validation file
+comparisons, not an observed preview lifecycle failure.
+
+Read-only source diagnosis reproduced a plausible Windows cause: goldens are
+unprotected by the current Git attributes; a scratch checkout with
+`core.autocrlf=true` changes an LF golden to CRLF, making its exact comparison
+with the unchanged LF MSVC output fail. Cloud file bytes/configuration have
+not been obtained, so this reproduction is not yet proof of the cloud cause.
+No golden, comparator policy, product source, credential or setting was changed
+for the investigation. Detailed evidence and selected browser excerpts remain in
+`.superpowers/sdd/2026-09-23-lean-module-boundaries/ci-diagnosis/`.
+
 ## Remaining limits and next stage
 
 Functional concurrency is not TSan; no race-detector result is available.
