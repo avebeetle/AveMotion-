@@ -206,13 +206,13 @@ jobs:
       - name: Consume original package
         if: matrix.variant == 'none'
         run: |
-          cmake -S tests/consumer -B out/lean-consumer-original -G Ninja -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/out/lean-original"
+          cmake -S tests/consumer -B out/lean-consumer-original -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/out/lean-original"
           cmake --build out/lean-consumer-original
           ./out/lean-consumer-original/avemotion_installed_consumer
       - name: Consume relocated package
         if: matrix.variant == 'none'
         run: |
-          cmake -S tests/consumer -B out/lean-consumer-relocated -G Ninja -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/out/lean-relocated"
+          cmake -S tests/consumer -B out/lean-consumer-relocated -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/out/lean-relocated"
           cmake --build out/lean-consumer-relocated
           ./out/lean-consumer-relocated/avemotion_installed_consumer
 
@@ -268,7 +268,7 @@ jobs:
         shell: pwsh
         run: |
           $prefix = Join-Path $env:GITHUB_WORKSPACE 'out/lean-original'
-          cmake -S tests/consumer -B out/lean-consumer-original -G Ninja "-DCMAKE_PREFIX_PATH=$prefix"
+          cmake -S tests/consumer -B out/lean-consumer-original -G Ninja -DCMAKE_BUILD_TYPE=Release "-DCMAKE_PREFIX_PATH=$prefix"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           cmake --build out/lean-consumer-original
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -279,7 +279,7 @@ jobs:
         shell: pwsh
         run: |
           $prefix = Join-Path $env:GITHUB_WORKSPACE 'out/lean-relocated'
-          cmake -S tests/consumer -B out/lean-consumer-relocated -G Ninja "-DCMAKE_PREFIX_PATH=$prefix"
+          cmake -S tests/consumer -B out/lean-consumer-relocated -G Ninja -DCMAKE_BUILD_TYPE=Release "-DCMAKE_PREFIX_PATH=$prefix"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           cmake --build out/lean-consumer-relocated
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

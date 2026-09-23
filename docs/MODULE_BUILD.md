@@ -31,7 +31,7 @@ cmake --preset windows-msvc-offline-package
 cmake --build --preset windows-msvc-offline-package --parallel 4
 cmake --install out/build/windows-msvc-offline-package --prefix C:/work/avemotion-offline
 python scripts/test_installed_package_boundaries.py --prefix C:/work/avemotion-offline --direct2d yes --self-test
-cmake -S tests/consumer -B out/consumer-offline -G Ninja -DCMAKE_PREFIX_PATH=C:/work/avemotion-offline
+cmake -S tests/consumer -B out/consumer-offline -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:/work/avemotion-offline
 cmake --build out/consumer-offline
 out/consumer-offline/avemotion_installed_consumer.exe
 ```
@@ -44,7 +44,7 @@ cmake --build --preset linux-clang-offline-package --parallel 4
 cmake --install out/build/linux-clang-offline-package --prefix /tmp/avemotion-offline
 python3 scripts/test_module_build_boundaries.py --build-dir out/build/linux-clang-offline-package --variant none --direct2d no
 python3 scripts/test_installed_package_boundaries.py --prefix /tmp/avemotion-offline --direct2d no --self-test
-cmake -S tests/consumer -B out/consumer-offline -G Ninja -DCMAKE_PREFIX_PATH=/tmp/avemotion-offline
+cmake -S tests/consumer -B out/consumer-offline -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/avemotion-offline
 cmake --build out/consumer-offline
 out/consumer-offline/avemotion_installed_consumer
 ```
