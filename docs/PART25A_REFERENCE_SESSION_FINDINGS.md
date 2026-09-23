@@ -92,6 +92,35 @@ Session counters and benchmark instrumentation can land independently. No
 performance claim follows from this investigation. If reuse remains deferred,
 the final delivery must say so and report the measured baseline honestly.
 
+## Bounded follow-up and execution decision
+
+An independent scratch trim investigation isolated two cache invalidations:
+the wholly included individual-trim branch leaves the previous partial final
+path cached, and the wrapped/no-op branch can leave paint geometry cached.
+Two scratch invalidations fixed this fixture's ascending and seek probes while
+preserving its original fresh output. They are not a general evaluator fix and
+were not applied to the vendor trees.
+
+The recording-lifecycle feasibility assessment also found source-level risks
+in approximate matrix/alpha/trim/stroke comparisons, static modifier scratch,
+and skipped repeater contents referenced by outer operators. These additional
+risks were inspected, not independently reproduced as new failing fixtures.
+They prevent treating layer visitation plus owned dash output as a complete
+solution. Telegram source-local geometry must match as well as final drawing.
+
+A plausible future design retains topology and source IDs but gives each
+sample fresh-equivalent evaluation scratch and a non-consuming, owned tree
+publication. It needs explicit constructor-baseline behavior for inactive
+layers, separate CPU ownership, and differential gates for both pinned
+lineages, including sub-epsilon changes and zero-copy repeaters. This is a
+proposal, not implemented or validated code.
+
+For this bounded run, persistent scene and model reuse are deferred. The
+remaining implementation is diagnostics, safe report generation, access-order /
+viewport / CPU / two-instance tests, model retry coverage, and measured baseline
+evidence. No vendor patch, dependency or license change is required by that
+safe branch. The original allocation and speedup targets remain unmet.
+
 ## Local evidence
 
 The ignored directory `out/part25a-probe/` contains `findings.md`, `probe.cpp`,
@@ -99,3 +128,7 @@ the static dash JSON, build recipes and both variants' seek/ascending logs.
 Probe exit code zero means the comparison ran successfully, not that parity
 passed; mismatches are explicitly recorded in its output. Product regression
 tests added later must fail on a parity mismatch.
+
+Additional ignored reports are `out/part25a-trim/findings.md` and
+`out/part25a-recording-design/proposal.md`. Their exploratory estimates and
+unproven lifecycle proposal must not be presented as performance evidence.

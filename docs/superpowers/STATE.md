@@ -27,18 +27,32 @@ task, directly on `main` as the user authorized. No routine approval is pending.
 Task 0 reproduced both seek and complete ascending-scan corruption in Telegram
 and Samsung. Durable findings: `docs/PART25A_REFERENCE_SESSION_FINDINGS.md`;
 raw scratch evidence: `out/part25a-probe/findings.md`. Direct scene and model
-reuse are rejected. A bounded independent trim-cache root-cause investigation
-continues in `out/part25a-trim/findings.md` when available.
+reuse are rejected. The independent trim-cache investigation and broader
+recording-lifecycle assessment are complete in `out/part25a-trim/findings.md`
+and `out/part25a-recording-design/proposal.md`. A general fix requires more than
+dash/trim invalidation. This run takes the approved safe branch: fresh sampling
+stays, persistent reuse and its speedup target remain incomplete.
 
 Task 1 diagnostics complete: `bcde48b`, with reviewed Samsung-test correction
 `f9b1e4e`. Full Telegram debug 57/57 passed; the controller freshly reran focused
 seams tests on Telegram and Samsung, both passed. Independent task review and
 scoped fix review passed. No session lifetime or visual behavior changed.
-Next block is Task 2 measurement instrumentation and report-directory safety.
+Task 2 measurement instrumentation and report-directory safety are complete at
+`94b08bf` plus reviewed correction `c484f4b`. Independent review found first-sample
+timing after warm-up and a safety-test dependency on preset binary paths; both
+were fixed with RED/GREEN tests and passed scoped re-review. The controller
+freshly rebuilt and reran the focused corpus gate: 5/5 passed in 9.25 seconds.
+The preceding full Telegram suite passed 59/59 at `94b08bf`; final full gates
+remain Task 5. `MEASUREMENT_BASELINE=c484f4b`, corrected Release sanity 16/16
+assets validated. Raw context: out/benchmarks/part25a/MEASUREMENT_BASELINE_REVIEWED.txt.
+Original pre-review timing observations are superseded, not valid evidence.
 
-Task 2 also removes observed unconditional recursive output-directory deletion
-in the corpus CLI and runner. Regression tests must preserve unrelated files
-and inputs while regenerating the tool's named reports.
+Task 2 removes observed unconditional recursive output-directory deletion in
+the corpus CLI and runner; its regression tests preserve unrelated files and
+inputs while regenerating the tool's named reports. Next: Task 3 full-content
+access-order/viewport/CPU/two-instance tests, Task 4 model lifetime/retry tests,
+then Task 5 full Windows gates and repeated baseline measurements. There is no
+optimized candidate, so no A-B speedup claim will be made from timing noise.
 
 The plan has been corrected for explicit WARP/preview presets, actual CTest
 names, measured workspace growth, corpus schema changes, model-result errors,

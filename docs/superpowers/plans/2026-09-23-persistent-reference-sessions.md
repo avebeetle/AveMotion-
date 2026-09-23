@@ -53,12 +53,12 @@ These are budgets, not unconditional promises. Start no large block after **08:1
 
 **Produces:** findings with separate go/no-go decisions for arbitrary scene seeks and ascending model scans. No product changes in this task.
 
-- [ ] Reproduce `0 -> middle -> same middle -> last -> 0` with one upstream session and fresh-per-sample oracles. Deep-copy immediately; fingerprints locate discrepancies, full values explain them.
-- [ ] Scan every source frame in ascending order with one session versus a fresh session per frame. Model preparation needs its own parity gate.
-- [ ] Exercise corpus assets, Trim/Repeater and a genuine dashed stroke. Record exact differing path/paint/layer fields and mutation sites.
-- [ ] Decide from evidence. A small passing probe does not replace the full Task 3/4 parity suites.
-- [ ] If a bug reproduces, investigate one bounded non-consuming-state fix. Before vendor changes write a design addendum naming lifetime/ownership, affected variants, patch/provenance changes, tests and licensing impact. Routine decisions are delegated; preserve notices and dependencies.
-- [ ] If no small semantics-preserving fix can be proved in the budget, retain fresh sampling for every affected path and continue diagnostics, stronger tests, baseline evidence and handoff. Never hide a per-frame reload/reset behind a persistent-session claim.
+- [x] Reproduce `0 -> middle -> same middle -> last -> 0` with one upstream session and fresh-per-sample oracles. Deep-copy immediately; fingerprints locate discrepancies, full values explain them.
+- [x] Scan every source frame in ascending order with one session versus a fresh session per frame. Model preparation needs its own parity gate.
+- [x] Exercise corpus assets, Trim/Repeater and a genuine dashed stroke. Record exact differing path/paint/layer fields and mutation sites.
+- [x] Decide from evidence. A small passing probe does not replace the full Task 3/4 parity suites.
+- [x] If a bug reproduces, investigate one bounded non-consuming-state fix. Before vendor changes write a design addendum naming lifetime/ownership, affected variants, patch/provenance changes, tests and licensing impact. Routine decisions are delegated; preserve notices and dependencies.
+- [x] If no small semantics-preserving fix can be proved in the budget, retain fresh sampling for every affected path and continue diagnostics, stronger tests, baseline evidence and handoff. Never hide a per-frame reload/reset behind a persistent-session claim.
 
 ## Task 1: Define reference session diagnostics
 
@@ -124,29 +124,29 @@ this measurement task.
 
 ### 2.1 Corpus-lab schema RED
 
-- [ ] Extend `scripts/test_corpus_lab_output.py` first to require schema version 2 and exact timing/session columns; verify benchmark aliases match manifest aliases, numeric values are non-negative, p95 is at least median, and summary sample/warm-up metadata matches the CLI.
-- [ ] Require phase counters for setup, first sample, and measured steady loop. At minimum record all four session-creation roles per phase plus setup model samples, first scene samples, and steady scene samples.
-- [ ] Run the existing output test against the last smoke output and capture the expected missing-column/schema failure:
+- [x] Extend `scripts/test_corpus_lab_output.py` first to require schema version 2 and exact timing/session columns; verify benchmark aliases match manifest aliases, numeric values are non-negative, p95 is at least median, and summary sample/warm-up metadata matches the CLI.
+- [x] Require phase counters for setup, first sample, and measured steady loop. At minimum record all four session-creation roles per phase plus setup model samples, first scene samples, and steady scene samples.
+- [x] Run the existing output test against the last smoke output and capture the expected missing-column/schema failure:
 
 ```powershell
 python scripts/test_corpus_lab_output.py --output out/build/windows-msvc-telegram-debug/corpus-lab-smoke --expected-assets 16
 ```
 
-- [ ] Add a temporary-directory regression that invokes the actual corpus CLI with an existing output directory containing a nested sentinel and requires the sentinel to survive; cover the Python runner with `--skip-build` too. Observe RED against the current unconditional `std::filesystem::remove_all(options.output)` / `shutil.rmtree(args.output)`. Replace both with non-destructive directory creation and overwrite only the tool's named report files. Input equal to output must preserve the original asset. Do not introduce an arbitrary recursive-delete guard when no deletion is needed.
+- [x] Add a temporary-directory regression that invokes the actual corpus CLI with an existing output directory containing a nested sentinel and requires the sentinel to survive; cover the Python runner with `--skip-build` too. Observe RED against the current unconditional `std::filesystem::remove_all(options.output)` / `shutil.rmtree(args.output)`. Replace both with non-destructive directory creation and overwrite only the tool's named report files. Input equal to output must preserve the original asset. Do not introduce an arbitrary recursive-delete guard when no deletion is needed.
 
 ### 2.2 Benchmark implementation
 
-- [ ] Add `--warmup-samples` in `[0, 10000]` with a documented default of 20. Preserve `--samples` as the measured count.
-- [ ] Add a nanosecond timing helper, conventional median, and nearest-rank p95 (`sorted[ceil(0.95 * N) - 1]`, clamped to the valid range).
-- [ ] Make `runPipeline(std::size_t frame, bool collect)` consume the exact frame index. First sample is frame 0; warm-up and measured loops each use `sample % totalFrames`. Document that schema-2 sampled workload totals include first+measured frames and exclude warm-up; asset classification remains unchanged.
-- [ ] For each measured full pipeline call, snapshot diagnostics immediately before and after the call but outside its wall-clock interval. Derive exact-scene duration from the delta of `sceneEvaluationNanoseconds`; record the wall-clock duration of evaluator → instance exact/model evaluation → projector → planner.
-- [ ] Add `exact_scene_median_ns`, `exact_scene_p95_ns`, `pipeline_median_ns`, and `pipeline_p95_ns`. Preserve existing report columns for compatibility.
-- [ ] Snapshot setup after load/model preparation/instance construction, then first-sample and steady-loop deltas. CPU oracle measurements must occur only after these snapshots.
-- [ ] Add `--memory-instances` accepting only `1`, `16`, or `64`, requiring a single input asset. In this observational mode, prepare once, create N live instances, evaluate frame 0 at 128×128 on all of them, keep them alive, and on Windows write current `WorkingSetSize` and process-wide `PeakWorkingSetSize` from `GetProcessMemoryInfo`. Label both as process observations and never make them CI pass/fail thresholds. Add the narrow `Psapi` link only where required.
-- [ ] Write `schema=2`, measured/warm-up counts, frame order, viewport, and timing units into the summary. Forward `--warmup-samples` through the Python runner. Verify the actual percentile helper on deterministic sample values.
-- [ ] Record evaluator/projector `retainedBytes()` and `storageGeneration()` after prepare, warm-up and the measured loop. Check Player storage generation over 1,000 stable ticks with its existing test. Inspect planner cache diagnostics using existing tests; report missing observability explicitly. Stable plan-vector size does not prove zero allocations.
-- [ ] Update `docs/CORPUS_LAB.md` with precise timing, percentile, diagnostic-phase, privacy, and memory-mode semantics.
-- [ ] Build the corpus lab and run the smoke/output checks until green:
+- [x] Add `--warmup-samples` in `[0, 10000]` with a documented default of 20. Preserve `--samples` as the measured count.
+- [x] Add a nanosecond timing helper, conventional median, and nearest-rank p95 (`sorted[ceil(0.95 * N) - 1]`, clamped to the valid range).
+- [x] Make `runPipeline(std::size_t frame, bool collect)` consume the exact frame index. First sample is frame 0; warm-up and measured loops each use `sample % totalFrames`. Document that schema-2 sampled workload totals include first+measured frames and exclude warm-up; asset classification remains unchanged.
+- [x] For each measured full pipeline call, snapshot diagnostics immediately before and after the call but outside its wall-clock interval. Derive exact-scene duration from the delta of `sceneEvaluationNanoseconds`; record the wall-clock duration of evaluator → instance exact/model evaluation → projector → planner.
+- [x] Add `exact_scene_median_ns`, `exact_scene_p95_ns`, `pipeline_median_ns`, and `pipeline_p95_ns`. Preserve existing report columns for compatibility.
+- [x] Snapshot setup after load/model preparation/instance construction, then first-sample and steady-loop deltas. CPU oracle measurements must occur only after these snapshots.
+- [x] Add `--memory-instances` accepting only `1`, `16`, or `64`, requiring a single input asset. In this observational mode, prepare once, create N live instances, evaluate frame 0 at 128×128 on all of them, keep them alive, and on Windows write current `WorkingSetSize` and process-wide `PeakWorkingSetSize` from `GetProcessMemoryInfo`. Label both as process observations and never make them CI pass/fail thresholds. Add the narrow `Psapi` link only where required.
+- [x] Write `schema=2`, measured/warm-up counts, frame order, viewport, and timing units into the summary. Forward `--warmup-samples` through the Python runner. Verify the actual percentile helper on deterministic sample values.
+- [x] Record evaluator/projector `retainedBytes()` and `storageGeneration()` after prepare, warm-up and the measured loop. Check Player storage generation over 1,000 stable ticks with its existing test. Inspect planner cache diagnostics using existing tests; report missing observability explicitly. Stable plan-vector size does not prove zero allocations.
+- [x] Update `docs/CORPUS_LAB.md` with precise timing, percentile, diagnostic-phase, privacy, and memory-mode semantics.
+- [x] Build the corpus lab and run the smoke/output checks until green:
 
 ```powershell
 & cmd.exe /d /s /c '"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64 && cmake --build --preset windows-msvc-telegram-debug --target avemotion_corpus_lab --parallel 4'
@@ -155,86 +155,128 @@ ctest --preset windows-msvc-telegram-debug -R '^avemotion\.corpus\.lab_(smoke|ou
 
 ### 2.3 Establish the comparable baseline
 
-- [ ] Run focused diagnostics/corpus tests plus all existing runtime, model, and corpus-lab tests.
-- [ ] Commit the behavior-neutral diagnostics and measurement contract. Record this commit as `MEASUREMENT_BASELINE`; its parent lineage is `cda415c` and it deliberately retains per-frame session construction.
-- [ ] Configure/build `windows-msvc-corpus-lab` and run one baseline sanity timing process using the committed 16-asset corpus with:
+- [x] Run focused diagnostics/corpus tests plus all existing runtime, model, and corpus-lab tests.
+- [x] Commit the behavior-neutral diagnostics and measurement contract. Record this commit as `MEASUREMENT_BASELINE`; its parent lineage is `cda415c` and it deliberately retains per-frame session construction.
+- [x] Configure/build `windows-msvc-corpus-lab` and run one baseline sanity timing process using the committed 16-asset corpus with:
 
 ```text
 --samples 1000 --warmup-samples 20 --load-repeats 1
 --cpu-repeats 0 --render-size 128 --strict
 ```
 
-- [ ] Run one baseline memory sanity process for one instance using `tests/compatibility/tgs/StickAndBall.tgs`. Save raw output beneath `out/benchmarks/part25a/` with compiler, preset, commit, arguments, corpus hashes and machine context. Final A-B-B-A supplies repeated timing/memory observations; avoid duplicating them here.
-- [ ] Commit message: `test: define reference session measurement contract`
+- [x] Run one baseline memory sanity process for one instance using `tests/compatibility/tgs/StickAndBall.tgs`. Save raw output beneath `out/benchmarks/part25a/` with compiler, preset, commit, arguments, corpus hashes and machine context. Final A-B-B-A supplies repeated timing/memory observations; avoid duplicating them here.
+- [x] Commit message: `test: define reference session measurement contract`
 
-## Task 3: Reuse the eager scene session and prove state isolation
+## Task 3: Lock fresh-sampling scene isolation with regression tests
 
-**Gate:** Task 0 must permit scene reuse, including any separately proved lifecycle fix. Otherwise land only stronger regression coverage against the safe runtime and report reuse deferred.
+**Execution decision:** Task 0 rejected direct reuse and the bounded architecture
+assessment found additional active-state dependencies. This is the approved safe
+branch: ship tests, not persistent reuse. Keep Runtime.cpp and Task 1's
+fresh-per-sample counter characterization unchanged. The original zero-hot-path
+session target remains deferred, not satisfied.
 
-**Files:**
+**Files:** create `tests/reference_session_tests.cpp`,
+`tests/fixtures/dashed_stroke_session.json`; modify `CMakeLists.txt`.
+A focused test-only comparison header under `tests/` is allowed if it makes the
+complete comparator easier to audit. No production/vendor/golden edits.
 
-- Modify: `src/runtime/Runtime.cpp`
-- Modify: `tests/runtime_seams_tests.cpp`
-- Create: `tests/reference_session_tests.cpp`
-- Create: `tests/fixtures/dashed_stroke_session.json`
-- Modify: `CMakeLists.txt`
+**Interfaces:** use `Runtime`, `Asset`, `Instance::evaluateFrame()`,
+`renderCpuFrame()`, `DiagnosticsSnapshot`, and `RecordingBackend::record()`.
+Use the six existing reference counters without redefining lifetime.
 
-### 3.1 Persistent-session RED
+### 3.1 Full observable comparator and RED evidence
 
-- [ ] Replace Task 1's characterization assertion with the permanent contract: loading one asset and creating N instances creates one metadata and exactly N scene sessions; any number of subsequent exact evaluations creates zero more sessions while `referenceSceneSamples` advances once per call.
-- [ ] Add a dedicated `avemotion_reference_session_tests` executable and `avemotion.runtime.reference_sessions` CTest entry gated by reference-runtime availability.
-- [ ] Run the test against the still-unoptimized runtime and capture the expected count failure caused by per-frame `loadFromData()`.
+- [ ] Register `avemotion_reference_session_tests` and CTest
+  `avemotion.runtime.reference_sessions` only when reference runtime is enabled.
+- [ ] Build a test-only exact comparator covering recorder output plus scene
+  statistics/bounds/model counts, complete layers/child indices/masks, every draw
+  item's source/model/local/projected geometry and paint, transforms, projection
+  and repeater metadata, and canonical object values/alias relationships.
+  Enumerate fields explicitly against `EvaluatedScene.hpp`; no bytewise struct
+  comparison, epsilon relaxation or fingerprint-only shortcut.
+- [ ] Exclude only asset/instance handles and identity, evaluation sequence,
+  history-derived `changes`, and upstream change bits. Assert reused-instance
+  sequence and repeated-frame change behavior separately.
+- [ ] Test the comparator itself by copying one scene and independently changing
+  representative fields omitted by RecordingBackend fingerprints; require a
+  descriptive mismatch. Include geometry, paint, layer/mask and source-local
+  metadata mutations.
+- [ ] Demonstrate meaningful regression RED with a temporary narrowly scoped
+  naive scene-session reuse mutation on the new dashed/access-order test. Save
+  the exact patch and failing output under ignored `out/part25a-regression/`,
+  restore that mutation with apply_patch, and verify the committed runtime diff
+  is empty. Never commit or retain the unsafe mutation.
 
-### 3.2 Full observable scene comparator
+### 3.2 Access-order and viewport coverage
 
-- [ ] Build a test-only content comparator that checks `RecordingBackend::record()` plus statistics, bounds, model application/counts, layer fields, child indices, draw-item source/model/local/projected geometry and paint fields, transforms, repeater/projection metadata, masks, and canonical values/pointer relationships where observable.
-- [ ] Exclude only asset/instance handles and ID, evaluation sequence, history-derived `changes`, and upstream change bits when comparing a new instance oracle with a reused instance. Assert sequence and change behavior separately on the reused instance.
-- [ ] Use representative fixtures for animated paths, Trim, Repeater, masks, mattes, and nested compositions. For each target `(frame, viewport)`, build a fresh-instance oracle, then compare one persistent instance in ascending, descending, and deterministic repeated non-monotonic orders. Include `128x128 → 96x160 → 128x128` viewport changes.
+- [ ] Add the static dashed rounded rectangle from
+  `out/part25a-probe/dash.json` as the small committed fixture, with no external
+  asset or licensing dependency.
+- [ ] Use animated paths, multi-trim, Repeater, mask/matte and nested-composition
+  fixtures, including LoudMute and firework from the known failures. Read
+  `out/part25a-probe/findings.md` for exact existing paths.
+- [ ] For each fixture, compare every valid source frame in ascending and reverse
+  order on a reused Instance against new-Instance oracles. Add deterministic
+  repeated non-monotonic seeks and `128x128 -> 96x160 -> 128x128` viewport changes.
+  Preserve variant-reported totalFrames; precompute immutable oracle scenes once
+  per frame/viewport where useful. Current fresh sampling must pass both variants.
+- [ ] Assert actual safe-path counts: every successful exact sample creates one
+  additional scene-role session and advances scene samples once. Eager instance
+  creation adds one scene session. Keep oracle diagnostics isolated from the
+  measured Runtime; resets happen only while quiescent.
 
-### 3.3 CPU and concurrency coverage
+### 3.3 CPU isolation and separate-instance concurrency
 
-- [ ] Add the smallest valid dashed-stroke fixture because the committed corpus has no real dash array exercising rlottie's mutable dash path.
-- [ ] Evaluate a scene, render two CPU frames on the same instance, and evaluate the same scene again. Require identical complete scene content, one CPU session, two CPU frames, one scene session, and two scene samples.
-- [ ] Pre-prepare one asset, create exactly two instances, and evaluate each on its own `std::thread` in different repeated frame orders. Join and compare all results to sequential fresh-instance oracles. Never access one instance from both threads.
+- [ ] On the dashed fixture, evaluate a scene, render two CPU frames, and evaluate
+  the same scene again. Require identical complete content, one lazy CPU session,
+  two CPU renders, three scene sessions including eager construction, and two
+  scene samples. Repeated CPU calls must not recreate their session.
+- [ ] Prepare one asset before threading when supported, create exactly two
+  instances, and evaluate each on its own std::thread using different repeated
+  frame orders. Join before reading results; compare with sequential fresh
+  oracles. Never access an Instance from both workers and capture failures safely.
+- [ ] Run the new target under Telegram and Samsung, then focused runtime seams,
+  scene golden, playback and Player tests. Use MSVC VsDevCmd; full suites follow
+  in Task 5. Record TSan unavailable unless an existing suitable toolchain is
+  positively identified; MSVC/ASan success is not race detection.
+- [ ] Commit `test: lock reference scene access-order isolation`; report exact
+  RED/GREEN commands and comparator exclusions. Independent task review required.
 
-### 3.4 Minimal production change
+## Task 4: Lock current model preparation lifetime and retry semantics
 
-- [ ] Change `extractExactScene()` to accept `rlottie::Animation&` and remove session construction from the helper.
-- [ ] Keep this intermediate commit buildable: adapt the model caller by creating its current per-frame model-role session before calling the helper. Task 4 alone moves that construction outside the loop.
-- [ ] Make `evaluateExactFrame()` reject a missing `InstanceData::sceneAnimation` as `EvaluationFailed`; never allocate a hot-path fallback.
-- [ ] Pass `*instance.sceneAnimation` into the helper and keep all deep-copy/error/handle behavior unchanged.
-- [ ] Keep `cpuAnimation` separate and lazy.
-- [ ] Run the new test, runtime seams, scene golden, playback, and player tests. Then run the complete Telegram debug suite.
-- [ ] Commit message: `perf: reuse instance reference scene sessions`
+**Execution decision:** Full ascending scans fail parity, so the single-session
+model optimization is deferred. This task exercises the unchanged fresh scan,
+idempotent publication, failure/retry, and variant isolation. Do not change
+Runtime.cpp or canonical/golden data.
 
-## Task 4: Reuse one temporary session for stable model preparation
+**Files:** modify `tests/asset_model_tests.cpp`; add a small test-only JSON fixture
+only if constructing a valid long-timeline asset inline is inconsistent with the
+existing tests. No public API change.
 
-**Gate:** Task 0 must permit ascending scan reuse. Arbitrary-seek success does not replace complete model parity. Otherwise retain the safe scan and report this optimization deferred.
+### 4.1 Characterization and meaningful RED
 
-**Files:**
-
-- Modify: `src/runtime/Runtime.cpp`
-- Modify: `tests/asset_model_tests.cpp`
-- Modify: `tests/reference_session_tests.cpp` if shared helpers are required
-
-### 4.1 Model-session RED
-
-- [ ] In the Telegram variant, load `StickAndBall.json`, reset at a quiescent boundary where exact counts remain meaningful, and assert that the first successful `prepareModel()` creates exactly one model session and samples exactly `totalFrames` frames.
-- [ ] Assert a second `prepareModel()` returns the same published model without changing model session/sample or model-build-success counters.
-- [ ] Assert subsequent instance scene evaluation changes neither model counter.
-- [ ] Preserve Samsung/no-extension behavior: zero model sessions and samples.
-- [ ] Add a valid-load fixture with a timeline above the 10,000-frame preparation limit; two calls must both fail with the established message, record two attempts/failures, and create zero model sessions/samples because eligibility fails before construction.
-- [ ] Run the Telegram model test and capture the expected `sessions == totalFrames` failure.
-- [ ] Compare complete canonical model tables/values against a fresh-per-frame baseline for affected fixtures, in addition to existing goldens. Ignore only construction-local identity.
-
-### 4.2 Minimal model implementation
-
-- [ ] In `prepareStableAssetModel()`, keep parsed-model extraction and all eligibility checks first.
-- [ ] Construct one local model session before the frame loop and use RAII on every exit. `Asset::prepareModel()` returns a failed `model::AssetModelResult` with a precise string; `applyPreparedAssetModel()` maps it to `AssetModelPreparationFailed`. Preserve both interfaces.
-- [ ] Pass the same session into `extractExactScene()` for every observed frame. Do not borrow any instance session and do not store mutable session state on `AssetData`.
-- [ ] Preserve `modelMutex`, idempotent publication, and retry-after-failure semantics.
-- [ ] Run Telegram and Samsung focused tests, runtime/reference-session tests, all golden suites, and the complete Telegram debug suite.
-- [ ] Commit message: `perf: reuse model preparation reference session`
+- [ ] On Telegram, load `StickAndBall.json`, reset while quiescent, prepare once,
+  and assert model sessions == model samples == reported totalFrames, exactly one
+  successful build, and zero scene-role sessions/samples for the scan.
+- [ ] A second prepareModel returns the same immutable published model and
+  changes no model sessions/samples/build-success counter.
+- [ ] Subsequent exact Instance evaluation changes neither model counter; its
+  separate scene-role counters behave as Task 1 documented.
+- [ ] Samsung unsupported preparation creates zero model sessions and samples,
+  preserving its existing failure/result behavior.
+- [ ] Load a valid animation with timeline above the 10,000-frame preparation
+  limit. Two prepareModel calls must fail with the established limit message,
+  record two attempts/failures, and create zero model sessions/samples because
+  eligibility rejects before construction. Keep this assertion variant-aware.
+- [ ] Prove the new assertions detect a relevant regression via one temporary
+  narrow mutation (such as suppressing the model-build-failure increment).
+  Save mutation and RED output in ignored out/part25a-regression, restore with
+  apply_patch, then show GREEN. Do not commit the mutation.
+- [ ] Existing complete model/canonical goldens remain authoritative. No new
+  persistent-model parity claim is possible because that path was not enabled.
+- [ ] Run focused model/runtime/reference-session/golden tests on both variants.
+  Commit `test: cover reference model preparation lifetime and retries`; record
+  all commands and route the independent review before Task 5.
 
 ## Task 5: Produce candidate evidence, document the contract, and finish
 
@@ -255,6 +297,28 @@ ctest --preset windows-msvc-telegram-debug -R '^avemotion\.corpus\.lab_(smoke|ou
 
 ### 5.2 A-B-B-A timing and memory evidence
 
+**Safe-branch override (2026-09-23):** No runtime optimization shipped in Tasks
+3/4. Therefore there is no optimized B candidate to compare. Retain the reviewed
+measurement baseline and run two fresh Release timing processes plus two fresh
+memory processes at each of 1/16/64 live instances with the exact arguments
+below. Record raw medians/p95s, counters, workspace observations, compiler,
+commit and hashes. Label these repeat baseline observations, not before/after
+speedup. Do not construct a duplicate worktree or interpret timing noise between
+identical runtime code as an optimization. The original A-B-B-A checklist below
+is deferred together with reuse; it remains the future acceptance method.
+
+- [ ] Execute and validate two repeated baseline timing reports for all 16
+  committed TGS assets: samples 1000, warmup 20, load repeats 1, CPU repeats 0,
+  viewport 128, strict mode, windows-msvc-corpus-lab Release.
+- [ ] Record two independent fresh-process working-set observations at each of
+  1/16/64 live instances on StickAndBall.tgs; retain current and peak bytes and
+  describe process-wide limitations.
+- [ ] Summarize per-asset median of two medians and median of two p95 values,
+  actual steady session creations and evaluator/projector storage changes.
+  Explicitly state that zero-creation and 2x speedup targets were not achieved.
+
+Deferred optimization acceptance procedure:
+
 - [ ] Add a detached temporary worktree at `MEASUREMENT_BASELINE` outside the repository workspace and build its `windows-msvc-corpus-lab` preset. Use no branch and make no baseline edits.
 - [ ] Build the candidate using the same compiler, preset, flags, corpus, viewport, warm-up, measured count, and power conditions.
 - [ ] Run four fresh timing processes in this order: baseline A1, candidate B1, candidate B2, baseline A2. Retain all raw reports beneath ignored `out/benchmarks/part25a/`.
@@ -267,7 +331,7 @@ ctest --preset windows-msvc-telegram-debug -R '^avemotion\.corpus\.lab_(smoke|ou
 ### 5.3 Documentation and final review
 
 - [ ] Document session lifetime, single-instance confinement, separate-instance concurrency, CPU isolation, reset-epoch semantics, benchmark method/results, limitations, and next-stage recommendation in `docs/PART25A_PERSISTENT_SESSIONS_REPORT.md`.
-- [ ] Mark the design implemented or performance-incomplete based on evidence, and update `docs/superpowers/STATE.md` with exact commits, tests, measurements, and any unresolved risks.
+- [ ] Mark the design partial, reuse-deferred (not implemented), and update `docs/superpowers/STATE.md` with exact commits, tests, measurements, and unresolved risks.
 - [ ] Request an independent whole-branch code review against the spec. Resolve every Critical/Important finding with a focused test and re-review; record Minor findings explicitly if deferred.
 - [ ] Rerun fresh final verification after review fixes. Commit documentation/review changes with `docs: report persistent session evidence`.
 - [ ] Push ordinary `main` commits to `origin/main`, verify local HEAD equals `origin/main`, and pause the six-hour heartbeat once all planned work is complete or the deadline is reached.

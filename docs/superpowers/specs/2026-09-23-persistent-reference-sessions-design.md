@@ -35,6 +35,22 @@ classifications and semantic goldens remain unchanged. Workspace growth is
 measured through actual available counters; absent planner allocation telemetry
 must be reported as unverified, not inferred to be zero.
 
+### Recorded gate decision — 03:45 UTC
+
+Both pinned variants fail direct reuse on arbitrary seeks and complete ascending
+scans. The follow-up lifecycle assessment found additional active-state risks
+beyond the reproduced dash, trim and inactive-subtree defects. The approved
+safe branch is selected for this run: preserve fresh sampling, add diagnostics,
+measurement/report safety and regression tests, and perform the full Windows
+verification. Persistent scene/model sessions remain deferred. The target
+lifetime and zero-session/2x-performance requirements below are future acceptance
+criteria, not claims about the delivered safe branch.
+
+There is no optimized candidate in this branch. Final measurements are repeated
+baseline observations with the reviewed common instrument; A-B-B-A comparative
+acceptance is deferred until a real lifetime-changing candidate exists. No
+speedup may be inferred from repeated observations of unchanged runtime code.
+
 ## Intent
 
 AveMotion is intended to become a Windows-native animation module embedded in
