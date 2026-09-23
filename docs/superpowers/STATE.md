@@ -2,7 +2,35 @@
 
 Updated: 2026-09-23
 
-## Active continuation — Part25E accepted; bounded golden checkout fix next
+## Current handoff — automation canceled by user, 2026-09-23
+
+The user requested wrap-up because usage tokens are running low. This supersedes
+earlier continuous-execution instructions for now. No new implementation stages
+were started. Automation avemotion-6 was first paused, then DELETED through
+automation_update after the user explicitly canceled 15-minute development.
+The tool confirmed deleteStatus=deleted. Resume only on a new user request; do not let the
+historical ACTIVE statements below restart work.
+
+Part25E is accepted and ordinarily pushed at0ee1243. Bounded checkout fixfc7b53c
+is independently APPROVED, no Critical/Important findings; only report wording
+Minor corrected. Fresh fullTelegram68/68, focusedTelegram15/15, preview8/8,
+Samsung integrity4/4 and none3/3; controller realGit/allvendor PASS. All12goldens
+match BASE/current/isolated-checkout raw bytes. No separate pre-edit worktree SHA
+inventory retained, so do not claim one. Final report:
+docs/PART25F_GOLDEN_CHECKOUT_REPORT.md. Final documentation and accepted fix
+are included in the ordinary handoff push; verify current remote before resuming.
+No live product implementer, reviewer or read-only audit remains necessary.
+
+Resume order: inspect actual cloud result of the final ordinary push; keep Linux
+raw hash differences separate; then design native scene admission/emission using
+out/part25f-readiness/current-native-topology.md and eligibility-gaps.md. These
+are read-only audits, not a native implementation. Before new benchmarks fix the
+previously deferred zero-denominator helper case without altering old evidence.
+After native topology come explicit completeness/fallback, AveVoice MotionService,
+and packaging/license decisions. No final DLL or reference-free Lottie loader
+is claimed; no license decision was delegated by this handoff.
+
+## Historical continuation — Part25E accepted; bounded golden checkout fix
 
 Part25E whole-stage review de4d18f..30bb67c APPROVED, no Critical/Important
 findings. Actual ordinary-push CI run35857070290 at514f7ab passes all four new
@@ -24,6 +52,14 @@ out/part25f-readiness/current-native-topology.md: persistent scene sessions stil
 sample/copy a reference tree per exact frame. Native emission remains future
 design, not implemented. Check ledger/live agents before dispatch. Automation
 avemotion-6 remains ACTIVE; intermediate acceptance does not stop continuation.
+E handoff0ee1243 ordinarily pushed and remote equality verified. Bounded checkout
+implementation fc7b53c is complete, scoped to attributes and regression test.
+Functional RED/GREEN, all 12 actual golden bytes, fullTelegram68/68 and focused
+preview8/8 passed. Independent review now runs under /root/golden_checkout_review;
+no product implementer active and no fix push before review. Ledger:
+out/part25f-golden-checkout/progress.md. BASE0ee1243; root owns handoff/push.
+Native admission caveats are in out/part25f-readiness/eligibility-gaps.md: the
+parsed graph drops some input features, so its allowlist alone is insufficient.
 
 Part25C is complete as a vendor-only foundation. Whole-change independent
 review45a21a4..3f8a06e approved spec compliance/integration with no Critical or
