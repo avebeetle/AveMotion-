@@ -138,30 +138,33 @@ return clampFrame(frame, metadata);
 
 ## Task 2: Preserve minimal active-state regression cases
 
+Status:complete at58236a9, independent task review approved; controller's official
+variant tests, fixture hashes and strict16-asset corpus check passed.
+
 **Files:** create selected small JSON under tests/fixtures/reference_sessions/;
 modify tests/reference_session_tests.cpp. Controller owns the durable findings
 in docs/PART25B_REFERENCE_LIFECYCLE_REPORT.md; implementer writes its task report.
 **Interfaces:** existing complete comparator/fresh-oracle harness; no vendor APIs.
 
-- [ ] Read completed out/part25b-active-state/findings.md. Promote exactly
+- [x] Read completed out/part25b-active-state/findings.md. Promote exactly
   out/part25b-active-state/translation-near-default.json, width.json and opacity.json
   into tests/fixtures/reference_sessions/ with those same filenames/bytes.
   These cover transform constructor-default semantics, style comparison cache,
   and exported alpha respectively; no additional trim fixture is needed here.
-- [ ] Add them to the existing ascending/reverse/repeated/viewport comparisons;
+- [x] Add them to the existing ascending/reverse/repeated/viewport comparisons;
   do not change comparator exclusions, corpus generator or16 measured inputs.
-- [ ] Correct the existing CPU-isolation PASS text to sceneSessions=2 (two exact
+- [x] Correct the existing CPU-isolation PASS text to sceneSessions=2 (two exact
   samples, no ordinary setup session). This is output text only; keep assertions.
-- [ ] At128square assert translation frame0 point2/3 x is nonzero and frame1 x
+- [x] At128square assert translation frame0 point2/3 x is nonzero and frame1 x
   is exactly0 (authored x changes0.0000012→0.0000005). Telegram local matrix dx
   is0 atframe1. Opacity changes50.19605→50.19610: Telegram paint alpha127→128;
   Samsung active layer opacity127/255→128/255. Locate the active layer reliably.
   Width authored2→2.0000005: assert frame widths differ and match independent
   fresh oracle exactly. Do not hardcode platform-specific getScale decimals.
-- [ ] Preserve actual direct persistent-session RED evidence for each selected
+- [x] Preserve actual direct persistent-session RED evidence for each selected
   fixture on both variants, then run production fresh-path comparisons GREEN.
   This is characterization/test coverage, not a new rendering implementation.
-- [ ] Run new reference-session test on both variants plus strict corpus
+- [x] Run new reference-session test on both variants plus strict corpus
   integrity check. Commit tests/fixtures with no production edits; independent
   task review before push. Controller writes durable concise findings.
 
@@ -175,7 +178,7 @@ Raw artifacts out/benchmarks/part25b/ and out/part25b-final/ are ignored.
   (SHA256614714992fbacd80c1714683080811b66f5192aa4fd8ed8cd70ab42cea514f3b)
   to a unique baseline output path; verify hash. It is valid for273f2b3 because
   src/include/apps instrument are unchanged since c484f4b. Record the evidence.
-- [ ] Configure/build candidate windows-msvc-corpus-lab with same installed
+- [x] Configure/build candidate windows-msvc-corpus-lab with same installed
   toolchain. After workers stop builds/tests run A1,B1,B2,A2, each:
 
 ```text
@@ -183,13 +186,13 @@ Raw artifacts out/benchmarks/part25b/ and out/part25b-final/ are ignored.
 --warmup-samples 20 --load-repeats 1 --cpu-repeats 0 --render-size 128 --strict
 ```
 
-- [ ] Validate16 assets, phase counts and hashes; validator expected setup1
+- [x] Validate16 assets, phase counts and hashes; validator expected setup1
   forA and0 forB. Fresh1/16/64 memory processes in the same order on StickAndBall;
   include firework if available budget. Report current/peak bytes, no thresholds.
-- [ ] Report real setup-session reduction and runtime/memory deltas, no2x claim
+- [x] Report real setup-session reduction and runtime/memory deltas, no2x claim
   or zero-hot-path-allocation promise. Retain A/B raw per-asset median/p95 and
   evaluator/projector observations; control background builds during timing.
-- [ ] Configure/build/full CTest all four presets: windows-msvc-telegram-debug,
+- [x] Configure/build/full CTest all four presets: windows-msvc-telegram-debug,
   windows-msvc-samsung-debug, windows-msvc-win32-preview, windows-msvc-direct2d.
   Run local-prefix install/external consumer. Never exclude Samsung failures.
 - [ ] Independent whole-change review from273f2b3. One fix wave/scoped review

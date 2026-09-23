@@ -29,9 +29,16 @@ Task1 complete:d4217a4, ordinary mapping tree removed with variant-exact metadat
 mapping and legacy large-count path. Independent task review approved code; its
 evidence-only correction passed separate scoped review. Controller fresh focused
 tests4/4 on both variants. Worker full tests61/61 Telegram,39/41 Samsung with exact
-baseline scene/plan rows independently compared. Task2 next:three regression
-fixtures and one stale diagnostic output-line correction. Release candidate built;
-timing not yet run. New deadline/ACTIVE status above supersede
+baseline scene/plan rows independently compared. Task2 complete:58236a9, three
+regression fixtures and stale diagnostic output-line correction, independent review
+approved; controller fresh official-preset tests1/1 each and fixture hashes/corpus
+integrity checked. Controlled A-B-B-A measured64-instance current working-set mean
+reduction206KiB (StickAndBall),11.30MiB (firework); no steady-frame speedup claim.
+All four full configure/build gates at58236a9 complete:Telegram61/61, preview55/55,
+no-referenceDirect2D29/29, Samsung39/41 with exact unchanged baseline rows. Local
+installed external consumer and extra Release mapping test passed. Task3 final
+whole-change review and handoff remain; no product implementer active.
+New deadline/ACTIVE status above supersede
 the historical prior-run statements below.
 
 ## Repository
