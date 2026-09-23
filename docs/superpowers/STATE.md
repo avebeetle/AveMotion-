@@ -25,9 +25,13 @@ fullTelegram65/65 and controller fresh4/4 passed. Persistent integration Task3
 is complete atc094fac: independent task review approved; Telegram67/67,
 Samsung41/43 with only the exact two known baseline failures; Release9/9 and5/5;
 controller fresh focused5/5 passed. No product implementer is active.
-Next full platform/measurements/final review Task4. Scratch-only
-/root/measurement_runner_prepare is preparing strict harness checks, not running
-benchmarks. Controlled timing waits for all builds/tests/workers to be idle.
+Task4 platform/provenance/measurement gates have run: freshTelegram67/67,
+preview61/61,none30/30,Samsung41/43onlyknownfailures,Release9/9and5/5,
+installedconsumerPASS. All workers stopped before controlled Original andPart25B
+A-B-B-A runs. Original exact aggregate29.475->15.425us,1.910859x:2xtargetUNMET,
+all16p95 limitsPASS. Whole-process memory has per-asset/instance tradeoffs.
+Final whole-stage independent review remains before D handoff/E execution.
+Report:docs/PART25D_PERSISTENT_SESSIONS_REPORT.md. No active product worker.
 Check current ledger/live agents before dispatch; do not
 duplicate a live worker or repeat completed Part25A/B/C tasks. Automation stays ACTIVE.
 
@@ -40,8 +44,10 @@ remain in out/part25d-task5-4472724-20260923. Execute2->5->3->4 (numbers kept st
 The future measurement runner has a read-only audit at
 out/benchmarks/part25c/measurement-runner-audit.md: strengthen lifetime/schema,
 corpus/configuration validation and target reporting before Task4 measurements.
-No benchmark candidate has been measured yet. Task3 establishes lifetime/parity,
-not a speedup or zero-allocation claim.
+Corrected harness and17mutation tests verified; raw controlled results in
+out/benchmarks/part25c/persistent-Original-4663b39-20260923T103037129Z and
+persistent-Part25B-4663b39-20260923T103104847Z. Reports distinguish structural
+success from unmet2xtarget; no zero-allocation/representative-corpus claim.
 
 ## Approved next refinement — lean module versus laboratory
 
@@ -55,9 +61,13 @@ unchanged. Controller is designing the separate reversible build/packaging stage
 read-only audit is complete atout/part25e-lean-design/build-boundaries.md.
 Written approved next spec:
 docs/superpowers/specs/2026-09-23-lean-module-boundaries-design.md.
-Implementation plan is not yet written; no E product work before D handoff.
+Approved plan:docs/superpowers/plans/2026-09-23-lean-module-boundaries.md.
+Ledger:.superpowers/sdd/2026-09-23-lean-module-boundaries/progress.md.
+Preflight completed; no E product work before D handoff.
 The spec distinguishes a Telegram-backed internal build from an offline installed
 package, preserves the installation prohibition, and keeps lab presets/source.
+Automationavemotion-6 remainsACTIVE/every15minutes; its saved prompt now follows
+STATE through D handoff, E and separately designed next stages without old limits.
 
 ## Part25C completed foundation and execution history
 
