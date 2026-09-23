@@ -108,6 +108,59 @@ Oracles freshOracles(const fs::path& path, bool prepareModel = false) {
     return result;
 }
 
+const EvaluatedDrawItem& onlyDrawItem(const EvaluatedScene& scene, const std::string& context) {
+    require(scene.drawItems.size() == 1U, context + ": expected one active draw item");
+    return scene.drawItems[0];
+}
+
+const EvaluatedLayer& drawItemLayer(const EvaluatedScene& scene, const std::string& context) {
+    const auto& item = onlyDrawItem(scene, context);
+    require(item.layerIndex < scene.layers.size(), context + ": active draw item has no layer");
+    const auto& layer = scene.layers[item.layerIndex];
+    require(layer.visible && layer.drawItemCount > 0U,
+            context + ": draw item's layer is not active");
+    return layer;
+}
+
+void verifyActiveStateEndpoints(const fs::path& path, const Oracles& oracle) {
+    const auto& first = oracle[0][0]; // 128x128, independently fresh frame 0
+    const auto& second = oracle[0][1]; // 128x128, independently fresh frame 1
+    const auto name = path.filename().string();
+    if (name == "translation-near-default.json") {
+        const auto& before = onlyDrawItem(first, name);
+        const auto& after = onlyDrawItem(second, name);
+        require(before.path.points.size() > 3U && after.path.points.size() > 3U,
+                name + ": expected rectangle path points");
+        require(before.path.points[2].x != 0.0F && before.path.points[3].x != 0.0F,
+                name + ": authored frame-0 translation must be observable");
+        require(after.path.points[2].x == 0.0F && after.path.points[3].x == 0.0F,
+                name + ": fresh frame-1 translation must preserve constructor identity threshold");
+        if (avemotion::reference::selectedUpstream().variant == "telegram") {
+            require(after.localToViewport.dx == 0.0F,
+                    name + ": fresh Telegram frame-1 local matrix must remain identity");
+        }
+    } else if (name == "width.json") {
+        const auto& before = onlyDrawItem(first, name);
+        const auto& after = onlyDrawItem(second, name);
+        require(before.stroke.enabled && after.stroke.enabled && before.stroke.width != after.stroke.width,
+                name + ": tiny authored width change must survive fresh evaluation");
+    } else if (name == "opacity.json") {
+        const auto& before = onlyDrawItem(first, name);
+        const auto& after = onlyDrawItem(second, name);
+        if (avemotion::reference::selectedUpstream().variant == "telegram") {
+            require(before.paint.kind == PaintKind::Solid && after.paint.kind == PaintKind::Solid
+                        && before.paint.solid.a == 127U && after.paint.solid.a == 128U,
+                    name + ": Telegram paint alpha must advance from 127 to 128");
+        } else {
+            const auto& beforeLayer = drawItemLayer(first, name + " frame 0");
+            const auto& afterLayer = drawItemLayer(second, name + " frame 1");
+            require(beforeLayer.opacity == 127.0F / 255.0F
+                        && afterLayer.opacity == 128.0F / 255.0F,
+                    name + ": Samsung active layer opacity must advance from 127/255 to 128/255");
+        }
+    }
+}
+
 // These mutations expose real blind spots in recorder-only comparisons. They
 // keep the recorder fingerprints unchanged and independently require a precise
 // field path from the full comparator. Shared objects are cloned before edits.
@@ -194,6 +247,7 @@ void verifyComparator(const fs::path& dashPath) {
 
 void verifyAccessOrder(const fs::path& path) {
     const auto oracle = freshOracles(path);
+    verifyActiveStateEndpoints(path, oracle);
     Runtime runtime;
     const auto asset = load(runtime, path);
     const auto totalFrames = asset->metadata().totalFrames;
@@ -210,6 +264,11 @@ void verifyAccessOrder(const fs::path& path) {
         const auto context = path.filename().string() + " " + order + " frame=" + std::to_string(frame)
             + " viewport=" + std::to_string(viewports[viewport][0]) + "x" + std::to_string(viewports[viewport][1]);
         same(oracle[viewport][frame], scene, context);
+        if (path.filename() == "width.json" && viewport == 0U && frame < 2U) {
+            require(onlyDrawItem(scene, context).stroke.width
+                        == onlyDrawItem(oracle[viewport][frame], context + " fresh oracle").stroke.width,
+                    context + ": stroke width differs from independent fresh oracle");
+        }
         require(scene.evaluationSequence == ++sequence, context + ": sequence did not advance exactly once");
         require(scene.changes.firstEvaluation == (sequence == 1U), context + ": incorrect firstEvaluation");
         if (previousFrame == frame && previousViewport == viewport) unchanged(scene.changes, context);
@@ -260,7 +319,7 @@ void verifyCpuIsolation(const fs::path& path) {
             "CPU rendering must not advance the scene sequence");
     unchanged(after.changes, "scene after CPU renders");
     counts(runtime.diagnostics(), 1U, 2U, 1U, 2U, "CPU isolation final");
-    std::cout << "PASS CPU isolation: sceneSessions=3 sceneSamples=2 cpuSessions=1 cpuRenders=2\n";
+    std::cout << "PASS CPU isolation: sceneSessions=2 sceneSamples=2 cpuSessions=1 cpuRenders=2\n";
 }
 
 void verifySeparateInstanceThreads(const fs::path& path) {
@@ -317,11 +376,14 @@ int main() {
         const fs::path corpus{AVEMOTION_CORPUS_DIR};
         const auto dash = fixtures / "reference_sessions" / "dashed_stroke_session.json";
         verifyComparator(dash);
-        const std::array<fs::path, 9> assets{
+        const std::array<fs::path, 12> assets{
             dash, corpus / "dynamic_path_test.json", fixtures / "multi_trim_path_geometry.json",
             fixtures / "repeater_geometry.json", fixtures / "repeater_content_group.json",
             corpus / "mask.json", corpus / "matte_two_item_with_lowerlayer.json",
-            corpus / "ModernPictogramsForLottie_LoudMute.json", corpus / "1667-firework.json"};
+            corpus / "ModernPictogramsForLottie_LoudMute.json", corpus / "1667-firework.json",
+            fixtures / "reference_sessions" / "translation-near-default.json",
+            fixtures / "reference_sessions" / "width.json",
+            fixtures / "reference_sessions" / "opacity.json"};
         for (const auto& asset : assets) verifyAccessOrder(asset);
         verifyCpuIsolation(dash);
         verifySeparateInstanceThreads(corpus / "ModernPictogramsForLottie_LoudMute.json");
