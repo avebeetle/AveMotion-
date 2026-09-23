@@ -203,3 +203,7 @@ try {
 finally {
     Pop-Location
 }
+
+# With -NoLaunch, the expected validator rejection leaves LASTEXITCODE=2.
+# Report success to the CI shell only after every check and cleanup succeeds.
+exit 0

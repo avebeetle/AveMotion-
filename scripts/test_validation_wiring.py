@@ -104,6 +104,16 @@ def main() -> int:
     require("run_part23_windows.ps1" in workflow,
             "Windows CI is not routed through the Part 23 validation gate")
 
+    runner = read("scripts/run_part23_windows.ps1")
+    require(re.search(r"(?m)^\s*\$forbiddenExit\s*=\s*\$LASTEXITCODE\s*$", runner)
+            and re.search(r"if\s*\(\s*\$forbiddenExit\s*-ne\s*2\s*\)\s*\{\s*throw\b", runner)
+            and "'^Result: REJECT$'" in runner,
+            "Windows preview runner must verify the expected validator rejection")
+    require(re.search(
+        r"(?ms)^finally\s*\{\s*Pop-Location\s*\}\s*(?:#[^\r\n]*\r?\n\s*)*exit\s+0\s*\Z",
+        runner),
+        "Windows preview runner must exit successfully after its finally cleanup")
+
     manifest_lines = (ROOT / "tests/compatibility/manifest.tsv").read_text(
         encoding="utf-8").splitlines()
     require(len(manifest_lines) >= 3,
