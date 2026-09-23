@@ -281,8 +281,6 @@ void testGrammarRejections(const std::string& baseline) {
         {"color arity", "[0.08, 0.72, 0.95, 1]", "[0.08, 0.72, 0.95]", C::UnsupportedStructure},
         {"color bool", "[0.08, 0.72, 0.95, 1]", "[0.08, true, 0.95, 1]", C::InvalidType},
         {"color blue high", "[0.08, 0.72, 0.95, 1]", "[0.08, 0.72, 1.1, 1]", C::UnsupportedValue},
-        {"fill opacity", "\"o\": {\"a\": 0, \"k\": 100}",
-            "\"o\": {\"a\": 0, \"k\": 99}", C::UnsupportedValue},
         {"fill color animated", "\"c\": {\"a\": 0, \"k\": [0.08, 0.72, 0.95, 1]}",
             "\"c\": {\"a\": 1, \"k\": [0.08, 0.72, 0.95, 1]}", C::UnsupportedValue},
         {"fill rule", "\"r\": 1,\n              \"nm\": \"Fill\"",
@@ -324,6 +322,12 @@ void testGrammarRejections(const std::string& baseline) {
         expectRejected(replaceOnce(baseline, mutation.from, mutation.to),
             mutation.code, mutation.name);
     }
+    const auto fillOpacity = auditNativeEllipseInput(replaceOnce(baseline,
+        "\"c\": {\"a\": 0, \"k\": [0.08, 0.72, 0.95, 1]},\n              \"o\": {\"a\": 0, \"k\": 100}",
+        "\"c\": {\"a\": 0, \"k\": [0.08, 0.72, 0.95, 1]},\n              \"o\": {\"a\": 0, \"k\": 99}"));
+    require(fillOpacity.code == C::UnsupportedValue, "fill opacity rejection code");
+    require(fillOpacity.path == "/layers/0/shapes/0/it/1/o/k",
+        "fill opacity rejection must identify fill, got " + fillOpacity.path);
     expectRejected(replaceOnce(baseline, "Moving Circle", std::string(257, 'N')),
         C::UnsupportedValue, "257-byte inert name");
     expectRejected(replaceBetween(baseline, "\"p\": {\n                \"a\": 1,",
