@@ -21,9 +21,13 @@ passed. Task2 Asset-owned source identity is complete atce1c114: independent
 review approved, Telegram65/65, Samsung runtime8/8 and controller fresh4/4 passed.
 Bounded fixture-checkout Task5 is complete atb35126a: independent review approved,
 all29fixture hashes preserved, corrected Git checkout/TGS identity passed,
-fullTelegram65/65 and controller fresh4/4 passed. Next is persistent integration
-Task3, then full gates/measurements Task4. Capture dispatch BASE after this
-controllerdocs ordinary push; no product implementer active at this checkpoint.
+fullTelegram65/65 and controller fresh4/4 passed. Persistent integration Task3
+is complete atc094fac: independent task review approved; Telegram67/67,
+Samsung41/43 with only the exact two known baseline failures; Release9/9 and5/5;
+controller fresh focused5/5 passed. No product implementer is active.
+Next full platform/measurements/final review Task4. Scratch-only
+/root/measurement_runner_prepare is preparing strict harness checks, not running
+benchmarks. Controlled timing waits for all builds/tests/workers to be idle.
 Check current ledger/live agents before dispatch; do not
 duplicate a live worker or repeat completed Part25A/B/C tasks. Automation stays ACTIVE.
 
@@ -36,7 +40,24 @@ remain in out/part25d-task5-4472724-20260923. Execute2->5->3->4 (numbers kept st
 The future measurement runner has a read-only audit at
 out/benchmarks/part25c/measurement-runner-audit.md: strengthen lifetime/schema,
 corpus/configuration validation and target reporting before Task4 measurements.
-No benchmark candidate has been measured yet.
+No benchmark candidate has been measured yet. Task3 establishes lifetime/parity,
+not a speedup or zero-allocation claim.
+
+## Approved next refinement — lean module versus laboratory
+
+The user approved the proposed cleanup after the ongoing integration/gates:
+one compact AveVoice-facing module, no laboratory tools/corpus in its output,
+Samsung retained only as an optional development comparison rather than a
+mandatory normal product cycle. This is not permission to remove notices,
+relicense derivative code, bypass upstream install restrictions or physically
+delete vendor/history during Task3. Part25D's already-defined Samsung gates remain
+unchanged. Controller is designing the separate reversible build/packaging stage;
+read-only audit is complete atout/part25e-lean-design/build-boundaries.md.
+Written approved next spec:
+docs/superpowers/specs/2026-09-23-lean-module-boundaries-design.md.
+Implementation plan is not yet written; no E product work before D handoff.
+The spec distinguishes a Telegram-backed internal build from an offline installed
+package, preserves the installation prohibition, and keeps lab presets/source.
 
 ## Part25C completed foundation and execution history
 
