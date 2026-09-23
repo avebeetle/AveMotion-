@@ -2,7 +2,36 @@
 
 Updated: 2026-09-23
 
-## Current handoff — automation canceled by user, 2026-09-23
+## Current continuation — resumed interactively, automation still canceled
+
+The user said "делай" after reviewing the complete handoff. Development resumes
+interactively from e0ca016. The deleted 15-minute automation is NOT recreated.
+Post-F cloud run35858877464 completed: Windows reference Debug/Release, WARP,
+capture, all four lean jobs and offline package passed. Preview failed after
+18+43 passing tests and script PASS; expected validator rejection leaves a native
+exit code behind. Bounded fix brief: out/part25g-preview-exit/brief.md. The sole
+product implementer /root/preview_exit_fix completed scoped commit36a17e4.
+FullTelegram68/68,preview62/62 and controller focused7/7 pass. Independent
+whole-diff review approved with no actionable P0-P3 findings; actual post-fix
+cloud preview result remains the integration gate after the ordinary push.
+Report: docs/PART25G_PREVIEW_AND_NATIVE_READINESS_REPORT.md. Local unsigned script execution is blocked
+by Windows policy: no policy/ADS bypass; run direct CTest and verify script in CI.
+User resumed after an interruption with "продолжай по плану"; reconcile existing
+workers/results rather than duplicate their work.
+
+Mapping/admission probe completed: out/part25g-native-probe/findings.md (12 cases).
+Unknown/mm operators disappear from parsed input; raw completeness admission is
+mandatory. No product native emitter exists. Next bounded throwaway feasibility
+question is full-field one-slot emission using AveMotion evaluation/geometry,
+out/part25h-native-proof/brief.md. Reference-assisted preparation is allowed in
+that experiment, not per-frame reference sampling. Its result gates a written
+architectural spec/plan before any Runtime adoption. Read-only boundary advisory:
+out/part25g-native-probe/boundary-recommendation.md when complete.
+Probes can run independently; never duplicate a proven live product writer.
+Previous reversible design/plan/main commit and ordinary push authority remains;
+no new dependency, license, settings or security authority is inferred.
+
+## Previous handoff — automation canceled by user, 2026-09-23
 
 The user requested wrap-up because usage tokens are running low. This supersedes
 earlier continuous-execution instructions for now. No new implementation stages
