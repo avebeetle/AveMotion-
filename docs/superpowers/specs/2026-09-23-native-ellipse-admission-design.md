@@ -50,7 +50,7 @@ Root optional `v` has the same string constraint. No other metadata is admitted.
 | Layer | `ddd`:0; `ind`: positive integer <=2147483647; `ty`:4; `sr`:1; `ks`: layer transform; `ao`:0; `shapes`: exactly one group; `ip`,`op`: integer active range 0<=ip<op<=root.op; `st`:0; `bm`:0; optional `nm` |
 | Layer transform | `o`: static scalar100; `r`: static scalar0; `p`: static vec3 with finite x/y in [-32768,32768], z0; `a`: static [0,0,0]; `s`: static [100,100,100] |
 | Group | `ty`:"gr"; `it`: exactly ellipse, fill, transform, in that order; optional `nm` |
-| Ellipse | `ty`:"el"; `d`:integer1; `s`: static vec2, each component >0 and <=16384; `p`: static vec2 or animated position defined below; optional `nm` |
+| Ellipse | `ty`:"el"; `d`:integer1; `s`: static vec2, each component >0 and <=16384; `p`: static vec2 with components in [-32768,32768], or animated position defined below; optional `nm` |
 | Fill | `ty`:"fl"; `c`: static vec4 with RGB in [0,1] and alpha1; `o`:static scalar100; `r`:integer1; optional `nm` |
 | Group transform | `ty`:"tr"; `p`,`a`:static [0,0]; `s`:static [100,100]; `r`,`sk`,`sa`:static scalar0; `o`:static scalar100; optional `nm` |
 | Static property | exactly `a`:integer0 and `k`:scalar/vector specified by owner; vector length exact, every element numeric and finite |
@@ -93,7 +93,7 @@ enum class NativeEllipseAdmissionCode {
     InvalidType, UnsupportedValue, UnsupportedStructure
 };
 struct NativeEllipseAdmission final {
-    NativeEllipseAdmissionCode code;
+    NativeEllipseAdmissionCode code = NativeEllipseAdmissionCode::InvalidJson;
     std::string path;
     [[nodiscard]] bool accepted() const noexcept {
         return code == NativeEllipseAdmissionCode::Accepted;
