@@ -1,4 +1,5 @@
 #include "avemotion/reference/ReferenceRuntime.hpp"
+#include "avemotion/reference/UpstreamInfo.hpp"
 #include "avemotion/runtime/RecordingBackend.hpp"
 #include "avemotion/runtime/Runtime.hpp"
 
@@ -96,21 +97,31 @@ void verifyReferenceDiagnostics() {
             "diagnostic reset must not recreate a live CPU session");
 
     const auto prepared = loaded.asset->prepareModel();
-    require(static_cast<bool>(prepared), "diagnostic fixture model preparation failed");
     counters = runtime.diagnostics();
-    require(counters.referenceModelSessionsCreated == loaded.asset->metadata().totalFrames,
-            "current model preparation must classify per-frame sessions as model");
-    require(counters.referenceModelSamples == loaded.asset->metadata().totalFrames,
-            "model preparation must count its renderTree samples");
     require(counters.referenceSceneSessionsCreated == 0U
                 && counters.referenceSceneSamples == 0U
                 && counters.sceneEvaluations == 0U,
             "model preparation must not count as instance scene evaluation");
-    require(static_cast<bool>(loaded.asset->prepareModel()),
-            "repeated model preparation failed");
-    require(runtime.diagnostics().referenceModelSessionsCreated
-                == counters.referenceModelSessionsCreated,
-            "repeated model preparation must reuse the prepared model");
+    if (avemotion::reference::selectedUpstream().variant == "telegram") {
+        require(static_cast<bool>(prepared),
+                "diagnostic fixture model preparation failed");
+        require(counters.referenceModelSessionsCreated
+                    == loaded.asset->metadata().totalFrames,
+                "current model preparation must classify per-frame sessions as model");
+        require(counters.referenceModelSamples == loaded.asset->metadata().totalFrames,
+                "model preparation must count its renderTree samples");
+        require(static_cast<bool>(loaded.asset->prepareModel()),
+                "repeated model preparation failed");
+        require(runtime.diagnostics().referenceModelSessionsCreated
+                    == counters.referenceModelSessionsCreated,
+                "repeated model preparation must reuse the prepared model");
+    } else {
+        require(!prepared,
+                "comparison upstream unexpectedly prepared a Telegram model");
+        require(counters.referenceModelSessionsCreated == 0U
+                    && counters.referenceModelSamples == 0U,
+                "unsupported model preparation must not create or sample a model session");
+    }
 }
 } // namespace
 
