@@ -95,16 +95,16 @@ void LOTCompItem::setValue(const std::string &keypath, LOTVariant &value)
     mRootLayer->resolveKeyPath(key, 0, value);
 }
 
-void LOTCompItem::resetForRecording()
+void LOTCompItem::resetForRecording(bool refreshBindings)
 {
     mCurFrameNo = -1;
     mViewSize = mCompData->size();
     mKeepAspectRatio = true;
     mScaleMatrix = VMatrix{};
-    mRootLayer->resetForRecording();
+    mRootLayer->resetForRecording(refreshBindings);
 }
 
-void LOTLayerItem::resetForRecording()
+void LOTLayerItem::resetForRecording(bool)
 {
     mFrameNo = -1;
     mCombinedAlpha = 0;
@@ -114,28 +114,28 @@ void LOTLayerItem::resetForRecording()
     if (mLayerMask) mLayerMask->resetForRecording();
 }
 
-void LOTCompLayerItem::resetForRecording()
+void LOTCompLayerItem::resetForRecording(bool refreshBindings)
 {
-    LOTLayerItem::resetForRecording();
+    LOTLayerItem::resetForRecording(refreshBindings);
     if (mClipper) mClipper->resetForRecording();
-    for (auto &layer : mLayers) layer->resetForRecording();
+    for (auto &layer : mLayers) layer->resetForRecording(refreshBindings);
 }
 
-void LOTShapeLayerItem::resetForRecording()
+void LOTShapeLayerItem::resetForRecording(bool refreshBindings)
 {
-    LOTLayerItem::resetForRecording();
-    mRoot->resetForRecording();
+    LOTLayerItem::resetForRecording(refreshBindings);
+    mRoot->resetForRecording(refreshBindings);
 }
 
-void LOTSolidLayerItem::resetForRecording()
+void LOTSolidLayerItem::resetForRecording(bool refreshBindings)
 {
-    LOTLayerItem::resetForRecording();
+    LOTLayerItem::resetForRecording(refreshBindings);
     mRenderNode.resetForRecording();
 }
 
-void LOTImageLayerItem::resetForRecording()
+void LOTImageLayerItem::resetForRecording(bool refreshBindings)
 {
-    LOTLayerItem::resetForRecording();
+    LOTLayerItem::resetForRecording(refreshBindings);
     mRenderNode.resetForRecording();
 }
 
@@ -1348,7 +1348,7 @@ bool LOTPathDataItem::sourceGeometryStaticFor(
     return group && group->transformChainStaticTo(ancestor);
 }
 LOTRectItem::LOTRectItem(LOTRectData *data)
-    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+    : LOTPathDataItem(data->isStatic(), data), mData(data)
 {
 }
 
@@ -1365,7 +1365,7 @@ void LOTRectItem::updatePath(VPath &path, int frameNo)
 }
 
 LOTEllipseItem::LOTEllipseItem(LOTEllipseData *data)
-    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+    : LOTPathDataItem(data->isStatic(), data), mData(data)
 {
 }
 
@@ -1381,7 +1381,7 @@ void LOTEllipseItem::updatePath(VPath &path, int frameNo)
 }
 
 LOTShapeItem::LOTShapeItem(LOTShapeData *data)
-    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+    : LOTPathDataItem(data->isStatic(), data), mData(data)
 {
 }
 
@@ -1391,7 +1391,7 @@ void LOTShapeItem::updatePath(VPath &path, int frameNo)
 }
 
 LOTPolystarItem::LOTPolystarItem(LOTPolystarData *data)
-    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+    : LOTPathDataItem(data->isStatic(), data), mData(data)
 {
 }
 
@@ -1426,10 +1426,11 @@ void LOTPolystarItem::updatePath(VPath &path, int frameNo)
  *
  */
 LOTPaintDataItem::LOTPaintDataItem(
-    bool staticContent, unsigned int sourceNodeId)
+    bool staticContent, const LOTData *sourceData)
     : LOTContentItem(ContentType::Paint),
       mStaticContent(staticContent),
-      mSourceNodeId(sourceNodeId)
+      mSourceData(sourceData),
+      mSourceNodeId(sourceData->aveMotionSourceNodeId())
 {
 }
 
@@ -1526,7 +1527,7 @@ void LOTPaintDataItem::addPathItems(std::vector<LOTPathDataItem *> &list,
 }
 
 LOTFillItem::LOTFillItem(LOTFillData *data)
-    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mModel(data)
+    : LOTPaintDataItem(data->isStatic(), data), mModel(data)
 {
 }
 
@@ -1550,7 +1551,7 @@ void LOTFillItem::updateRenderNode()
 }
 
 LOTGFillItem::LOTGFillItem(LOTGFillData *data)
-    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+    : LOTPaintDataItem(data->isStatic(), data), mData(data)
 {
 }
 
@@ -1570,7 +1571,7 @@ void LOTGFillItem::updateRenderNode()
 }
 
 LOTStrokeItem::LOTStrokeItem(LOTStrokeData *data)
-    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mModel(data){}
+    : LOTPaintDataItem(data->isStatic(), data), mModel(data){}
 
 void LOTStrokeItem::updateContent(int frameNo)
 {
@@ -1610,7 +1611,7 @@ void LOTStrokeItem::updateRenderNode()
 }
 
 LOTGStrokeItem::LOTGStrokeItem(LOTGStrokeData *data)
-    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data){}
+    : LOTPaintDataItem(data->isStatic(), data), mData(data){}
 
 void LOTGStrokeItem::updateContent(int frameNo)
 {

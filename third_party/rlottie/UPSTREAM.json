@@ -34,14 +34,15 @@
         "patches/telegram/0003-avemotion-stable-source-ids.patch",
         "patches/telegram/0004-avemotion-parsed-model-introspection.patch",
         "patches/telegram/0005-avemotion-source-geometry-binding.patch",
-        "patches/telegram/0006-avemotion-recording-lifecycle.patch"
+        "patches/telegram/0006-avemotion-recording-lifecycle.patch",
+        "patches/telegram/0007-avemotion-source-bindings.patch"
       ],
       "build_only_patches": [
         "patches/telegram/0001-modern-toolchain-build-only.patch"
       ],
-      "source_tree_sha256": "7166aaeedcc6ceb5b49388cdc119a9fe0fc917f6f706ee50e239f5b30b01d184",
-      "source_file_count": 276,
-      "source_byte_count": 13284156,
+      "source_tree_sha256": "f3ed8fa6159db389efb4b156bb6d741c1a9b0d3893cff1bab8de9207a8eddc2a",
+      "source_file_count": 277,
+      "source_byte_count": 13286789,
       "excluded_archive_artifacts": [
         "src/binding/.lottieplayer.cpp.swp"
       ],

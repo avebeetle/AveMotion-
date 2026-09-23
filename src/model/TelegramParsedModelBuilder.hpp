@@ -8,6 +8,8 @@
 #include <string>
 #include <string_view>
 
+class LOTModel;
+
 namespace avemotion::model::detail {
 
 struct ParsedModelBuildResult final {
@@ -22,6 +24,10 @@ struct ParsedModelBuildResult final {
 // Builds immutable authored topology/property/track tables directly from the
 // pinned Telegram LOTModel. Render-facing geometry/paint tables are still
 // merged by the existing exact-evaluation oracle in Part 7.
+[[nodiscard]] ParsedModelBuildResult buildTelegramParsedModel(
+    const std::shared_ptr<LOTModel>& source,
+    const AssetModelDescriptor& descriptor);
+
 [[nodiscard]] ParsedModelBuildResult buildTelegramParsedModel(
     std::string_view json,
     std::string_view cacheKey,

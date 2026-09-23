@@ -20,6 +20,7 @@
 #include "lottieloader.h"
 #include "lottiemodel.h"
 #include "rlottie.h"
+#include "avemotionanimationaccess.h"
 
 #include <fstream>
 #include <limits>
@@ -44,6 +45,7 @@ struct RenderTask {
 using SharedRenderTask = std::shared_ptr<RenderTask>;
 
 class AnimationImpl {
+    friend struct rlottie::AveMotionAnimationAccess;
 public:
     void    init(const std::shared_ptr<LOTModel> &model);
     bool    update(size_t frameNo, const VSize &size, bool keepAspectRatio);
@@ -69,6 +71,7 @@ private:
     void useOrdinary();
     bool mRecordingLifecycle{false};
     bool mOrdinaryUsed{false};
+    std::uint64_t mAveMotionBindingEpoch{0};
     std::string                  mFilePath;
     std::shared_ptr<LOTModel>    mModel;
     std::unique_ptr<LOTCompItem> mCompItem;
@@ -115,7 +118,14 @@ const LOTLayerNode *AnimationImpl::renderTreeForRecording(size_t frameNo, size_t
     if (!mRecordingLifecycle) return nullptr;
     if (!width || !height || width > size_t(std::numeric_limits<int>::max()) ||
         height > size_t(std::numeric_limits<int>::max())) return nullptr;
-    mCompItem->resetForRecording();
+    if (mModel->mAveMotionBindingEpoch.load(std::memory_order_acquire) != mAveMotionBindingEpoch) {
+        std::lock_guard<std::mutex> lock(mModel->mAveMotionBindingMutex);
+        mCompItem->resetForRecording(true);
+        mAveMotionBindingEpoch = mModel->mAveMotionBindingEpoch.load(std::memory_order_relaxed);
+    } else {
+        // The unchanged epoch branch reads only the coherent per-item copies.
+        mCompItem->resetForRecording(false);
+    }
     // A false update is the fresh constructor-cache sentinel: never publish
     // an earlier tree when the fresh ordinary call would not build one.
     if (!update(frameNo, VSize(int(width), int(height)), true)) return nullptr;
@@ -155,8 +165,25 @@ Surface AnimationImpl::render(size_t frameNo, const Surface &surface, bool keepA
 void AnimationImpl::init(const std::shared_ptr<LOTModel> &model)
 {
     mModel = model;
-    mCompItem = std::make_unique<LOTCompItem>(mModel.get());
+    {
+        std::lock_guard<std::mutex> lock(mModel->mAveMotionBindingMutex);
+        mCompItem = std::make_unique<LOTCompItem>(mModel.get());
+        mAveMotionBindingEpoch = mModel->mAveMotionBindingEpoch.load(std::memory_order_relaxed);
+    }
     mRenderInProgress = false;
+}
+
+std::shared_ptr<LOTModel> AveMotionAnimationAccess::model(const Animation &animation)
+{
+    return animation.d->mModel;
+}
+
+std::unique_ptr<Animation> AveMotionAnimationAccess::fromModel(const std::shared_ptr<LOTModel> &model)
+{
+    if (!model || !model->mRoot) return nullptr;
+    auto animation = std::unique_ptr<Animation>(new Animation);
+    animation->d->init(model);
+    return animation;
 }
 
 #ifdef LOTTIE_THREAD_SUPPORT

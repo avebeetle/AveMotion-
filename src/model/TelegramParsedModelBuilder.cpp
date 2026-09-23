@@ -1939,7 +1939,34 @@ public:
     std::string error_;
 };
 
+// Destruction publishes even partial stamping on failure or exception unwinding.
+// Declare after the lock so publication always precedes unlocking the source.
+class BindingPublication final {
+public:
+    explicit BindingPublication(LOTModel& source) : source_(source) {}
+    ~BindingPublication() { source_.mAveMotionBindingEpoch.fetch_add(1, std::memory_order_release); }
+    BindingPublication(const BindingPublication&) = delete;
+    BindingPublication& operator=(const BindingPublication&) = delete;
+private:
+    LOTModel& source_;
+};
+
+ParsedModelBuildResult extractLocked(
+    const std::shared_ptr<LOTModel>& source, Extractor& extractor) {
+    std::lock_guard lock(source->mAveMotionBindingMutex);
+    BindingPublication publication(*source);
+    return extractor.build();
+}
+
 } // namespace
+
+ParsedModelBuildResult buildTelegramParsedModel(
+    const std::shared_ptr<LOTModel>& source,
+    const AssetModelDescriptor& descriptor) {
+    if (!source) return {nullptr, "Telegram loader returned a null LOTModel"};
+    Extractor extractor{*source, descriptor};
+    return extractLocked(source, extractor);
+}
 
 ParsedModelBuildResult buildTelegramParsedModel(
     std::string_view json,
@@ -1960,7 +1987,7 @@ ParsedModelBuildResult buildTelegramParsedModel(
     }
     const auto model = loader.model();
     if (!model) return {nullptr, "Telegram loader returned a null LOTModel"};
-    return Extractor{*model, descriptor}.build();
+    return buildTelegramParsedModel(model, descriptor);
 }
 
 TelegramPropertyOracleResult evaluateTelegramParsedProperties(
@@ -1987,7 +2014,7 @@ TelegramPropertyOracleResult evaluateTelegramParsedProperties(
         return {nullptr, {}, {}, {}, {}, "Telegram property oracle returned a null LOTModel"};
     }
     Extractor extractor{*source, descriptor, frame};
-    auto built = extractor.build();
+    auto built = extractLocked(source, extractor);
     if (!built) return {nullptr, {}, {}, {}, {}, std::move(built.error)};
     auto properties = extractor.takeOracleProperties();
     auto transforms = extractor.takeOracleTransforms();

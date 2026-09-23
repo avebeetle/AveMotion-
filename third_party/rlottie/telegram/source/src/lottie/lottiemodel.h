@@ -24,6 +24,9 @@
 #include<unordered_map>
 #include<algorithm>
 #include <cmath>
+#include <atomic>
+#include <cstdint>
+#include <mutex>
 #include"vpoint.h"
 #include"vrect.h"
 #include"vinterpolator.h"
@@ -1027,6 +1030,9 @@ public:
 class LOTModel
 {
 public:
+   // Guards authored binding metadata, not per-animation evaluation state.
+   mutable std::mutex mAveMotionBindingMutex;
+   std::atomic<std::uint64_t> mAveMotionBindingEpoch{0};
    bool  isStatic() const {return mRoot->isStatic();}
    VSize size() const {return mRoot->size();}
    double duration() const {return mRoot->duration();}

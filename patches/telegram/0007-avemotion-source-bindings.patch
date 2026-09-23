@@ -1,0 +1,428 @@
+diff --git a/third_party/rlottie/telegram/source/inc/rlottie.h b/third_party/rlottie/telegram/source/inc/rlottie.h
+index ebd2f16e4f4fd1f0c1054ba93d998f12e2a93654..5534d4715640188b63621a8b0e0143e13c6fde9e 100644
+--- a/third_party/rlottie/telegram/source/inc/rlottie.h
++++ b/third_party/rlottie/telegram/source/inc/rlottie.h
+@@ -263,6 +263,7 @@ private:
+ using LayerInfoList = std::vector<std::tuple<std::string, int , int>>;
+
+ class LOT_EXPORT Animation {
++    friend struct AveMotionAnimationAccess;
+ public:
+
+     /**
+diff --git a/third_party/rlottie/telegram/source/src/lottie/avemotionanimationaccess.h b/third_party/rlottie/telegram/source/src/lottie/avemotionanimationaccess.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..df9de4dbdfb78b693f6a8e697a5584cf18cd0a02
+--- /dev/null
++++ b/third_party/rlottie/telegram/source/src/lottie/avemotionanimationaccess.h
+@@ -0,0 +1,13 @@
++// Private AveMotion adapter for the pinned Telegram source; not a public API.
++#pragma once
++
++#include "rlottie.h"
++
++class LOTModel;
++
++namespace rlottie {
++struct LOT_EXPORT AveMotionAnimationAccess final {
++    static std::shared_ptr<LOTModel> model(const Animation& animation);
++    static std::unique_ptr<Animation> fromModel(const std::shared_ptr<LOTModel>& model);
++};
++} // namespace rlottie
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieanimation.cpp b/third_party/rlottie/telegram/source/src/lottie/lottieanimation.cpp
+index a1bfb08f82f44b342730c6da4febbecd1a458cc3..7564a2aa68e32de6ae671324bc7dd060c33da34e 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieanimation.cpp
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieanimation.cpp
+@@ -20,6 +20,7 @@
+ #include "lottieloader.h"
+ #include "lottiemodel.h"
+ #include "rlottie.h"
++#include "avemotionanimationaccess.h"
+
+ #include <fstream>
+ #include <limits>
+@@ -44,6 +45,7 @@ struct RenderTask {
+ using SharedRenderTask = std::shared_ptr<RenderTask>;
+
+ class AnimationImpl {
++    friend struct rlottie::AveMotionAnimationAccess;
+ public:
+     void    init(const std::shared_ptr<LOTModel> &model);
+     bool    update(size_t frameNo, const VSize &size, bool keepAspectRatio);
+@@ -69,6 +71,7 @@ private:
+     void useOrdinary();
+     bool mRecordingLifecycle{false};
+     bool mOrdinaryUsed{false};
++    std::uint64_t mAveMotionBindingEpoch{0};
+     std::string                  mFilePath;
+     std::shared_ptr<LOTModel>    mModel;
+     std::unique_ptr<LOTCompItem> mCompItem;
+@@ -115,7 +118,14 @@ const LOTLayerNode *AnimationImpl::renderTreeForRecording(size_t frameNo, size_t
+     if (!mRecordingLifecycle) return nullptr;
+     if (!width || !height || width > size_t(std::numeric_limits<int>::max()) ||
+         height > size_t(std::numeric_limits<int>::max())) return nullptr;
+-    mCompItem->resetForRecording();
++    if (mModel->mAveMotionBindingEpoch.load(std::memory_order_acquire) != mAveMotionBindingEpoch) {
++        std::lock_guard<std::mutex> lock(mModel->mAveMotionBindingMutex);
++        mCompItem->resetForRecording(true);
++        mAveMotionBindingEpoch = mModel->mAveMotionBindingEpoch.load(std::memory_order_relaxed);
++    } else {
++        // The unchanged epoch branch reads only the coherent per-item copies.
++        mCompItem->resetForRecording(false);
++    }
+     // A false update is the fresh constructor-cache sentinel: never publish
+     // an earlier tree when the fresh ordinary call would not build one.
+     if (!update(frameNo, VSize(int(width), int(height)), true)) return nullptr;
+@@ -155,10 +165,27 @@ Surface AnimationImpl::render(size_t frameNo, const Surface &surface, bool keepA
+ void AnimationImpl::init(const std::shared_ptr<LOTModel> &model)
+ {
+     mModel = model;
+-    mCompItem = std::make_unique<LOTCompItem>(mModel.get());
++    {
++        std::lock_guard<std::mutex> lock(mModel->mAveMotionBindingMutex);
++        mCompItem = std::make_unique<LOTCompItem>(mModel.get());
++        mAveMotionBindingEpoch = mModel->mAveMotionBindingEpoch.load(std::memory_order_relaxed);
++    }
+     mRenderInProgress = false;
+ }
+
++std::shared_ptr<LOTModel> AveMotionAnimationAccess::model(const Animation &animation)
++{
++    return animation.d->mModel;
++}
++
++std::unique_ptr<Animation> AveMotionAnimationAccess::fromModel(const std::shared_ptr<LOTModel> &model)
++{
++    if (!model || !model->mRoot) return nullptr;
++    auto animation = std::unique_ptr<Animation>(new Animation);
++    animation->d->init(model);
++    return animation;
++}
++
+ #ifdef LOTTIE_THREAD_SUPPORT
+
+ #include <thread>
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp b/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
+index 0d61167972908b421ec30f5d2dd5e2da84c6b841..3b2297636d6da30fdf60790c111bb893dba16494 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
+@@ -95,16 +95,16 @@ void LOTCompItem::setValue(const std::string &keypath, LOTVariant &value)
+     mRootLayer->resolveKeyPath(key, 0, value);
+ }
+
+-void LOTCompItem::resetForRecording()
++void LOTCompItem::resetForRecording(bool refreshBindings)
+ {
+     mCurFrameNo = -1;
+     mViewSize = mCompData->size();
+     mKeepAspectRatio = true;
+     mScaleMatrix = VMatrix{};
+-    mRootLayer->resetForRecording();
++    mRootLayer->resetForRecording(refreshBindings);
+ }
+
+-void LOTLayerItem::resetForRecording()
++void LOTLayerItem::resetForRecording(bool)
+ {
+     mFrameNo = -1;
+     mCombinedAlpha = 0;
+@@ -114,28 +114,28 @@ void LOTLayerItem::resetForRecording()
+     if (mLayerMask) mLayerMask->resetForRecording();
+ }
+
+-void LOTCompLayerItem::resetForRecording()
++void LOTCompLayerItem::resetForRecording(bool refreshBindings)
+ {
+-    LOTLayerItem::resetForRecording();
++    LOTLayerItem::resetForRecording(refreshBindings);
+     if (mClipper) mClipper->resetForRecording();
+-    for (auto &layer : mLayers) layer->resetForRecording();
++    for (auto &layer : mLayers) layer->resetForRecording(refreshBindings);
+ }
+
+-void LOTShapeLayerItem::resetForRecording()
++void LOTShapeLayerItem::resetForRecording(bool refreshBindings)
+ {
+-    LOTLayerItem::resetForRecording();
+-    mRoot->resetForRecording();
++    LOTLayerItem::resetForRecording(refreshBindings);
++    mRoot->resetForRecording(refreshBindings);
+ }
+
+-void LOTSolidLayerItem::resetForRecording()
++void LOTSolidLayerItem::resetForRecording(bool refreshBindings)
+ {
+-    LOTLayerItem::resetForRecording();
++    LOTLayerItem::resetForRecording(refreshBindings);
+     mRenderNode.resetForRecording();
+ }
+
+-void LOTImageLayerItem::resetForRecording()
++void LOTImageLayerItem::resetForRecording(bool refreshBindings)
+ {
+-    LOTLayerItem::resetForRecording();
++    LOTLayerItem::resetForRecording(refreshBindings);
+     mRenderNode.resetForRecording();
+ }
+
+@@ -1348,7 +1348,7 @@ bool LOTPathDataItem::sourceGeometryStaticFor(
+     return group && group->transformChainStaticTo(ancestor);
+ }
+ LOTRectItem::LOTRectItem(LOTRectData *data)
+-    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
++    : LOTPathDataItem(data->isStatic(), data), mData(data)
+ {
+ }
+
+@@ -1365,7 +1365,7 @@ void LOTRectItem::updatePath(VPath &path, int frameNo)
+ }
+
+ LOTEllipseItem::LOTEllipseItem(LOTEllipseData *data)
+-    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
++    : LOTPathDataItem(data->isStatic(), data), mData(data)
+ {
+ }
+
+@@ -1381,7 +1381,7 @@ void LOTEllipseItem::updatePath(VPath &path, int frameNo)
+ }
+
+ LOTShapeItem::LOTShapeItem(LOTShapeData *data)
+-    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
++    : LOTPathDataItem(data->isStatic(), data), mData(data)
+ {
+ }
+
+@@ -1391,7 +1391,7 @@ void LOTShapeItem::updatePath(VPath &path, int frameNo)
+ }
+
+ LOTPolystarItem::LOTPolystarItem(LOTPolystarData *data)
+-    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
++    : LOTPathDataItem(data->isStatic(), data), mData(data)
+ {
+ }
+
+@@ -1426,10 +1426,11 @@ void LOTPolystarItem::updatePath(VPath &path, int frameNo)
+  *
+  */
+ LOTPaintDataItem::LOTPaintDataItem(
+-    bool staticContent, unsigned int sourceNodeId)
++    bool staticContent, const LOTData *sourceData)
+     : LOTContentItem(ContentType::Paint),
+       mStaticContent(staticContent),
+-      mSourceNodeId(sourceNodeId)
++      mSourceData(sourceData),
++      mSourceNodeId(sourceData->aveMotionSourceNodeId())
+ {
+ }
+
+@@ -1526,7 +1527,7 @@ void LOTPaintDataItem::addPathItems(std::vector<LOTPathDataItem *> &list,
+ }
+
+ LOTFillItem::LOTFillItem(LOTFillData *data)
+-    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mModel(data)
++    : LOTPaintDataItem(data->isStatic(), data), mModel(data)
+ {
+ }
+
+@@ -1550,7 +1551,7 @@ void LOTFillItem::updateRenderNode()
+ }
+
+ LOTGFillItem::LOTGFillItem(LOTGFillData *data)
+-    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
++    : LOTPaintDataItem(data->isStatic(), data), mData(data)
+ {
+ }
+
+@@ -1570,7 +1571,7 @@ void LOTGFillItem::updateRenderNode()
+ }
+
+ LOTStrokeItem::LOTStrokeItem(LOTStrokeData *data)
+-    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mModel(data){}
++    : LOTPaintDataItem(data->isStatic(), data), mModel(data){}
+
+ void LOTStrokeItem::updateContent(int frameNo)
+ {
+@@ -1610,7 +1611,7 @@ void LOTStrokeItem::updateRenderNode()
+ }
+
+ LOTGStrokeItem::LOTGStrokeItem(LOTGStrokeData *data)
+-    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data){}
++    : LOTPaintDataItem(data->isStatic(), data), mData(data){}
+
+ void LOTGStrokeItem::updateContent(int frameNo)
+ {
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieitem.h b/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
+index 5aec0aae3c8b9a0b8f5d15c18e95a6a8c93ab637..ce5177d035aafedacf45c6ad391906adbe5b2b2d 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
+@@ -106,7 +106,7 @@ public:
+    explicit LOTCompItem(LOTModel *model);
+    static std::unique_ptr<LOTLayerItem> createLayerItem(LOTLayerData *layerData);
+    bool update(int frameNo, const VSize &size, bool keepAspectRatio);
+-   void resetForRecording();
++   void resetForRecording(bool refreshBindings = false);
+    VSize size() const { return mViewSize;}
+    void buildRenderTree();
+    const LOTLayerNode * renderTree()const;
+@@ -155,7 +155,7 @@ public:
+    void setComplexContent(bool value) { mComplexContent = value;}
+    bool complexContent() const {return mComplexContent;}
+    virtual void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha);
+-   virtual void resetForRecording();
++   virtual void resetForRecording(bool refreshBindings = false);
+    virtual void assignAveSourceIds(AveSourceIdState &ids);
+    VMatrix matrix(int frameNo) const;
+    virtual void renderList(std::vector<VDrawable *> &){}
+@@ -196,7 +196,7 @@ class LOTCompLayerItem: public LOTLayerItem
+ {
+ public:
+    explicit LOTCompLayerItem(LOTLayerData *layerData);
+-   void resetForRecording() final;
++   void resetForRecording(bool refreshBindings = false) final;
+    void renderList(std::vector<VDrawable *> &list)final;
+    void render(VPainter *painter, const VRle &mask, const VRle &matteRle) final;
+    void buildLayerNode() final;
+@@ -218,7 +218,7 @@ class LOTSolidLayerItem: public LOTLayerItem
+ {
+ public:
+    explicit LOTSolidLayerItem(LOTLayerData *layerData);
+-   void resetForRecording() final;
++   void resetForRecording(bool refreshBindings = false) final;
+    void buildLayerNode() final;
+    void assignAveSourceIds(AveSourceIdState &ids) final;
+ protected:
+@@ -235,7 +235,7 @@ class LOTShapeLayerItem: public LOTLayerItem
+ {
+ public:
+    explicit LOTShapeLayerItem(LOTLayerData *layerData);
+-   void resetForRecording() final;
++   void resetForRecording(bool refreshBindings = false) final;
+    static std::unique_ptr<LOTContentItem> createContentItem(LOTData *contentData);
+    void renderList(std::vector<VDrawable *> &list)final;
+    void buildLayerNode() final;
+@@ -259,7 +259,7 @@ class LOTImageLayerItem: public LOTLayerItem
+ {
+ public:
+    explicit LOTImageLayerItem(LOTLayerData *layerData);
+-   void resetForRecording() final;
++   void resetForRecording(bool refreshBindings = false) final;
+    void buildLayerNode() final;
+    void assignAveSourceIds(AveSourceIdState &ids) final;
+ protected:
+@@ -332,7 +332,7 @@ public:
+    virtual void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) = 0;
+    virtual void renderList(std::vector<VDrawable *> &){}
+    virtual void assignAveSourceIds(AveSourceIdState &) {}
+-   virtual void resetForRecording() = 0;
++   virtual void resetForRecording(bool refreshBindings = false) = 0;
+    void setParent(LOTContentItem *parent) {mParent = parent;}
+    LOTContentItem *parent() const {return mParent;}
+    virtual bool resolveKeyPath(LOTKeyPath &, uint, LOTVariant &) {return false;}
+@@ -346,9 +346,9 @@ class LOTContentGroupItem: public LOTContentItem
+ {
+ public:
+    explicit LOTContentGroupItem(LOTGroupData *data=nullptr);
+-   void resetForRecording() override {
++   void resetForRecording(bool refreshBindings = false) override {
+        mMatrix = VMatrix{};
+-       for (auto &content : mContents) content->resetForRecording();
++       for (auto &content : mContents) content->resetForRecording(refreshBindings);
+    }
+    void addChildren(LOTGroupData *data);
+    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) override;
+@@ -377,13 +377,15 @@ protected:
+ class LOTPathDataItem : public LOTContentItem
+ {
+ public:
+-   LOTPathDataItem(bool staticPath, unsigned int sourceNodeId)
++   LOTPathDataItem(bool staticPath, const LOTData *sourceData)
+        : LOTContentItem(ContentType::Path),
+          mStaticPath(staticPath),
+-         mSourceNodeId(sourceNodeId) {}
++         mSourceData(sourceData),
++         mSourceNodeId(sourceData->aveMotionSourceNodeId()) {}
+    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) final;
+    bool dirty() const {return mPathChanged;}
+-   void resetForRecording() final {
++   void resetForRecording(bool refreshBindings = false) final {
++       if (refreshBindings) mSourceNodeId = mSourceData->aveMotionSourceNodeId();
+        mTemp = VPath{};
+        mLocalPath.reset(); mFinalPath.reset(); mFrameNo = -1;
+        mPathChanged = true; mNeedUpdate = true;
+@@ -421,6 +423,7 @@ private:
+    bool                                    mStaticPath;
+    bool                                    mModifiersStatic{true};
+    bool                                    mHasModifiers{false};
++   const LOTData                          *mSourceData; // Borrowed from Animation's source lease.
+    unsigned int                            mSourceNodeId{AveInvalidSourceId};
+ };
+
+@@ -488,8 +491,9 @@ private:
+ class LOTPaintDataItem : public LOTContentItem
+ {
+ public:
+-   LOTPaintDataItem(bool staticContent, unsigned int sourceNodeId);
+-   void resetForRecording() final {
++   LOTPaintDataItem(bool staticContent, const LOTData *sourceData);
++   void resetForRecording(bool refreshBindings = false) final {
++       if (refreshBindings) mSourceNodeId = mSourceData->aveMotionSourceNodeId();
+        mPath.reset(); mParentAlpha = 1.0f; mFrameNo = -1;
+        mFlag = DirtyFlag{}; mRenderNodeUpdate = true;
+        mDrawable.resetForRecording();
+@@ -512,6 +516,7 @@ protected:
+    DirtyFlag                        mFlag;
+    bool                             mStaticContent;
+    bool                             mRenderNodeUpdate{true};
++   const LOTData                   *mSourceData; // Borrowed from Animation's source lease.
+    unsigned int                     mSourceNodeId{AveInvalidSourceId};
+ };
+
+@@ -583,7 +588,7 @@ class LOTTrimItem : public LOTContentItem
+ {
+ public:
+    LOTTrimItem(LOTTrimData *data);
+-   void resetForRecording() final { mCache = Cache{}; mDirty = true; }
++   void resetForRecording(bool = false) final { mCache = Cache{}; mDirty = true; }
+    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) final;
+    void update();
+    void addPathItems(std::vector<LOTPathDataItem *> &list, size_t startOffset);
+@@ -609,8 +614,8 @@ class LOTRepeaterItem : public LOTContentGroupItem
+ {
+ public:
+    explicit LOTRepeaterItem(LOTRepeaterData *data);
+-   void resetForRecording() final {
+-       LOTContentGroupItem::resetForRecording(); mHidden = false;
++   void resetForRecording(bool refreshBindings = false) final {
++       LOTContentGroupItem::resetForRecording(refreshBindings); mHidden = false;
+    }
+    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) final;
+    void renderList(std::vector<VDrawable *> &list) final;
+@@ -622,4 +627,3 @@ private:
+
+
+ #endif // LOTTIEITEM_H
+-
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h b/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
+index 896517d8314ad3375044803f6bcfc782d09954c1..f46c2e6a38d27ee6b49e96071ffd8a73fb05cc4a 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
++++ b/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
+@@ -24,6 +24,9 @@
+ #include<unordered_map>
+ #include<algorithm>
+ #include <cmath>
++#include <atomic>
++#include <cstdint>
++#include <mutex>
+ #include"vpoint.h"
+ #include"vrect.h"
+ #include"vinterpolator.h"
+@@ -1027,6 +1030,9 @@ public:
+ class LOTModel
+ {
+ public:
++   // Guards authored binding metadata, not per-animation evaluation state.
++   mutable std::mutex mAveMotionBindingMutex;
++   std::atomic<std::uint64_t> mAveMotionBindingEpoch{0};
+    bool  isStatic() const {return mRoot->isStatic();}
+    VSize size() const {return mRoot->size();}
+    double duration() const {return mRoot->duration();}

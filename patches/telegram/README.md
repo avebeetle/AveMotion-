@@ -85,3 +85,20 @@ Production Runtime remains on fresh ordinary sampling in Part25C. This opt-in
 vendor seam does not change ordinary CPU behavior, source identities, dependency
 commits, licensing, or public fallback policy. The patch applies to the vendored
 Telegram tree at repository base `45a21a4`, after patches 0001–0005.
+
+## 0007 — Shared source ownership and synchronized binding refresh
+
+Part25D adds private `AveMotionAnimationAccess::model/fromModel` helpers. Clones
+share the exact authored LOTModel but construct independent evaluation state.
+The source-owned binding mutex protects constructor snapshots and parsed-model
+extraction; an atomic epoch publishes all extraction exits, including partial
+stamping on failure and exception unwinding. The AveMotion builder owns that
+publication guard outside the vendor patch.
+
+Recording reset refreshes borrowed path/paint source IDs only when the epoch
+changes, including hidden layers, groups and repeater copies. An unchanged frame
+does not lock the source or read its mutable raw IDs. Sequential render IDs,
+multi-path invalid bindings/counts, ordinary algorithms and CPU pixels are
+unchanged. No Runtime adoption, dependency identity or license change is included.
+This patch applies from repository base `15f347a7b065fe32123fc8fb01fe964d40db2f5f`,
+after patches 0001–0006; apply from the repository root with `git apply`.

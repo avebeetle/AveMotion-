@@ -23,7 +23,8 @@ Telegram changes are explicit:
 - `0003-avemotion-stable-source-ids.patch`;
 - `0004-avemotion-parsed-model-introspection.patch`;
 - `0005-avemotion-source-geometry-binding.patch`;
-- `0006-avemotion-recording-lifecycle.patch`.
+- `0006-avemotion-recording-lifecycle.patch`;
+- `0007-avemotion-source-bindings.patch`.
 
 Patch 0004 supplies the read-only parsed-model/easing/property introspection used
 by the standalone evaluator. Patch 0005 carries canonical source Shape/paint
@@ -41,6 +42,14 @@ throw `std::logic_error`; exception unwinding is enabled only for the API
 translation unit. Ordinary CPU rendering remains the oracle and production
 Runtime still uses fresh ordinary sampling during Part25C. No dependency commit,
 license text, or redistribution policy changes with this seam.
+
+Patch 0007 adds a private Telegram source lease/factory, a source-owned binding
+mutex and publication epoch, and recording-only refresh of authored path/paint
+IDs. Construction and parsed extraction synchronize on that source; unchanged
+recording frames keep their local binding snapshot without locking. Failed or
+unwinding extraction publishes its partial metadata before unlocking. Ordinary
+evaluation and raster algorithms, sequential IDs, table order, upstream identity
+and licensing remain unchanged. Runtime adoption is staged separately.
 
 Samsung patch `0002-avemotion-recording-lifecycle.patch` adds the same private
 opt-in API and guards, using Samsung's arena ownership, inclusive out-frame

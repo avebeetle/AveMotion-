@@ -263,6 +263,7 @@ private:
 using LayerInfoList = std::vector<std::tuple<std::string, int , int>>;
 
 class LOT_EXPORT Animation {
+    friend struct AveMotionAnimationAccess;
 public:
 
     /**
