@@ -96,7 +96,7 @@ void verifyModelPreparationLifetime(std::string_view variant) {
                     && afterScene.assetModelBuildAttempts == 1U
                     && afterScene.assetModelBuildsSucceeded == 1U,
                 "exact Instance evaluation changed model preparation counters");
-        require(afterScene.referenceSceneSessionsCreated == 2U
+        require(afterScene.referenceSceneSessionsCreated == 1U
                     && afterScene.referenceSceneSamples == 1U,
                 "exact Instance evaluation did not use its own scene role");
     } else {

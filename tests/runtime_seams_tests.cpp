@@ -62,14 +62,14 @@ void verifyReferenceDiagnostics() {
     auto created = runtime.createInstance(loaded.asset);
     require(static_cast<bool>(created), "diagnostic fixture instance failed to create");
     counters = runtime.diagnostics();
-    require(counters.referenceSceneSessionsCreated == 1U,
-            "instance creation must create one scene session");
+    require(counters.referenceSceneSessionsCreated == 0U,
+            "ordinary instance creation must not create a mapping scene session");
 
     const auto exact = created.instance->evaluateFrame(0U, 128U, 128U);
     require(static_cast<bool>(exact), "diagnostic exact scene evaluation failed");
     counters = runtime.diagnostics();
     // Protect current fresh sampling until a separately proved reuse implementation changes the contract.
-    require(counters.referenceSceneSessionsCreated == 2U,
+    require(counters.referenceSceneSessionsCreated == 1U,
             "current exact scene evaluation must create a scene-role session");
     require(counters.referenceSceneSamples == 1U
                 && counters.referenceModelSamples == 0U,

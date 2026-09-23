@@ -148,6 +148,14 @@ target_include_directories(avemotion_runtime
 target_link_libraries(avemotion_runtime PUBLIC AveMotion::Core AveMotion::Formats AveMotion::Model AveMotion::Evaluation)
 avemotion_set_warnings(avemotion_runtime)
 
+if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "samsung")
+    target_compile_definitions(avemotion_runtime PRIVATE
+        AVEMOTION_REFERENCE_ROUND_FRAME_POSITION=1)
+else()
+    target_compile_definitions(avemotion_runtime PRIVATE
+        AVEMOTION_REFERENCE_ROUND_FRAME_POSITION=0)
+endif()
+
 if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
     target_compile_definitions(avemotion_runtime
         PRIVATE
@@ -688,6 +696,15 @@ if(BUILD_TESTING)
             AVEMOTION_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus")
         avemotion_set_warnings(avemotion_runtime_seams_tests)
         add_test(NAME avemotion.runtime.seams COMMAND avemotion_runtime_seams_tests)
+
+        add_executable(avemotion_frame_mapping_tests tests/frame_mapping_tests.cpp)
+        target_link_libraries(avemotion_frame_mapping_tests
+            PRIVATE AveMotion::Runtime AveMotion::Reference)
+        target_compile_definitions(avemotion_frame_mapping_tests PRIVATE
+            AVEMOTION_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus"
+            AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
+        avemotion_set_warnings(avemotion_frame_mapping_tests)
+        add_test(NAME avemotion.runtime.frame_mapping COMMAND avemotion_frame_mapping_tests)
 
         find_package(Threads REQUIRED)
         add_executable(avemotion_reference_session_tests tests/reference_session_tests.cpp)

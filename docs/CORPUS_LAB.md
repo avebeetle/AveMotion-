@@ -64,8 +64,13 @@ count exact scene samples in their respective phases. Setup starts with the
 asset load and ends after model, instance, evaluator and projector preparation;
 separate load-timing runtimes are excluded. First and steady values are
 counter deltas. Warm-up is excluded from all three phases. The current runtime
-creates fresh scene sessions for sampled frames, so nonzero scene counts are
-expected baseline observations. These counters do not imply session reuse.
+creates no Scene-role mapping session when constructing an ordinary instance.
+Each exact scene sample still creates one fresh Scene-role session. A Telegram
+outlier with a wrapped frame count greater than `LONG_MAX` keeps the legacy
+mapping session. Thus new ordinary setup phases report zero scene sessions,
+while historical Part 25A reports captured one at setup. The output validator
+defaults to zero and accepts `--expected-setup-scene-sessions 1` for those
+historical reports. These counters do not imply session reuse.
 
 `{evaluator,projector}_{after_prepare,after_warmup,after_measured}_{retained_bytes,storage_generation}`
 records each workspace's retained storage and generation at those boundaries.

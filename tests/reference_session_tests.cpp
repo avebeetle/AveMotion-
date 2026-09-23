@@ -65,8 +65,8 @@ void unchanged(const SceneChangeSummary& changes, const std::string& context) {
 void counts(const DiagnosticsSnapshot& value, std::uint64_t instances, std::uint64_t samples,
             std::uint64_t cpuSessions, std::uint64_t cpuFrames, const std::string& context) {
     require(value.referenceMetadataSessionsCreated == 0U, context + ": unexpected metadata session");
-    require(value.referenceSceneSessionsCreated == instances + samples,
-            context + ": each eager instance and each exact sample must create one scene session");
+    require(value.referenceSceneSessionsCreated == samples,
+            context + ": each exact sample must create one scene session; ordinary instances create none");
     require(value.referenceModelSessionsCreated == 0U && value.referenceModelSamples == 0U,
             context + ": exact sampling must not create or sample a model session");
     require(value.referenceCpuSessionsCreated == cpuSessions, context + ": incorrect CPU session count");

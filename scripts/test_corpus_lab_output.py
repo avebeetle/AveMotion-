@@ -23,7 +23,10 @@ def main() -> int:
     parser.add_argument("--expected-samples", type=int, default=5)
     parser.add_argument("--expected-warmup-samples", type=int, default=20)
     parser.add_argument("--expected-render-size", type=int, default=64)
+    parser.add_argument("--expected-setup-scene-sessions", type=int, default=0)
     args = parser.parse_args()
+    require(args.expected_setup_scene_sessions >= 0,
+            "expected setup scene sessions must be nonnegative")
     for name in ("corpus_manifest.tsv", "corpus_issues.tsv",
                  "corpus_features.tsv", "corpus_benchmarks.tsv",
                  "corpus_decision.tsv", "corpus_summary.txt"):
@@ -59,8 +62,8 @@ def main() -> int:
             require(int(row[name]) >= 0, f"negative {name}")
         require(int(row["setup_metadata_sessions"]) == 1,
                 "setup must include the asset metadata session")
-        require(int(row["setup_scene_sessions"]) == 1,
-                "setup must include instance scene session")
+        require(int(row["setup_scene_sessions"]) == args.expected_setup_scene_sessions,
+                "setup scene session count mismatch")
         require(int(row["setup_model_samples"]) > 0,
                 "setup must include model preparation samples")
         require(int(row["first_scene_samples"]) == 1,

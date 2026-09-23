@@ -233,7 +233,7 @@ struct InstanceData final {
     SceneFingerprints previousFingerprints;
     PlaybackControl playback;
 #if AVEMOTION_HAS_RLOTTIE
-    std::unique_ptr<rlottie::Animation> sceneAnimation;
+    std::unique_ptr<rlottie::Animation> legacyFrameMappingAnimation;
     std::unique_ptr<rlottie::Animation> cpuAnimation;
 #endif
 
@@ -967,10 +967,21 @@ InstanceHandle Instance::handle() const noexcept { return data_->handle; }
 
 std::size_t Instance::frameAtPosition(double normalizedPosition) const noexcept {
 #if AVEMOTION_HAS_RLOTTIE
-    if (!data_->sceneAnimation) return 0U;
-    return clampFrame(
-        data_->sceneAnimation->frameAtPos(clampNormalized(normalizedPosition)),
-        data_->asset->metadata());
+    const auto& metadata = data_->asset->metadata();
+    if (data_->legacyFrameMappingAnimation) {
+        return clampFrame(
+            data_->legacyFrameMappingAnimation->frameAtPos(clampNormalized(normalizedPosition)),
+            metadata);
+    }
+    if (metadata.totalFrames <= 1U) return 0U;
+    const double scaled = clampNormalized(normalizedPosition)
+        * static_cast<double>(metadata.totalFrames - 1U);
+#if AVEMOTION_REFERENCE_ROUND_FRAME_POSITION
+    const auto frame = static_cast<std::size_t>(std::round(scaled));
+#else
+    const auto frame = static_cast<std::size_t>(scaled);
+#endif
+    return clampFrame(frame, metadata);
 #else
     static_cast<void>(normalizedPosition);
     return 0U;
@@ -1410,12 +1421,17 @@ InstanceCreateResult Runtime::createInstance(
     data->runtimeState = state_;
     data->handle = state_->instanceHandles.acquire();
     data->id = state_->nextInstanceId.fetch_add(1U, std::memory_order_relaxed);
-    data->sceneAnimation = loadUpstreamAnimation(
-        *data->asset->data_, ReferenceSessionRole::Scene);
-    if (!data->sceneAnimation) {
-        result.error = {RuntimeErrorCode::InstanceCreationFailed,
-            "unable to create the upstream scene-evaluation instance"};
-        return result;
+    // Telegram can accept reversed root spans whose signed frame count wraps
+    // into a large size_t. Preserve upstream mapping for that outlier only.
+    if (data->asset->metadata().totalFrames
+            > static_cast<std::size_t>(std::numeric_limits<long>::max())) {
+        data->legacyFrameMappingAnimation = loadUpstreamAnimation(
+            *data->asset->data_, ReferenceSessionRole::Scene);
+        if (!data->legacyFrameMappingAnimation) {
+            result.error = {RuntimeErrorCode::InstanceCreationFailed,
+                "unable to create the upstream scene-evaluation instance"};
+            return result;
+        }
     }
     result.instance = std::unique_ptr<Instance>{new Instance{std::move(data)}};
     state_->instancesCreated.fetch_add(1U, std::memory_order_relaxed);
