@@ -2,7 +2,30 @@
 
 Updated: 2026-09-23
 
-## Active continuation — Part25C recording lifecycle
+## Active continuation — Part25D persistent session integration
+
+Part25C is complete as a vendor-only foundation. Whole-change independent
+review45a21a4..3f8a06e approved spec compliance/integration with no Critical or
+Important findings. Nonblocking diagnostics remain tracked: captured Git stderr
+and wrapper EH override warnings. Final report:
+docs/PART25C_RECORDING_LIFECYCLE_REPORT.md. Runtime is still fresh; no speedup claim.
+
+Continue immediately with approved spec
+docs/superpowers/specs/2026-09-23-persistent-session-integration-design.md,
+plan docs/superpowers/plans/2026-09-23-persistent-session-integration.md and ledger
+.superpowers/sdd/2026-09-23-persistent-session-integration/progress.md.
+Task1 adds exact Telegram source lease, synchronized binding publication and
+recording refresh before any Runtime lifetime adoption. Its brief is prepared;
+controller captures clean stage base and dispatches one product implementer
+after this handoff's ordinary push. Check current ledger/live agents before
+dispatch; do not repeat completed Part25A/B/C tasks. Automation stays ACTIVE.
+
+The future measurement runner has a read-only audit at
+out/benchmarks/part25c/measurement-runner-audit.md: strengthen lifetime/schema,
+corpus/configuration validation and target reporting before Task4 measurements.
+No benchmark candidate has been measured yet.
+
+## Part25C completed foundation and execution history
 
 At 07:09 UTC the user instructed continuous execution of all stages without
 pauses. This supersedes both historical time limits and the paused-scheduler
@@ -30,8 +53,8 @@ independently approved:642working hashes unchanged,9index corrections, isolated
 checkout/vendor verifierPASS and Telegram63/63. Task4 controller full gates at
 aec482f:Telegram63/63,preview57/57,no-ref30/30,Samsung41/43 (only two unchanged
 Polystar failures). Both Release recording tests and installed consumer passed.
-Final whole-change report/review is pending; no product implementer active.
-Check ledger/liveagents.
+Final whole-change report/review completed at3f8a06e with no blocking findings.
+Continue Part25D above; check its ledger/liveagents for current ownership.
 Controller owns review and subsequent integration plan. Reports feed the design;
 do not stop automation merely because an intermediate block completes.
 
