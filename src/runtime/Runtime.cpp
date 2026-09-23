@@ -4,6 +4,7 @@
 #include "../model/AssetModelBuilder.hpp"
 #if AVEMOTION_TELEGRAM_PARSED_MODEL
 #include "../model/TelegramParsedModelBuilder.hpp"
+#include "avemotionanimationaccess.h"
 #endif
 #include "avemotion/core/Hash.hpp"
 
@@ -189,6 +190,9 @@ struct AssetData final {
     AssetHandle handle;
     std::string json;
     std::string cacheKey;
+#if AVEMOTION_TELEGRAM_PARSED_MODEL
+    std::shared_ptr<LOTModel> sourceModel;
+#endif
     std::shared_ptr<RuntimeState> runtimeState;
 
     // Part 5 compatibility oracle. The legacy characterization path keeps
@@ -586,8 +590,14 @@ enum class ReferenceSampleRole { Scene, ModelPreparation };
 [[nodiscard]] std::unique_ptr<rlottie::Animation> loadUpstreamAnimation(
     const detail::AssetData& asset,
     ReferenceSessionRole role) {
+#if AVEMOTION_TELEGRAM_PARSED_MODEL
+    auto animation = role == ReferenceSessionRole::Metadata
+        ? rlottie::Animation::loadFromData(asset.json, asset.cacheKey, {}, true)
+        : rlottie::AveMotionAnimationAccess::fromModel(asset.sourceModel);
+#else
     auto animation = rlottie::Animation::loadFromData(
         asset.json, asset.cacheKey, {}, true);
+#endif
     if (animation) {
         auto& state = *asset.runtimeState;
         switch (role) {
@@ -751,7 +761,7 @@ enum class ReferenceSampleRole { Scene, ModelPreparation };
 #if AVEMOTION_TELEGRAM_PARSED_MODEL
     {
         const auto parsed = model::detail::buildTelegramParsedModel(
-            asset.json, asset.cacheKey, modelDescriptor(asset));
+            asset.sourceModel, modelDescriptor(asset));
         if (!parsed) {
             asset.modelError = parsed.error.empty()
                 ? "direct Telegram parsed-model extraction failed"
@@ -1291,6 +1301,15 @@ AssetLoadResult Runtime::loadLottieJson(
             "the loaded asset has invalid metadata"};
         return result;
     }
+#if AVEMOTION_TELEGRAM_PARSED_MODEL
+    data->sourceModel = rlottie::AveMotionAnimationAccess::model(*animation);
+    if (!data->sourceModel) {
+        state_->assetLoadsFailed.fetch_add(1U, std::memory_order_relaxed);
+        result.error = {RuntimeErrorCode::InvalidAsset,
+            "rlottie returned no parsed Lottie source"};
+        return result;
+    }
+#endif
 
     auto asset = std::shared_ptr<const Asset>{new Asset{data}};
     result.asset = std::move(asset);

@@ -744,6 +744,20 @@ if(BUILD_TESTING)
         endif()
 
         if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
+            add_executable(avemotion_source_ownership_tests tests/source_ownership_tests.cpp)
+            target_link_libraries(avemotion_source_ownership_tests PRIVATE
+                AveMotion::Runtime rlottie::rlottie Threads::Threads)
+            target_include_directories(avemotion_source_ownership_tests PRIVATE
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/model" "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime"
+                "${AVEMOTION_RLOTTIE_INCLUDE_DIR}" "${AVEMOTION_RLOTTIE_INTERNAL_LOTTIE_DIR}"
+                "${AVEMOTION_RLOTTIE_INTERNAL_VECTOR_DIR}" "${AVEMOTION_RLOTTIE_INTERNAL_PIXMAN_DIR}"
+                "${AVEMOTION_RLOTTIE_GENERATED_INCLUDE_DIR}")
+            target_compile_definitions(avemotion_source_ownership_tests PRIVATE
+                AVEMOTION_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus")
+            avemotion_set_warnings(avemotion_source_ownership_tests)
+            add_test(NAME avemotion.runtime.source_ownership
+                COMMAND avemotion_source_ownership_tests)
+
             add_executable(avemotion_source_binding_tests tests/source_binding_tests.cpp)
             target_link_libraries(avemotion_source_binding_tests PRIVATE AveMotion::Runtime rlottie::rlottie Threads::Threads)
             target_include_directories(avemotion_source_binding_tests PRIVATE

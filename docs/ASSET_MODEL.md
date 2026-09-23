@@ -90,6 +90,7 @@ future per-instance runtime state.
 ```text
 MotionAssetStore / AssetData
     owns shared_ptr<const MotionAssetModel>
+    retains Telegram-only shared_ptr<LOTModel> parsed source lease
 
 MotionInstance
     references Asset
@@ -103,6 +104,14 @@ Direct2D backend
 ```
 
 Logical assets therefore survive graphics-device recreation.
+
+The private Telegram source lease is captured from the successful metadata
+Animation. Later fresh scene, model-preparation and lazy CPU Animations use that
+exact parsed source even after loader-cache eviction. The immutable final
+`MotionAssetModel` remains descriptor-specific: separately loaded Assets with
+identical JSON retain distinct handles and published models. This stage still
+creates a fresh Animation for each exact scene sample and model frame; it does
+not introduce persistent scene or model sessions.
 
 ## Deterministic fingerprints
 

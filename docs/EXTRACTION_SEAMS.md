@@ -83,13 +83,21 @@ Part 3 uses independent upstream runtime objects for:
 - exact evaluated-scene extraction;
 - CPU pixel rendering.
 
-For exact scene sampling, a fresh runtime item tree is created for every sample,
-while the parsed `LOTModel` remains shared through the pinned rlottie model cache.
-This is intentionally conservative and not the final performance design. It
-makes direct seek and repeated evaluation deterministic before any semantic
-replacement is attempted.
+For exact scene sampling, a fresh runtime item tree is created for every sample.
+Telegram Assets now retain the exact parsed `LOTModel` returned by their metadata
+Animation and construct their scene, model-preparation and lazy CPU Animations
+from that same source. The model cache may evict or be disabled without losing
+authored path and paint IDs on prepared scenes. Samsung continues to use its
+ordinary loader. Fresh scene/model sessions remain in this stage; the source
+lease does not retain an evaluator or make a scene session persistent.
 
 See `docs/known-issues/RLOTTIE_RENDER_TREE_STATE.md`.
+
+The earlier cache-dependent loss of Telegram authored IDs was accidental
+metadata loss. The prepared-scene oracle explicitly stamps its own fresh
+ordinary source before comparison, so it still checks every scene field while
+using the Asset's frozen model for this source-ownership test. An independently
+built frozen-model oracle remains separate work.
 
 ## EvaluatedScene contract in Part 3
 
