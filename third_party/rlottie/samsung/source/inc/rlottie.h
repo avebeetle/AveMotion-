@@ -437,6 +437,13 @@ public:
      */
     const LOTLayerNode * renderTree(size_t frameNo, size_t width, size_t height) const;
 
+    // Private AveMotion seam. One-way, pristine-only and serial per instance.
+    // Raster rendering and property overrides throw logic_error in this mode.
+    // Returned storage is borrowed until the next recording call or destruction.
+    bool enableRecordingLifecycle();
+    const LOTLayerNode *renderTreeForRecording(size_t frameNo, size_t width,
+                                              size_t height) const;
+
     /**
      *  @brief Returns Composition Markers.
      *

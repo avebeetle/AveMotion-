@@ -9,10 +9,12 @@
       "archive_sha256": "1b8b8d5cd69e9da43512f21f922463db049adb502c519033f8f1d3fb4ff07570",
       "role": "maintained comparison, security-hardening and modernization donor",
       "source_directory": "third_party/rlottie/samsung/source",
-      "local_behavior_changes": [],
-      "source_tree_sha256": "f710dd5f7fcbe789d88438d8d0a876d7bdf0bc55831548286d064cb3e7f18b84",
+      "local_behavior_changes": [
+        "patches/samsung/0002-avemotion-recording-lifecycle.patch"
+      ],
+      "source_tree_sha256": "77ab5814b88590936f4b33ef09114d3757a1d91dcde349d5e70c4b40926c549f",
       "source_file_count": 322,
-      "source_byte_count": 12189463,
+      "source_byte_count": 12196477,
       "safety_patches": [
         "patches/samsung/0001-fix-arena-null-pointer-arithmetic.patch"
       ],

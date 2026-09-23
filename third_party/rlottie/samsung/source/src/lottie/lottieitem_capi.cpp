@@ -232,13 +232,35 @@ void renderer::Drawable::sync()
         mCNode->mGradient.stopCount = 0;
     }
 
+    if (mRecording) {
+        // The gradient stops are the only independently owned C payload.
+        auto *stops = mCNode->mGradient.stopPtr;
+        const auto count = mCNode->mGradient.stopCount;
+        *mCNode = LOTNode{};
+        mCNode->mGradient.stopPtr = stops;
+        mCNode->mGradient.stopCount = count;
+    }
+
     mCNode->mFlag = ChangeFlagNone;
     if (mFlag & DirtyState::None) return;
 
     if (mFlag & DirtyState::Path) {
-        applyDashOp();
-        const std::vector<VPath::Element> &elm = mPath.elements();
-        const std::vector<VPointF> &       pts = mPath.points();
+        if (mRecording) {
+            const auto *dash = mType == Type::StrokeWithDash
+                ? static_cast<StrokeWithDashInfo *>(mStrokeInfo) : nullptr;
+            if (dash && !dash->mDash.empty()) {
+                VDasher dasher(dash->mDash.data(), dash->mDash.size());
+                // Preserve ordinary value-returning all-zero-pattern semantics.
+                mRecordingPath.clone(dasher.dashed(mPath));
+            } else {
+                mRecordingPath.clone(mPath);
+            }
+        } else {
+            applyDashOp();
+        }
+        const auto &published = mRecording ? mRecordingPath : mPath;
+        const std::vector<VPath::Element> &elm = published.elements();
+        const std::vector<VPointF> &       pts = published.points();
         const float *ptPtr = reinterpret_cast<const float *>(pts.data());
         const char * elmPtr = reinterpret_cast<const char *>(elm.data());
         mCNode->mPath.elmPtr = elmPtr;

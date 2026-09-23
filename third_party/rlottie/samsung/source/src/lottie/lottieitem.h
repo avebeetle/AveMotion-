@@ -116,9 +116,12 @@ private:
 class Drawable final : public VDrawable {
 public:
     void sync();
+    void resetForRecording();
 
 public:
     std::unique_ptr<LOTNode> mCNode{nullptr};
+    VPath mRecordingPath;
+    bool mRecording{false};
 
     ~Drawable() noexcept
     {
@@ -152,6 +155,12 @@ public:
 
 class Mask {
 public:
+    void resetForRecording() {
+        mLocalPath.reset();
+        mFinalPath.reset();
+        mCombinedAlpha = 0;
+        mRasterRequest = false;
+    }
     explicit Mask(model::Mask *data) : mData(data) {}
     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
                 const DirtyFlag &flag);
@@ -191,6 +200,7 @@ class Layer;
 
 class Composition {
 public:
+    void resetForRecording();
     explicit Composition(std::shared_ptr<model::Composition> composition);
     bool  update(int frameNo, const VSize &size, bool keepAspectRatio);
     VSize size() const { return mViewSize; }
@@ -214,6 +224,7 @@ private:
 
 class Layer {
 public:
+    virtual void resetForRecording();
     virtual ~Layer() = default;
     Layer &operator=(Layer &&) noexcept = delete;
     Layer(model::Layer *layerData);
@@ -274,6 +285,7 @@ protected:
 
 class CompLayer final : public Layer {
 public:
+    void resetForRecording() final;
     CompLayer(model::Layer *layerData, VArenaAlloc *allocator, int depth,
               size_t &nodeBudget);
 
@@ -301,6 +313,7 @@ private:
 
 class SolidLayer final : public Layer {
 public:
+    void resetForRecording() final;
     explicit SolidLayer(model::Layer *layerData);
     void         buildLayerNode() final;
     DrawableList renderList() final;
@@ -319,6 +332,7 @@ class Group;
 
 class ShapeLayer final : public Layer {
 public:
+    void resetForRecording() final;
     explicit ShapeLayer(model::Layer *layerData, VArenaAlloc *allocator);
     DrawableList renderList() final;
     void         buildLayerNode() final;
@@ -345,6 +359,7 @@ protected:
 
 class ImageLayer final : public Layer {
 public:
+    void resetForRecording() final;
     explicit ImageLayer(model::Layer *layerData);
     void         buildLayerNode() final;
     DrawableList renderList() final;
@@ -362,6 +377,7 @@ private:
 
 class Object {
 public:
+    virtual void resetForRecording() = 0;
     enum class Type : uint8_t { Unknown, Group, Shape, Paint, Trim };
     virtual ~Object() = default;
     Object &     operator=(Object &&) noexcept = delete;
@@ -378,6 +394,10 @@ public:
 class Shape;
 class Group : public Object {
 public:
+    void resetForRecording() override {
+        mMatrix = VMatrix{};
+        for (auto *content : mContents) content->resetForRecording();
+    }
     Group() = default;
     explicit Group(model::Group *data, VArenaAlloc *allocator);
     void addChildren(model::Group *data, VArenaAlloc *allocator);
@@ -407,6 +427,12 @@ private:
 
 class Shape : public Object {
 public:
+    void resetForRecording() final {
+        mTemp = VPath{};
+        mLocalPath.reset();
+        mFrameNo = -1;
+        mDirtyPath = true;
+    }
     Shape(bool staticPath) : mStaticPath(staticPath) {}
     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
                 const DirtyFlag &flag) final;
@@ -509,6 +535,13 @@ private:
 
 class Paint : public Object {
 public:
+    void resetForRecording() final {
+        mPath.reset();
+        mFlag = {};
+        mRenderNodeUpdate = true;
+        mContentToRender = true;
+        mDrawable.resetForRecording();
+    }
     Paint(bool staticContent);
     void addPathItems(std::vector<Shape *> &list, size_t startOffset);
     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
@@ -585,6 +618,11 @@ private:
 
 class Trim final : public Object {
 public:
+    void resetForRecording() final {
+        mCache.mFrameNo = -1;
+        mCache.mSegment = {};
+        mDirty = true;
+    }
     explicit Trim(model::Trim *data) : mData(data), mModel(data) {}
     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
                 const DirtyFlag &flag) final;
@@ -618,6 +656,10 @@ private:
 
 class Repeater final : public Group {
 public:
+    void resetForRecording() final {
+        Group::resetForRecording();
+        mHidden = false;
+    }
     explicit Repeater(model::Repeater *data, VArenaAlloc *allocator);
     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
                 const DirtyFlag &flag) final;

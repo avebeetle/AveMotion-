@@ -1,6 +1,10 @@
 #include "RlottieSceneBridge.hpp"
 #include "support/ExactSceneComparison.hpp"
+#ifdef AVEMOTION_RECORDING_telegram
 #include "support/TelegramRecordingChecks.hpp"
+#else
+#include "support/SamsungRecordingChecks.hpp"
+#endif
 #include <rlottie.h>
 #include <algorithm>
 #include <array>
@@ -116,14 +120,34 @@ void guards(const std::string& json) {
 
 void freshNoBuildSentinel() {
     const std::string json = R"({"v":"5.7.4","w":128,"h":128,"fr":30,"ip":-1,"op":3,"layers":[]})";
+#ifdef AVEMOTION_RECORDING_telegram
     auto ordinary = load(json);
     require(ordinary->renderTree(0,128,128) == nullptr, "Telegram fresh global minus-one does not build");
+#endif
     auto recording = candidate(json);
     require(sample(*recording,0,128,128) == nullptr, "recording global minus-one sentinel");
     same(fresh(json,0,96,160), copy(sample(*recording,0,96,160),0,96,160), "sentinel with changed viewport");
     require(sample(*recording,0,128,128) == nullptr, "sentinel never republishes stale tree");
     same(fresh(json,0,96,160), copy(sample(*recording,0,96,160),0,96,160), "recovery after sentinel");
 }
+
+#ifdef AVEMOTION_RECORDING_samsung
+void samsungInclusiveVisibility() {
+    const std::string json = R"({"v":"5.7.4","w":128,"h":128,"fr":30,"ip":0,"op":3,"layers":[{"ty":3,"ind":1,"nm":"Boundary","ip":0,"op":1,"st":0,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[0,0,0]},"a":{"a":0,"k":[0,0,0]},"s":{"a":0,"k":[100,100,100]}}}]})";
+    auto retained = candidate(json);
+    for (size_t frame : {0U,1U,2U,1U,0U}) {
+        auto ordinary = load(json);
+        const auto *expected = ordinary->renderTree(frame,128,128);
+        const auto *actual = sample(*retained,frame,128,128);
+        require(expected && actual && expected->mLayerList.size == 1 && actual->mLayerList.size == 1,
+                "Samsung boundary fixture retains its child");
+        const int visible = frame <= 1 ? 1 : 0;
+        require(expected->mLayerList.ptr[0]->mVisible == visible &&
+                actual->mLayerList.ptr[0]->mVisible == visible,
+                "Samsung out-frame visibility remains inclusive");
+    }
+}
+#endif
 
 void timeline(const fs::path& path) {
     const auto json = read(path);
@@ -181,7 +205,14 @@ int main() {
             catch (const std::exception& e) { ++failures; std::cerr << "FAILED: " << e.what() << '\n'; }
         guards(read(fixtures / "reference_sessions/dashed_stroke_session.json"));
         freshNoBuildSentinel();
+#ifdef AVEMOTION_RECORDING_telegram
         avemotion::test::verifyTelegramRecordingPublication();
+#else
+        avemotion::test::verifySamsungRecordingPaths();
+        avemotion::test::verifySamsungRecordingPublication();
+        samsungInclusiveVisibility();
+        std::cout << "PASS Samsung empty/gapped paths, publication and inclusive visibility\n";
+#endif
         threaded(read(corpus / "mask.json"));
         threaded(read(fixtures / "reference_sessions/recording-negative-skipped.json"));
         require(failures == 0, std::to_string(failures) + " fixture histories differ");

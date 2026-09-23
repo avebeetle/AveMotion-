@@ -716,7 +716,7 @@ if(BUILD_TESTING)
         avemotion_set_warnings(avemotion_reference_session_tests)
         add_test(NAME avemotion.runtime.reference_sessions COMMAND avemotion_reference_session_tests)
 
-        if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
+        if(NOT AVEMOTION_RLOTTIE_VARIANT STREQUAL "none")
             add_executable(avemotion_recording_lifecycle_tests tests/recording_lifecycle_tests.cpp)
             target_link_libraries(avemotion_recording_lifecycle_tests PRIVATE AveMotion::Runtime rlottie::rlottie Threads::Threads)
             target_include_directories(avemotion_recording_lifecycle_tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime" "${AVEMOTION_RLOTTIE_INCLUDE_DIR}")
@@ -726,11 +726,14 @@ if(BUILD_TESTING)
                 "${AVEMOTION_RLOTTIE_INTERNAL_PIXMAN_DIR}"
                 "${AVEMOTION_RLOTTIE_GENERATED_INCLUDE_DIR}")
             target_compile_definitions(avemotion_recording_lifecycle_tests PRIVATE
+                AVEMOTION_RECORDING_${AVEMOTION_RLOTTIE_VARIANT}=1
                 AVEMOTION_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus"
                 AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
             avemotion_set_warnings(avemotion_recording_lifecycle_tests)
             add_test(NAME avemotion.runtime.recording_lifecycle COMMAND avemotion_recording_lifecycle_tests)
+        endif()
 
+        if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
             add_executable(avemotion_property_parity_tests
                 tests/property_parity_tests.cpp)
             target_include_directories(avemotion_property_parity_tests PRIVATE

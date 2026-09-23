@@ -1,0 +1,442 @@
+diff --git a/third_party/rlottie/samsung/source/CMakeLists.txt b/third_party/rlottie/samsung/source/CMakeLists.txt
+index bd2e432..276e898 100644
+--- a/third_party/rlottie/samsung/source/CMakeLists.txt
++++ b/third_party/rlottie/samsung/source/CMakeLists.txt
+@@ -73,6 +73,16 @@ else()
+                         )
+ endif()
+
++# The private recording guards throw before entering evaluator/raster code.
++# Their callback wrappers must unwind captured owners on rejection.
++if(MSVC)
++    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/src/lottie/lottieanimation.cpp"
++        PROPERTIES COMPILE_OPTIONS "/EHsc")
++else()
++    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/src/lottie/lottieanimation.cpp"
++        PROPERTIES COMPILE_OPTIONS "-fexceptions;-funwind-tables")
++endif()
++
+ if (WIN32 AND NOT BUILD_SHARED_LIBS)
+     target_compile_definitions(rlottie PUBLIC -DRLOTTIE_BUILD=0)
+     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+diff --git a/third_party/rlottie/samsung/source/inc/rlottie.h b/third_party/rlottie/samsung/source/inc/rlottie.h
+index ec50d2d..08a4393 100644
+--- a/third_party/rlottie/samsung/source/inc/rlottie.h
++++ b/third_party/rlottie/samsung/source/inc/rlottie.h
+@@ -437,6 +437,13 @@ public:
+      */
+     const LOTLayerNode * renderTree(size_t frameNo, size_t width, size_t height) const;
+
++    // Private AveMotion seam. One-way, pristine-only and serial per instance.
++    // Raster rendering and property overrides throw logic_error in this mode.
++    // Returned storage is borrowed until the next recording call or destruction.
++    bool enableRecordingLifecycle();
++    const LOTLayerNode *renderTreeForRecording(size_t frameNo, size_t width,
++                                              size_t height) const;
++
+     /**
+      *  @brief Returns Composition Markers.
+      *
+diff --git a/third_party/rlottie/samsung/source/src/lottie/lottieanimation.cpp b/third_party/rlottie/samsung/source/src/lottie/lottieanimation.cpp
+index afcc400..3507972 100644
+--- a/third_party/rlottie/samsung/source/src/lottie/lottieanimation.cpp
++++ b/third_party/rlottie/samsung/source/src/lottie/lottieanimation.cpp
+@@ -25,6 +25,8 @@
+ #include "rlottie.h"
+
+ #include <fstream>
++#include <limits>
++#include <stdexcept>
+
+ using namespace rlottie;
+ using namespace rlottie::internal;
+@@ -59,6 +61,9 @@ public:
+     std::future<Surface> renderAsync(size_t frameNo, Surface &&surface,
+                                      bool keepAspectRatio);
+     const LOTLayerNode * renderTree(size_t frameNo, const VSize &size);
++    bool enableRecordingLifecycle();
++    const LOTLayerNode *renderTreeForRecording(size_t frameNo, size_t width, size_t height);
++    void useOrdinary();
+
+     const LayerInfoList &layerInfoList() const
+     {
+@@ -72,6 +77,8 @@ public:
+     void              removeFilter(const std::string &keypath, Property prop);
+
+ private:
++    bool mRecordingLifecycle{false};
++    bool mOrdinaryUsed{false};
+     mutable LayerInfoList                  mLayerList;
+     model::Composition *                   mModel;
+     SharedRenderTask                       mTask;
+@@ -81,18 +88,51 @@ private:
+
+ void AnimationImpl::setValue(const std::string &keypath, LOTVariant &&value)
+ {
++    useOrdinary();
+     if (keypath.empty()) return;
+     mRenderer->setValue(keypath, value);
+ }
+
+ const LOTLayerNode *AnimationImpl::renderTree(size_t frameNo, const VSize &size)
+ {
++    if (mRecordingLifecycle) return nullptr;
++    mOrdinaryUsed = true;
+     if (update(frameNo, size, true)) {
+         mRenderer->buildRenderTree();
+     }
+     return mRenderer->renderTree();
+ }
+
++void AnimationImpl::useOrdinary()
++{
++    if (mRecordingLifecycle)
++        throw std::logic_error("recording lifecycle forbids raster rendering and property overrides");
++    // Async dispatch already latched this on the caller; its worker must not
++    // write again while an immediate enable attempt reads the completed latch.
++    if (!mOrdinaryUsed) mOrdinaryUsed = true;
++}
++
++bool AnimationImpl::enableRecordingLifecycle()
++{
++    if (mRecordingLifecycle) return true;
++    if (mOrdinaryUsed) return false;
++    mRecordingLifecycle = true;
++    return true;
++}
++
++const LOTLayerNode *AnimationImpl::renderTreeForRecording(size_t frameNo, size_t width, size_t height)
++{
++    if (!mRecordingLifecycle) return nullptr;
++    if (!width || !height || width > size_t(std::numeric_limits<int>::max()) ||
++        height > size_t(std::numeric_limits<int>::max())) return nullptr;
++    mRenderer->resetForRecording();
++    // The constructor-cache global -1 sentinel has no built fresh C tree.
++    // In particular, avoid Samsung's ordinary unbuilt CApiData dereference.
++    if (!update(frameNo, VSize(int(width), int(height)), true)) return nullptr;
++    mRenderer->buildRenderTree();
++    return mRenderer->renderTree();
++}
++
+ bool AnimationImpl::update(size_t frameNo, const VSize &size,
+                            bool keepAspectRatio)
+ {
+@@ -108,6 +148,7 @@ bool AnimationImpl::update(size_t frameNo, const VSize &size,
+ Surface AnimationImpl::render(size_t frameNo, const Surface &surface,
+                               bool keepAspectRatio)
+ {
++    useOrdinary();
+     bool renderInProgress = mRenderInProgress.load();
+     if (renderInProgress) {
+         vCritical << "Already Rendering Scheduled for this Animation";
+@@ -250,6 +291,7 @@ std::future<Surface> AnimationImpl::renderAsync(size_t    frameNo,
+                                                 Surface &&surface,
+                                                 bool      keepAspectRatio)
+ {
++    useOrdinary();
+     if (!mTask) {
+         mTask = std::make_shared<RenderTask>();
+     } else {
+@@ -359,6 +401,17 @@ const LOTLayerNode *Animation::renderTree(size_t frameNo, size_t width,
+     return d->renderTree(frameNo, VSize(int(width), int(height)));
+ }
+
++bool Animation::enableRecordingLifecycle()
++{
++    return d->enableRecordingLifecycle();
++}
++
++const LOTLayerNode *Animation::renderTreeForRecording(size_t frameNo, size_t width,
++                                                     size_t height) const
++{
++    return d->renderTreeForRecording(frameNo, width, height);
++}
++
+ std::future<Surface> Animation::render(size_t frameNo, Surface surface,
+                                        bool keepAspectRatio)
+ {
+diff --git a/third_party/rlottie/samsung/source/src/lottie/lottieitem.cpp b/third_party/rlottie/samsung/source/src/lottie/lottieitem.cpp
+index ffbd829..ef0b7a0 100644
+--- a/third_party/rlottie/samsung/source/src/lottie/lottieitem.cpp
++++ b/third_party/rlottie/samsung/source/src/lottie/lottieitem.cpp
+@@ -24,6 +24,7 @@
+ #include <algorithm>
+ #include <cmath>
+ #include <iterator>
++#include <cassert>
+ #include "lottiekeypath.h"
+ #include "vbitmap.h"
+ #include "vpainter.h"
+@@ -86,6 +87,82 @@ static bool trimProp(rlottie::Property prop)
+ static constexpr int    kMaxLayerDepth = 32;      // precomp nesting-depth limit
+ static constexpr size_t kMaxLayerNodes = 100000;  // global render-node budget
+
++// Reset only mutable evaluation scratch on the actual arena-owned graph.
++// Topology, model resources, bindings and publication owners remain in place.
++void renderer::Composition::resetForRecording()
++{
++    mCurFrameNo = -1;
++    mViewSize = mModel->size();
++    mKeepAspectRatio = true;
++    mScaleMatrix = VMatrix{};
++    mRootLayer->resetForRecording();
++}
++
++void renderer::Layer::resetForRecording()
++{
++    mFrameNo = -1;
++    mCombinedAlpha = 0;
++    mCombinedMatrix = VMatrix{};
++    mDirtyFlag = DirtyFlagBit::All;
++    if (mLayerMask) {
++        mLayerMask->mDirty = true;
++        for (auto &mask : mLayerMask->mMasks) mask.resetForRecording();
++    }
++}
++
++void renderer::CompLayer::resetForRecording()
++{
++    Layer::resetForRecording();
++    if (mClipper) {
++        mClipper->mPath.reset();
++        mClipper->mRasterRequest = false;
++    }
++    for (auto *layer : mLayers) layer->resetForRecording();
++}
++
++void renderer::ShapeLayer::resetForRecording()
++{
++    Layer::resetForRecording();
++    mDrawableList.clear();
++    mRoot->resetForRecording();
++}
++
++void renderer::SolidLayer::resetForRecording()
++{
++    Layer::resetForRecording();
++    mPath.reset();
++    mRenderNode.resetForRecording();
++}
++
++void renderer::ImageLayer::resetForRecording()
++{
++    Layer::resetForRecording();
++    mPath.reset();
++    mRenderNode.resetForRecording();
++}
++
++void renderer::Drawable::resetForRecording()
++{
++    mRecording = true;
++    mPath.reset();
++    mRecordingPath.reset();
++    mFlag = DirtyState::All;
++    mFillRule = FillRule::Winding;
++    // Keep the exact payload allocation selected by setType at construction.
++    // In particular, do not erase image brushes or immutable gradient stops.
++    if (mType == Type::Fill) {
++        assert(mStrokeInfo == nullptr);
++    } else {
++        assert(mStrokeInfo != nullptr);
++        mStrokeInfo->width = 0;
++        mStrokeInfo->miterLimit = 10;
++        mStrokeInfo->cap = CapStyle::Flat;
++        mStrokeInfo->join = JoinStyle::Bevel;
++        if (mType == Type::StrokeWithDash)
++            static_cast<StrokeWithDashInfo *>(mStrokeInfo)->mDash.clear();
++    }
++}
++
+ static renderer::Layer *createLayerItem(model::Layer *layerData,
+                                         VArenaAlloc *allocator, int depth,
+                                         size_t &nodeBudget)
+diff --git a/third_party/rlottie/samsung/source/src/lottie/lottieitem.h b/third_party/rlottie/samsung/source/src/lottie/lottieitem.h
+index 9ff3fe9..fc31705 100644
+--- a/third_party/rlottie/samsung/source/src/lottie/lottieitem.h
++++ b/third_party/rlottie/samsung/source/src/lottie/lottieitem.h
+@@ -116,9 +116,12 @@ private:
+ class Drawable final : public VDrawable {
+ public:
+     void sync();
++    void resetForRecording();
+
+ public:
+     std::unique_ptr<LOTNode> mCNode{nullptr};
++    VPath mRecordingPath;
++    bool mRecording{false};
+
+     ~Drawable() noexcept
+     {
+@@ -152,6 +155,12 @@ public:
+
+ class Mask {
+ public:
++    void resetForRecording() {
++        mLocalPath.reset();
++        mFinalPath.reset();
++        mCombinedAlpha = 0;
++        mRasterRequest = false;
++    }
+     explicit Mask(model::Mask *data) : mData(data) {}
+     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
+                 const DirtyFlag &flag);
+@@ -191,6 +200,7 @@ class Layer;
+
+ class Composition {
+ public:
++    void resetForRecording();
+     explicit Composition(std::shared_ptr<model::Composition> composition);
+     bool  update(int frameNo, const VSize &size, bool keepAspectRatio);
+     VSize size() const { return mViewSize; }
+@@ -214,6 +224,7 @@ private:
+
+ class Layer {
+ public:
++    virtual void resetForRecording();
+     virtual ~Layer() = default;
+     Layer &operator=(Layer &&) noexcept = delete;
+     Layer(model::Layer *layerData);
+@@ -274,6 +285,7 @@ protected:
+
+ class CompLayer final : public Layer {
+ public:
++    void resetForRecording() final;
+     CompLayer(model::Layer *layerData, VArenaAlloc *allocator, int depth,
+               size_t &nodeBudget);
+
+@@ -301,6 +313,7 @@ private:
+
+ class SolidLayer final : public Layer {
+ public:
++    void resetForRecording() final;
+     explicit SolidLayer(model::Layer *layerData);
+     void         buildLayerNode() final;
+     DrawableList renderList() final;
+@@ -319,6 +332,7 @@ class Group;
+
+ class ShapeLayer final : public Layer {
+ public:
++    void resetForRecording() final;
+     explicit ShapeLayer(model::Layer *layerData, VArenaAlloc *allocator);
+     DrawableList renderList() final;
+     void         buildLayerNode() final;
+@@ -345,6 +359,7 @@ protected:
+
+ class ImageLayer final : public Layer {
+ public:
++    void resetForRecording() final;
+     explicit ImageLayer(model::Layer *layerData);
+     void         buildLayerNode() final;
+     DrawableList renderList() final;
+@@ -362,6 +377,7 @@ private:
+
+ class Object {
+ public:
++    virtual void resetForRecording() = 0;
+     enum class Type : uint8_t { Unknown, Group, Shape, Paint, Trim };
+     virtual ~Object() = default;
+     Object &     operator=(Object &&) noexcept = delete;
+@@ -378,6 +394,10 @@ public:
+ class Shape;
+ class Group : public Object {
+ public:
++    void resetForRecording() override {
++        mMatrix = VMatrix{};
++        for (auto *content : mContents) content->resetForRecording();
++    }
+     Group() = default;
+     explicit Group(model::Group *data, VArenaAlloc *allocator);
+     void addChildren(model::Group *data, VArenaAlloc *allocator);
+@@ -407,6 +427,12 @@ private:
+
+ class Shape : public Object {
+ public:
++    void resetForRecording() final {
++        mTemp = VPath{};
++        mLocalPath.reset();
++        mFrameNo = -1;
++        mDirtyPath = true;
++    }
+     Shape(bool staticPath) : mStaticPath(staticPath) {}
+     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
+                 const DirtyFlag &flag) final;
+@@ -509,6 +535,13 @@ private:
+
+ class Paint : public Object {
+ public:
++    void resetForRecording() final {
++        mPath.reset();
++        mFlag = {};
++        mRenderNodeUpdate = true;
++        mContentToRender = true;
++        mDrawable.resetForRecording();
++    }
+     Paint(bool staticContent);
+     void addPathItems(std::vector<Shape *> &list, size_t startOffset);
+     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
+@@ -585,6 +618,11 @@ private:
+
+ class Trim final : public Object {
+ public:
++    void resetForRecording() final {
++        mCache.mFrameNo = -1;
++        mCache.mSegment = {};
++        mDirty = true;
++    }
+     explicit Trim(model::Trim *data) : mData(data), mModel(data) {}
+     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
+                 const DirtyFlag &flag) final;
+@@ -618,6 +656,10 @@ private:
+
+ class Repeater final : public Group {
+ public:
++    void resetForRecording() final {
++        Group::resetForRecording();
++        mHidden = false;
++    }
+     explicit Repeater(model::Repeater *data, VArenaAlloc *allocator);
+     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha,
+                 const DirtyFlag &flag) final;
+diff --git a/third_party/rlottie/samsung/source/src/lottie/lottieitem_capi.cpp b/third_party/rlottie/samsung/source/src/lottie/lottieitem_capi.cpp
+index 048e356..255c877 100644
+--- a/third_party/rlottie/samsung/source/src/lottie/lottieitem_capi.cpp
++++ b/third_party/rlottie/samsung/source/src/lottie/lottieitem_capi.cpp
+@@ -232,13 +232,35 @@ void renderer::Drawable::sync()
+         mCNode->mGradient.stopCount = 0;
+     }
+
++    if (mRecording) {
++        // The gradient stops are the only independently owned C payload.
++        auto *stops = mCNode->mGradient.stopPtr;
++        const auto count = mCNode->mGradient.stopCount;
++        *mCNode = LOTNode{};
++        mCNode->mGradient.stopPtr = stops;
++        mCNode->mGradient.stopCount = count;
++    }
++
+     mCNode->mFlag = ChangeFlagNone;
+     if (mFlag & DirtyState::None) return;
+
+     if (mFlag & DirtyState::Path) {
+-        applyDashOp();
+-        const std::vector<VPath::Element> &elm = mPath.elements();
+-        const std::vector<VPointF> &       pts = mPath.points();
++        if (mRecording) {
++            const auto *dash = mType == Type::StrokeWithDash
++                ? static_cast<StrokeWithDashInfo *>(mStrokeInfo) : nullptr;
++            if (dash && !dash->mDash.empty()) {
++                VDasher dasher(dash->mDash.data(), dash->mDash.size());
++                // Preserve ordinary value-returning all-zero-pattern semantics.
++                mRecordingPath.clone(dasher.dashed(mPath));
++            } else {
++                mRecordingPath.clone(mPath);
++            }
++        } else {
++            applyDashOp();
++        }
++        const auto &published = mRecording ? mRecordingPath : mPath;
++        const std::vector<VPath::Element> &elm = published.elements();
++        const std::vector<VPointF> &       pts = published.points();
+         const float *ptPtr = reinterpret_cast<const float *>(pts.data());
+         const char * elmPtr = reinterpret_cast<const char *>(elm.data());
+         mCNode->mPath.elmPtr = elmPtr;

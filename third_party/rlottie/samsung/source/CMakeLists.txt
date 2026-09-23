@@ -73,6 +73,16 @@ else()
                         )
 endif()
 
+# The private recording guards throw before entering evaluator/raster code.
+# Their callback wrappers must unwind captured owners on rejection.
+if(MSVC)
+    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/src/lottie/lottieanimation.cpp"
+        PROPERTIES COMPILE_OPTIONS "/EHsc")
+else()
+    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/src/lottie/lottieanimation.cpp"
+        PROPERTIES COMPILE_OPTIONS "-fexceptions;-funwind-tables")
+endif()
+
 if (WIN32 AND NOT BUILD_SHARED_LIBS)
     target_compile_definitions(rlottie PUBLIC -DRLOTTIE_BUILD=0)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")

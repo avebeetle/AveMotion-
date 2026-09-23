@@ -25,6 +25,8 @@
 #include "rlottie.h"
 
 #include <fstream>
+#include <limits>
+#include <stdexcept>
 
 using namespace rlottie;
 using namespace rlottie::internal;
@@ -59,6 +61,9 @@ public:
     std::future<Surface> renderAsync(size_t frameNo, Surface &&surface,
                                      bool keepAspectRatio);
     const LOTLayerNode * renderTree(size_t frameNo, const VSize &size);
+    bool enableRecordingLifecycle();
+    const LOTLayerNode *renderTreeForRecording(size_t frameNo, size_t width, size_t height);
+    void useOrdinary();
 
     const LayerInfoList &layerInfoList() const
     {
@@ -72,6 +77,8 @@ public:
     void              removeFilter(const std::string &keypath, Property prop);
 
 private:
+    bool mRecordingLifecycle{false};
+    bool mOrdinaryUsed{false};
     mutable LayerInfoList                  mLayerList;
     model::Composition *                   mModel;
     SharedRenderTask                       mTask;
@@ -81,15 +88,48 @@ private:
 
 void AnimationImpl::setValue(const std::string &keypath, LOTVariant &&value)
 {
+    useOrdinary();
     if (keypath.empty()) return;
     mRenderer->setValue(keypath, value);
 }
 
 const LOTLayerNode *AnimationImpl::renderTree(size_t frameNo, const VSize &size)
 {
+    if (mRecordingLifecycle) return nullptr;
+    mOrdinaryUsed = true;
     if (update(frameNo, size, true)) {
         mRenderer->buildRenderTree();
     }
+    return mRenderer->renderTree();
+}
+
+void AnimationImpl::useOrdinary()
+{
+    if (mRecordingLifecycle)
+        throw std::logic_error("recording lifecycle forbids raster rendering and property overrides");
+    // Async dispatch already latched this on the caller; its worker must not
+    // write again while an immediate enable attempt reads the completed latch.
+    if (!mOrdinaryUsed) mOrdinaryUsed = true;
+}
+
+bool AnimationImpl::enableRecordingLifecycle()
+{
+    if (mRecordingLifecycle) return true;
+    if (mOrdinaryUsed) return false;
+    mRecordingLifecycle = true;
+    return true;
+}
+
+const LOTLayerNode *AnimationImpl::renderTreeForRecording(size_t frameNo, size_t width, size_t height)
+{
+    if (!mRecordingLifecycle) return nullptr;
+    if (!width || !height || width > size_t(std::numeric_limits<int>::max()) ||
+        height > size_t(std::numeric_limits<int>::max())) return nullptr;
+    mRenderer->resetForRecording();
+    // The constructor-cache global -1 sentinel has no built fresh C tree.
+    // In particular, avoid Samsung's ordinary unbuilt CApiData dereference.
+    if (!update(frameNo, VSize(int(width), int(height)), true)) return nullptr;
+    mRenderer->buildRenderTree();
     return mRenderer->renderTree();
 }
 
@@ -108,6 +148,7 @@ bool AnimationImpl::update(size_t frameNo, const VSize &size,
 Surface AnimationImpl::render(size_t frameNo, const Surface &surface,
                               bool keepAspectRatio)
 {
+    useOrdinary();
     bool renderInProgress = mRenderInProgress.load();
     if (renderInProgress) {
         vCritical << "Already Rendering Scheduled for this Animation";
@@ -250,6 +291,7 @@ std::future<Surface> AnimationImpl::renderAsync(size_t    frameNo,
                                                 Surface &&surface,
                                                 bool      keepAspectRatio)
 {
+    useOrdinary();
     if (!mTask) {
         mTask = std::make_shared<RenderTask>();
     } else {
@@ -357,6 +399,17 @@ const LOTLayerNode *Animation::renderTree(size_t frameNo, size_t width,
                                           size_t height) const
 {
     return d->renderTree(frameNo, VSize(int(width), int(height)));
+}
+
+bool Animation::enableRecordingLifecycle()
+{
+    return d->enableRecordingLifecycle();
+}
+
+const LOTLayerNode *Animation::renderTreeForRecording(size_t frameNo, size_t width,
+                                                     size_t height) const
+{
+    return d->renderTreeForRecording(frameNo, width, height);
 }
 
 std::future<Surface> Animation::render(size_t frameNo, Surface surface,

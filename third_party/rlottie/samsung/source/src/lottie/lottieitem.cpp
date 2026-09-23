@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <cassert>
 #include "lottiekeypath.h"
 #include "vbitmap.h"
 #include "vpainter.h"
@@ -85,6 +86,82 @@ static bool trimProp(rlottie::Property prop)
 
 static constexpr int    kMaxLayerDepth = 32;      // precomp nesting-depth limit
 static constexpr size_t kMaxLayerNodes = 100000;  // global render-node budget
+
+// Reset only mutable evaluation scratch on the actual arena-owned graph.
+// Topology, model resources, bindings and publication owners remain in place.
+void renderer::Composition::resetForRecording()
+{
+    mCurFrameNo = -1;
+    mViewSize = mModel->size();
+    mKeepAspectRatio = true;
+    mScaleMatrix = VMatrix{};
+    mRootLayer->resetForRecording();
+}
+
+void renderer::Layer::resetForRecording()
+{
+    mFrameNo = -1;
+    mCombinedAlpha = 0;
+    mCombinedMatrix = VMatrix{};
+    mDirtyFlag = DirtyFlagBit::All;
+    if (mLayerMask) {
+        mLayerMask->mDirty = true;
+        for (auto &mask : mLayerMask->mMasks) mask.resetForRecording();
+    }
+}
+
+void renderer::CompLayer::resetForRecording()
+{
+    Layer::resetForRecording();
+    if (mClipper) {
+        mClipper->mPath.reset();
+        mClipper->mRasterRequest = false;
+    }
+    for (auto *layer : mLayers) layer->resetForRecording();
+}
+
+void renderer::ShapeLayer::resetForRecording()
+{
+    Layer::resetForRecording();
+    mDrawableList.clear();
+    mRoot->resetForRecording();
+}
+
+void renderer::SolidLayer::resetForRecording()
+{
+    Layer::resetForRecording();
+    mPath.reset();
+    mRenderNode.resetForRecording();
+}
+
+void renderer::ImageLayer::resetForRecording()
+{
+    Layer::resetForRecording();
+    mPath.reset();
+    mRenderNode.resetForRecording();
+}
+
+void renderer::Drawable::resetForRecording()
+{
+    mRecording = true;
+    mPath.reset();
+    mRecordingPath.reset();
+    mFlag = DirtyState::All;
+    mFillRule = FillRule::Winding;
+    // Keep the exact payload allocation selected by setType at construction.
+    // In particular, do not erase image brushes or immutable gradient stops.
+    if (mType == Type::Fill) {
+        assert(mStrokeInfo == nullptr);
+    } else {
+        assert(mStrokeInfo != nullptr);
+        mStrokeInfo->width = 0;
+        mStrokeInfo->miterLimit = 10;
+        mStrokeInfo->cap = CapStyle::Flat;
+        mStrokeInfo->join = JoinStyle::Bevel;
+        if (mType == Type::StrokeWithDash)
+            static_cast<StrokeWithDashInfo *>(mStrokeInfo)->mDash.clear();
+    }
+}
 
 static renderer::Layer *createLayerItem(model::Layer *layerData,
                                         VArenaAlloc *allocator, int depth,

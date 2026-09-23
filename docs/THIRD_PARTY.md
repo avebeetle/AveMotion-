@@ -21,8 +21,8 @@ Telegram changes are explicit:
 Patch 0004 supplies the read-only parsed-model/easing/property introspection used
 by the standalone evaluator. Patch 0005 carries canonical source Shape/paint
 identities and modifier metadata into the Telegram render-tree seam for Part 11. The independent `AveMotion::Evaluation` target does not link
-Telegram. Samsung's local sanitizer-hardening edit remains under
-`patches/samsung/`.
+Telegram. Samsung's local sanitizer-hardening edit and additive recording seam
+remain under `patches/samsung/`.
 
 No upstream type is exported by the installed AveMotion public headers.
 
@@ -34,6 +34,16 @@ throw `std::logic_error`; exception unwinding is enabled only for the API
 translation unit. Ordinary CPU rendering remains the oracle and production
 Runtime still uses fresh ordinary sampling during Part25C. No dependency commit,
 license text, or redistribution policy changes with this seam.
+
+Samsung patch `0002-avemotion-recording-lifecycle.patch` adds the same private
+opt-in API and guards, using Samsung's arena ownership, inclusive out-frame
+visibility and original value-returning dash semantics. It retains typed stroke
+payloads, gradient stop allocations and image brushes, clears shape/mask authored
+scratch even for output-untouched PathData intervals, and performs no raster
+preprocess. Only its API translation unit enables exception unwinding. Exact
+fresh-ordinary versus retained-recording tests share the unchanged scene
+comparator with Telegram. The two known Samsung Polystar scene/plan golden
+failures are preserved; this seam does not change production Runtime sampling.
 
 ## Part 22 miniz isolation
 
