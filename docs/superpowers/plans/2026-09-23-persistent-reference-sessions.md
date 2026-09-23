@@ -71,13 +71,13 @@ These are budgets, not unconditional promises. Start no large block after **08:1
 
 ### 1.1 Diagnostics RED
 
-- [ ] Add compile-time/runtime assertions in `tests/runtime_seams_tests.cpp` for these exact `std::uint64_t` snapshot members:
+- [x] Add compile-time/runtime assertions in `tests/runtime_seams_tests.cpp` for these exact `std::uint64_t` snapshot members:
   `referenceMetadataSessionsCreated`, `referenceSceneSessionsCreated`,
   `referenceModelSessionsCreated`, `referenceCpuSessionsCreated`,
   `referenceSceneSamples`, and `referenceModelSamples`.
-- [ ] On `StickAndBall.json`, reset diagnostics while quiescent, then assert metadata creation after load, scene creation after instance creation, lazy CPU creation/reuse, and zeroed epoch counters after `resetDiagnostics()` without recreating live sessions.
-- [ ] For the pre-optimization characterization only, assert that one exact scene evaluation creates an additional scene-role session. Mark this assertion for replacement by Task 3's permanent zero-hot-path contract. Use `evaluateFrame()` to keep implicit model preparation out of this assertion.
-- [ ] Run the focused build and capture the expected missing-member compilation failure:
+- [x] On `StickAndBall.json`, reset diagnostics while quiescent, then assert metadata creation after load, scene creation after instance creation, lazy CPU creation/reuse, and zeroed epoch counters after `resetDiagnostics()` without recreating live sessions.
+- [x] For the pre-optimization characterization only, assert that one exact scene evaluation creates an additional scene-role session. Mark this assertion for replacement by Task 3's permanent zero-hot-path contract. Use `evaluateFrame()` to keep implicit model preparation out of this assertion.
+- [x] Run the focused build and capture the expected missing-member compilation failure:
 
 ```powershell
 & cmd.exe /d /s /c '"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64 && cmake --build --preset windows-msvc-telegram-debug --target avemotion_runtime_seams_tests --parallel 4'
@@ -85,21 +85,42 @@ These are budgets, not unconditional promises. Start no large block after **08:1
 
 ### 1.2 Minimal diagnostic implementation
 
-- [ ] Add the six public snapshot fields in the exact order above.
-- [ ] Add six matching relaxed atomics to `RuntimeState`, then include every field in `snapshot()` and `reset()`.
-- [ ] Add private enums such as `ReferenceSessionRole { Metadata, Scene, ModelPreparation, Cpu }` and `ReferenceSampleRole { Scene, ModelPreparation }`.
-- [ ] Make the internal load helper accept a session role and increment the matching creation counter only after `rlottie::Animation::loadFromData()` succeeds.
-- [ ] Tag all current creation sites accurately: asset validation/metadata, eager instance scene session, model-preparation per-frame sessions, and lazy CPU session.
-- [ ] Pass a sample role into the exact-scene helper and increment the matching sample counter immediately at the `renderTree()` boundary. Do not add model samples to the existing instance-only `sceneEvaluations` metric.
-- [ ] Rerun the focused seams target/test and verify the Task 1 characterization is green.
+- [x] Add the six public snapshot fields in the exact order above.
+- [x] Add six matching relaxed atomics to `RuntimeState`, then include every field in `snapshot()` and `reset()`.
+- [x] Add private enums such as `ReferenceSessionRole { Metadata, Scene, ModelPreparation, Cpu }` and `ReferenceSampleRole { Scene, ModelPreparation }`.
+- [x] Make the internal load helper accept a session role and increment the matching creation counter only after `rlottie::Animation::loadFromData()` succeeds.
+- [x] Tag all current creation sites accurately: asset validation/metadata, eager instance scene session, model-preparation per-frame sessions, and lazy CPU session.
+- [x] Pass a sample role into the exact-scene helper and increment the matching sample counter immediately at the `renderTree()` boundary. Do not add model samples to the existing instance-only `sceneEvaluations` metric.
+- [x] Rerun the focused seams target/test and verify the Task 1 characterization is green.
 
-- [ ] Commit message: `feat: add reference session diagnostics`. Review this task independently before changing lifetime or the benchmark.
+- [x] Commit message: `feat: add reference session diagnostics`. Review this task independently before changing lifetime or the benchmark.
 
 ## Task 2: Establish the measurement contract and baseline
 
-**Files:** modify `apps/corpus_lab/main.cpp`, `scripts/test_corpus_lab_output.py`, `scripts/run_part24_corpus_lab.py`, `CMakeLists.txt`, and `docs/CORPUS_LAB.md`. Extend existing Player/planner tests only where a necessary storage invariant lacks coverage.
+**Files:** modify `apps/corpus_lab/main.cpp`, `scripts/test_corpus_lab_output.py`, `scripts/run_part24_corpus_lab.py`, `CMakeLists.txt`, and `docs/CORPUS_LAB.md`. Create `apps/corpus_lab/BenchmarkMetrics.hpp` and `tests/corpus_benchmark_metrics_tests.cpp` for reusable/tested percentile and phase-delta helpers. Create `scripts/test_corpus_lab_output_safety.py` for the discovered output-directory deletion risk. Extend existing Player/planner tests only where a necessary storage invariant lacks coverage.
 
 **Interface:** consumes Task 1 counters. Produces summary `schema=2`, exact/pipeline median and p95 in ns, phase-specific session counts, workspace growth observations and a Windows memory report. No runtime lifetime changes.
+
+Concrete report contract: preserve every existing TSV column and append
+`exact_scene_median_ns`, `exact_scene_p95_ns`, `pipeline_median_ns`,
+`pipeline_p95_ns`, and `{setup,first,steady}_{metadata,scene,model,cpu}_sessions`.
+Also append `setup_model_samples`, `first_scene_samples`, `steady_scene_samples`,
+and evaluator/projector retained-byte and storage-generation values for the
+after-prepare, after-warm-up and after-measured boundaries. Setup excludes the
+separate load-timing runtimes. First/steady fields are deltas; warm-up is excluded.
+Report column units and phase meanings in the documentation.
+
+Memory mode writes `memory_observation.tsv` with header
+`asset\tinstances\tworking_set_bytes\tpeak_working_set_bytes\n` and one row.
+Its single asset uses the existing privacy alias. Hold all instances live until
+after `GetProcessMemoryInfo`; reject this mode explicitly on non-Windows rather
+than emitting invented zero measurements. Forward `--memory-instances` through
+the runner too. Its normal corpus mode retains existing report filenames.
+
+The planner currently exposes revision/update counts but no allocation/capacity
+metric. Use its existing repeat/forget regression tests and label allocation
+stability unverified; adding a new public planner observability API is outside
+this measurement task.
 
 ### 2.1 Corpus-lab schema RED
 
@@ -110,6 +131,8 @@ These are budgets, not unconditional promises. Start no large block after **08:1
 ```powershell
 python scripts/test_corpus_lab_output.py --output out/build/windows-msvc-telegram-debug/corpus-lab-smoke --expected-assets 16
 ```
+
+- [ ] Add a temporary-directory regression that invokes the actual corpus CLI with an existing output directory containing a nested sentinel and requires the sentinel to survive; cover the Python runner with `--skip-build` too. Observe RED against the current unconditional `std::filesystem::remove_all(options.output)` / `shutil.rmtree(args.output)`. Replace both with non-destructive directory creation and overwrite only the tool's named report files. Input equal to output must preserve the original asset. Do not introduce an arbitrary recursive-delete guard when no deletion is needed.
 
 ### 2.2 Benchmark implementation
 

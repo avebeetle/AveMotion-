@@ -24,11 +24,21 @@ Implementation plan:
 Execution method: subagent-driven implementation with a fresh reviewer per
 task, directly on `main` as the user authorized. No routine approval is pending.
 
-Current work: Task 0, investigating documented `renderTree()` history coupling;
-Task 1 diagnostic instrumentation may proceed independently. A scratch MSVC
-Telegram probe reproduced differences on firework, LoudMute and multi-trim.
-Naive scene reuse must not ship. Ascending model scan reuse has its own gate.
-The authoritative diagnostic report will be `out/part25a-probe/findings.md`.
+Task 0 reproduced both seek and complete ascending-scan corruption in Telegram
+and Samsung. Durable findings: `docs/PART25A_REFERENCE_SESSION_FINDINGS.md`;
+raw scratch evidence: `out/part25a-probe/findings.md`. Direct scene and model
+reuse are rejected. A bounded independent trim-cache root-cause investigation
+continues in `out/part25a-trim/findings.md` when available.
+
+Task 1 diagnostics complete: `bcde48b`, with reviewed Samsung-test correction
+`f9b1e4e`. Full Telegram debug 57/57 passed; the controller freshly reran focused
+seams tests on Telegram and Samsung, both passed. Independent task review and
+scoped fix review passed. No session lifetime or visual behavior changed.
+Next block is Task 2 measurement instrumentation and report-directory safety.
+
+Task 2 also removes observed unconditional recursive output-directory deletion
+in the corpus CLI and runner. Regression tests must preserve unrelated files
+and inputs while regenerating the tool's named reports.
 
 The plan has been corrected for explicit WARP/preview presets, actual CTest
 names, measured workspace growth, corpus schema changes, model-result errors,
