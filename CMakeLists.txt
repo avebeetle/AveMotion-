@@ -685,8 +685,17 @@ if(BUILD_TESTING)
     add_test(NAME avemotion.vendor.ordering
         COMMAND ${Python3_EXECUTABLE}
             ${CMAKE_CURRENT_SOURCE_DIR}/scripts/test_vendor_fingerprint_order.py)
+    add_test(NAME avemotion.vendor.selection
+        COMMAND ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/scripts/test_vendor_selection.py)
+    if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "samsung")
+        set(AVEMOTION_VENDOR_VERIFY_VARIANT all)
+    else()
+        set(AVEMOTION_VENDOR_VERIFY_VARIANT ${AVEMOTION_RLOTTIE_VARIANT})
+    endif()
     add_test(NAME avemotion.vendor.verify
-        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/verify_vendor.py)
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/verify_vendor.py
+            --variant ${AVEMOTION_VENDOR_VERIFY_VARIANT})
     find_package(Git QUIET)
     if(GIT_FOUND)
         add_test(NAME avemotion.vendor.git_protected_bytes

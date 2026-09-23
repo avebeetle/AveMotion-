@@ -9,6 +9,9 @@ For ordinary lean internal builds and the no-reference installed package, see
 [Module builds and offline package](docs/MODULE_BUILD.md). The Telegram-backed
 module remains a build-tree integration; the offline package cannot load
 animations through Runtime.
+Normal CI also checks the lean builds and offline package. Samsung remains a
+retained, manually dispatched comparison workflow; see the vendor integrity
+section of the module guide for verification scopes and commands.
 
 Part 24 adds a privacy-preserving laboratory for representative `.tgs` and
 Lottie JSON collections. It deliberately adds no new visual family. The goal is

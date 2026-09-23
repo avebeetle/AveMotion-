@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -8,7 +9,6 @@ import sys
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "third_party" / "rlottie" / "UPSTREAM.json"
 
 
 def file_sha256(path: Path) -> str:
@@ -59,11 +59,16 @@ def tree_fingerprint(path: Path) -> tuple[str, int, int]:
     return fingerprint_entries(canonical_tree_files(path))
 
 
-def main() -> int:
-    data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+def verify(root: Path, variant: str) -> list[str]:
+    if variant not in ("all", "telegram", "samsung", "none"):
+        raise ValueError(f"invalid vendor variant: {variant}")
+    data = json.loads((root / "third_party" / "rlottie" / "UPSTREAM.json").read_text(encoding="utf-8"))
     errors: list[str] = []
-    for name, entry in data["variants"].items():
-        source = ROOT / entry["source_directory"]
+    selected = data["variants"] if variant == "all" else (
+        {} if variant == "none" else {variant: data["variants"][variant]}
+    )
+    for name, entry in selected.items():
+        source = root / entry["source_directory"]
         commit_file = source.parent / "SOURCE_COMMIT"
         if not (source / "CMakeLists.txt").is_file():
             errors.append(f"{name}: missing source CMakeLists.txt")
@@ -89,23 +94,36 @@ def main() -> int:
                     f"{name}: source byte count mismatch: expected "
                     f"{entry.get('source_byte_count')}, got {actual_bytes}")
 
-    sums = ROOT / "tests" / "corpus" / "SHA256SUMS.txt"
+    sums = root / "tests" / "corpus" / "SHA256SUMS.txt"
     for line in sums.read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
         expected, relative = line.split(maxsplit=1)
         relative = relative.lstrip("*")
-        path = ROOT / relative
+        path = root / relative
         if not path.is_file() or file_sha256(path) != expected:
             errors.append(f"corpus hash mismatch: {relative}")
+    return errors
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Verify selected vendored sources and committed corpus")
+    parser.add_argument("--variant", choices=("all", "telegram", "samsung", "none"), default="all")
+    args = parser.parse_args()
+    errors = verify(ROOT, args.variant)
 
     if errors:
         print("Vendor verification failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print(
-        "Vendor verification passed for Telegram primary and Samsung comparison variants")
+    scope = {
+        "all": "Telegram and Samsung vendor trees",
+        "telegram": "Telegram vendor tree",
+        "samsung": "Samsung vendor tree",
+        "none": "no vendor trees",
+    }[args.variant]
+    print(f"Vendor verification passed for {scope} and committed corpus")
     return 0
 
 

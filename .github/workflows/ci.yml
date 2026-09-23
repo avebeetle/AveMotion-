@@ -13,15 +13,13 @@ jobs:
         include:
           - preset: linux-clang-telegram-debug
           - preset: linux-gcc-telegram-release
-          - preset: linux-clang-samsung-debug
-          - preset: linux-gcc-samsung-release
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Verify vendored sources and corpus
-        run: python3 scripts/verify_vendor.py
+        run: python3 scripts/verify_vendor.py --variant telegram
       - name: Configure
         run: cmake --preset ${{ matrix.preset }}
       - name: Build
@@ -36,13 +34,12 @@ jobs:
       matrix:
         preset:
           - linux-clang-telegram-asan
-          - linux-clang-samsung-asan
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python3 scripts/verify_vendor.py
+      - run: python3 scripts/verify_vendor.py --variant telegram
       - run: cmake --preset ${{ matrix.preset }}
       - run: cmake --build --preset ${{ matrix.preset }} --parallel 2
       - run: ctest --preset ${{ matrix.preset }}
@@ -55,7 +52,6 @@ jobs:
         preset:
           - windows-msvc-telegram-debug
           - windows-msvc-telegram-release
-          - windows-msvc-samsung-debug
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -63,7 +59,7 @@ jobs:
           python-version: '3.12'
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Verify vendored sources and corpus
-        run: python scripts/verify_vendor.py
+        run: python scripts/verify_vendor.py --variant telegram
       - name: Configure
         run: cmake --preset ${{ matrix.preset }}
       - name: Build
@@ -166,3 +162,126 @@ jobs:
         run: cmake --build out/installed-consumer
       - name: Run installed-package consumer
         run: ./out/installed-consumer/avemotion_installed_consumer
+
+  linux-lean-boundaries:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - preset: linux-gcc-module-release
+            variant: telegram
+          - preset: linux-clang-offline-package
+            variant: none
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 scripts/verify_vendor.py --variant ${{ matrix.variant }}
+      - run: cmake --preset ${{ matrix.preset }}
+      - run: cmake --build --preset ${{ matrix.preset }} --parallel 2
+      - name: Verify lean build output
+        run: python3 scripts/test_module_build_boundaries.py --build-dir out/build/${{ matrix.preset }} --variant ${{ matrix.variant }} --direct2d no
+      - name: Verify reference-linked install rejection
+        if: matrix.variant == 'telegram'
+        run: |
+          if output=$(cmake -S . -B out/lean-negative-install -G Ninja -DCMAKE_BUILD_TYPE=Release -DAVEMOTION_RLOTTIE_VARIANT=telegram -DAVEMOTION_ENABLE_INSTALL=ON 2>&1); then
+            printf '%s\n' "$output"
+            echo 'Reference-linked install unexpectedly configured' >&2
+            exit 1
+          fi
+          printf '%s\n' "$output"
+          normalized=$(printf '%s' "$output" | tr -s '[:space:]' ' ')
+          grep -Fq 'Installation of targets linked to the rlottie reference engine is intentionally disabled' <<< "$normalized"
+      - name: Install offline package
+        if: matrix.variant == 'none'
+        run: cmake --install out/build/${{ matrix.preset }} --prefix "$GITHUB_WORKSPACE/out/lean-original"
+      - name: Verify original and relocated packages
+        if: matrix.variant == 'none'
+        run: |
+          python3 scripts/test_installed_package_boundaries.py --prefix "$GITHUB_WORKSPACE/out/lean-original" --direct2d no --self-test
+          cp -a "$GITHUB_WORKSPACE/out/lean-original" "$GITHUB_WORKSPACE/out/lean-relocated"
+          python3 scripts/test_installed_package_boundaries.py --prefix "$GITHUB_WORKSPACE/out/lean-relocated" --direct2d no
+      - name: Consume original package
+        if: matrix.variant == 'none'
+        run: |
+          cmake -S tests/consumer -B out/lean-consumer-original -G Ninja -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/out/lean-original"
+          cmake --build out/lean-consumer-original
+          ./out/lean-consumer-original/avemotion_installed_consumer
+      - name: Consume relocated package
+        if: matrix.variant == 'none'
+        run: |
+          cmake -S tests/consumer -B out/lean-consumer-relocated -G Ninja -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/out/lean-relocated"
+          cmake --build out/lean-consumer-relocated
+          ./out/lean-consumer-relocated/avemotion_installed_consumer
+
+  windows-lean-boundaries:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - preset: windows-msvc-module-release
+            variant: telegram
+          - preset: windows-msvc-offline-package
+            variant: none
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: ilammy/msvc-dev-cmd@v1
+      - run: python scripts/verify_vendor.py --variant ${{ matrix.variant }}
+      - run: cmake --preset ${{ matrix.preset }}
+      - run: cmake --build --preset ${{ matrix.preset }} --parallel 2
+      - name: Verify lean build output
+        run: python scripts/test_module_build_boundaries.py --build-dir out/build/${{ matrix.preset }} --variant ${{ matrix.variant }} --direct2d yes
+      - name: Verify reference-linked install rejection
+        if: matrix.variant == 'telegram'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $output = cmake -S . -B out/lean-negative-install -G Ninja -DCMAKE_BUILD_TYPE=Release -DAVEMOTION_RLOTTIE_VARIANT=telegram -DAVEMOTION_ENABLE_INSTALL=ON 2>&1 | Out-String
+          $nativeExit = $LASTEXITCODE
+          Write-Output $output
+          if ($nativeExit -eq 0) { throw 'Reference-linked install unexpectedly configured' }
+          $normalized = $output -replace '\s+', ' '
+          if (-not $normalized.Contains('Installation of targets linked to the rlottie reference engine is intentionally disabled')) { throw 'Expected reference-linked install diagnostic absent' }
+          exit 0
+      - name: Install offline package
+        if: matrix.variant == 'none'
+        run: cmake --install out/build/${{ matrix.preset }} --prefix "$env:GITHUB_WORKSPACE/out/lean-original"
+      - name: Verify original and relocated packages
+        if: matrix.variant == 'none'
+        shell: pwsh
+        run: |
+          $original = Join-Path $env:GITHUB_WORKSPACE 'out/lean-original'
+          $relocated = Join-Path $env:GITHUB_WORKSPACE 'out/lean-relocated'
+          python scripts/test_installed_package_boundaries.py --prefix $original --direct2d yes --self-test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item -LiteralPath $original -Destination $relocated -Recurse
+          python scripts/test_installed_package_boundaries.py --prefix $relocated --direct2d yes
+          exit $LASTEXITCODE
+      - name: Consume original package
+        if: matrix.variant == 'none'
+        shell: pwsh
+        run: |
+          $prefix = Join-Path $env:GITHUB_WORKSPACE 'out/lean-original'
+          cmake -S tests/consumer -B out/lean-consumer-original -G Ninja "-DCMAKE_PREFIX_PATH=$prefix"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build out/lean-consumer-original
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./out/lean-consumer-original/avemotion_installed_consumer.exe
+          exit $LASTEXITCODE
+      - name: Consume relocated package
+        if: matrix.variant == 'none'
+        shell: pwsh
+        run: |
+          $prefix = Join-Path $env:GITHUB_WORKSPACE 'out/lean-relocated'
+          cmake -S tests/consumer -B out/lean-consumer-relocated -G Ninja "-DCMAKE_PREFIX_PATH=$prefix"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build out/lean-consumer-relocated
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./out/lean-consumer-relocated/avemotion_installed_consumer.exe
+          exit $LASTEXITCODE
