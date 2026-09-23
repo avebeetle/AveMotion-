@@ -176,9 +176,15 @@ fresh-per-sample counter characterization unchanged. The original zero-hot-path
 session target remains deferred, not satisfied.
 
 **Files:** create `tests/reference_session_tests.cpp`,
-`tests/fixtures/dashed_stroke_session.json`; modify `CMakeLists.txt`.
+`tests/fixtures/reference_sessions/dashed_stroke_session.json`; modify `CMakeLists.txt`.
 A focused test-only comparison header under `tests/` is allowed if it makes the
 complete comparator easier to audit. No production/vendor/golden edits.
+
+The dedicated nested fixture directory is intentional: the compatibility corpus
+generator includes every top-level JSON in tests/fixtures. Keep this session-test
+input outside that measured 16-asset corpus, while both session/model tests still
+load it explicitly. Do not weaken the generator or regenerate corpus/goldens to
+repair a fixture-placement mistake.
 
 **Interfaces:** use `Runtime`, `Asset`, `Instance::evaluateFrame()`,
 `renderCpuFrame()`, `DiagnosticsSnapshot`, and `RecordingBackend::record()`.
@@ -289,11 +295,17 @@ existing tests. No public API change.
 
 ### 5.1 Complete functional verification
 
-- [ ] Configure and build both `windows-msvc-telegram-debug` and `windows-msvc-samsung-debug`.
-- [ ] Run focused reference-session/model tests under both variants, then their complete suites. Explicitly configure/build/test `windows-msvc-win32-preview` for Direct2D capture, WARP and preview/device-recreation gates (this preset includes the capture options). Use `windows-msvc-direct2d` for no-reference/install gates where applicable.
-- [ ] Run vendor-integrity, TGS, validation, playback/player, source-geometry, render-plan, scene/model/property/golden, corpus-lab, and packaging-related gates without weakening or exclusions.
-- [ ] Run the two-instance test under an already available ThreadSanitizer toolchain, if present. Otherwise report Windows concurrency results and absence of TSan evidence. ASan is not race detection; install no new toolchain.
-- [ ] Capture fresh `git diff --check`, `git status`, and test logs before any completion claim.
+- [x] Configure and build both `windows-msvc-telegram-debug` and `windows-msvc-samsung-debug`.
+- [x] Run focused reference-session/model tests under both variants, then their complete suites. Explicitly configure/build/test `windows-msvc-win32-preview` for Direct2D capture, WARP and preview/device-recreation gates (this preset includes the capture options). Use `windows-msvc-direct2d` for no-reference/install gates where applicable.
+- [x] Run vendor-integrity, TGS, validation, playback/player, source-geometry, render-plan, scene/model/property/golden, corpus-lab, and packaging-related gates without weakening or exclusions.
+- [x] Run the two-instance test under an already available ThreadSanitizer toolchain, if present. Otherwise report Windows concurrency results and absence of TSan evidence. ASan is not race detection; install no new toolchain.
+- [x] Capture fresh `git diff --check`, `git status`, and test logs before any completion claim.
+
+Execution result at b3bb269: Telegram60/60, Win32preview54/54, no-reference
+Direct2D29/29 passed; external installed consumer passed. Samsung38/40, with
+scene/plan golden failures independently reproduced at untouched cda415c.
+Completed checkboxes mean the gates were run and reported, not that Samsung is
+green. No suitable existing TSan toolchain was available.
 
 ### 5.2 A-B-B-A timing and memory evidence
 
@@ -307,13 +319,13 @@ speedup. Do not construct a duplicate worktree or interpret timing noise between
 identical runtime code as an optimization. The original A-B-B-A checklist below
 is deferred together with reuse; it remains the future acceptance method.
 
-- [ ] Execute and validate two repeated baseline timing reports for all 16
+- [x] Execute and validate two repeated baseline timing reports for all 16
   committed TGS assets: samples 1000, warmup 20, load repeats 1, CPU repeats 0,
   viewport 128, strict mode, windows-msvc-corpus-lab Release.
-- [ ] Record two independent fresh-process working-set observations at each of
+- [x] Record two independent fresh-process working-set observations at each of
   1/16/64 live instances on StickAndBall.tgs; retain current and peak bytes and
   describe process-wide limitations.
-- [ ] Summarize per-asset median of two medians and median of two p95 values,
+- [x] Summarize per-asset median of two medians and median of two p95 values,
   actual steady session creations and evaluator/projector storage changes.
   Explicitly state that zero-creation and 2x speedup targets were not achieved.
 
@@ -330,8 +342,8 @@ Deferred optimization acceptance procedure:
 
 ### 5.3 Documentation and final review
 
-- [ ] Document session lifetime, single-instance confinement, separate-instance concurrency, CPU isolation, reset-epoch semantics, benchmark method/results, limitations, and next-stage recommendation in `docs/PART25A_PERSISTENT_SESSIONS_REPORT.md`.
-- [ ] Mark the design partial, reuse-deferred (not implemented), and update `docs/superpowers/STATE.md` with exact commits, tests, measurements, and unresolved risks.
+- [x] Document session lifetime, single-instance confinement, separate-instance concurrency, CPU isolation, reset-epoch semantics, benchmark method/results, limitations, and next-stage recommendation in `docs/PART25A_PERSISTENT_SESSIONS_REPORT.md`.
+- [x] Mark the design partial, reuse-deferred (not implemented), and update `docs/superpowers/STATE.md` with exact commits, tests, measurements, and unresolved risks.
 - [ ] Request an independent whole-branch code review against the spec. Resolve every Critical/Important finding with a focused test and re-review; record Minor findings explicitly if deferred.
 - [ ] Rerun fresh final verification after review fixes. Commit documentation/review changes with `docs: report persistent session evidence`.
 - [ ] Push ordinary `main` commits to `origin/main`, verify local HEAD equals `origin/main`, and pause the six-hour heartbeat once all planned work is complete or the deadline is reached.

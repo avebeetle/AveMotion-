@@ -73,10 +73,31 @@ fresh model-session counts, idempotent publication, scene-role isolation and
 failed retry counters, including the preparation timeline limit and Samsung's
 unsupported capability. No production/golden change; RED mutation restored.
 
-Next: Task 5 full Windows gates and final review. Repeated baseline measurements
-are captured in the provisional
-`docs/PART25A_PERSISTENT_SESSIONS_REPORT.md` (controller-owned, not yet final).
-There is no optimized candidate, so no A-B speedup claim will be made from noise.
+Task 3 integration fix complete at `b3bb269`, independently reviewed: moving the
+identical dash fixture into tests/fixtures/reference_sessions preserves the
+auto-enumerated 16-asset corpus. Both test consumers pass on both variants.
+Earlier full-gate failures at bbfad2d were this fixture-placement regression;
+they are corrected without changing corpus, generator or goldens.
+
+Task 5 full verification at b3bb269: all four configurations/builds PASS.
+Telegram debug 60/60 (52.43 s); Win32 preview 54/54 (46.59 s), including explicit
+capture/WARP/device recreation; no-reference Direct2D 29/29 (2.47 s).
+Samsung debug 38/40 (14.05 s): scene and plan golden fail on the same Polystar
+endpoint. Both exact failures reproduce in clean cda415c, independently rerun by
+the controller. No Samsung all-green claim. Local-prefix installation and the
+external find_package consumer configure/build/run also passed, exit 0.
+Logs: out/part25a-final/*-b3bb269.txt and out/part25a-samsung-golden/.
+
+Repeated baseline observations are recorded in
+`docs/PART25A_PERSISTENT_SESSIONS_REPORT.md`: aggregate exact median 22.125 us,
+full CPU pipeline 34.625 us; 1000 fresh scene sessions for 1000 steady samples.
+Evaluator/projector storage counters stayed stable; planner allocations and TSan
+remain unverified. No optimized candidate and no A-B speedup claim.
+
+Next: independent whole-change review of the safe partial delivery, followed by
+any necessary corrections, final handoff and stopping avemotion-6. Preserve raw
+evidence and clean baseline scratch checkout while the Samsung gate and target
+reuse remain unresolved. No new lifecycle implementation is planned in this run.
 
 The plan has been corrected for explicit WARP/preview presets, actual CTest
 names, measured workspace growth, corpus schema changes, model-result errors,

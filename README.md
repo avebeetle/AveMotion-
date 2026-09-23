@@ -114,6 +114,8 @@ cmake --install out/build/linux-clang-offline --prefix out/install
 - `docs/PLAYER_SCHEDULER.md`
 - `docs/WIN32_PREVIEW.md`
 - `docs/PART24_REPORT.md`
+- [Part 25A evidence and limitations](docs/PART25A_PERSISTENT_SESSIONS_REPORT.md)
+- [Reference-session correctness findings](docs/PART25A_REFERENCE_SESSION_FINDINGS.md)
 - `docs/NEXT_STAGE.md`
 
 Development rule:
