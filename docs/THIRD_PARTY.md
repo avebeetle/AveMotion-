@@ -15,7 +15,8 @@ Telegram changes are explicit:
 - `0002-avemotion-local-geometry-metadata.patch`;
 - `0003-avemotion-stable-source-ids.patch`;
 - `0004-avemotion-parsed-model-introspection.patch`;
-- `0005-avemotion-source-geometry-binding.patch`.
+- `0005-avemotion-source-geometry-binding.patch`;
+- `0006-avemotion-recording-lifecycle.patch`.
 
 Patch 0004 supplies the read-only parsed-model/easing/property introspection used
 by the standalone evaluator. Patch 0005 carries canonical source Shape/paint
@@ -24,6 +25,15 @@ Telegram. Samsung's local sanitizer-hardening edit remains under
 `patches/samsung/`.
 
 No upstream type is exported by the installed AveMotion public headers.
+
+Patch 0006 adds an opt-in, pristine-only recording lifecycle to the private
+Telegram API. It retains the runtime topology while restoring evaluation scratch
+before every sample, owns non-consuming dashed publication paths, and suppresses
+recording-only mask/clip raster submissions. Forbidden raster/property operations
+throw `std::logic_error`; exception unwinding is enabled only for the API
+translation unit. Ordinary CPU rendering remains the oracle and production
+Runtime still uses fresh ordinary sampling during Part25C. No dependency commit,
+license text, or redistribution policy changes with this seam.
 
 ## Part 22 miniz isolation
 

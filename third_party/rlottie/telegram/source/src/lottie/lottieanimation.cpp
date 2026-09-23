@@ -22,6 +22,8 @@
 #include "rlottie.h"
 
 #include <fstream>
+#include <limits>
+#include <stdexcept>
 
 using namespace rlottie;
 
@@ -53,6 +55,8 @@ public:
     Surface render(size_t frameNo, const Surface &surface, bool keepAspectRatio);
     std::future<Surface> renderAsync(size_t frameNo, Surface &&surface, bool keepAspectRatio);
     const LOTLayerNode * renderTree(size_t frameNo, const VSize &size);
+    bool enableRecordingLifecycle();
+    const LOTLayerNode *renderTreeForRecording(size_t frameNo, size_t width, size_t height);
 
     const LayerInfoList &layerInfoList() const
     {
@@ -62,6 +66,9 @@ public:
     void removeFilter(const std::string &keypath, Property prop);
 
 private:
+    void useOrdinary();
+    bool mRecordingLifecycle{false};
+    bool mOrdinaryUsed{false};
     std::string                  mFilePath;
     std::shared_ptr<LOTModel>    mModel;
     std::unique_ptr<LOTCompItem> mCompItem;
@@ -71,15 +78,48 @@ private:
 
 void AnimationImpl::setValue(const std::string &keypath, LOTVariant &&value)
 {
+    useOrdinary();
     if (keypath.empty()) return;
     mCompItem->setValue(keypath, value);
 }
 
 const LOTLayerNode *AnimationImpl::renderTree(size_t frameNo, const VSize &size)
 {
+    if (mRecordingLifecycle) return nullptr;
+    mOrdinaryUsed = true;
     if (update(frameNo, size, true)) {
         mCompItem->buildRenderTree();
     }
+    return mCompItem->renderTree();
+}
+
+void AnimationImpl::useOrdinary()
+{
+    if (mRecordingLifecycle)
+        throw std::logic_error("recording lifecycle forbids raster rendering and property overrides");
+    // Async dispatch already latched this on the caller. Its worker must not
+    // write again while an immediate enable attempt reads the completed latch.
+    if (!mOrdinaryUsed) mOrdinaryUsed = true;
+}
+
+bool AnimationImpl::enableRecordingLifecycle()
+{
+    if (mRecordingLifecycle) return true;
+    if (mOrdinaryUsed) return false;
+    mRecordingLifecycle = true;
+    return true;
+}
+
+const LOTLayerNode *AnimationImpl::renderTreeForRecording(size_t frameNo, size_t width, size_t height)
+{
+    if (!mRecordingLifecycle) return nullptr;
+    if (!width || !height || width > size_t(std::numeric_limits<int>::max()) ||
+        height > size_t(std::numeric_limits<int>::max())) return nullptr;
+    mCompItem->resetForRecording();
+    // A false update is the fresh constructor-cache sentinel: never publish
+    // an earlier tree when the fresh ordinary call would not build one.
+    if (!update(frameNo, VSize(int(width), int(height)), true)) return nullptr;
+    mCompItem->buildRenderTree();
     return mCompItem->renderTree();
 }
 
@@ -96,6 +136,7 @@ bool AnimationImpl::update(size_t frameNo, const VSize &size, bool keepAspectRat
 
 Surface AnimationImpl::render(size_t frameNo, const Surface &surface, bool keepAspectRatio)
 {
+    useOrdinary();
     bool renderInProgress = mRenderInProgress.load();
     if (renderInProgress) {
         vCritical << "Already Rendering Scheduled for this Animation";
@@ -219,6 +260,8 @@ std::future<Surface> AnimationImpl::renderAsync(size_t    frameNo,
                                                 Surface &&surface,
                                                 bool keepAspectRatio)
 {
+    // Consume pristine state before allocating a task or dispatching a worker.
+    useOrdinary();
     if (!mTask) {
         mTask = std::make_shared<RenderTask>();
     } else {
@@ -319,6 +362,16 @@ std::future<Surface> Animation::render(size_t frameNo, Surface surface, bool kee
 void Animation::renderSync(size_t frameNo, Surface surface, bool keepAspectRatio)
 {
     d->render(frameNo, surface, keepAspectRatio);
+}
+
+bool Animation::enableRecordingLifecycle()
+{
+    return d->enableRecordingLifecycle();
+}
+
+const LOTLayerNode *Animation::renderTreeForRecording(size_t frameNo, size_t width, size_t height) const
+{
+    return d->renderTreeForRecording(frameNo, width, height);
 }
 
 const LayerInfoList &Animation::layers() const

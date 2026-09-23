@@ -63,3 +63,25 @@ path. The legacy evaluator, final geometry, CPU rasterizer and compositing
 remain unchanged. AveMotion uses the seam only as a characterization binding;
 source geometry is accepted after point-for-point parity with Telegram's local
 path.
+
+## 0006 — Isolated recording lifecycle
+
+Part25C adds private `Animation::enableRecordingLifecycle()` and
+`renderTreeForRecording(frame, width, height)` methods. Enabling is one-way and
+requires an animation with no ordinary tree, raster, or property operation.
+Metadata queries remain allowed. Each recording sample resets evaluation scratch
+on the existing complete topology, evaluates the original algorithms, and
+publishes owned dashed output without consuming evaluator/source-local paths.
+Masks and precomp clips update geometry but submit no raster jobs in this mode.
+
+Wrong tree entry or invalid recording dimensions returns null. Raster rendering
+and property overrides throw `std::logic_error` before work; only
+`lottieanimation.cpp` enables exception unwinding so rejected callback owners are
+released. The constructor-cache global -1 sentinel returns null. Each instance
+is serial; separate recording instances own their mutable state. Tree pointers
+are borrowed until the next recording call (including failure) or destruction.
+
+Production Runtime remains on fresh ordinary sampling in Part25C. This opt-in
+vendor seam does not change ordinary CPU behavior, source identities, dependency
+commits, licensing, or public fallback policy. The patch applies to the vendored
+Telegram tree at repository base `45a21a4`, after patches 0001–0005.

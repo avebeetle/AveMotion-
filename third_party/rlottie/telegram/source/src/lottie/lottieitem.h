@@ -59,6 +59,7 @@ class LOTDrawable : public VDrawable
 {
 public:
     void sync();
+    void resetForRecording();
     void clearAveSourceMetadata();
     void setAveLocalGeometry(
         const VPath &path,
@@ -80,6 +81,8 @@ public:
 public:
     std::unique_ptr<LOTNode>  mCNode{nullptr};
     VPath                     mAveLocalPath;
+    VPath                     mRecordingPath;
+    bool                      mRecording{false};
     VMatrix                   mAveLocalTransform;
     VColor                    mAveLocalColor;
     float                     mAveOpacity{1.0f};
@@ -103,6 +106,7 @@ public:
    explicit LOTCompItem(LOTModel *model);
    static std::unique_ptr<LOTLayerItem> createLayerItem(LOTLayerData *layerData);
    bool update(int frameNo, const VSize &size, bool keepAspectRatio);
+   void resetForRecording();
    VSize size() const { return mViewSize;}
    void buildRenderTree();
    const LOTLayerNode * renderTree()const;
@@ -127,9 +131,11 @@ class LOTClipperItem
 public:
     explicit LOTClipperItem(VSize size): mSize(size){}
     void update(const VMatrix &matrix);
+    void resetForRecording() { mPath.reset(); mRecording = true; }
     VRle rle();
 public:
     VSize                    mSize;
+    bool                     mRecording{false};
     VPath                    mPath;
     VRasterizer              mRasterizer;
 };
@@ -149,6 +155,7 @@ public:
    void setComplexContent(bool value) { mComplexContent = value;}
    bool complexContent() const {return mComplexContent;}
    virtual void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha);
+   virtual void resetForRecording();
    virtual void assignAveSourceIds(AveSourceIdState &ids);
    VMatrix matrix(int frameNo) const;
    virtual void renderList(std::vector<VDrawable *> &){}
@@ -189,6 +196,7 @@ class LOTCompLayerItem: public LOTLayerItem
 {
 public:
    explicit LOTCompLayerItem(LOTLayerData *layerData);
+   void resetForRecording() final;
    void renderList(std::vector<VDrawable *> &list)final;
    void render(VPainter *painter, const VRle &mask, const VRle &matteRle) final;
    void buildLayerNode() final;
@@ -210,6 +218,7 @@ class LOTSolidLayerItem: public LOTLayerItem
 {
 public:
    explicit LOTSolidLayerItem(LOTLayerData *layerData);
+   void resetForRecording() final;
    void buildLayerNode() final;
    void assignAveSourceIds(AveSourceIdState &ids) final;
 protected:
@@ -226,6 +235,7 @@ class LOTShapeLayerItem: public LOTLayerItem
 {
 public:
    explicit LOTShapeLayerItem(LOTLayerData *layerData);
+   void resetForRecording() final;
    static std::unique_ptr<LOTContentItem> createContentItem(LOTData *contentData);
    void renderList(std::vector<VDrawable *> &list)final;
    void buildLayerNode() final;
@@ -249,6 +259,7 @@ class LOTImageLayerItem: public LOTLayerItem
 {
 public:
    explicit LOTImageLayerItem(LOTLayerData *layerData);
+   void resetForRecording() final;
    void buildLayerNode() final;
    void assignAveSourceIds(AveSourceIdState &ids) final;
 protected:
@@ -263,6 +274,10 @@ class LOTMaskItem
 {
 public:
     explicit LOTMaskItem(LOTMaskData *data): mData(data){}
+    void resetForRecording() {
+        mLocalPath.reset(); mFinalPath.reset(); mCombinedAlpha = 0;
+        mCombinedMatrix = VMatrix{}; mRasterRequest = false; mRecording = true;
+    }
     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag);
     LOTMaskData::Mode maskMode() const { return mData->mMode;}
     VRle rle();
@@ -274,6 +289,7 @@ public:
     VPath                    mFinalPath;
     VRasterizer              mRasterizer;
     bool                     mRasterRequest{false};
+    bool                     mRecording{false};
 };
 
 /*
@@ -283,6 +299,7 @@ class LOTLayerMaskItem
 {
 public:
     explicit LOTLayerMaskItem(LOTLayerData *layerData);
+    void resetForRecording() { mDirty = true; for (auto &mask : mMasks) mask.resetForRecording(); }
     void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag);
     bool isStatic() const {return mStatic;}
     VRle maskRle(const VRect &clipRect);
@@ -315,6 +332,7 @@ public:
    virtual void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) = 0;
    virtual void renderList(std::vector<VDrawable *> &){}
    virtual void assignAveSourceIds(AveSourceIdState &) {}
+   virtual void resetForRecording() = 0;
    void setParent(LOTContentItem *parent) {mParent = parent;}
    LOTContentItem *parent() const {return mParent;}
    virtual bool resolveKeyPath(LOTKeyPath &, uint, LOTVariant &) {return false;}
@@ -328,6 +346,10 @@ class LOTContentGroupItem: public LOTContentItem
 {
 public:
    explicit LOTContentGroupItem(LOTGroupData *data=nullptr);
+   void resetForRecording() override {
+       mMatrix = VMatrix{};
+       for (auto &content : mContents) content->resetForRecording();
+   }
    void addChildren(LOTGroupData *data);
    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) override;
    void applyTrim();
@@ -361,6 +383,11 @@ public:
          mSourceNodeId(sourceNodeId) {}
    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) final;
    bool dirty() const {return mPathChanged;}
+   void resetForRecording() final {
+       mTemp = VPath{};
+       mLocalPath.reset(); mFinalPath.reset(); mFrameNo = -1;
+       mPathChanged = true; mNeedUpdate = true;
+   }
    const VPath &localPath() const {return mTemp;}
    const VPath &finalPath();
    void updatePath(const VPath &path) {mTemp = path; mPathChanged = true; mNeedUpdate = true;}
@@ -462,6 +489,11 @@ class LOTPaintDataItem : public LOTContentItem
 {
 public:
    LOTPaintDataItem(bool staticContent, unsigned int sourceNodeId);
+   void resetForRecording() final {
+       mPath.reset(); mParentAlpha = 1.0f; mFrameNo = -1;
+       mFlag = DirtyFlag{}; mRenderNodeUpdate = true;
+       mDrawable.resetForRecording();
+   }
    void addPathItems(std::vector<LOTPathDataItem *> &list, size_t startOffset);
    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) override;
    void renderList(std::vector<VDrawable *> &list) final;
@@ -551,6 +583,7 @@ class LOTTrimItem : public LOTContentItem
 {
 public:
    LOTTrimItem(LOTTrimData *data);
+   void resetForRecording() final { mCache = Cache{}; mDirty = true; }
    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) final;
    void update();
    void addPathItems(std::vector<LOTPathDataItem *> &list, size_t startOffset);
@@ -576,6 +609,9 @@ class LOTRepeaterItem : public LOTContentGroupItem
 {
 public:
    explicit LOTRepeaterItem(LOTRepeaterData *data);
+   void resetForRecording() final {
+       LOTContentGroupItem::resetForRecording(); mHidden = false;
+   }
    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) final;
    void renderList(std::vector<VDrawable *> &list) final;
 private:
@@ -586,5 +622,4 @@ private:
 
 
 #endif // LOTTIEITEM_H
-
 

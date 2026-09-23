@@ -95,6 +95,68 @@ void LOTCompItem::setValue(const std::string &keypath, LOTVariant &value)
     mRootLayer->resolveKeyPath(key, 0, value);
 }
 
+void LOTCompItem::resetForRecording()
+{
+    mCurFrameNo = -1;
+    mViewSize = mCompData->size();
+    mKeepAspectRatio = true;
+    mScaleMatrix = VMatrix{};
+    mRootLayer->resetForRecording();
+}
+
+void LOTLayerItem::resetForRecording()
+{
+    mFrameNo = -1;
+    mCombinedAlpha = 0;
+    mCombinedMatrix = VMatrix{};
+    mDirtyFlag = DirtyFlagBit::All;
+    mDrawableList.clear();
+    if (mLayerMask) mLayerMask->resetForRecording();
+}
+
+void LOTCompLayerItem::resetForRecording()
+{
+    LOTLayerItem::resetForRecording();
+    if (mClipper) mClipper->resetForRecording();
+    for (auto &layer : mLayers) layer->resetForRecording();
+}
+
+void LOTShapeLayerItem::resetForRecording()
+{
+    LOTLayerItem::resetForRecording();
+    mRoot->resetForRecording();
+}
+
+void LOTSolidLayerItem::resetForRecording()
+{
+    LOTLayerItem::resetForRecording();
+    mRenderNode.resetForRecording();
+}
+
+void LOTImageLayerItem::resetForRecording()
+{
+    LOTLayerItem::resetForRecording();
+    mRenderNode.resetForRecording();
+}
+
+void LOTDrawable::resetForRecording()
+{
+    mRecording = true;
+    mPath.reset();
+    mRecordingPath.reset();
+    mFlag = DirtyState::All;
+    mFillRule = FillRule::Winding;
+    mStroke.width = 0;
+    mStroke.miterLimit = 10;
+    mStroke.enable = false;
+    mStroke.cap = CapStyle::Flat;
+    mStroke.join = JoinStyle::Bevel;
+    mStroke.mDash.clear();
+    // Image brushes own immutable bitmap resources; reached paints overwrite
+    // their own brush. Preserve those owners and all assigned source IDs.
+    clearAveSourceMetadata();
+}
+
 std::unique_ptr<LOTLayerItem> LOTCompItem::createLayerItem(
     LOTLayerData *layerData)
 {
@@ -212,8 +274,10 @@ void LOTMaskItem::update(int frameNo, const VMatrix &            parentMatrix,
     mFinalPath.clone(mLocalPath);
     mFinalPath.transform(parentMatrix);
 
-    mRasterizer.rasterize(mFinalPath);
-    mRasterRequest = true;
+    if (!mRecording) {
+        mRasterizer.rasterize(mFinalPath);
+        mRasterRequest = true;
+    }
 }
 
 VRle LOTMaskItem::rle()
@@ -724,7 +788,7 @@ void LOTClipperItem::update(const VMatrix &matrix)
     mPath.reset();
     mPath.addRect(VRectF(0, 0, mSize.width(), mSize.height()));
     mPath.transform(matrix);
-    mRasterizer.rasterize(mPath);
+    if (!mRecording) mRasterizer.rasterize(mPath);
 }
 
 VRle LOTClipperItem::rle()
@@ -1817,6 +1881,16 @@ void LOTDrawable::sync()
         mCNode->mGradient.stopCount = 0;
     }
 
+    if (mRecording) {
+        // The gradient stop buffer is the only independently owned C payload.
+        // Retain it while restoring conditional fields to fresh defaults.
+        auto *stops = mCNode->mGradient.stopPtr;
+        const auto count = mCNode->mGradient.stopCount;
+        *mCNode = LOTNode{};
+        mCNode->mGradient.stopPtr = stops;
+        mCNode->mGradient.stopCount = count;
+    }
+
     mCNode->mAveLocalPath.ptPtr = nullptr;
     mCNode->mAveLocalPath.ptCount = 0;
     mCNode->mAveLocalPath.elmPtr = nullptr;
@@ -1853,12 +1927,20 @@ void LOTDrawable::sync()
     if (mFlag & DirtyState::None) return;
 
     if (mFlag & DirtyState::Path) {
-        if (!mStroke.mDash.empty()) {
+        if (mRecording) {
+            if (!mStroke.mDash.empty()) {
+                VDasher dasher(mStroke.mDash.data(), mStroke.mDash.size());
+                mRecordingPath.clone(dasher.dashed(mPath));
+            } else {
+                mRecordingPath.clone(mPath);
+            }
+        } else if (!mStroke.mDash.empty()) {
             VDasher dasher(mStroke.mDash.data(), mStroke.mDash.size());
             mPath = dasher.dashed(mPath);
         }
-        const std::vector<VPath::Element> &elm = mPath.elements();
-        const std::vector<VPointF> &       pts = mPath.points();
+        const VPath &published = mRecording ? mRecordingPath : mPath;
+        const std::vector<VPath::Element> &elm = published.elements();
+        const std::vector<VPointF> &       pts = published.points();
         const float *ptPtr = reinterpret_cast<const float *>(pts.data());
         const char * elmPtr = reinterpret_cast<const char *>(elm.data());
         mCNode->mPath.elmPtr = elmPtr;

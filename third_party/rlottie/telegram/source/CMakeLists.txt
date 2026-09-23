@@ -69,6 +69,17 @@ else()
                         )
 endif()
 
+# AveMotion's recording API rejects raster/property calls with logic_error.
+# Set this in the target's directory scope so wrappers unwind owned callback
+# temporaries. All evaluator/raster translation units retain their flags.
+if(MSVC)
+    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/src/lottie/lottieanimation.cpp"
+        PROPERTIES COMPILE_OPTIONS "/EHsc")
+else()
+    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/src/lottie/lottieanimation.cpp"
+        PROPERTIES COMPILE_OPTIONS "-fexceptions;-funwind-tables")
+endif()
+
 if (WIN32 AND NOT BUILD_SHARED_LIBS)
     target_compile_definitions(rlottie PUBLIC -DLOT_BUILD=0)
 endif()
@@ -172,4 +183,3 @@ export(EXPORT rlottie-targets FILE ${CMAKE_CURRENT_BINARY_DIR}/rlottieTargets.cm
 
 #Register package in user's package registry
 export(PACKAGE rlottie)
-
