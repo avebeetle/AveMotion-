@@ -2,3 +2,4 @@
 /patches/** -text
 /tests/corpus/** -text
 /tests/compatibility/tgs/** -text
+/tests/fixtures/** -text

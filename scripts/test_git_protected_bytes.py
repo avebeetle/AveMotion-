@@ -18,6 +18,10 @@ CASES = {
     "tests/corpus/probe.json": b'{"value":1}\n',
     "tests/compatibility/tgs/SHA256SUMS.txt": b"hash  probe.tgs\n",
     "tests/compatibility/tgs/probe.tgs": b"\x00\x0a\x0d\xff",
+    "tests/fixtures/probe.json": b'{"value":1}\n',
+    "tests/fixtures/reference_sessions/probe.json": b'{"value":2}\n',
+    "tests/fixtures/tgs/SHA256SUMS.txt": b"hash  probe.tgs\n",
+    "tests/fixtures/tgs/probe.tgs": b"\x00\x0a\x0d\xff",
 }
 
 
