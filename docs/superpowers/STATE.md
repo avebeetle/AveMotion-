@@ -2,7 +2,28 @@
 
 Updated: 2026-09-23
 
-## Active continuation — Part25E lean module boundaries
+## Active continuation — Part25E accepted; bounded golden checkout fix next
+
+Part25E whole-stage review de4d18f..30bb67c APPROVED, no Critical/Important
+findings. Actual ordinary-push CI run35857070290 at514f7ab passes all four new
+lean module/package jobs, including original and relocated Windows consumers.
+Task2's Debug/Release mismatch is fixed and independently re-reviewed; Task3
+fresh build/package/provenance gates are complete. Full cloud correctness is
+NOT certified green: older exact-golden/raw-float failures remain separate.
+Report: docs/PART25E_LEAN_MODULE_REPORT.md; final review and complete ledger:
+.superpowers/sdd/2026-09-23-lean-module-boundaries/.
+Only deferred E minor is an inert MANIFEST test mock; not a runtime defect.
+No E product implementer or reviewer remains active.
+
+Next bounded step is exact golden-byte preservation across Git checkout,
+approved brief out/part25f-golden-checkout/brief.md. Scope: one .gitattributes
+rule and real Git roundtrip regression, no golden/comparator changes. The LF to
+CRLF mechanism is locally reproduced, but actual cloud bytes were not observed;
+do not claim all CI fixed. Read-only native topology refresh is complete at
+out/part25f-readiness/current-native-topology.md: persistent scene sessions still
+sample/copy a reference tree per exact frame. Native emission remains future
+design, not implemented. Check ledger/live agents before dispatch. Automation
+avemotion-6 remains ACTIVE; intermediate acceptance does not stop continuation.
 
 Part25C is complete as a vendor-only foundation. Whole-change independent
 review45a21a4..3f8a06e approved spec compliance/integration with no Critical or
@@ -83,11 +104,20 @@ Task1 handoff47c338c ordinarily pushed with remote equality verified. Task2
 scoped integrity/optional CI is complete atd567d75: independent review approves
 spec/quality, no Critical/Important findings. Synthetic9/9, selectedCTest4/4each,
 fullTelegram68/68; controller fresh fullTelegram68/68,preview62/62,none31/31.
-Gate logs and immutable LastTest copies are inout/part25e-final. No E product
-implementer active; Task3 clean module/package/relocation/provenance checks and
-final whole-stage review are next. Preserve these fullsuite results if only
-docs change; read ledger and liveagents before dispatch. Deferredminor: an inert
-legacy MANIFEST mock in selectiontest; report native-exit clarification requested.
+Gate logs and immutable LastTest copies are inout/part25e-final. Task2 handoff
+cb84046 ordinarily pushed and remote equality verified. Task3 clean module/
+package/relocation/provenance checks run under /root/lean_final_gates, sole writer
+limitedto finalreportdoc and ignoredscratch. Root owns final whole-stage review.
+Preserve these fullsuite results if onlydocs change; read ledger/liveagents before
+dispatch. Deferredminor: inert legacy MANIFEST mock in selectiontest; report
+native-exit clarification resolved as argparse2 versus earlierwrapper1.
+Actual newCIrun35856219338 atcb84046 passes bothLinuxleanjobs andWindowsleanmodule.
+Windowsleanofflineconsumer initially failed with LNK2038: Debugconsumer/Releasepackage
+ABI mismatch. Fix514f7ab explicitly configures Release CI/guide consumers; actual
+functional RED/GREEN, independent scoped review and all four new cloud lean jobs
+now PASS. Task3 finalreport30bb67c and independent whole-stage review complete;
+Part25E accepted as recorded above. Do not attribute this resolved E defect to
+older golden failures or suppress linker errors.
 Check ledger/live agents before dispatch; do not repeat Task1.
 The spec distinguishes a Telegram-backed internal build from an offline installed
 package, preserves the installation prohibition, and keeps lab presets/source.

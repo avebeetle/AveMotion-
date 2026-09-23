@@ -54,12 +54,21 @@ mismatch because the workflow's consumer configure omitted
 `CMAKE_BUILD_TYPE=Release`. Scoped correction `514f7ab` makes all four lean CI
 consumer commands and both documented commands explicit Release. Its local
 RED run reproduced the MSVC mismatch; fresh original and relocated Release
-consumers linked and ran. Scoped review and the new cloud run were pending
-when this report was written. Earlier cloud golden failures are documented in
+consumers linked and ran. Independent scoped review accepted the correction.
+The subsequent ordinary-push [CI run 35857070290](https://github.com/avebeetle/AveMotion-/actions/runs/35857070290)
+at `514f7ab` passed all four new lean module/package jobs, including both
+original and relocated Windows consumers. Earlier cloud golden failures are documented in
 [Part25D's report](PART25D_PERSISTENT_SESSIONS_REPORT.md) and were not changed.
 No Linux/cloud all-green conclusion follows from the local Windows gates.
 
-The controller retains final independent whole-stage review, acceptance and
-ordinary push. Native topology, full fallback policy, host MotionService and
+Independent whole-stage review of `de4d18f..30bb67c` approved spec compliance
+and code quality with no Critical or Important findings. It corroborated the
+four successful lean CI jobs and zero raw-byte changes in 661 protected files.
+One nonblocking test-maintenance minor remains: an inert legacy `MANIFEST` mock
+in the vendor-selection test. Part25E is accepted; this is not a claim that the
+whole cloud workflow is green. Review and task evidence are retained in
+`.superpowers/sdd/2026-09-23-lean-module-boundaries/`.
+
+Native topology, full fallback policy, host MotionService and
 a redistributable runtime require separate design and evidence; this stage
 makes no licensing decision.
