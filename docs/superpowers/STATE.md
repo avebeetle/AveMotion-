@@ -25,7 +25,7 @@ all29fixture hashes preserved, corrected Git checkout/TGS identity passed,
 fullTelegram65/65 and controller fresh4/4 passed. Persistent integration Task3
 is complete atc094fac: independent task review approved; Telegram67/67,
 Samsung41/43 with only the exact two known baseline failures; Release9/9 and5/5;
-controller fresh focused5/5 passed. No product implementer is active.
+controller fresh focused5/5 passed. No D product implementer remains active.
 Task4 platform/provenance/measurement gates have run: freshTelegram67/67,
 preview61/61,none30/30,Samsung41/43onlyknownfailures,Release9/9and5/5,
 installedconsumerPASS. All workers stopped before controlled Original andPart25B
@@ -36,7 +36,8 @@ no Critical/Important findings. Task4 and Part25D are complete with the2xtarget
 explicitly UNMET. One nonblocking scratch-helper zero-per-asset denominator case
 must be fixed/tested before future measurement reuse; all actual metrics positive,
 current results unaffected. Raw measured scripts/results remain immutable.
-Report:docs/PART25D_PERSISTENT_SESSIONS_REPORT.md. No active product worker.
+Report:docs/PART25D_PERSISTENT_SESSIONS_REPORT.md. D handoffde4d18f ordinarily
+pushed with remote equality verified; E activity is recorded below.
 Check current ledger/live agents before dispatch; do not
 duplicate a live worker or repeat completed Part25A/B/C tasks. Automation stays ACTIVE.
 
@@ -72,11 +73,29 @@ Preflight completed; D handoff review approved. Execute E Task1 next, capturing
 the actual clean handoff HEAD as stageBASE before dispatch. Build exclusion and
 product-only installation are one atomic task, avoiding a broken intermediate
 offline install. Task2 scopes integrity/optional Samsung CI; Task3 verifies all
-boundaries. Check the E ledger/live agents before dispatching a product worker.
+boundaries. E stageBASE/Task1BASE isde4d18f49af8952a5b0250edf96d3508cb704aea.
+Task1 is complete at3482b09 plus boundary-checker fixa60e501: independent task
+review and scoped fix review accepted both findings. FullTelegram67/67,none30/30,
+controller fresh5/5; corrected checker mutation7/7 and real build/original+
+relocated prefix checksPASS. Its report is
+.superpowers/sdd/2026-09-23-lean-module-boundaries/task-1-report.md.
+No E product worker active at acceptance. Task2 scoped integrity/optional CI is
+next; read task-2-brief.md plus completed verifier/workflow preflight audits in
+the same ledger directory. Capture new dispatchBASE after this handoff commit.
+Check ledger/live agents before dispatch; do not repeat Task1.
 The spec distinguishes a Telegram-backed internal build from an offline installed
 package, preserves the installation prohibition, and keeps lab presets/source.
 Automationavemotion-6 remainsACTIVE/every15minutes; its saved prompt now follows
 STATE through D handoff, E and separately designed next stages without old limits.
+
+New cloud evidence: public unauthenticated GitHub UI for run35851716862 atde4d18f
+reports Failure across Linux/reference Windows/capture/preview jobs. This is not
+a claim that they match the two local Samsung golden failures. Earlier ghHTTP401
+only blocked that client; it did not prove public status was inaccessible.
+Read-only /root/cloud_ci_diagnosis investigates job errors/baseline comparison;
+report .superpowers/sdd/2026-09-23-lean-module-boundaries/ci-diagnosis/findings.md.
+Do not change credentials/dependencies, dispatch workflows or guess a fix; keep
+local pass and observed cloud failure distinct. No second product writer.
 
 ## Part25C completed foundation and execution history
 

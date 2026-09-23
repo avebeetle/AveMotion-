@@ -236,10 +236,17 @@ the original effective-script snapshots; do not rewrite measured evidence.
 The controller accepts the review's limits: existing Samsung endpoint failures
 and the public cache-setter linker issue are not repaired here; same-Instance
 access remains serial; TSan and injected allocation exceptions were not run.
-Linux/cloud CI remains unverified: a read-only GitHub status request returned
+At final review, Linux/cloud CI was unverified: a read-only GitHub status request returned
 HTTP401, and credentials/settings were not changed. Private-corpus confidence,
 zero allocation, redistribution, native coverage, MotionService and future
 Part25E implementation are not certified by this review.
+
+Subsequent continuation found a public read-only status path: [run35851716862
+atde4d18f](https://github.com/avebeetle/AveMotion-/actions/runs/35851716862) reports
+Failure with Linux and Windows reference/capture/preview errors. Root-cause
+investigation is separate from the successful local gates above; this is not
+established to be only the known Samsung failures. The earlier HTTP401 applied
+to the CLI, not every means of observing public CI. No credentials were changed.
 
 ## Remaining limits and next stage
 
