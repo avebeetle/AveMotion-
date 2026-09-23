@@ -2,7 +2,17 @@
 
 Updated: 2026-09-23
 
-## Current continuation — Part25I private admission, automation still canceled
+## Current handoff — Part25I complete; user requested wrap-up
+
+User explicitly said "заканчивай". No new stage or automation is started.
+Part25I productae72a8b and test correction82e39a7 are independently accepted;
+whole-stage and final scoped review have zero open findings. Final handoff report:
+docs/PART25I_NATIVE_ELLIPSE_ADMISSION_REPORT.md. Ordinary push follows final docs;
+verify actual Git if resuming. Post-push CI may still be pending at wrap-up, and
+must not be called green based on local gates. Raw state, if available, is in the
+plan's controller-handoff-cloud.json. No product implementer remains active.
+Next work, only upon resumption: separately design raw-to-model correspondence
+and scan-time immutable binding verification before native playback adoption.
 
 G preview correction36a17e4 is independently reviewed and pushed with871bb86.
 Actual GitHub run35861658145/job107183082122 SUCCESS, including live preview
@@ -33,8 +43,10 @@ with no open findings. Task1 is complete. No product implementer is active.
 Task2 fresh configure/build/full gates pass onae72a8b: Telegram69/69 (82.94s),
 preview63/63 (84.62s),none31/31 (3.37s); vendor/corpus integrity and private
 boundary checks pass. Report docs/PART25I_NATIVE_ELLIPSE_ADMISSION_REPORT.md.
-Independent whole-stage review and ordinary push remain pending. Check ledger/
-live agents before dispatch; do not repeat Task1 or same-code gates unnecessarily.
+Whole-stage review is complete: no product defects; sole P3 test targeting fixed
+in82e39a7 with functional RED, focused Telegram1/1 and preview1/1 GREEN and clean
+scoped re-review. No open/parked findings. Check ledger/live agents before any
+resumption; do not repeat Task1 or same-code gates unnecessarily.
 Automation remains deleted, no scheduled background continuation is implied.
 
 ## Prior interactive G/H continuation

@@ -1,8 +1,11 @@
 # Part25I — strict private native-ellipse input admission
 
-Status: Task1 independently accepted at ae72a8b after two reviewed corrections;
-fresh full Windows/none gates pass on that code. Independent whole-stage review
-and ordinary push remain pending. No native playback route is enabled.
+Status: locally complete and independently approved. Product is ae72a8b, followed
+by the reviewed test-only correction82e39a7. Fresh full Windows/none gates pass
+on that product; both affected test profiles also pass after the test correction.
+The user requested wrap-up, so no next stage or automation is started. Ordinary
+push is the final handoff action; its CI is not certified by these local results.
+No native playback route is enabled.
 
 ## What this stage changes
 
@@ -105,6 +108,28 @@ Raw corrected-code files use `controller-round2-ae72a8b-*`, including copied
 CTest LastTest logs. Independent task reviews are `task-1-review.md`,
 `task-1-numeric-fix-review.md` and `task-1-round2-review.md`. Earlier outputs remain
 preserved, explicitly superseded where a subsequent review found a defect.
+
+## Final review and handoff
+
+Whole-stage review871bb86..7f52b6d found no product/Critical/Important issue and one
+P3: the purported fill-opacity mutation actually changed layer opacity. Test-only
+commit `82e39a7733c004c699e49a1c3ab105bfa8db386b` anchors the fill field uniquely
+and asserts `/layers/0/shapes/0/it/1/o/k`. Its functional RED reported the old
+`/layers/0/ks/o/k` path; focused rebuild/CTest then passed1/1 each in Telegram and
+preview, native exits0. Full suites were not repeated for this test-only change;
+the product code remains exactlyae72a8b. Raw prefix `task-1-final-wave-*`.
+
+Independent scoped final review7f52b6d..82e39a7 closes the P3, with no new issues
+and zero open findings. Reports `final-review.md` and `final-fix-review.md` are
+preserved in the SDD directory. All declined-to-judge items remain explicit
+non-goals listed below, not waived prerequisites for future native adoption.
+
+Product history:334782b initial private audit,4248910 exact numeric comparisons,
+ae72a8b exact structural integer outputs,82e39a7 precise fill-opacity regression.
+Root documentation checkpoints include7f52b6d and this final handoff. No force
+push, history rewrite, settings change or dependency installation was used.
+Post-push cloud state, if available at wrap-up, is retained as
+`controller-handoff-cloud.json`; an in-progress run is not an all-CI-green claim.
 
 ## Limitations and subsequent work
 
