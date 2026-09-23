@@ -4,10 +4,29 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 
 namespace avemotion::corpus_lab {
+
+enum class SamplePhase { First, Warmup, Steady };
+
+template <typename Visit>
+[[nodiscard]] bool forEachSamplePhase(std::size_t totalFrames,
+                                      std::size_t warmupSamples,
+                                      std::size_t measuredSamples,
+                                      Visit&& visit) {
+    const auto frames = std::max<std::size_t>(1U, totalFrames);
+    if (!visit(SamplePhase::First, 0U)) return false;
+    for (std::size_t sample = 0U; sample < warmupSamples; ++sample) {
+        if (!visit(SamplePhase::Warmup, sample % frames)) return false;
+    }
+    for (std::size_t sample = 0U; sample < measuredSamples; ++sample) {
+        if (!visit(SamplePhase::Steady, sample % frames)) return false;
+    }
+    return true;
+}
 
 template <typename Duration>
 [[nodiscard]] std::int64_t nanoseconds(Duration duration) noexcept {

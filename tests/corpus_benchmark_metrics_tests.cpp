@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <utility>
 #include <vector>
 
 namespace {
@@ -20,6 +21,32 @@ int main() {
     using avemotion::corpus_lab::nanoseconds;
     using avemotion::corpus_lab::nearestRankP95Nanoseconds;
     using avemotion::corpus_lab::phaseDelta;
+    using avemotion::corpus_lab::SamplePhase;
+    using avemotion::corpus_lab::forEachSamplePhase;
+
+    std::vector<std::pair<SamplePhase, std::size_t>> sampleOrder;
+    const bool completed = forEachSamplePhase(3U, 4U, 5U,
+        [&](SamplePhase phase, std::size_t frame) {
+            sampleOrder.emplace_back(phase, frame);
+            return true;
+        });
+    require(completed, "sample schedule should complete");
+    require(sampleOrder == std::vector<std::pair<SamplePhase, std::size_t>>{
+                {SamplePhase::First, 0U},
+                {SamplePhase::Warmup, 0U}, {SamplePhase::Warmup, 1U},
+                {SamplePhase::Warmup, 2U}, {SamplePhase::Warmup, 0U},
+                {SamplePhase::Steady, 0U}, {SamplePhase::Steady, 1U},
+                {SamplePhase::Steady, 2U}, {SamplePhase::Steady, 0U},
+                {SamplePhase::Steady, 1U}},
+            "first sample must precede warm-up and measured frames restart at zero");
+    sampleOrder.clear();
+    require(!forEachSamplePhase(3U, 1U, 2U,
+                [&](SamplePhase phase, std::size_t frame) {
+                    sampleOrder.emplace_back(phase, frame);
+                    return phase != SamplePhase::Warmup;
+                }), "failed sample must stop the schedule");
+    require(sampleOrder.size() == 2U,
+            "schedule continued after a failed warm-up sample");
 
     require(nanoseconds(std::chrono::microseconds{3}) == 3000,
             "duration conversion must retain nanosecond units");

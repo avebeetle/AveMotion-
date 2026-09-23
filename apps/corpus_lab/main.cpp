@@ -594,15 +594,6 @@ AssetResult analyzeAsset(
         return true;
     };
 
-    for (std::size_t sample = 0U; sample < options.warmupSamples; ++sample) {
-        if (!runPipeline(sample % std::max<std::size_t>(1U, result.totalFrames), false)) {
-            result.status = "pipeline-failed";
-            result.error = "warm-up native pipeline sample failed";
-            return result;
-        }
-    }
-    observeWorkspaces(1U);
-
     std::vector<std::int64_t> exactSceneTimes;
     std::vector<std::int64_t> pipelineTimes;
     exactSceneTimes.reserve(options.samples + 1U);
@@ -619,25 +610,45 @@ AssetResult analyzeAsset(
     };
 
     const auto firstBefore = runtimeValue.diagnostics();
-    if (!measurePipeline(0U)) {
-        result.status = "pipeline-failed";
-        result.error = "first native pipeline sample failed";
-        return result;
-    }
-    result.firstPipelineUs = lastPipelineNs / 1000;
-    const auto firstAfter = runtimeValue.diagnostics();
-    result.firstCounts = corpus_lab::phaseDelta(firstBefore, firstAfter);
-
-    const auto steadyBefore = firstAfter;
+    runtime::DiagnosticsSnapshot steadyBefore;
+    bool steadyStarted = false;
     std::int64_t steadyPipelineTotalNs = 0;
-    for (std::size_t sample = 0U; sample < options.samples; ++sample) {
-        if (!measurePipeline(sample % std::max<std::size_t>(1U, result.totalFrames))) {
-            result.status = "pipeline-failed";
-            result.error = "steady native pipeline sample failed";
-            return result;
-        }
-        steadyPipelineTotalNs += pipelineTimes.back();
-    }
+    const bool completed = corpus_lab::forEachSamplePhase(
+        result.totalFrames, options.warmupSamples, options.samples,
+        [&](corpus_lab::SamplePhase phase, std::size_t frame) -> bool {
+            if (phase == corpus_lab::SamplePhase::First) {
+                if (!measurePipeline(frame)) {
+                    result.status = "pipeline-failed";
+                    result.error = "first native pipeline sample failed";
+                    return false;
+                }
+                result.firstPipelineUs = lastPipelineNs / 1000;
+                result.firstCounts = corpus_lab::phaseDelta(
+                    firstBefore, runtimeValue.diagnostics());
+                return true;
+            }
+            if (phase == corpus_lab::SamplePhase::Warmup) {
+                if (!runPipeline(frame, false)) {
+                    result.status = "pipeline-failed";
+                    result.error = "warm-up native pipeline sample failed";
+                    return false;
+                }
+                return true;
+            }
+            if (!steadyStarted) {
+                observeWorkspaces(1U);
+                steadyBefore = runtimeValue.diagnostics();
+                steadyStarted = true;
+            }
+            if (!measurePipeline(frame)) {
+                result.status = "pipeline-failed";
+                result.error = "steady native pipeline sample failed";
+                return false;
+            }
+            steadyPipelineTotalNs += pipelineTimes.back();
+            return true;
+        });
+    if (!completed) return result;
     const auto steadyAfter = runtimeValue.diagnostics();
     result.steadyCounts = corpus_lab::phaseDelta(steadyBefore, steadyAfter);
     result.steadyPipelineAverageUs = steadyPipelineTotalNs

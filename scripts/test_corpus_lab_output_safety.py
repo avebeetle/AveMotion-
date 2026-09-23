@@ -34,7 +34,7 @@ def check_preserved(command: list[str], source: Path, directory: Path,
         assert f"warmupSamplesPerAsset={expected_warmup}" in summary
 
 
-def check_memory_mode(root: Path, source: Path, preset: str) -> None:
+def check_memory_mode(root: Path, source: Path, executable: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="avemotion-memory-safety-") as temporary:
         output = Path(temporary) / "reports"
         output.mkdir()
@@ -45,7 +45,8 @@ def check_memory_mode(root: Path, source: Path, preset: str) -> None:
         completed = subprocess.run(
             [sys.executable, str(root / "scripts/run_part24_corpus_lab.py"),
              "--input-dir", str(output), "--output", str(output),
-             "--skip-build", "--preset", preset, "--memory-instances", "1"],
+             "--skip-build", "--preset", "not-a-build-preset",
+             "--executable", str(executable), "--memory-instances", "1"],
             cwd=root, capture_output=True, text=True, check=False)
         if os.name != "nt":
             assert completed.returncode != 0
@@ -67,6 +68,24 @@ def check_memory_mode(root: Path, source: Path, preset: str) -> None:
         assert sentinel.read_text(encoding="utf-8") == "keep"
 
 
+def check_executable_validation(root: Path, source: Path, executable: Path) -> None:
+    runner = str(root / "scripts/run_part24_corpus_lab.py")
+    with tempfile.TemporaryDirectory(prefix="avemotion-runner-validation-") as temporary:
+        common = [sys.executable, runner, "--input-dir", str(source.parent),
+                  "--output", str(Path(temporary) / "reports")]
+        without_skip = subprocess.run(
+            [*common, "--executable", str(executable)],
+            cwd=root, capture_output=True, text=True, check=False)
+        assert without_skip.returncode != 0
+        assert "--executable requires --skip-build" in without_skip.stderr
+        missing = subprocess.run(
+            [*common, "--skip-build", "--executable",
+             str(Path(temporary) / "missing.exe")],
+            cwd=root, capture_output=True, text=True, check=False)
+        assert missing.returncode != 0
+        assert "executable does not exist" in missing.stderr
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", required=True, type=Path)
@@ -78,11 +97,17 @@ def main() -> None:
               "--render-size", "64", "--strict"]
     check_preserved([str(args.executable.resolve()), "--input", "{asset}",
                      "--output", "{output}", *common], source, root, 20)
-    check_preserved([sys.executable, str(root / "scripts/run_part24_corpus_lab.py"),
-                     "--input-dir", "{output}", "--output", "{output}",
-                     "--skip-build", "--preset", args.executable.resolve().parent.name,
-                     *common, "--warmup-samples", "0"], source, root, 0)
-    check_memory_mode(root, source, args.executable.resolve().parent.name)
+    with tempfile.TemporaryDirectory(prefix="avemotion-custom-executable-") as temporary:
+        executable = Path(temporary) / ("custom-corpus-lab.exe" if os.name == "nt"
+                                        else "custom-corpus-lab")
+        shutil.copy2(args.executable.resolve(), executable)
+        check_preserved([sys.executable, str(root / "scripts/run_part24_corpus_lab.py"),
+                         "--input-dir", "{output}", "--output", "{output}",
+                         "--skip-build", "--preset", "not-a-build-preset",
+                         "--executable", str(executable), *common,
+                         "--warmup-samples", "0"], source, root, 0)
+        check_memory_mode(root, source, executable)
+        check_executable_validation(root, source, executable)
     print("AveMotion corpus lab output preservation passed")
 
 

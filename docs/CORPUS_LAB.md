@@ -41,10 +41,11 @@ The median is the middle sorted value, or the average of the two middle values.
 P95 uses the nearest rank: sorted position `ceil(0.95 * N) - 1`.
 
 `--samples` (default 60, range 1–10000) counts measured steady frames.
-`--warmup-samples` (default 20, range 0–10000) runs before measurement.
-The first frame is frame 0; warm-up and measured steady frames independently
-use `sample % totalFrames`. The four percentile columns include the first
-frame and measured steady frames, and exclude warm-up. The sampled workload
+`--warmup-samples` (default 20, range 0–10000) runs between the first
+measured sample and the measured steady loop. The first sample is frame 0;
+warm-up and measured steady frames independently use `sample % totalFrames`.
+The four percentile columns include the first frame and measured steady
+frames, and exclude warm-up. The sampled workload
 totals (`projected_items`, `source_draw_items`, `unsupported_draw_items`)
 also include first plus measured frames and exclude warm-up. Asset
 classification and validation do not depend on these sample counts.
@@ -68,6 +69,8 @@ expected baseline observations. These counters do not imply session reuse.
 
 `{evaluator,projector}_{after_prepare,after_warmup,after_measured}_{retained_bytes,storage_generation}`
 records each workspace's retained storage and generation at those boundaries.
+The after-warm-up observation follows both the first measured frame and the
+warm-up loop; the steady diagnostic delta starts after this observation.
 These are workspace observations, not process allocation counts. Player's
 storage generation is checked over 1,000 stable ticks in its runtime test.
 The planner's existing diagnostics and repeat/forget tests check update and
@@ -82,7 +85,9 @@ current process working set and process peak working set in bytes. Every
 instance remains live through the process memory query. Both byte values
 include the entire process and are observations, never CI pass/fail thresholds.
 The mode fails explicitly on non-Windows platforms. The Python runner forwards
-`--memory-instances` and `--warmup-samples`.
+`--memory-instances` and `--warmup-samples`. For `--skip-build`,
+`--executable PATH` selects an existing binary directly, including one outside
+the preset build directory. It is rejected without `--skip-build`.
 
 The output directory is created if needed. Existing unrelated files and input
 assets remain in place; only named report files are overwritten.

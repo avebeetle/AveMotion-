@@ -54,6 +54,8 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--preset")
     parser.add_argument("--skip-build", action="store_true")
+    parser.add_argument("--executable", type=Path,
+                        help="existing corpus-lab executable for --skip-build")
     parser.add_argument("--include-names", action="store_true")
     parser.add_argument("--strict", action="store_true")
     parser.add_argument("--samples", type=int, default=60)
@@ -67,11 +69,18 @@ def main() -> int:
     preset = args.preset or (
         "windows-msvc-corpus-lab" if os.name == "nt"
         else "linux-gcc-corpus-lab")
+    if args.executable is not None and not args.skip_build:
+        fail("--executable requires --skip-build")
     if not args.skip_build:
         run(["cmake", "--preset", preset], root)
         run(["cmake", "--build", "--preset", preset,
              "--target", "avemotion_corpus_lab"], root)
-    executable = executable_path(root, preset)
+    if args.executable is not None:
+        executable = args.executable.resolve()
+        if not executable.is_file():
+            fail(f"executable does not exist: {executable}")
+    else:
+        executable = executable_path(root, preset)
     temporary: tempfile.TemporaryDirectory[str] | None = None
     if args.input_zip is not None:
         if not args.input_zip.is_file():
