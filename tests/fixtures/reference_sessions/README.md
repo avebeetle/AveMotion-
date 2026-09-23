@@ -13,3 +13,8 @@ scratch probe inputs; the remaining cases extend those inputs.
 
 `dashed_stroke_session.json`, `translation-near-default.json`, `width.json` and
 `opacity.json` are the existing Part25B exact-state regressions.
+
+`late-overflow.json` uses finite authored values: frame 0 is valid, while
+frame 1's held scale overflows evaluated path coordinates. It protects typed
+ordinary/recording error parity, recovery to frame 0, and model preparation
+retry without partial publication. It does not enter the top-level smoke corpus.

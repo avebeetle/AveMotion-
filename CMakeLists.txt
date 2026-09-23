@@ -538,6 +538,12 @@ if(BUILD_TESTING)
                 --expected-assets 16)
         set_tests_properties(avemotion.corpus.lab_output PROPERTIES
             DEPENDS avemotion.corpus.lab_smoke)
+        add_test(NAME avemotion.corpus.lifetime_profiles
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/scripts/test_corpus_lab_lifetime_profiles.py
+                --executable $<TARGET_FILE:avemotion_corpus_lab>
+                --corpus ${CMAKE_CURRENT_SOURCE_DIR}/tests/compatibility/tgs)
+        set_tests_properties(avemotion.corpus.lifetime_profiles PROPERTIES TIMEOUT 300)
         add_test(NAME avemotion.corpus.lab_output_safety
             COMMAND ${Python3_EXECUTABLE}
                 ${CMAKE_CURRENT_SOURCE_DIR}/scripts/test_corpus_lab_output_safety.py
@@ -757,6 +763,18 @@ if(BUILD_TESTING)
             avemotion_set_warnings(avemotion_source_ownership_tests)
             add_test(NAME avemotion.runtime.source_ownership
                 COMMAND avemotion_source_ownership_tests)
+
+            add_executable(avemotion_model_session_tests tests/model_session_tests.cpp)
+            target_link_libraries(avemotion_model_session_tests PRIVATE
+                AveMotion::Runtime rlottie::rlottie Threads::Threads)
+            target_include_directories(avemotion_model_session_tests PRIVATE
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/model" "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime"
+                "${AVEMOTION_RLOTTIE_INCLUDE_DIR}")
+            target_compile_definitions(avemotion_model_session_tests PRIVATE
+                AVEMOTION_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus"
+                AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
+            avemotion_set_warnings(avemotion_model_session_tests)
+            add_test(NAME avemotion.runtime.model_sessions COMMAND avemotion_model_session_tests)
 
             add_executable(avemotion_source_binding_tests tests/source_binding_tests.cpp)
             target_link_libraries(avemotion_source_binding_tests PRIVATE AveMotion::Runtime rlottie::rlottie Threads::Threads)

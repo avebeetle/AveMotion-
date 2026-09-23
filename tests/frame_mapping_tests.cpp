@@ -193,7 +193,7 @@ int main() {
     runtime.resetDiagnostics();
     auto instance = runtime.createInstance(loaded.asset);
     require(bool(instance), "ordinary instance creation failed");
-    require(runtime.diagnostics().referenceSceneSessionsCreated == 0U,
-            "ordinary instance construction must not create a mapping tree");
+    require(runtime.diagnostics().referenceSceneSessionsCreated == 1U,
+            "ordinary instance construction must create one retained scene tree");
     std::cout << "frame mapping parity and lifecycle passed\n";
 }

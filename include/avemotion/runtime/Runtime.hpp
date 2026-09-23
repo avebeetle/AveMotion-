@@ -77,6 +77,8 @@ public:
     [[nodiscard]] AssetHandle handle() const noexcept;
     [[nodiscard]] std::size_t canonicalGeometryCount() const noexcept;
     [[nodiscard]] std::size_t canonicalPaintCount() const noexcept;
+    // Concurrent callers share one immutable publication. Each eligible attempt
+    // owns a temporary recording evaluator; authored source may be shared.
     [[nodiscard]] model::AssetModelResult prepareModel() const;
     [[nodiscard]] std::shared_ptr<const model::MotionAssetModel> model() const;
 
@@ -96,6 +98,9 @@ struct AssetLoadResult final {
     }
 };
 
+// Access each Instance serially, including CPU rendering and playback control.
+// Different Instances own independent recording evaluators and may run on
+// separate host threads. CPU evaluation uses its own lazy ordinary evaluator.
 class Instance final {
 public:
     Instance(Instance&&) noexcept;

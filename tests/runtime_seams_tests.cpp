@@ -62,15 +62,14 @@ void verifyReferenceDiagnostics() {
     auto created = runtime.createInstance(loaded.asset);
     require(static_cast<bool>(created), "diagnostic fixture instance failed to create");
     counters = runtime.diagnostics();
-    require(counters.referenceSceneSessionsCreated == 0U,
-            "ordinary instance creation must not create a mapping scene session");
+    require(counters.referenceSceneSessionsCreated == 1U,
+            "instance creation must eagerly create one scene session");
 
     const auto exact = created.instance->evaluateFrame(0U, 128U, 128U);
     require(static_cast<bool>(exact), "diagnostic exact scene evaluation failed");
     counters = runtime.diagnostics();
-    // Protect current fresh sampling until a separately proved reuse implementation changes the contract.
     require(counters.referenceSceneSessionsCreated == 1U,
-            "current exact scene evaluation must create a scene-role session");
+            "exact evaluation must reuse the scene session");
     require(counters.referenceSceneSamples == 1U
                 && counters.referenceModelSamples == 0U,
             "exact scene sample must have the scene role");
@@ -95,6 +94,12 @@ void verifyReferenceDiagnostics() {
             "CPU session must remain usable after diagnostic reset");
     require(runtime.diagnostics().referenceCpuSessionsCreated == 0U,
             "diagnostic reset must not recreate a live CPU session");
+    require(bool(created.instance->evaluateFrame(2U, 128U, 128U)),
+            "scene session must remain usable after diagnostic reset");
+    require(runtime.diagnostics().referenceSceneSessionsCreated == 0U
+                && runtime.diagnostics().referenceSceneSamples == 1U,
+            "diagnostic reset must preserve the live scene session");
+    runtime.resetDiagnostics();
 
     const auto prepared = loaded.asset->prepareModel();
     counters = runtime.diagnostics();
@@ -105,9 +110,8 @@ void verifyReferenceDiagnostics() {
     if (avemotion::reference::selectedUpstream().variant == "telegram") {
         require(static_cast<bool>(prepared),
                 "diagnostic fixture model preparation failed");
-        require(counters.referenceModelSessionsCreated
-                    == loaded.asset->metadata().totalFrames,
-                "current model preparation must classify per-frame sessions as model");
+        require(counters.referenceModelSessionsCreated == 1U,
+                "model preparation must reuse one temporary model session");
         require(counters.referenceModelSamples == loaded.asset->metadata().totalFrames,
                 "model preparation must count its renderTree samples");
         require(static_cast<bool>(loaded.asset->prepareModel()),

@@ -63,9 +63,9 @@ void verifyModelPreparationLifetime(std::string_view variant) {
         require(prepared.model == loaded.asset->model(), "first preparation was not published");
         const auto frames = loaded.asset->metadata().totalFrames;
         require(frames > 1U, "lifetime fixture must span multiple frames");
-        require(afterFirst.referenceModelSessionsCreated == frames
+        require(afterFirst.referenceModelSessionsCreated == 1U
                     && afterFirst.referenceModelSamples == frames,
-                "fresh model scan must construct and sample one session per source frame");
+                "model scan must reuse one session over every source frame");
         require(afterFirst.referenceSceneSessionsCreated == 0U
                     && afterFirst.referenceSceneSamples == 0U,
                 "model scan leaked work into the scene role");
@@ -79,7 +79,7 @@ void verifyModelPreparationLifetime(std::string_view variant) {
                     && loaded.asset->model() == prepared.model,
                 "second preparation did not reuse the published immutable model");
         const auto afterSecond = runtime.diagnostics();
-        require(afterSecond.referenceModelSessionsCreated == frames
+        require(afterSecond.referenceModelSessionsCreated == 1U
                     && afterSecond.referenceModelSamples == frames
                     && afterSecond.assetModelBuildAttempts == 1U
                     && afterSecond.assetModelBuildsSucceeded == 1U
@@ -88,10 +88,12 @@ void verifyModelPreparationLifetime(std::string_view variant) {
 
         auto created = runtime.createInstance(loaded.asset);
         require(static_cast<bool>(created), "lifetime fixture instance creation failed");
+        require(runtime.diagnostics().referenceSceneSessionsCreated == 1U,
+                "Instance must eagerly own its scene session");
         const auto evaluated = created.instance->evaluateFrame(0U, 128U, 128U);
         require(static_cast<bool>(evaluated), "lifetime fixture exact scene evaluation failed");
         const auto afterScene = runtime.diagnostics();
-        require(afterScene.referenceModelSessionsCreated == frames
+        require(afterScene.referenceModelSessionsCreated == 1U
                     && afterScene.referenceModelSamples == frames
                     && afterScene.assetModelBuildAttempts == 1U
                     && afterScene.assetModelBuildsSucceeded == 1U,

@@ -23,8 +23,11 @@ def main() -> int:
     parser.add_argument("--expected-samples", type=int, default=5)
     parser.add_argument("--expected-warmup-samples", type=int, default=20)
     parser.add_argument("--expected-render-size", type=int, default=64)
-    parser.add_argument("--expected-setup-scene-sessions", type=int, default=0)
+    parser.add_argument("--lifetime-profile", choices=("fresh", "persistent"), default="persistent")
+    parser.add_argument("--expected-setup-scene-sessions", type=int)
     args = parser.parse_args()
+    if args.expected_setup_scene_sessions is None:
+        args.expected_setup_scene_sessions = 1 if args.lifetime_profile == "persistent" else 0
     require(args.expected_setup_scene_sessions >= 0,
             "expected setup scene sessions must be nonnegative")
     for name in ("corpus_manifest.tsv", "corpus_issues.tsv",
@@ -39,6 +42,9 @@ def main() -> int:
             "source names leaked")
     require(all(row["status"] == "ok" for row in manifest),
             "deterministic corpus has failed assets")
+    frames = {row["asset"]: int(row["frames"]) for row in manifest}
+    require(len(frames) == len(manifest) and all(value > 0 for value in frames.values()),
+            "manifest aliases must be unique and frame counts positive")
     decisions = rows(args.output / "corpus_decision.tsv")
     require(decisions, "decision report is empty")
     ranks = [int(row["rank"]) for row in decisions]
@@ -50,29 +56,27 @@ def main() -> int:
     require([row["asset"] for row in benchmarks] == [row["asset"] for row in manifest],
             "benchmark aliases differ from manifest aliases")
     for row in benchmarks:
+        fresh = args.lifetime_profile == "fresh"
+        expected_sessions = {
+            "setup_metadata_sessions": 1,
+            "setup_scene_sessions": args.expected_setup_scene_sessions,
+            "setup_model_sessions": frames[row["asset"]] if fresh else 1,
+            "setup_cpu_sessions": 0,
+            "first_metadata_sessions": 0, "first_scene_sessions": 1 if fresh else 0,
+            "first_model_sessions": 0, "first_cpu_sessions": 0,
+            "steady_metadata_sessions": 0, "steady_scene_sessions": args.expected_samples if fresh else 0,
+            "steady_model_sessions": 0, "steady_cpu_sessions": 0,
+            "setup_model_samples": frames[row["asset"]],
+            "first_scene_samples": 1, "steady_scene_samples": args.expected_samples,
+        }
+        for name, expected in expected_sessions.items():
+            require(name in row and row[name] not in (None, ""), f"missing {name}")
+            require(int(row[name]) == expected,
+                    f"{args.lifetime_profile} {name}: expected {expected}, got {row[name]}")
         for prefix in ("exact_scene", "pipeline"):
             median = int(row[f"{prefix}_median_ns"])
             p95 = int(row[f"{prefix}_p95_ns"])
             require(0 <= median <= p95, f"invalid {prefix} percentile")
-        for phase in ("setup", "first", "steady"):
-            for role in ("metadata", "scene", "model", "cpu"):
-                name = f"{phase}_{role}_sessions"
-                require(int(row[name]) >= 0, f"negative {name}")
-        for name in ("setup_model_samples", "first_scene_samples", "steady_scene_samples"):
-            require(int(row[name]) >= 0, f"negative {name}")
-        require(int(row["setup_metadata_sessions"]) == 1,
-                "setup must include the asset metadata session")
-        require(int(row["setup_scene_sessions"]) == args.expected_setup_scene_sessions,
-                "setup scene session count mismatch")
-        require(int(row["setup_model_samples"]) > 0,
-                "setup must include model preparation samples")
-        require(int(row["first_scene_samples"]) == 1,
-                "first phase must contain exactly one scene sample")
-        require(int(row["steady_scene_samples"]) == args.expected_samples,
-                "steady phase scene samples must match measured CLI count")
-        require(all(int(row[f"{phase}_cpu_sessions"]) == 0
-                    for phase in ("setup", "first", "steady")),
-                "CPU oracle ran inside a diagnostic phase")
         for boundary in ("after_prepare", "after_warmup", "after_measured"):
             for owner in ("evaluator", "projector"):
                 for measure in ("retained_bytes", "storage_generation"):

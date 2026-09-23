@@ -137,9 +137,8 @@ void evictionAfterPreparation(const std::string& json) {
     observer.reset();
     require(prepared.model->assetHandle == loaded.asset->handle(),
         "frozen model owns original Asset descriptor");
-    require(runtime.diagnostics().referenceModelSessionsCreated
-            == loaded.asset->metadata().totalFrames,
-        "Task2 retains one fresh model session per frame");
+    require(runtime.diagnostics().referenceModelSessionsCreated == 1,
+        "model preparation retains one temporary session");
     auto before = existing.instance->evaluateModelFrame(0, 128, 128);
     require(bool(before), "evaluate before eviction");
     assertLiveBindings(before.scene, "before eviction");
@@ -168,9 +167,8 @@ void evictionAfterPreparation(const std::string& json) {
         "CPU pixels survive preparation and eviction");
     const auto epoch = runtime.diagnostics();
     require(epoch.referenceMetadataSessionsCreated == 2
-            && epoch.referenceSceneSessionsCreated == 4
-            && epoch.referenceModelSessionsCreated
-                == loaded.asset->metadata().totalFrames
+            && epoch.referenceSceneSessionsCreated == 2
+            && epoch.referenceModelSessionsCreated == 1
             && epoch.referenceCpuSessionsCreated == 1,
         "metadata/scene/model/lazy CPU session epoch");
     before = {};

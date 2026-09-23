@@ -65,8 +65,8 @@ void unchanged(const SceneChangeSummary& changes, const std::string& context) {
 void counts(const DiagnosticsSnapshot& value, std::uint64_t instances, std::uint64_t samples,
             std::uint64_t cpuSessions, std::uint64_t cpuFrames, const std::string& context) {
     require(value.referenceMetadataSessionsCreated == 0U, context + ": unexpected metadata session");
-    require(value.referenceSceneSessionsCreated == samples,
-            context + ": each exact sample must create one scene session; ordinary instances create none");
+    require(value.referenceSceneSessionsCreated == instances,
+            context + ": each Instance must create exactly one retained scene session");
     require(value.referenceModelSessionsCreated == 0U && value.referenceModelSamples == 0U,
             context + ": exact sampling must not create or sample a model session");
     require(value.referenceCpuSessionsCreated == cpuSessions, context + ": incorrect CPU session count");
@@ -319,7 +319,7 @@ void verifyCpuIsolation(const fs::path& path) {
             "CPU rendering must not advance the scene sequence");
     unchanged(after.changes, "scene after CPU renders");
     counts(runtime.diagnostics(), 1U, 2U, 1U, 2U, "CPU isolation final");
-    std::cout << "PASS CPU isolation: sceneSessions=2 sceneSamples=2 cpuSessions=1 cpuRenders=2\n";
+    std::cout << "PASS CPU isolation: sceneSessions=1 sceneSamples=2 cpuSessions=1 cpuRenders=2\n";
 }
 
 void verifySeparateInstanceThreads(const fs::path& path) {

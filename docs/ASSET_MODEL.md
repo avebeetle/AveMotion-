@@ -106,12 +106,21 @@ Direct2D backend
 Logical assets therefore survive graphics-device recreation.
 
 The private Telegram source lease is captured from the successful metadata
-Animation. Later fresh scene, model-preparation and lazy CPU Animations use that
+Animation. Later scene, model-preparation and lazy CPU Animations use that
 exact parsed source even after loader-cache eviction. The immutable final
 `MotionAssetModel` remains descriptor-specific: separately loaded Assets with
-identical JSON retain distinct handles and published models. This stage still
-creates a fresh Animation for each exact scene sample and model frame; it does
-not introduce persistent scene or model sessions.
+identical JSON retain distinct handles and published models. Each Instance
+eagerly owns one recording Animation; each eligible preparation attempt owns
+one temporary recording Animation for the ascending whole-timeline scan.
+Failed scans publish no model and release that temporary evaluator. CPU
+evaluation remains a separate lazy ordinary Animation.
+
+Each Instance requires serial access; different Instances may evaluate on
+separate host threads. Concurrent preparation on one Asset shares a single
+immutable publication. Only authored source data is shared across evaluators.
+Telegram recording sessions refresh local source bindings when the source
+metadata epoch changes; unchanged-epoch samples acquire no source binding lock.
+Quiescent diagnostic resets zero creation counters without discarding sessions.
 
 ## Deterministic fingerprints
 

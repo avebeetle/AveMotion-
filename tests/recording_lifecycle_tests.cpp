@@ -189,6 +189,24 @@ void threaded(const std::string& json) {
     for (const auto& error : errors) if (error) std::rethrow_exception(error);
     std::cout << "PASS independent host threads and repeated destruction\n";
 }
+void lateFailure(const fs::path& path) {
+    const auto json = read(path);
+    auto retained = candidate(json);
+    for (size_t frame : {0U, 1U, 0U}) {
+        auto ordinary = load(json);
+        auto expected = avemotion::runtime::detail::buildSceneFromRlottieTree(
+            ordinary->renderTree(frame, 128, 128), 1, 1, 1, frame, 128, 128);
+        auto actual = avemotion::runtime::detail::buildSceneFromRlottieTree(
+            sample(*retained, frame, 128, 128), 1, 1, 1, frame, 128, 128);
+        require(bool(expected) == (frame == 0) && bool(actual) == bool(expected),
+            "finite overflow fails only at frame 1 and recovers");
+        require(expected.error.code == actual.error.code
+                && expected.error.message == actual.error.message,
+            "finite overflow ordinary/recording typed error parity");
+        if (actual) same(expected.scene, actual.scene, "finite overflow full-scene recovery parity");
+    }
+    std::cout << "PASS late-overflow.json: ordinary typed error and complete recording recovery\n";
+}
 }
 int main() {
     try {
@@ -201,7 +219,10 @@ int main() {
             if (entry.path().extension() == ".json") paths.push_back(entry.path());
         std::sort(paths.begin(), paths.end());
         size_t failures = 0;
-        for (const auto& path : paths) try { timeline(path); }
+        for (const auto& path : paths) try {
+            if (path.filename() == "late-overflow.json") lateFailure(path);
+            else timeline(path);
+        }
             catch (const std::exception& e) { ++failures; std::cerr << "FAILED: " << e.what() << '\n'; }
         guards(read(fixtures / "reference_sessions/dashed_stroke_session.json"));
         freshNoBuildSentinel();

@@ -237,7 +237,7 @@ struct InstanceData final {
     SceneFingerprints previousFingerprints;
     PlaybackControl playback;
 #if AVEMOTION_HAS_RLOTTIE
-    std::unique_ptr<rlottie::Animation> legacyFrameMappingAnimation;
+    std::unique_ptr<rlottie::Animation> sceneAnimation;
     std::unique_ptr<rlottie::Animation> cpuAnimation;
 #endif
 
@@ -682,6 +682,7 @@ enum class ReferenceSampleRole { Scene, ModelPreparation };
 }
 
 [[nodiscard]] Instance::SceneResult extractExactScene(
+    rlottie::Animation& animation,
     const detail::AssetData& asset,
     AssetHandle assetHandle,
     InstanceHandle instanceHandle,
@@ -700,21 +701,11 @@ enum class ReferenceSampleRole { Scene, ModelPreparation };
     }
 
     frameIndex = clampFrame(frameIndex, asset.metadata);
-    auto exactAnimation = loadUpstreamAnimation(
-        asset, role == ReferenceSampleRole::Scene
-            ? ReferenceSessionRole::Scene
-            : ReferenceSessionRole::ModelPreparation);
-    if (!exactAnimation) {
-        result.error = {
-            RuntimeErrorCode::EvaluationFailed,
-            "unable to create an isolated exact-evaluation runtime tree"};
-        return result;
-    }
     auto& samples = role == ReferenceSampleRole::Scene
         ? asset.runtimeState->referenceSceneSamples
         : asset.runtimeState->referenceModelSamples;
     samples.fetch_add(1U, std::memory_order_relaxed);
-    const auto* tree = exactAnimation->renderTree(
+    const auto* tree = animation.renderTreeForRecording(
         frameIndex, viewportWidth, viewportHeight);
     auto built = detail::buildSceneFromRlottieTree(
         tree,
@@ -779,9 +770,16 @@ enum class ReferenceSampleRole { Scene, ModelPreparation };
     const auto width = std::max<std::size_t>(1U, asset.metadata.width);
     const auto height = std::max<std::size_t>(1U, asset.metadata.height);
 
+    auto scan = loadUpstreamAnimation(asset, ReferenceSessionRole::ModelPreparation);
+    if (!scan || !scan->enableRecordingLifecycle()) {
+        asset.modelError = "unable to create a recording model-preparation runtime tree";
+        asset.runtimeState->assetModelBuildsFailed.fetch_add(1U, std::memory_order_relaxed);
+        return {nullptr, asset.modelError};
+    }
+
     for (std::size_t frame = 0; frame < asset.metadata.totalFrames; ++frame) {
         auto extracted = extractExactScene(
-            asset, asset.handle, {}, 0U, frame + 1U, frame, width, height,
+            *scan, asset, asset.handle, {}, 0U, frame + 1U, frame, width, height,
             ReferenceSampleRole::ModelPreparation);
         if (!extracted) {
             asset.modelError = extracted.error.message;
@@ -868,6 +866,7 @@ enum class ReferenceSampleRole { Scene, ModelPreparation };
     bool applyModel) {
     const auto started = Clock::now();
     auto result = extractExactScene(
+        *instance.sceneAnimation,
         *instance.assetData,
         instance.asset->handle(),
         instance.handle,
@@ -978,9 +977,9 @@ InstanceHandle Instance::handle() const noexcept { return data_->handle; }
 std::size_t Instance::frameAtPosition(double normalizedPosition) const noexcept {
 #if AVEMOTION_HAS_RLOTTIE
     const auto& metadata = data_->asset->metadata();
-    if (data_->legacyFrameMappingAnimation) {
+    if (metadata.totalFrames > static_cast<std::size_t>(std::numeric_limits<long>::max())) {
         return clampFrame(
-            data_->legacyFrameMappingAnimation->frameAtPos(clampNormalized(normalizedPosition)),
+            data_->sceneAnimation->frameAtPos(clampNormalized(normalizedPosition)),
             metadata);
     }
     if (metadata.totalFrames <= 1U) return 0U;
@@ -1440,17 +1439,12 @@ InstanceCreateResult Runtime::createInstance(
     data->runtimeState = state_;
     data->handle = state_->instanceHandles.acquire();
     data->id = state_->nextInstanceId.fetch_add(1U, std::memory_order_relaxed);
-    // Telegram can accept reversed root spans whose signed frame count wraps
-    // into a large size_t. Preserve upstream mapping for that outlier only.
-    if (data->asset->metadata().totalFrames
-            > static_cast<std::size_t>(std::numeric_limits<long>::max())) {
-        data->legacyFrameMappingAnimation = loadUpstreamAnimation(
-            *data->asset->data_, ReferenceSessionRole::Scene);
-        if (!data->legacyFrameMappingAnimation) {
-            result.error = {RuntimeErrorCode::InstanceCreationFailed,
-                "unable to create the upstream scene-evaluation instance"};
-            return result;
-        }
+    data->sceneAnimation = loadUpstreamAnimation(
+        *data->asset->data_, ReferenceSessionRole::Scene);
+    if (!data->sceneAnimation || !data->sceneAnimation->enableRecordingLifecycle()) {
+        result.error = {RuntimeErrorCode::InstanceCreationFailed,
+            "unable to create the upstream scene-evaluation instance"};
+        return result;
     }
     result.instance = std::unique_ptr<Instance>{new Instance{std::move(data)}};
     state_->instancesCreated.fetch_add(1U, std::memory_order_relaxed);

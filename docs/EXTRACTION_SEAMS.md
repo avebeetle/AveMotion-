@@ -83,21 +83,27 @@ Part 3 uses independent upstream runtime objects for:
 - exact evaluated-scene extraction;
 - CPU pixel rendering.
 
-For exact scene sampling, a fresh runtime item tree is created for every sample.
+For exact scene sampling, each Instance owns one eager recording runtime tree.
+Every sample resets its recording state before evaluation and immediately
+deep-copies the result. Model preparation owns a separate temporary recording
+tree across its ascending scan; CPU rendering keeps its own lazy ordinary tree.
 Telegram Assets now retain the exact parsed `LOTModel` returned by their metadata
 Animation and construct their scene, model-preparation and lazy CPU Animations
 from that same source. The model cache may evict or be disabled without losing
 authored path and paint IDs on prepared scenes. Samsung continues to use its
-ordinary loader. Fresh scene/model sessions remain in this stage; the source
-lease does not retain an evaluator or make a scene session persistent.
+ordinary loader. The source lease itself retains no mutable evaluator.
+Access to each Instance remains serial; separate Instances may run concurrently.
+Source binding epochs refresh local recording IDs after model extraction;
+unchanged-epoch frames acquire no source binding lock.
 
 See `docs/known-issues/RLOTTIE_RENDER_TREE_STATE.md`.
 
 The earlier cache-dependent loss of Telegram authored IDs was accidental
 metadata loss. The prepared-scene oracle explicitly stamps its own fresh
 ordinary source before comparison, so it still checks every scene field while
-using the Asset's frozen model for this source-ownership test. An independently
-built frozen-model oracle remains separate work.
+using the Asset's frozen model for this source-ownership test. The independent
+model-session test additionally builds a whole model using fresh ordinary
+Animations for every ascending frame, then compares complete model-applied scenes.
 
 ## EvaluatedScene contract in Part 3
 
@@ -143,7 +149,7 @@ at property/node/geometry granularity.
 
 - scene paths are already transformed to the requested viewport;
 - local transforms and canonical source geometry are not yet separately exposed;
-- exact scene evaluation creates a fresh upstream runtime item tree per sample;
+- exact scene evaluation still deep-copies every sample from its recording tree;
 - images record dimensions and matrix but do not copy image pixels;
 - bounds are conservative control-point bounds, not exact cubic extrema;
 - the API is source-stable only for this laboratory stage, not a published ABI;
