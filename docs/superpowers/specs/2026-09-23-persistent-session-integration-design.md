@@ -213,12 +213,39 @@ cpu-repeats0. Record per-asset exact and full CPU-pipeline median/p95, setup,
 first/steady counters and actual evaluator/projector storage bytes/generations.
 Planner allocation telemetry remains unavailable, not inferred zero.
 
+Measurement acceptance must validate the complete successful smoke-corpus
+lifetime profile, not two counts derived from each other. Model sample count
+equals that asset's manifest frame count. Setup metadata sessions=1 and CPU=0;
+first/steady metadata/model/CPU sessions=0. Setup scene sessions are1/0/1 for
+Original/Part25B/candidate respectively; first scene sessions1/1/0, steady scene
+sessions1000/1000/0, and setup model sessions frames/frames/1. First/steady scene
+sample counts are1/1000. The unchanged instrument exports only those scene
+sample counts plus setup model samples; absence of model sampling in first/steady
+phases must be covered by Runtime diagnostics tests, not invented TSV columns.
+Validate schema,
+successful statuses, alias correspondence and actual input hashes against the
+committed corpus manifest before timing acceptance. Record and verify the actual
+candidate build directory, Telegram variant, Release configuration and compiler
+identity, not only a supplied executable hash. A structurally successful runner
+exit is separate from the measured speedup/p95 target decision.
+
 Primary original-runtime baseline uses the preserved c484f4b common-instrument
 binary, SHA256614714992fbacd80c1714683080811b66f5192aa4fd8ed8cd70ab42cea514f3b
 at out/benchmarks/part25b/baseline. Additional comparison against Part25B Runtime
 uses out/benchmarks/part25c/baseline, SHA256be9b98b42fd0f610665163da3c676316bc14725a6cdf862c87ee2208f418da69.
 These are different baselines and must be labeled separately. Both old binaries
 remain untouched. Record current candidate hash/configuration and compiler.
+
+Fix aggregation before seeing candidate timings, consistent with the Part25A
+report: for each asset/statistic take the median of its two corresponding run
+values (the average for two values). Across16 per-asset exact-median summaries,
+take the median for each binary; Original aggregate divided by candidate
+aggregate must be at least2. Each asset's candidate two-run p95 summary must be
+at most1.10 times its Original summary. Also publish every A1/B1/B2/A2 median/p95
+and per-asset ratio so aggregation cannot hide outliers. A median of reported
+p95s is not a pooled-sample percentile or statistical confidence interval.
+Zero denominators or invalid metrics mean the target is not established, never
+an infinite speedup. Part25B ratios are descriptive, not the original target.
 
 Observe current/peak process working set for1/16/64 live Instances on StickAndBall
 and firework. Retained scenes/source leases may use more memory than Part25B;

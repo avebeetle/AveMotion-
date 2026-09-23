@@ -15,10 +15,17 @@ docs/superpowers/specs/2026-09-23-persistent-session-integration-design.md,
 plan docs/superpowers/plans/2026-09-23-persistent-session-integration.md and ledger
 .superpowers/sdd/2026-09-23-persistent-session-integration/progress.md.
 Task1 adds exact Telegram source lease, synchronized binding publication and
-recording refresh before any Runtime lifetime adoption. Its brief is prepared;
-controller captures clean stage base and dispatches one product implementer
-after this handoff's ordinary push. Check current ledger/live agents before
-dispatch; do not repeat completed Part25A/B/C tasks. Automation stays ACTIVE.
+recording refresh before any Runtime lifetime adoption. Task1d3e83f5 is complete:
+independent review approved, fullTelegram64/64 and controller fresh focused4/4
+passed. Task2 Asset-owned source identity is next; capture its actual dispatch
+base in the ledger. Check current ledger/live agents before dispatch; do not
+duplicate a live worker or repeat completed Part25A/B/C tasks. Automation stays ACTIVE.
+
+Independent scratch probe /root/fixture_checkout_probe investigates unprotected
+tests/fixtures JSON newline conversion in the corrected Git snapshot versus TGS
+payload identity; no correction is yet implemented or claimed. This is separate
+from the reviewed source-binding change; preserve its evidence and act on confirmed
+findings as a bounded follow-up without weakening existing TGS tests.
 
 The future measurement runner has a read-only audit at
 out/benchmarks/part25c/measurement-runner-audit.md: strengthen lifetime/schema,

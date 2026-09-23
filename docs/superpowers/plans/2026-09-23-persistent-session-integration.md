@@ -53,6 +53,10 @@ approved in spec, not a silent relaxation of metadata parity.
 
 ### Task 1: Private Telegram source lease, synchronized binding publication and recording refresh
 
+**Status:** complete atd3e83f5, independent task review approved. Functional RED,
+fullTelegram64/64, controller fresh focused4/4, vendor verification and six-file
+patch byte replay passed. Runtime is still fresh; no TSan/unwind-injection claim.
+
 **Files:** Telegram private seam/model/item/API files above, parsed-builder files,
 new source_binding_tests.cpp, CMake, patch0007/provenance. No Runtime lifetime or
 source-loading change yet. Samsung untouched.
@@ -121,6 +125,7 @@ if (sourceEpoch.load(std::memory_order_acquire) != capturedEpoch) {
 **Interfaces:** Consume Task1 access adapter and source-handle builder. AssetData gains Telegram-only shared_ptr<LOTModel>; existing loadUpstreamAnimation signatures and public Runtime interface stay unchanged. CTest avemotion.runtime.source_ownership.
 
 - [ ] Reproduce current Runtime cache-loss RED using out/part25d-cache-eviction/probe.cpp sequence in permanent test; use private LottieLoader capacity1 within isolated executable. Full comparator against explicitly prepared fresh ordinary model-aware oracle, not only invalid-ID counts. Cover old Instance and new Instance after eviction, eviction before preparation, and at least one live source-path/paint assertion.
+- [ ] Keep this Task2 oracle deliberately scene-scoped: load/stamp original JSON under an oracle-only key, construct a fresh ordinary Animation after stamping, bridge it and attach the candidate's already-frozen model via unchanged applyAssetModel. That function does not repair authored path/paint IDs; require live valid IDs resolving into the source table, then compare all scene fields and aliases. Read out/part25d-design/ownership-oracle-boundary.md. This shares the frozen model and does not prove its construction correct; Task3's independent fresh scan remains mandatory.
 - [ ] Capture model handle from successful metadata animation before its destruction. Store exact handle in AssetData. Telegram role loader uses fromModel; Samsung and metadata parse remain unchanged. Runtime parsed preparation calls handle overload; do not create extra metadata or reference sessions.
 
 ```cpp
@@ -153,6 +158,7 @@ is Telegram-only; avemotion.corpus.lifetime_profiles validates both report profi
 - [ ] Add cold unique JSON load/createInstance/exactSample/prepare/modelSample order, and createInstance/prepare/modelSample without first exact sample. Require correct IDs and complete fields after source refresh, no second scene session. Include nested epsilon/dash/masks/repeaters/trim histories and viewport changes; retain existing concurrency/CPU checks.
 - [ ] Add confirmed finite overflow fixture from out/part25d-late-failure/probe.cpp under nested reference_sessions only. Assert frame0 succeeds, frame1 typed error matches ordinary, frame0 recovers; failed prepare twice publishes no model and totalsModel2/Samples4/Failures2. Preserve pre-session overlimit/unsupported rejection0 and same-Asset concurrent single-flight success1.
 - [ ] Add corpus validator explicit `--lifetime-profile fresh|persistent`, defaultpersistent; retain `--expected-setup-scene-sessions` override for original/Part25B baselines (default derived persistent1/fresh0). Require first/steady scene sessions fresh1/samples versus persistent0/0, model sessions fresh=samples versus persistent1. A behavior test copies real report data into temporary dirs and corrupts one count at a time; validator must reject the wrong profile/counts before GREEN. Timing instrument stays byte-identical.
+- [ ] Apply the measurement-audit acceptance detail: model samples equal the manifest frame count; setup metadata1/CPU0; first/steady metadata/model/CPU sessions0. Keep schema/status/alias checks. Corrupt each exported phase/role count and frame-count relationship independently in the validator regression; reject incomplete fields rather than treating absent values as0. The unchanged instrument has no first/steady model-sample columns: test that absence of work through Runtime diagnostics instead. Read out/benchmarks/part25c/measurement-runner-audit.md for the concrete gaps, not as an executed benchmark result.
 - [ ] Implement eager create/enable scene session before publishing Instance and one local model session after successful guards/parsed extraction. Replace helper's internal load with supplied recording reference; pass each owner explicitly. Preserve clamp, viewport and error/counter/evaluationSequence order; use same scene object for legacy huge-frame mapping. No hidden recreation/fallback.
 
 ```cpp
@@ -187,6 +193,7 @@ record and explicitly measured performance acceptance, not a speedup promise.
 - [ ] Run fresh configure/build/fullCTest Telegram, Samsung, explicit win32-preview, none/Direct2D, installed consumer. No reference test present for none. Run Release direct lifecycle/binding/ownership/model-session gates both variants where applicable. Preserve exact known Samsung baseline rows; investigate every new failure.
 - [ ] Check source patches reapply, vendor source fingerprints, protected Git checkout test, licenses/goldens/corpus unchanged. Record exact final candidate binary hash and sameinstrument source hashes.
 - [ ] With workers/builds/tests stopped, run out/benchmarks/part25c/run-persistent-comparison.ps1 for Original then Part25B baselines using verified candidate SHA. Inspect raw outputs and validate fresh/persistent report profiles. Script is scratch/syntax-checked only until executed; independently verify counters and16 byte-identical semantic manifests.
+- [ ] Before timing, correct/test the scratch runner per out/benchmarks/part25c/measurement-runner-audit.md: invoke Task3's strict validator for each profile, verify actual16input hashes, require the candidate's real Telegram Release build/compiler/cache evidence, validate metric fields and separate structural success from target acceptance. Preserve old evidence and label Original versus Part25B calculations explicitly; no invented candidate result.
 - [ ] Summarize each asset's exact/pipeline median/p95 for A1/B1/B2/A2, observed setup/steady counts, actual evaluator/projector storage counters and1/16/64 current/peak memory. Compare2x/noassetp95>10% original target, report failures/tradeoffs honestly. No planner zero-allocation, race-detector or private-corpus performance claim.
 - [ ] Final independent whole-change review receives stage-base diff, reports and deferred-minor/rulings ledger. One fix wave/scoped review if needed, then fresh covering/full gates and ordinary push. Preserve SDD/raw evidence. Continue only next separately designed in-scope stages; no unsupported licensing/fallback/API expansion.
 
