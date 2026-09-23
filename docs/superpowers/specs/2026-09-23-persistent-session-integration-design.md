@@ -256,6 +256,36 @@ performance on this smoke corpus. Private representative assets remain required.
 
 ## Delivery and approval
 
+### Checkout fidelity addendum (2026-09-23)
+
+Independent actual-checkout reproduction at
+out/part25d-fixture-checkout/findings.md confirms another input family omitted
+from Part25C byte protection. With the existing core.autocrlf=true setting,
+26of29 tests/fixtures files change by exact LF-to-CRLF expansion; six smoke JSON
+inputs no longer match the unchanged committed TGS payloads. Both the generator
+integrity check and unchanged TGS Runtime source-identity test fail only in the
+checkout. This is a repository transport defect, not an animation-algorithm defect.
+
+Approve one bounded follow-up before persistent integration: protect
+`/tests/fixtures/** -text`, consistent with the already protected corpus family.
+Extend the existing disposable real-Git roundtrip regression with fixture JSON,
+nested session JSON, and fixture TGS metadata/payload cases. First reproduce its
+functional failure without the new attribute; then add the one attribute rule.
+Hash every existing fixture before/after and preserve all bytes, licenses,
+goldens, manifests and TGS payloads. Verify a newly exported corrected-index
+checkout using core.autocrlf=true with the actual corpus generator and the
+unchanged TGS Runtime test, not only the synthetic roundtrip.
+
+Do not normalize runtime input/hash handling, regenerate corpus payloads, change
+global Git settings or relax equality assertions. Those alternatives either
+alter authored identity or leave clone portability dependent on local settings.
+No dependency, API or renderer change is necessary. The existing SDD process
+adds Task5 solely to keep completed/active task numbers stable; execution order
+is Task2, Task5, Task3, Task4. Task5 has its own RED/GREEN/review boundary and is
+serialized after the active Task2 writer. Controller approves this reversible
+addendum under the user's delegated authority; possible cost is retaining
+intentional mixed line endings in fixture documents, as required by byte fidelity.
+
 Use SDD with one product implementer, independent review after each bounded
 task, final whole-change review and fresh full gates. Split source foundation,
 Runtime ownership, session integration/parity and measurement/report so each has

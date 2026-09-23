@@ -145,20 +145,24 @@ auto animation = rlottie::Animation::loadFromData(asset.json, asset.cacheKey, {}
 ### Task 3: Persistent Instance and temporary model sessions with independent parity
 
 **Files:** Runtime.cpp; runtime_seams_tests.cpp, reference_session_tests.cpp,
-frame_mapping_tests.cpp, asset_model_tests.cpp; new model_session_tests.cpp and
-FreshModelOracle.hpp; nested late-overflow fixture; scripts/test_corpus_lab_output.py
-and scripts/test_corpus_lab_lifetime_profiles.py; CMake and lifetime docs.
+frame_mapping_tests.cpp, asset_model_tests.cpp, source_ownership_tests.cpp;
+new model_session_tests.cpp and tests/support/FreshModelOracle.hpp; nested
+late-overflow fixture; scripts/test_corpus_lab_output.py and
+scripts/test_corpus_lab_lifetime_profiles.py; CMake and current lifetime docs,
+including docs/CORPUS_LAB.md. Preserve historical reports and their raw evidence.
 
 **Interfaces:** InstanceData sceneAnimation replaces legacyFrameMappingAnimation;
 helper consumes rlottie::Animation& explicitly. CTest avemotion.runtime.model_sessions
 is Telegram-only; avemotion.corpus.lifetime_profiles validates both report profiles.
 
 - [ ] Before production edits, update/add exact counter assertions to new contract and run RED. Newly created Instance Scene1; later exact samples Scene0 new; quiescent reset leaves live session creations0; prepared model Model1/SamplesN; repeat no work; CPU remains separate.
+- [ ] Read out/part25d-design/session-integration-test-map.md for the existing assertion/caller inventory. Task2 source_ownership anchors are provisional: update its final reviewed sequence to model1 and scene count equal to constructed Instances, while retaining every eviction/alias/CPU/weak-owner assertion. Add a successful scene sample after quiescent reset requiring0 new Scene sessions; keep huge-frame mapping's existing single session and mapping-only quiet epochs.
 - [ ] Add independent fresh ordinary model oracle per out/part25c-lifecycle/model-scan-oracle-audit.md using unchanged parsed/update/finalize algorithms and same descriptor. Compare complete models by attaching to model-applied scenes with ExactSceneComparison; assert assetHandle separately, valid IDs and live static aliases/owner_before. Candidate model scan alone must change; oracle never calls Runtime model preparation to produce expected data.
 - [ ] Add cold unique JSON load/createInstance/exactSample/prepare/modelSample order, and createInstance/prepare/modelSample without first exact sample. Require correct IDs and complete fields after source refresh, no second scene session. Include nested epsilon/dash/masks/repeaters/trim histories and viewport changes; retain existing concurrency/CPU checks.
 - [ ] Add confirmed finite overflow fixture from out/part25d-late-failure/probe.cpp under nested reference_sessions only. Assert frame0 succeeds, frame1 typed error matches ordinary, frame0 recovers; failed prepare twice publishes no model and totalsModel2/Samples4/Failures2. Preserve pre-session overlimit/unsupported rejection0 and same-Asset concurrent single-flight success1.
 - [ ] Add corpus validator explicit `--lifetime-profile fresh|persistent`, defaultpersistent; retain `--expected-setup-scene-sessions` override for original/Part25B baselines (default derived persistent1/fresh0). Require first/steady scene sessions fresh1/samples versus persistent0/0, model sessions fresh=samples versus persistent1. A behavior test copies real report data into temporary dirs and corrupts one count at a time; validator must reject the wrong profile/counts before GREEN. Timing instrument stays byte-identical.
 - [ ] Apply the measurement-audit acceptance detail: model samples equal the manifest frame count; setup metadata1/CPU0; first/steady metadata/model/CPU sessions0. Keep schema/status/alias checks. Corrupt each exported phase/role count and frame-count relationship independently in the validator regression; reject incomplete fields rather than treating absent values as0. The unchanged instrument has no first/steady model-sample columns: test that absence of work through Runtime diagnostics instead. Read out/benchmarks/part25c/measurement-runner-audit.md for the concrete gaps, not as an executed benchmark result.
+- [ ] Update current CORPUS_LAB guide: persistent profile default, eager Scene setup1 and later creations0; historical Original validation explicitly uses --lifetime-profile fresh --expected-setup-scene-sessions 1 and Part25B uses fresh with setup0. Do not rewrite historical measured reports or overwrite old benchmark scripts/evidence; Task4 uses the newly corrected comparison runner.
 - [ ] Implement eager create/enable scene session before publishing Instance and one local model session after successful guards/parsed extraction. Replace helper's internal load with supplied recording reference; pass each owner explicitly. Preserve clamp, viewport and error/counter/evaluationSequence order; use same scene object for legacy huge-frame mapping. No hidden recreation/fallback.
 
 ```cpp
@@ -196,6 +200,57 @@ record and explicitly measured performance acceptance, not a speedup promise.
 - [ ] Before timing, correct/test the scratch runner per out/benchmarks/part25c/measurement-runner-audit.md: invoke Task3's strict validator for each profile, verify actual16input hashes, require the candidate's real Telegram Release build/compiler/cache evidence, validate metric fields and separate structural success from target acceptance. Preserve old evidence and label Original versus Part25B calculations explicitly; no invented candidate result.
 - [ ] Summarize each asset's exact/pipeline median/p95 for A1/B1/B2/A2, observed setup/steady counts, actual evaluator/projector storage counters and1/16/64 current/peak memory. Compare2x/noassetp95>10% original target, report failures/tradeoffs honestly. No planner zero-allocation, race-detector or private-corpus performance claim.
 - [ ] Final independent whole-change review receives stage-base diff, reports and deferred-minor/rulings ledger. One fix wave/scoped review if needed, then fresh covering/full gates and ordinary push. Preserve SDD/raw evidence. Continue only next separately designed in-scope stages; no unsupported licensing/fallback/API expansion.
+
+## Added bounded follow-up
+
+### Task 5: Preserve fixture identity through Windows Git checkout
+
+Execution order is Task2 -> Task5 -> Task3 -> Task4. This later-numbered bounded
+follow-up avoids renumbering completed/active tasks. It implements the spec's
+Checkout fidelity addendum, not persistent Runtime behavior.
+
+**Files:** `.gitattributes`, `scripts/test_git_protected_bytes.py`; new
+`docs/PART25D_FIXTURE_CHECKOUT_REPORT.md`. No fixture/golden/corpus bytes change.
+
+**Interfaces:** Extend the existing `CASES` mapping consumed by `roundtrip`;
+CTest remains `avemotion.vendor.git_protected_bytes`, no CMake target needed.
+Consume scratch finding `out/part25d-fixture-checkout/findings.md`; the runtime
+direct-compilation script there may be adapted to new uniquely named scratch
+paths. Never overwrite earlier evidence.
+
+- [ ] Capture dispatch BASE and all `tests/fixtures` working-file SHA256s. Add
+  these cases to the existing mapping before changing attributes:
+
+```python
+"tests/fixtures/probe.json": b'{"value":1}\n',
+"tests/fixtures/reference_sessions/probe.json": b'{"value":2}\n',
+"tests/fixtures/tgs/SHA256SUMS.txt": b"hash  probe.tgs\n",
+"tests/fixtures/tgs/probe.tgs": b"\x00\x0a\x0d\xff",
+```
+
+- [ ] Run `python scripts/test_git_protected_bytes.py --git git --attributes
+  .gitattributes` and preserve functional RED: fixture text cases differ under
+  autocrlf=true; existing protected cases still pass. Do not treat command or
+  import failures as RED.
+- [ ] Add exactly `/tests/fixtures/** -text` to `.gitattributes`; no runtime,
+  existing fixture, global config, payload or golden edits. Run the same test
+  GREEN under its true/false modes. Verify every captured fixture hash unchanged.
+- [ ] Export a fresh corrected-index scratch checkout with actual Git
+  core.autocrlf=true (isolated index/worktree destination, no branch change,
+  no global settings). Confirm all tracked fixture checkout bytes match working
+  originals. Run `python scripts/generate_tgs_compatibility_corpus.py --root
+  <new-checkout> --check`. Directly compile/run unchanged tgs_runtime_tests.cpp
+  against stable current Debug libraries using fixture macros for that checkout;
+  preserve commands, exact exit code and source-identity PASS. The compilation
+  may use the read-only probe's pattern; no duplicated shared build is needed.
+- [ ] Fresh focused CTest protected-byte/TGS runtime/compatibility integrity
+  checks and vendor verifier. Inspect staged bytes and diff check; only attribute,
+  regression script and task report enter the scoped commit. A fixture index
+  discrepancy requires controller ruling, never automatic renormalization.
+- [ ] Write report with cause, before/after command evidence, fixture hash count,
+  exact verification limits and no renderer/performance claim. Self-review,
+  scoped commit, independent task review and ordinary controller push, then
+  proceed Task3. Keep all raw scratch evidence.
 
 ## Self-review and delegated approval
 
