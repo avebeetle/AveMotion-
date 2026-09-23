@@ -87,7 +87,7 @@ require(liveAuthoredIds(expected), "oracle has applicable authored IDs");
 same(expected, copy(retained->renderTreeForRecording(0,128,128)));
 ```
 
-- [ ] Add private header/friend/factory using Animation's existing init. Return null for null source; metadata size/counts/fromModel ordinary pixels match loadFromData; model getter and clones share exactly the same pointer. No unsafe ownership cast.
+- [ ] Add private header/friend/factory using Animation's existing init. Return null for null source or null root; metadata size/counts/fromModel ordinary pixels match loadFromData; model getter and clones share exactly the same pointer. No unsafe ownership cast.
 - [ ] Add mutex/atomic epoch on LOTModel; init locks only composition construction and captures epoch. Add locked extraction helper and RAII epoch publication covering success/failure/exception exits; JSON/key/source overloads and property oracle all use it. Preserve all existing errors and table order.
 
 ```cpp
@@ -109,7 +109,7 @@ if (sourceEpoch.load(std::memory_order_acquire) != capturedEpoch) {
 // Existing update/build follows after unlocking.
 ```
 
-- [ ] GREEN full copied-scene parity; cover rect/ellipse/shape/polystar and solid/gradient fill/stroke, hidden/repeater descendants and valid multi-path invalid-ID cases. Preserve before-scene immutability after refresh. For failure epoch test use a parsed input proven to stamp at least one ID before failing: assert changed epoch and retained-vs-fresh field equality after failure; save discovery evidence, do not invent a fixture or change builder acceptance.
+- [ ] GREEN full copied-scene parity; cover rect/ellipse/shape/polystar and solid/gradient fill/stroke, hidden/repeater descendants and valid multi-path invalid-ID cases. Preserve before-scene immutability after refresh. For failure epoch use out/part25d-partial-binding/probe.cpp: change the single child ind2 to ind1 in recording-negative-active-control.json, sample frame2. Existing parsed rejection is `parsed composition contains duplicate layer IDs` after one visible path/paint was stamped. Assert changed epoch and retained-vs-fresh full-field equality after failure; do not change duplicate-ID rejection or publish a partial final model.
 - [ ] Concurrently extract same source under distinct descriptors while constructing ordinary/recording sessions; join and compare valid final snapshots, no shared Animation. Cover property-oracle epoch path. Source-review unchanged-epoch lock-free branch; no TSan claim from stress.
 - [ ] Configure/build focused test, run source_bindings and recording_lifecycle, full Telegram once. Reapply new patch to pre-task Telegram source, verify all changed bytes, update exact source fingerprint/count/bytes and docs, git diff --check.
 - [ ] Self-review scoped commit `fix: synchronize retained Telegram source bindings`; full report/red/green/raw paths to SDD task1 report. Controller review/push before Task2.

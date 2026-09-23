@@ -179,6 +179,9 @@ git diff --check
 
 ### Task 3: Preserve protected source bytes through Git checkout
 
+**Status:** complete8748dae, independent review approved;642 working-byte hashes
+unchanged,9 expected index corrections, snapshot verifierPASS, Telegram63/63.
+
 **Files:** Create `.gitattributes`, `scripts/test_git_protected_bytes.py`;
 modify `CMakeLists.txt` for a Python/Git-available test; re-index only byte
 normalization differences under protected paths. Add rationale to
@@ -241,6 +244,8 @@ cases = {
   Root independent review and ordinary push follow; no worker push.
 
 ### Task 4: Whole-lifecycle validation, provenance and next-stage handoff
+
+**Status:** active final gates/review, controller-owned after Tasks1–3 approval.
 
 **Files:** `docs/PART25C_RECORDING_LIFECYCLE_REPORT.md`; controller STATE/ledger;
 only concrete final-review corrections through their original worker. No new

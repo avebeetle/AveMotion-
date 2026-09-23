@@ -89,8 +89,8 @@ struct LOT_EXPORT AveMotionAnimationAccess final {
 };
 ```
 
-Null input to fromModel returns null without creating an Animation. A valid
-handle has a non-null root; ordinary metadata/CPU behavior is unchanged. No raw
+Null input or a null root returns null from fromModel without creating an
+Animation. Ordinary metadata/CPU behavior is unchanged. No raw
 pointer ownership, void-pointer casts or public Runtime model handle is added.
 
 Capture this lease from the existing successful metadata Animation in
