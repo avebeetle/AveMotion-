@@ -119,7 +119,7 @@ void verifyModelPreparationLifetime(std::string_view variant) {
 void verifyPreparationLimitRetry(std::string_view variant) {
     using namespace avemotion::runtime;
     const auto path = fs::path{AVEMOTION_CORPUS_DIR}.parent_path()
-        / "fixtures" / "dashed_stroke_session.json";
+        / "fixtures" / "reference_sessions" / "dashed_stroke_session.json";
     auto json = readText(path);
     const auto original = std::string{"\"op\":61"};
     const auto rootEnd = json.find("\"layers\"");

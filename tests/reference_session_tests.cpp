@@ -315,7 +315,7 @@ int main() {
         require(Runtime::compiledWithReferenceEngine(), "reference session tests require rlottie");
         const fs::path fixtures{AVEMOTION_FIXTURE_DIR};
         const fs::path corpus{AVEMOTION_CORPUS_DIR};
-        const auto dash = fixtures / "dashed_stroke_session.json";
+        const auto dash = fixtures / "reference_sessions" / "dashed_stroke_session.json";
         verifyComparator(dash);
         const std::array<fs::path, 9> assets{
             dash, corpus / "dynamic_path_test.json", fixtures / "multi_trim_path_geometry.json",
