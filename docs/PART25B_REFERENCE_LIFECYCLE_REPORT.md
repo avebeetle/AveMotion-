@@ -182,7 +182,8 @@ The subsequent closeout commits only record verified status; production/tests
 remain exactly the state exercised by the complete `58236a9` gates. The remaining
 vendor warning and Samsung baseline failures are disclosed limitations, not open
 new-code review defects. The bounded scope finished before the two-hour deadline;
-the scheduler is being paused at handoff instead of repeating completed work.
+the scheduler was paused through the app at 06:03 UTC and its saved status checked,
+instead of repeating completed work.
 
 Known pre-existing limitation: Samsung scene.golden and plan.golden disagree with
 stored Polystar endpoint hashes on this MSVC runtime. Part25A reproduced the exact

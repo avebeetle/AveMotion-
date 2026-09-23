@@ -2,44 +2,48 @@
 
 Updated: 2026-09-23
 
-## Active two-hour continuation (05:11–07:11 UTC)
+## Part25B completed handoff (renewed two-hour window)
 
-The user explicitly resumed autonomous work for two more hours after the Part25A
-handoff. New deadline: 2026-09-23T07:11:24Z (10:11 Moscow); no large new block
-after06:51UTC. Existing main-only/ordinary-push and reversible-decision authority
-continues. avemotion-6 was updated and reactivated through the app; this is not
-a duplicate automation. The historical paused entry below describes the prior run.
+The user resumed autonomous work at 05:11 UTC with a deadline of
+2026-09-23T07:11:24Z (10:11 Moscow). The approved bounded scope finished early,
+at 06:03 UTC. Automation `avemotion-6` was paused through the app and its saved
+PAUSED status independently confirmed. Do not repeat completed Tasks0–3 or resume
+the scheduler without a new request. No product implementer remains active.
 
-Starting point:273f2b3, clean and equal to origin/main. Part25A Tasks0–5 remain
-complete as a safe partial result; do not redispatch them. Next-stage artifacts:
+Continuation base:273f2b3. Artifacts:
 docs/superpowers/specs/2026-09-23-reference-lifecycle-foundations-design.md,
-docs/superpowers/plans/2026-09-23-reference-lifecycle-foundations.md and their
-own plan-scoped SDD ledger:
-.superpowers/sdd/2026-09-23-reference-lifecycle-foundations/progress.md.
+docs/superpowers/plans/2026-09-23-reference-lifecycle-foundations.md,
+.superpowers/sdd/2026-09-23-reference-lifecycle-foundations/progress.md,
+and docs/PART25B_REFERENCE_LIFECYCLE_REPORT.md.
 
-Read-only preflight completed: source audit supports metadata mapping for ordinary
-counts with a legacy outlier path. Active-state probe reproduces21 mismatches in50
-comparisons on EACH variant, with three passing controls. Reports
+Task0 source audit and active-state probe complete:50 comparisons/21 mismatches
+on each pinned variant, with three passing controls. Raw reports are in
 out/part25b-frame-mapping/audit.md and out/part25b-active-state/findings.md.
-Design/plan approved under delegated authority; Tasks1 and2 are complete.
-General persistent reuse remains disabled. Three future-reuse regression fixtures
-cover near-default translation, width and opacity. Task1 intentionally removes
-ordinary setup Scene construction1→0 and its duplicate-load failure opportunity.
-Task1 complete:d4217a4, ordinary mapping tree removed with variant-exact metadata
-mapping and legacy large-count path. Independent task review approved code; its
-evidence-only correction passed separate scoped review. Controller fresh focused
-tests4/4 on both variants. Worker full tests61/61 Telegram,39/41 Samsung with exact
-baseline scene/plan rows independently compared. Task2 complete:58236a9, three
-regression fixtures and stale diagnostic output-line correction, independent review
-approved; controller fresh official-preset tests1/1 each and fixture hashes/corpus
-integrity checked. Controlled A-B-B-A measured64-instance current working-set mean
-reduction206KiB (StickAndBall),11.30MiB (firework); no steady-frame speedup claim.
-All four full configure/build gates at58236a9 complete:Telegram61/61, preview55/55,
-no-referenceDirect2D29/29, Samsung39/41 with exact unchanged baseline rows. Local
-installed external consumer and extra Release mapping test passed. Task3 final
-whole-change review and handoff remain; no product implementer active.
-New deadline/ACTIVE status above supersede
-the historical prior-run statements below.
+Task1:d4217a4 removes ordinary retained mapping trees with exact pinned metadata
+rounding and a legacy counts>LONG_MAX path. It intentionally removes ordinary
+setup Scene construction1→0 and the duplicate-load failure opportunity.
+Task2:58236a9 adds three nested near-default translation/width/opacity regression
+fixtures and corrects a stale diagnostic output line. Both tasks passed independent
+review; controller official-preset tests and byte/corpus integrity checks passed.
+
+Task3 full configure/build gates at58236a9 all passed. Complete CTest:
+Telegram61/61, preview55/55 (capture/preflight/hidden WARP/device recreation),
+no-reference Direct2D29/29, Samsung39/41 with the two exact unchanged baseline
+golden failures. Local installed external consumer and optimized Release mapping
+test passed. All raw outputs are retained in out/part25b-final.
+
+Controlled A-B-B-A observed64-instance mean working-set reductions206KiB for
+StickAndBall and11.30MiB for firework; no statistically established steady-frame
+speedup claim. Raw timing/memory/context evidence:out/benchmarks/part25b.
+Final whole-change review273f2b3..d7133ac approved with no Critical/Important
+defects; its one minor status wording correction59592fa passed scoped review.
+Report/review handoff8b9739f was ordinarily pushed and remote equality verified.
+Only this final status bookkeeping follows; product/tests remain at verified58236a9.
+
+General persistent scene/model reuse stays unimplemented; Samsung is not fully
+green, and the vendor C4251 warning remains. Next work requires a fresh-equivalent
+recording lifecycle design, not naive reuse. Retain raw SDD evidence. The completed
+Part25A historical records below remain unchanged and must not be redispatched.
 
 ## Repository
 

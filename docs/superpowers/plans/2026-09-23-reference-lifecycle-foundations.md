@@ -170,6 +170,10 @@ in docs/PART25B_REFERENCE_LIFECYCLE_REPORT.md; implementer writes its task repor
 
 ## Task 3: Measurements, complete gates and handoff
 
+Status:complete, with explicit pre-existing Samsung/vendor limitations. Whole-change
+review approved; minor status fix59592fa scoped-review approved. Technical report
+and code pushed through8b9739f; avemotion-6 PAUSED and verified at06:03UTC.
+
 **Files:** create docs/PART25B_REFERENCE_LIFECYCLE_REPORT.md; update STATE/README
 and append historical successor notes to Part25A report/findings as needed.
 Raw artifacts out/benchmarks/part25b/ and out/part25b-final/ are ignored.
@@ -197,5 +201,5 @@ Raw artifacts out/benchmarks/part25b/ and out/part25b-final/ are ignored.
   Run local-prefix install/external consumer. Never exclude Samsung failures.
 - [x] Independent whole-change review from273f2b3. One fix wave/scoped review
   if needed, fresh final gates after fixes; record all declined claims/rulings.
-- [ ] Ordinary push main, verify remote equality, final partial/complete scoped
+- [x] Ordinary push main, verify remote equality, final partial/complete scoped
   report and pause avemotion-6 by07:11:24UTC or safe-scope completion.
