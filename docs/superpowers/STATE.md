@@ -61,11 +61,20 @@ CPU and two-instance functional isolation are covered; TSan remains unavailable.
 The existing Samsung scene-golden test fails Polystar p100/frame150. Independent
 clean `cda415c` MSVC build reproduces the exact same hashes, so this is not a
 Task 3 regression. Raw baseline proof: out/part25a-samsung-golden/clean-baseline-build-test.txt.
-Numerical root-cause investigation continues; no golden/allowance is changed,
-and full Samsung validation remains unresolved rather than claimed green.
+The numerical investigation traced the exact hashes to a sine-rounding boundary:
+one ULP in sine becomes two ULP in one coordinate and its derived left bounds.
+Full trim does not split the path at this endpoint. Findings and reproduced
+hash reconstruction: out/part25a-samsung-golden/findings.md. No golden/allowance
+is changed; full Samsung validation remains unresolved rather than claimed green.
 
-Next: Task 4 model lifetime/retry tests, then Task 5 full Windows gates and final
-review. Repeated baseline measurements are captured in the provisional
+Task 4 complete at `4ab196d`: independent spec/quality review passed, controller
+fresh asset-model test passed on Telegram (7.49 s) and Samsung (0.03 s). Tests pin
+fresh model-session counts, idempotent publication, scene-role isolation and
+failed retry counters, including the preparation timeline limit and Samsung's
+unsupported capability. No production/golden change; RED mutation restored.
+
+Next: Task 5 full Windows gates and final review. Repeated baseline measurements
+are captured in the provisional
 `docs/PART25A_PERSISTENT_SESSIONS_REPORT.md` (controller-owned, not yet final).
 There is no optimized candidate, so no A-B speedup claim will be made from noise.
 

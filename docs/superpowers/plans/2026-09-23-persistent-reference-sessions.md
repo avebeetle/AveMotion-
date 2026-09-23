@@ -255,26 +255,26 @@ existing tests. No public API change.
 
 ### 4.1 Characterization and meaningful RED
 
-- [ ] On Telegram, load `StickAndBall.json`, reset while quiescent, prepare once,
+- [x] On Telegram, load `StickAndBall.json`, reset while quiescent, prepare once,
   and assert model sessions == model samples == reported totalFrames, exactly one
   successful build, and zero scene-role sessions/samples for the scan.
-- [ ] A second prepareModel returns the same immutable published model and
+- [x] A second prepareModel returns the same immutable published model and
   changes no model sessions/samples/build-success counter.
-- [ ] Subsequent exact Instance evaluation changes neither model counter; its
+- [x] Subsequent exact Instance evaluation changes neither model counter; its
   separate scene-role counters behave as Task 1 documented.
-- [ ] Samsung unsupported preparation creates zero model sessions and samples,
+- [x] Samsung unsupported preparation creates zero model sessions and samples,
   preserving its existing failure/result behavior.
-- [ ] Load a valid animation with timeline above the 10,000-frame preparation
+- [x] Load a valid animation with timeline above the 10,000-frame preparation
   limit. Two prepareModel calls must fail with the established limit message,
   record two attempts/failures, and create zero model sessions/samples because
   eligibility rejects before construction. Keep this assertion variant-aware.
-- [ ] Prove the new assertions detect a relevant regression via one temporary
+- [x] Prove the new assertions detect a relevant regression via one temporary
   narrow mutation (such as suppressing the model-build-failure increment).
   Save mutation and RED output in ignored out/part25a-regression, restore with
   apply_patch, then show GREEN. Do not commit the mutation.
-- [ ] Existing complete model/canonical goldens remain authoritative. No new
+- [x] Existing complete model/canonical goldens remain authoritative. No new
   persistent-model parity claim is possible because that path was not enabled.
-- [ ] Run focused model/runtime/reference-session/golden tests on both variants.
+- [x] Run focused model/runtime/reference-session/golden tests on both variants.
   Commit `test: cover reference model preparation lifetime and retries`; record
   all commands and route the independent review before Task 5.
 
