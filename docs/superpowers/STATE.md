@@ -2,15 +2,16 @@
 
 Updated: 2026-09-23
 
-## Active continuation — Part25D persistent session integration
+## Active continuation — Part25E lean module boundaries
 
 Part25C is complete as a vendor-only foundation. Whole-change independent
 review45a21a4..3f8a06e approved spec compliance/integration with no Critical or
 Important findings. Nonblocking diagnostics remain tracked: captured Git stderr
 and wrapper EH override warnings. Final report:
-docs/PART25C_RECORDING_LIFECYCLE_REPORT.md. Runtime is still fresh; no speedup claim.
+docs/PART25C_RECORDING_LIFECYCLE_REPORT.md. At that handoff Runtime was still
+fresh; Part25D below now adopts persistent sessions and records measurements.
 
-Continue immediately with approved spec
+Completed Part25D artifacts: approved spec
 docs/superpowers/specs/2026-09-23-persistent-session-integration-design.md,
 plan docs/superpowers/plans/2026-09-23-persistent-session-integration.md and ledger
 .superpowers/sdd/2026-09-23-persistent-session-integration/progress.md.
@@ -30,7 +31,11 @@ preview61/61,none30/30,Samsung41/43onlyknownfailures,Release9/9and5/5,
 installedconsumerPASS. All workers stopped before controlled Original andPart25B
 A-B-B-A runs. Original exact aggregate29.475->15.425us,1.910859x:2xtargetUNMET,
 all16p95 limitsPASS. Whole-process memory has per-asset/instance tradeoffs.
-Final whole-stage independent review remains before D handoff/E execution.
+Final whole-stage independent review15f347a..e92ea91 approved spec/quality with
+no Critical/Important findings. Task4 and Part25D are complete with the2xtarget
+explicitly UNMET. One nonblocking scratch-helper zero-per-asset denominator case
+must be fixed/tested before future measurement reuse; all actual metrics positive,
+current results unaffected. Raw measured scripts/results remain immutable.
 Report:docs/PART25D_PERSISTENT_SESSIONS_REPORT.md. No active product worker.
 Check current ledger/live agents before dispatch; do not
 duplicate a live worker or repeat completed Part25A/B/C tasks. Automation stays ACTIVE.
@@ -57,13 +62,17 @@ Samsung retained only as an optional development comparison rather than a
 mandatory normal product cycle. This is not permission to remove notices,
 relicense derivative code, bypass upstream install restrictions or physically
 delete vendor/history during Task3. Part25D's already-defined Samsung gates remain
-unchanged. Controller is designing the separate reversible build/packaging stage;
+unchanged. Controller approved the separate reversible build/packaging stage;
 read-only audit is complete atout/part25e-lean-design/build-boundaries.md.
 Written approved next spec:
 docs/superpowers/specs/2026-09-23-lean-module-boundaries-design.md.
 Approved plan:docs/superpowers/plans/2026-09-23-lean-module-boundaries.md.
 Ledger:.superpowers/sdd/2026-09-23-lean-module-boundaries/progress.md.
-Preflight completed; no E product work before D handoff.
+Preflight completed; D handoff review approved. Execute E Task1 next, capturing
+the actual clean handoff HEAD as stageBASE before dispatch. Build exclusion and
+product-only installation are one atomic task, avoiding a broken intermediate
+offline install. Task2 scopes integrity/optional Samsung CI; Task3 verifies all
+boundaries. Check the E ledger/live agents before dispatching a product worker.
 The spec distinguishes a Telegram-backed internal build from an offline installed
 package, preserves the installation prohibition, and keeps lab presets/source.
 Automationavemotion-6 remainsACTIVE/every15minutes; its saved prompt now follows

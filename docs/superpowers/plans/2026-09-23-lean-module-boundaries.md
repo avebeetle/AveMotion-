@@ -30,9 +30,9 @@ presets and default verify_vendor.py all-variant behavior remain compatible.
 
 1. A cached tool option remains ON through preset inheritance: explicit lean values and actual built-output checks, not option inspection alone (Task1).
 2. BUILD_TESTING=ON with source characterizer OFF registers a missing executable: guard only tool-driven CTests, retain source-geometry unit test (Task1).
-3. A package appears lean but leaks lab exports or source-tree paths: fresh and relocated prefix checks plus real consumer (Task2).
-4. Scoped vendor verification silently skips the selected tree or corpus: corrupt/missing synthetic inputs and none-mode corpus failure (Task3).
-5. Optional Samsung accidentally remains mandatory or is made falsely green: workflow trigger/matrix audit, preserve unrelaxed tests and explicit full verification (Task3/4).
+3. A package appears lean but leaks lab exports or source-tree paths: fresh and relocated prefix checks plus real consumer (Task1).
+4. Scoped vendor verification silently skips the selected tree or corpus: corrupt/missing synthetic inputs and none-mode corpus failure (Task2).
+5. Optional Samsung accidentally remains mandatory or is made falsely green: workflow trigger/matrix audit, preserve unrelaxed tests and explicit full verification (Task2/3).
 
 ## Files and interfaces
 
@@ -52,10 +52,16 @@ presets and default verify_vendor.py all-variant behavior remain compatible.
 - `README.md`, new `docs/MODULE_BUILD.md`, final `docs/PART25E_LEAN_MODULE_REPORT.md`:
   commands, boundary/migration/limitations and concrete evidence.
 
-### Task 1: Lean internal and offline build profiles
+### Task 1: Lean build profiles and product-only installed package
 
 **Files:** options, root CMake, presets, new module-boundary script,
+new installed-boundary script, tests/consumer CMake/main,
 `docs/MODULE_BUILD.md`, README primary build pointer.
+
+Build and installation changes are one atomic task: making Reference
+EXCLUDE_FROM_ALL while still installing it would leave the new offline-package
+preset unable to install after its default build. Complete both sections below
+before committing or running the final package gate.
 
 **Interfaces:** Add option AVEMOTION_BUILD_SOURCE_GEOMETRY_CHARACTERIZER defaultON;
 public configure/build presets windows-msvc-module-release,
@@ -125,17 +131,17 @@ snippet names the changed declaration, not permission to remove extra sources.
   existing default developer preset still registers both characterization tests.
 - [ ] Document internal build versus offline package limitations, ordinary
   command examples and no single-DLL/license promise. Run focused legacy
-  subproject and full Telegram checks affected by CMake. Commit only scoped
-  files; report RED/GREEN/commands/artifact lists; independent review then push.
+  subproject checks affected by CMake. Complete the package section below before
+  the one full Telegram gate and scoped task commit/review/push.
 
-### Task 2: Product-only installed package and honest external consumer
+#### Product-only installed package and honest external consumer (same Task1)
 
 **Files:** root CMake installation block, new installed-boundary script,
 tests/consumer CMake/main, MODULE_BUILD guide.
 
 **Interfaces:** Script CLI `--prefix PATH --direct2d yes|no`, plus `--self-test`
 for synthetic mutation coverage. Existing find_package(AveMotion0.24.0 CONFIG)
-and product targets retain names. Task1 offline presets supply lean build.
+and product targets retain names. The new offline presets supply the lean build.
 
 - [ ] Write boundary verifier and consumer guard before install changes. Require
   product import declarations and expected header/library layout, no Reference,
@@ -153,7 +159,9 @@ endif()
 ```
 
 - [ ] Install existing offline code into a unique prefix and retain functional
-  RED identifying its Reference exports/header/archive. This is a packaging
+  RED identifying its Reference exports/header/archive before the CMake edits
+  above; reuse a previously built unchanged no-reference developer build if
+  needed. This is a packaging
   boundary failure, not a loader or compiler failure.
 - [ ] Remove Reference from install(TARGETS); exclude only its public-header
   subtree, preserving all product headers and Windows Direct2D conditional.
@@ -193,9 +201,10 @@ if (loaded || loaded.error.code !=
   trace reached that guard, not compiler detection failure. Keep guard untouched.
 - [ ] Document Reference migration to source/build-tree lab target and offline
   load limitation. Run none/Direct2D full suite and consumer/prefix tests, retain
-  lists/raw logs, commit scoped changes, independent review and ordinary push.
+  lists/raw logs. Run full Telegram once after both build/package edits. Commit
+  the complete Task1 atomically, then independent review and ordinary push.
 
-### Task 3: Scoped integrity and explicit optional Samsung CI
+### Task 2: Scoped integrity and explicit optional Samsung CI
 
 **Files:** verify_vendor.py, new test_vendor_selection.py, CMake CTest wiring,
 existing ci.yml, new samsung-comparison.yml, MODULE_BUILD/README guidance.
@@ -240,7 +249,7 @@ CLI choices are exact and unknown names fail before verification.
   diagnostics, no continue-on-error/testexclusion. Mandatory ci retains every
   Telegram/no-ref/graphics lane; direct verifier calls there use telegram.
 - [ ] Add ordinary Linux/Windows lean internal-build and offline-package CI
-  checks using Task1/2 scripts and existing compiler/Python setup. Existing
+  checks using Task1 scripts and existing compiler/Python setup. Existing
   correctness/offline tests remain. Run original/relocated consumer and guarded
   negative install in these lanes. Avoid third-party new actions/dependencies
   just to parse YAML; use existing installed parser if available, otherwise
@@ -251,7 +260,7 @@ CLI choices are exact and unknown names fail before verification.
   ordering/protected bytes and full Telegram. Commit/review/push; do not manually
   dispatch external comparison workflow or conceal its known golden failures.
 
-### Task 4: Whole-boundary verification and handoff
+### Task 3: Whole-boundary verification and handoff
 
 **Files:** final report, controller STATE/ledger. No additional feature changes.
 
@@ -276,8 +285,13 @@ and optional-lab state, not Runtime independence or performance improvement.
 
 ## Self-review and delegated execution approval
 
-All spec sections have owning tasks: lean outputs1, installation2, optional
-comparison3, full evidence4. Shared CMake/docs are serialized; no Runtime or
+All spec sections have owning tasks: lean outputs/install1, optionalcomparison2,
+full evidence3. Shared CMake/docs are serialized; no Runtime or
 vendor product source is edited. Review-focus failures each have explicit
 negative checks. The controller approves this written plan and SDD using the
 user's existing delegation; start remains gated on Part25D handoff.
+
+Pre-execution refinement: combine the initially separate build/package tasks
+because Reference default-build exclusion and removal from install/export must
+land together. No product task had started; no intermediate broken offline
+profile will be committed. Capture both functional REDs before CMake changes.
