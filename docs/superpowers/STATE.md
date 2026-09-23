@@ -94,10 +94,18 @@ full CPU pipeline 34.625 us; 1000 fresh scene sessions for 1000 steady samples.
 Evaluator/projector storage counters stayed stable; planner allocations and TSan
 remain unverified. No optimized candidate and no A-B speedup claim.
 
-Next: independent whole-change review of the safe partial delivery, followed by
-any necessary corrections, final handoff and stopping avemotion-6. Preserve raw
-evidence and clean baseline scratch checkout while the Samsung gate and target
-reuse remain unresolved. No new lifecycle implementation is planned in this run.
+Task5 independent whole-change review complete over cda415c..ee25b71: no
+Critical/Important issues, one Minor stale comment corrected at7b5221d and
+approved by a separate scoped reviewer. No review finding remains open.
+Controller post-review full configure/build/CTest rerun at7b5221d: Telegram60/60
+(73.60s), preview54/54 (62.28s), no-referenceDirect2D29/29 (22.77s), Samsung38/40
+(66.08s), with the same two baseline-proven hashes. Logs *-7b5221d.txt.
+
+Safe partial delivery is finalized; persistent reuse/2x target remain NOT
+implemented and Samsung is NOT fully green. Next is only final documentation
+push and stopping avemotion-6. Preserve raw evidence and the clean baseline
+scratch checkout for the unresolved Samsung/recording-lifecycle follow-up.
+Do not redispatch Tasks0–5 or reopen lifecycle implementation in this run.
 
 The plan has been corrected for explicit WARP/preview presets, actual CTest
 names, measured workspace growth, corpus schema changes, model-result errors,
@@ -130,7 +138,6 @@ controller. Check live agents and ledger ownership before deciding to skip;
 collect a finished worker's report and continue its review. Skip only a proven
 duplicate controller or already-running identical worker.
 
-Automation `avemotion-6` remains active every 15 minutes until the deadline.
-Routine unchanged status remains quiet; report completion, material failure or
-required user action. At completion/deadline, deliver evidence and stop this
-automation through the app tool.
+Automation `avemotion-6` is ready to stop after this safe-scope handoff.
+Final closeout must verify the ordinary main push and pause it through the app
+tool; no remaining ordinary clarification or repeated execution is needed.

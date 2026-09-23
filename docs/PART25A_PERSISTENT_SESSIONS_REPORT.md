@@ -1,7 +1,7 @@
 # Part 25A: reference-session evidence and handoff
 
 Date: 2026-09-23. **Status: safe partial delivery; full Windows verification
-recorded below, whole-change review pending. Persistent scene/model reuse is
+and independent whole-change review complete. Persistent scene/model reuse is
 not implemented. Samsung's full suite is not green.**
 
 ## Outcome and boundary
@@ -150,7 +150,9 @@ full Telegram/preview gates pass. Initial logs are retained in
 ## Final functional verification
 
 Controller-run configure, build and complete CTest at product/test commit
-`b3bb26957aa98f4a2486efbc0fade6cfb8b76ba4`, using MSVC 19.44.35229.0:
+`b3bb26957aa98f4a2486efbc0fade6cfb8b76ba4`, using MSVC 19.44.35229.0, then freshly
+repeated after the final comment correction at
+`7b5221dc9f9ce0793c71f56851fe55701bdf5902`:
 
 | Preset | Configure/build | Complete CTest | Seconds |
 | --- | --- | --- | ---: |
@@ -158,6 +160,13 @@ Controller-run configure, build and complete CTest at product/test commit
 | `windows-msvc-samsung-debug` | PASS | 38/40 PASS; scene and plan golden FAIL | 14.05 |
 | `windows-msvc-win32-preview` | PASS | 54/54 PASS | 46.59 |
 | `windows-msvc-direct2d` (reference=none) | PASS | 29/29 PASS | 2.47 |
+
+The post-review full rerun produced the **same results without exclusions**:
+Telegram60/60 in73.60s, Samsung38/40 in66.08s (the same scene/plan hashes),
+preview54/54 in62.28s and no-referenceDirect2D29/29 in22.77s. All configure/build
+steps passed. Its raw logs are `out/part25a-final/P-7b5221d.txt`; the four
+functional presets ran concurrently, explaining why their elapsed times are not
+comparable with isolated runs. No benchmark was collected during these gates.
 
 No failed tests were excluded. The preview preset explicitly enabled Direct2D
 capture and Win32 preview: `avemotion.direct2d.capture`, capture preflight,
@@ -337,8 +346,26 @@ resident scene/plan-cache capacity measurements, and are not CI thresholds.
   Repeated timings are descriptive evidence, not pass/fail timing thresholds.
 - Samsung scene/plan golden failures remain visible. Do not reinterpret the
   successful new regressions or Telegram graphics checks as an all-variant pass.
-- Whole-change review is pending; its verdict and any fix evidence will be
-  appended before final handoff.
+- The review approves only this safe partial delivery, not completed reuse,
+  general race freedom, all-green Samsung or representative product performance.
+
+## Independent final review
+
+One broad read-only review covered `cda415c..ee25b71`, including runtime counters,
+benchmark phases/output safety, the complete-field comparator, regression tests,
+saved full gates and independently recomputed timing/storage observations.
+Verdict: ready for the safe partial delivery; no Critical or Important findings.
+The sole Minor finding was a stale comment promising that completed Task3 would
+replace fresh sampling. `7b5221d` corrects only that comment; both focused seams
+tests passed, and a separate scoped reviewer marked it addressed with no new
+breakage. The controller then ran the four full gates again as recorded above.
+
+The reviewer explicitly declined to certify unimplemented persistent reuse or
+speedup, a Samsung geometry/policy fix, race freedom without TSan, planner
+zero-allocation, or representative AveVoice/Direct2D performance. These limits
+are accepted because the required implementations/evidence are absent, and no
+such claim is made here. No review finding remains open in the delivered diff.
+The diagnosed pre-existing Samsung failures remain unresolved product limitations.
 
 ## Commit map
 
@@ -353,6 +380,8 @@ resident scene/plan-cache capacity measurements, and are not CI thresholds.
 | `7b33c03`, `f94ae94` | Full scene isolation regressions and baseline-failure record |
 | `4ab196d`, `bbfad2d` | Model lifetime/retry regressions and reviewed state |
 | `b3bb269` | Nested fixture correction preserving the 16-asset corpus |
+| `ee25b71` | Full Windows gates, measured baseline and limitations report |
+| `7b5221d` | Reviewed comment correction; no behavior change |
 
 ## Rulings made during autonomous execution
 
