@@ -97,7 +97,7 @@ target_include_directories(avemotion_evaluation
 target_link_libraries(avemotion_evaluation PUBLIC AveMotion::Core AveMotion::Model)
 avemotion_set_warnings(avemotion_evaluation)
 
-add_library(avemotion_reference STATIC
+add_library(avemotion_reference STATIC EXCLUDE_FROM_ALL
     src/reference/ReferenceRuntime.cpp
     src/reference/UpstreamInfo.cpp)
 add_library(AveMotion::Reference ALIAS avemotion_reference)
@@ -311,7 +311,8 @@ if(AVEMOTION_BUILD_PROPERTY_CHARACTERIZER
     avemotion_set_warnings(avemotion_property_characterize)
 endif()
 
-if(AVEMOTION_RLOTTIE_AVAILABLE
+if(AVEMOTION_BUILD_SOURCE_GEOMETRY_CHARACTERIZER
+   AND AVEMOTION_RLOTTIE_AVAILABLE
    AND AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
     add_executable(avemotion_source_geometry_characterize
         apps/source_geometry_characterize/main.cpp)
@@ -834,38 +835,40 @@ if(BUILD_TESTING)
             add_test(NAME avemotion.render.source_geometry
                 COMMAND avemotion_source_geometry_projection_tests)
 
-            set(AVEMOTION_SOURCE_GEOMETRY_GOLDEN_OUTPUT
-                "${CMAKE_CURRENT_BINARY_DIR}/source-geometry-golden")
-            add_test(NAME avemotion.render.source_geometry_characterize
-                COMMAND avemotion_source_geometry_characterize
-                    --output ${AVEMOTION_SOURCE_GEOMETRY_GOLDEN_OUTPUT}
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/1667-firework.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/ModernPictogramsForLottie_LoudMute.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/StickAndBall.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/dynamic_path_test.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/gradient_animated_background.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/mask.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/matte_two_item_with_lowerlayer.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/polystar_line_clockwise_trim.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/primitive_geometry.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/polystar_polygon_geometry.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/trim_path_geometry.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/multi_trim_path_geometry.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/repeater_geometry.json
-                    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/repeater_content_group.json)
-            set(AVEMOTION_SOURCE_GEOMETRY_GOLDEN_COMPARE_ARGS
-                --expected ${CMAKE_CURRENT_SOURCE_DIR}/tests/golden/source-geometry-telegram.tsv
-                --actual ${AVEMOTION_SOURCE_GEOMETRY_GOLDEN_OUTPUT}/source_geometry_manifest.tsv)
-            if(MSVC)
-                list(APPEND AVEMOTION_SOURCE_GEOMETRY_GOLDEN_COMPARE_ARGS
-                    --allow-telegram-msvc-raw-float-variance)
+            if(TARGET avemotion_source_geometry_characterize)
+                set(AVEMOTION_SOURCE_GEOMETRY_GOLDEN_OUTPUT
+                    "${CMAKE_CURRENT_BINARY_DIR}/source-geometry-golden")
+                add_test(NAME avemotion.render.source_geometry_characterize
+                    COMMAND avemotion_source_geometry_characterize
+                        --output ${AVEMOTION_SOURCE_GEOMETRY_GOLDEN_OUTPUT}
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/1667-firework.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/ModernPictogramsForLottie_LoudMute.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/StickAndBall.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/dynamic_path_test.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/gradient_animated_background.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/mask.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/matte_two_item_with_lowerlayer.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/corpus/polystar_line_clockwise_trim.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/primitive_geometry.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/polystar_polygon_geometry.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/trim_path_geometry.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/multi_trim_path_geometry.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/repeater_geometry.json
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/repeater_content_group.json)
+                set(AVEMOTION_SOURCE_GEOMETRY_GOLDEN_COMPARE_ARGS
+                    --expected ${CMAKE_CURRENT_SOURCE_DIR}/tests/golden/source-geometry-telegram.tsv
+                    --actual ${AVEMOTION_SOURCE_GEOMETRY_GOLDEN_OUTPUT}/source_geometry_manifest.tsv)
+                if(MSVC)
+                    list(APPEND AVEMOTION_SOURCE_GEOMETRY_GOLDEN_COMPARE_ARGS
+                        --allow-telegram-msvc-raw-float-variance)
+                endif()
+                add_test(NAME avemotion.render.source_geometry_golden
+                    COMMAND ${Python3_EXECUTABLE}
+                        ${CMAKE_CURRENT_SOURCE_DIR}/scripts/compare_source_geometry_golden.py
+                        ${AVEMOTION_SOURCE_GEOMETRY_GOLDEN_COMPARE_ARGS})
+                set_tests_properties(avemotion.render.source_geometry_golden PROPERTIES
+                    DEPENDS avemotion.render.source_geometry_characterize)
             endif()
-            add_test(NAME avemotion.render.source_geometry_golden
-                COMMAND ${Python3_EXECUTABLE}
-                    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/compare_source_geometry_golden.py
-                    ${AVEMOTION_SOURCE_GEOMETRY_GOLDEN_COMPARE_ARGS})
-            set_tests_properties(avemotion.render.source_geometry_golden PROPERTIES
-                DEPENDS avemotion.render.source_geometry_characterize)
         endif()
 
         add_executable(avemotion_asset_model_tests tests/asset_model_tests.cpp)
@@ -1083,7 +1086,7 @@ if(AVEMOTION_ENABLE_INSTALL)
         "${CMAKE_CURRENT_BINARY_DIR}/AveMotionConfigVersion.cmake"
         VERSION ${PROJECT_VERSION}
         COMPATIBILITY SameMajorVersion)
-    install(TARGETS avemotion_formats avemotion_core avemotion_model avemotion_validation avemotion_evaluation avemotion_reference avemotion_runtime avemotion_player avemotion_rendering
+    install(TARGETS avemotion_formats avemotion_core avemotion_model avemotion_validation avemotion_evaluation avemotion_runtime avemotion_player avemotion_rendering
         EXPORT AveMotionTargets
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -1095,7 +1098,8 @@ if(AVEMOTION_ENABLE_INSTALL)
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
     endif()
-    install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        PATTERN "avemotion/reference" EXCLUDE)
     install(EXPORT AveMotionTargets
         FILE AveMotionTargets.cmake
         NAMESPACE AveMotion::

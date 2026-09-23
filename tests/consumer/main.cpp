@@ -93,7 +93,17 @@ int main() {
         != avemotion::formats::AssetFormat::TelegramTgs) {
         return 10;
     }
-    return avemotion::core::fnv1a64(std::span<const std::byte>{bytes}) == 0U
-        ? 11
-        : 0;
+    if (avemotion::core::fnv1a64(std::span<const std::byte>{bytes}) == 0U) {
+        return 11;
+    }
+
+    avemotion::runtime::Runtime runtime;
+    const auto loaded = runtime.loadLottieJson(
+        R"({"v":"5.7.4","fr":30,"ip":0,"op":2,"w":16,"h":16,"layers":[]})",
+        "offline-consumer");
+    if (loaded || loaded.error.code !=
+        avemotion::runtime::RuntimeErrorCode::ReferenceUnavailable) {
+        return 12;
+    }
+    return 0;
 }

@@ -13,6 +13,8 @@ option(AVEMOTION_BUILD_SCENE_CHARACTERIZER "Build the evaluated-scene characteri
 option(AVEMOTION_BUILD_PLAN_CHARACTERIZER "Build the render-plan characterizer" ON)
 option(AVEMOTION_BUILD_MODEL_CHARACTERIZER "Build the immutable asset-model characterizer" ON)
 option(AVEMOTION_BUILD_PROPERTY_CHARACTERIZER "Build the canonical property evaluator characterizer" ON)
+option(AVEMOTION_BUILD_SOURCE_GEOMETRY_CHARACTERIZER
+    "Build the Telegram source-geometry characterizer" ON)
 option(AVEMOTION_BUILD_DIRECT2D_BACKEND "Build the Windows Direct2D backend" ON)
 option(AVEMOTION_BUILD_DIRECT2D_CONTRACT_TEST
     "Build the portable Direct2D backend contract test with a deterministic SDK shim"

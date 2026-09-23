@@ -5,6 +5,11 @@ pinned Telegram `rlottie` semantic oracle while progressively replacing the
 runtime with AveMotion-owned canonical data, evaluation, geometry, scheduling
 and Direct2D rendering.
 
+For ordinary lean internal builds and the no-reference installed package, see
+[Module builds and offline package](docs/MODULE_BUILD.md). The Telegram-backed
+module remains a build-tree integration; the offline package cannot load
+animations through Runtime.
+
 Part 24 adds a privacy-preserving laboratory for representative `.tgs` and
 Lottie JSON collections. It deliberately adds no new visual family. The goal is
 to choose the next implementation from measured feature frequency, native

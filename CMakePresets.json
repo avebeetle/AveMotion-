@@ -24,6 +24,81 @@
       }
     },
     {
+      "name": "module-base",
+      "hidden": true,
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_TESTING": "OFF",
+        "AVEMOTION_BUILD_PROBE": "OFF",
+        "AVEMOTION_BUILD_VALIDATOR_TOOL": "OFF",
+        "AVEMOTION_BUILD_VALIDATION_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_CORPUS_LAB": "OFF",
+        "AVEMOTION_BUILD_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_SCENE_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PLAN_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_MODEL_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PROPERTY_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_SOURCE_GEOMETRY_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_BACKEND": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_CONTRACT_TEST": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_CAPTURE_TEST": "OFF",
+        "AVEMOTION_BUILD_WIN32_PREVIEW": "OFF"
+      }
+    },
+    {
+      "name": "windows-msvc-module-release",
+      "inherits": "module-base",
+      "displayName": "Windows MSVC Release internal Telegram module",
+      "cacheVariables": {
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram",
+        "AVEMOTION_ENABLE_INSTALL": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_BACKEND": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-gcc-module-release",
+      "inherits": "module-base",
+      "displayName": "Linux GCC Release internal Telegram module",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram",
+        "AVEMOTION_ENABLE_INSTALL": "OFF"
+      }
+    },
+    {
+      "name": "windows-msvc-offline-package",
+      "inherits": "module-base",
+      "displayName": "Windows MSVC Release offline product package",
+      "cacheVariables": {
+        "AVEMOTION_RLOTTIE_VARIANT": "none",
+        "AVEMOTION_ENABLE_INSTALL": "ON",
+        "AVEMOTION_BUILD_DIRECT2D_BACKEND": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-clang-offline-package",
+      "inherits": "module-base",
+      "displayName": "Linux Clang Release offline product package",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "AVEMOTION_RLOTTIE_VARIANT": "none",
+        "AVEMOTION_ENABLE_INSTALL": "ON"
+      }
+    },
+    {
       "name": "linux-clang-samsung-debug",
       "inherits": "base",
       "displayName": "Linux Clang Debug + Samsung rlottie",
@@ -274,6 +349,22 @@
     }
   ],
   "buildPresets": [
+    {
+      "name": "windows-msvc-module-release",
+      "configurePreset": "windows-msvc-module-release"
+    },
+    {
+      "name": "linux-gcc-module-release",
+      "configurePreset": "linux-gcc-module-release"
+    },
+    {
+      "name": "windows-msvc-offline-package",
+      "configurePreset": "windows-msvc-offline-package"
+    },
+    {
+      "name": "linux-clang-offline-package",
+      "configurePreset": "linux-clang-offline-package"
+    },
     {
       "name": "linux-clang-samsung-debug",
       "configurePreset": "linux-clang-samsung-debug"
