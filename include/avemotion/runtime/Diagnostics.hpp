@@ -14,6 +14,12 @@ struct DiagnosticsSnapshot final {
     std::uint64_t tgsCompressedBytes = 0;
     std::uint64_t tgsJsonBytes = 0;
     std::uint64_t instancesCreated = 0;
+    std::uint64_t referenceMetadataSessionsCreated = 0;
+    std::uint64_t referenceSceneSessionsCreated = 0;
+    std::uint64_t referenceModelSessionsCreated = 0;
+    std::uint64_t referenceCpuSessionsCreated = 0;
+    std::uint64_t referenceSceneSamples = 0;
+    std::uint64_t referenceModelSamples = 0;
     std::uint64_t sceneEvaluations = 0;
     std::uint64_t sceneEvaluationFailures = 0;
     std::uint64_t cpuFramesRendered = 0;

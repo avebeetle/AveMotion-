@@ -73,6 +73,12 @@ struct RuntimeState final {
     std::atomic<std::uint64_t> tgsCompressedBytes{0U};
     std::atomic<std::uint64_t> tgsJsonBytes{0U};
     std::atomic<std::uint64_t> instancesCreated{0U};
+    std::atomic<std::uint64_t> referenceMetadataSessionsCreated{0U};
+    std::atomic<std::uint64_t> referenceSceneSessionsCreated{0U};
+    std::atomic<std::uint64_t> referenceModelSessionsCreated{0U};
+    std::atomic<std::uint64_t> referenceCpuSessionsCreated{0U};
+    std::atomic<std::uint64_t> referenceSceneSamples{0U};
+    std::atomic<std::uint64_t> referenceModelSamples{0U};
     std::atomic<std::uint64_t> sceneEvaluations{0U};
     std::atomic<std::uint64_t> sceneEvaluationFailures{0U};
     std::atomic<std::uint64_t> cpuFramesRendered{0U};
@@ -106,6 +112,12 @@ struct RuntimeState final {
             tgsCompressedBytes.load(std::memory_order_relaxed),
             tgsJsonBytes.load(std::memory_order_relaxed),
             instancesCreated.load(std::memory_order_relaxed),
+            referenceMetadataSessionsCreated.load(std::memory_order_relaxed),
+            referenceSceneSessionsCreated.load(std::memory_order_relaxed),
+            referenceModelSessionsCreated.load(std::memory_order_relaxed),
+            referenceCpuSessionsCreated.load(std::memory_order_relaxed),
+            referenceSceneSamples.load(std::memory_order_relaxed),
+            referenceModelSamples.load(std::memory_order_relaxed),
             sceneEvaluations.load(std::memory_order_relaxed),
             sceneEvaluationFailures.load(std::memory_order_relaxed),
             cpuFramesRendered.load(std::memory_order_relaxed),
@@ -141,6 +153,12 @@ struct RuntimeState final {
         AVEMOTION_RESET_COUNTER(tgsCompressedBytes);
         AVEMOTION_RESET_COUNTER(tgsJsonBytes);
         AVEMOTION_RESET_COUNTER(instancesCreated);
+        AVEMOTION_RESET_COUNTER(referenceMetadataSessionsCreated);
+        AVEMOTION_RESET_COUNTER(referenceSceneSessionsCreated);
+        AVEMOTION_RESET_COUNTER(referenceModelSessionsCreated);
+        AVEMOTION_RESET_COUNTER(referenceCpuSessionsCreated);
+        AVEMOTION_RESET_COUNTER(referenceSceneSamples);
+        AVEMOTION_RESET_COUNTER(referenceModelSamples);
         AVEMOTION_RESET_COUNTER(sceneEvaluations);
         AVEMOTION_RESET_COUNTER(sceneEvaluationFailures);
         AVEMOTION_RESET_COUNTER(cpuFramesRendered);
@@ -562,10 +580,36 @@ void promoteCanonicalResources(
     }
 }
 
+enum class ReferenceSessionRole { Metadata, Scene, ModelPreparation, Cpu };
+enum class ReferenceSampleRole { Scene, ModelPreparation };
+
 [[nodiscard]] std::unique_ptr<rlottie::Animation> loadUpstreamAnimation(
-    const detail::AssetData& asset) {
-    return rlottie::Animation::loadFromData(
+    const detail::AssetData& asset,
+    ReferenceSessionRole role) {
+    auto animation = rlottie::Animation::loadFromData(
         asset.json, asset.cacheKey, {}, true);
+    if (animation) {
+        auto& state = *asset.runtimeState;
+        switch (role) {
+        case ReferenceSessionRole::Metadata:
+            state.referenceMetadataSessionsCreated.fetch_add(
+                1U, std::memory_order_relaxed);
+            break;
+        case ReferenceSessionRole::Scene:
+            state.referenceSceneSessionsCreated.fetch_add(
+                1U, std::memory_order_relaxed);
+            break;
+        case ReferenceSessionRole::ModelPreparation:
+            state.referenceModelSessionsCreated.fetch_add(
+                1U, std::memory_order_relaxed);
+            break;
+        case ReferenceSessionRole::Cpu:
+            state.referenceCpuSessionsCreated.fetch_add(
+                1U, std::memory_order_relaxed);
+            break;
+        }
+    }
+    return animation;
 }
 
 [[nodiscard]] CpuFrame analyzeCpuFrame(
@@ -635,7 +679,8 @@ void promoteCanonicalResources(
     std::uint64_t evaluationSequence,
     std::size_t frameIndex,
     std::size_t viewportWidth,
-    std::size_t viewportHeight) {
+    std::size_t viewportHeight,
+    ReferenceSampleRole role) {
     Instance::SceneResult result;
     if (viewportWidth == 0U || viewportHeight == 0U) {
         result.error = {
@@ -645,13 +690,20 @@ void promoteCanonicalResources(
     }
 
     frameIndex = clampFrame(frameIndex, asset.metadata);
-    auto exactAnimation = loadUpstreamAnimation(asset);
+    auto exactAnimation = loadUpstreamAnimation(
+        asset, role == ReferenceSampleRole::Scene
+            ? ReferenceSessionRole::Scene
+            : ReferenceSessionRole::ModelPreparation);
     if (!exactAnimation) {
         result.error = {
             RuntimeErrorCode::EvaluationFailed,
             "unable to create an isolated exact-evaluation runtime tree"};
         return result;
     }
+    auto& samples = role == ReferenceSampleRole::Scene
+        ? asset.runtimeState->referenceSceneSamples
+        : asset.runtimeState->referenceModelSamples;
+    samples.fetch_add(1U, std::memory_order_relaxed);
     const auto* tree = exactAnimation->renderTree(
         frameIndex, viewportWidth, viewportHeight);
     auto built = detail::buildSceneFromRlottieTree(
@@ -719,7 +771,8 @@ void promoteCanonicalResources(
 
     for (std::size_t frame = 0; frame < asset.metadata.totalFrames; ++frame) {
         auto extracted = extractExactScene(
-            asset, asset.handle, {}, 0U, frame + 1U, frame, width, height);
+            asset, asset.handle, {}, 0U, frame + 1U, frame, width, height,
+            ReferenceSampleRole::ModelPreparation);
         if (!extracted) {
             asset.modelError = extracted.error.message;
             asset.runtimeState->assetModelBuildsFailed.fetch_add(
@@ -812,7 +865,8 @@ void promoteCanonicalResources(
         ++instance.evaluationSequence,
         frameIndex,
         viewportWidth,
-        viewportHeight);
+        viewportHeight,
+        ReferenceSampleRole::Scene);
     instance.runtimeState->sceneEvaluations.fetch_add(
         1U, std::memory_order_relaxed);
     instance.runtimeState->sceneEvaluationNanoseconds.fetch_add(
@@ -1140,7 +1194,8 @@ Instance::CpuFrameResult Instance::renderCpuFrame(
 #if AVEMOTION_HAS_RLOTTIE
     const auto started = Clock::now();
     if (!data_->cpuAnimation) {
-        data_->cpuAnimation = loadUpstreamAnimation(*data_->assetData);
+        data_->cpuAnimation = loadUpstreamAnimation(
+            *data_->assetData, ReferenceSessionRole::Cpu);
         if (!data_->cpuAnimation) {
             result.error = {RuntimeErrorCode::CpuRenderFailed,
                 "unable to create the isolated CPU oracle animation"};
@@ -1204,7 +1259,8 @@ AssetLoadResult Runtime::loadLottieJson(
         ? core::formatHash(sourceHash)
         : std::string{debugName};
 
-    auto animation = loadUpstreamAnimation(*data);
+    auto animation = loadUpstreamAnimation(
+        *data, ReferenceSessionRole::Metadata);
     if (!animation) {
         state_->assetLoadsFailed.fetch_add(1U, std::memory_order_relaxed);
         result.error = {RuntimeErrorCode::InvalidAsset,
@@ -1354,7 +1410,8 @@ InstanceCreateResult Runtime::createInstance(
     data->runtimeState = state_;
     data->handle = state_->instanceHandles.acquire();
     data->id = state_->nextInstanceId.fetch_add(1U, std::memory_order_relaxed);
-    data->sceneAnimation = loadUpstreamAnimation(*data->asset->data_);
+    data->sceneAnimation = loadUpstreamAnimation(
+        *data->asset->data_, ReferenceSessionRole::Scene);
     if (!data->sceneAnimation) {
         result.error = {RuntimeErrorCode::InstanceCreationFailed,
             "unable to create the upstream scene-evaluation instance"};

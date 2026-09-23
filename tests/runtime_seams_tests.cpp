@@ -9,7 +9,16 @@
 #include <iostream>
 #include <iterator>
 #include <string>
+#include <type_traits>
 #include <vector>
+
+using avemotion::runtime::DiagnosticsSnapshot;
+static_assert(std::is_same_v<decltype(DiagnosticsSnapshot{}.referenceMetadataSessionsCreated), std::uint64_t>);
+static_assert(std::is_same_v<decltype(DiagnosticsSnapshot{}.referenceSceneSessionsCreated), std::uint64_t>);
+static_assert(std::is_same_v<decltype(DiagnosticsSnapshot{}.referenceModelSessionsCreated), std::uint64_t>);
+static_assert(std::is_same_v<decltype(DiagnosticsSnapshot{}.referenceCpuSessionsCreated), std::uint64_t>);
+static_assert(std::is_same_v<decltype(DiagnosticsSnapshot{}.referenceSceneSamples), std::uint64_t>);
+static_assert(std::is_same_v<decltype(DiagnosticsSnapshot{}.referenceModelSamples), std::uint64_t>);
 
 namespace fs = std::filesystem;
 
@@ -34,11 +43,82 @@ std::string readText(const fs::path& path) {
         std::istreambuf_iterator<char>{stream},
         std::istreambuf_iterator<char>{}};
 }
+
+void verifyReferenceDiagnostics() {
+    avemotion::runtime::Runtime runtime;
+    runtime.resetDiagnostics();
+    const auto json = readText(fs::path{AVEMOTION_CORPUS_DIR} / "StickAndBall.json");
+    auto loaded = runtime.loadLottieJson(json, "diagnostic-roles");
+    require(static_cast<bool>(loaded), "diagnostic fixture failed to load");
+    auto counters = runtime.diagnostics();
+    require(counters.referenceMetadataSessionsCreated == 1U,
+            "asset load must create one metadata session");
+    require(counters.referenceSceneSessionsCreated == 0U
+                && counters.referenceModelSessionsCreated == 0U
+                && counters.referenceCpuSessionsCreated == 0U,
+            "asset load must not create non-metadata sessions");
+
+    auto created = runtime.createInstance(loaded.asset);
+    require(static_cast<bool>(created), "diagnostic fixture instance failed to create");
+    counters = runtime.diagnostics();
+    require(counters.referenceSceneSessionsCreated == 1U,
+            "instance creation must create one scene session");
+
+    const auto exact = created.instance->evaluateFrame(0U, 128U, 128U);
+    require(static_cast<bool>(exact), "diagnostic exact scene evaluation failed");
+    counters = runtime.diagnostics();
+    // Task 3 replaces this pre-optimization characterization with zero hot-path creations.
+    require(counters.referenceSceneSessionsCreated == 2U,
+            "current exact scene evaluation must create a scene-role session");
+    require(counters.referenceSceneSamples == 1U
+                && counters.referenceModelSamples == 0U,
+            "exact scene sample must have the scene role");
+
+    const auto cpuFirst = created.instance->renderCpuFrame(0U, 64U, 64U);
+    const auto cpuSecond = created.instance->renderCpuFrame(1U, 64U, 64U);
+    require(cpuFirst && cpuSecond, "diagnostic CPU renders failed");
+    counters = runtime.diagnostics();
+    require(counters.referenceCpuSessionsCreated == 1U,
+            "repeated CPU renders must reuse the lazy CPU session");
+
+    runtime.resetDiagnostics();
+    counters = runtime.diagnostics();
+    require(counters.referenceMetadataSessionsCreated == 0U
+                && counters.referenceSceneSessionsCreated == 0U
+                && counters.referenceModelSessionsCreated == 0U
+                && counters.referenceCpuSessionsCreated == 0U
+                && counters.referenceSceneSamples == 0U
+                && counters.referenceModelSamples == 0U,
+            "diagnostic reset must zero the current counter epoch");
+    require(static_cast<bool>(created.instance->renderCpuFrame(2U, 64U, 64U)),
+            "CPU session must remain usable after diagnostic reset");
+    require(runtime.diagnostics().referenceCpuSessionsCreated == 0U,
+            "diagnostic reset must not recreate a live CPU session");
+
+    const auto prepared = loaded.asset->prepareModel();
+    require(static_cast<bool>(prepared), "diagnostic fixture model preparation failed");
+    counters = runtime.diagnostics();
+    require(counters.referenceModelSessionsCreated == loaded.asset->metadata().totalFrames,
+            "current model preparation must classify per-frame sessions as model");
+    require(counters.referenceModelSamples == loaded.asset->metadata().totalFrames,
+            "model preparation must count its renderTree samples");
+    require(counters.referenceSceneSessionsCreated == 0U
+                && counters.referenceSceneSamples == 0U
+                && counters.sceneEvaluations == 0U,
+            "model preparation must not count as instance scene evaluation");
+    require(static_cast<bool>(loaded.asset->prepareModel()),
+            "repeated model preparation failed");
+    require(runtime.diagnostics().referenceModelSessionsCreated
+                == counters.referenceModelSessionsCreated,
+            "repeated model preparation must reuse the prepared model");
+}
 } // namespace
 
 int main() {
     require(avemotion::runtime::Runtime::compiledWithReferenceEngine(),
             "runtime seams require a selected rlottie variant");
+
+    verifyReferenceDiagnostics();
 
     avemotion::runtime::Runtime runtime;
     avemotion::runtime::RecordingBackend recorder;
