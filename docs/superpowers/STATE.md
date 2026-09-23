@@ -25,7 +25,13 @@ Design/plan approved under delegated authority; Task1 implementation is next.
 General persistent reuse remains disabled. Three future-reuse regression fixtures
 will cover near-default translation, width and opacity. Task1 intentionally removes
 ordinary setup Scene construction1→0 and its duplicate-load failure opportunity.
-All rendering ownership stays unchanged. New deadline/ACTIVE status above supersede
+Task1 complete:d4217a4, ordinary mapping tree removed with variant-exact metadata
+mapping and legacy large-count path. Independent task review approved code; its
+evidence-only correction passed separate scoped review. Controller fresh focused
+tests4/4 on both variants. Worker full tests61/61 Telegram,39/41 Samsung with exact
+baseline scene/plan rows independently compared. Task2 next:three regression
+fixtures and one stale diagnostic output-line correction. Release candidate built;
+timing not yet run. New deadline/ACTIVE status above supersede
 the historical prior-run statements below.
 
 ## Repository

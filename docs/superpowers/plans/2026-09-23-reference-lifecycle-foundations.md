@@ -43,6 +43,9 @@ do not mutate product or old evidence.
 
 ## Task 1: Replace ordinary retained mapping trees
 
+Status:complete at d4217a4; task review approved, evidence-only fix separately
+reviewed, controller fresh4/4 gates on each variant. All items below completed.
+
 **Files:** modify src/runtime/Runtime.cpp, CMakeLists.txt,
 tests/runtime_seams_tests.cpp, tests/reference_session_tests.cpp,
 tests/asset_model_tests.cpp, scripts/test_corpus_lab_output.py, docs/CORPUS_LAB.md.
@@ -54,7 +57,7 @@ private AVEMOTION_REFERENCE_ROUND_FRAME_POSITION=1 for Samsung,0 otherwise.
 
 ### RED and differential gate
 
-- [ ] Before product edits add a real zero-construction check:
+- [x] Before product edits add a real zero-construction check:
 
 ```cpp
 runtime.resetDiagnostics(); // loaded valid asset already exists
@@ -64,37 +67,37 @@ require(runtime.diagnostics().referenceSceneSessionsCreated == 0U,
         "ordinary instance construction must not create a mapping tree");
 ```
 
-- [ ] Add frame parity against independently loaded ReferenceAnimation for all16
+- [x] Add frame parity against independently loaded ReferenceAnimation for all16
   existing top-level corpus/fixture JSON files; no new corpus data. Normalize
   nonfinite oracle input to0 and clamp its return to totalFrames-1, as the old
   Instance wrapper did. Sample0..1 at i/1000, repeated order, exact integer and
   half-frame thresholds plus nextafter toward0/1. N is small for this enumeration.
-- [ ] Add in-memory minimal JSON (empty layers is sufficient): w/h64,fr60,
+- [x] Add in-memory minimal JSON (empty layers is sufficient): w/h64,fr60,
   endpoints(0,10),(100,110),(-10,10),(0.25,10.75), and one-frame fixture with
   op=1 on Telegram/op=0 on Samsung. Compare metadata and positions independently.
   Literal example at ip0/op10 and p=.05: Telegram frame0, Samsung frame1.
   Test -1,2,NaN,+inf,-inf all with old clamping behavior (infinities map0).
-- [ ] After many mapping/playbackSnapshot calls and a quiescent reset, require no
+- [x] After many mapping/playbackSnapshot calls and a quiescent reset, require no
   metadata/scene/model/CPU session constructions or scene/model samples. Test a
   moved Instance and two independent Instances to catch reliance on moved state.
-- [ ] Telegram reversed fixture ip2/op1 remains accepted with N>LONG_MAX,
+- [x] Telegram reversed fixture ip2/op1 remains accepted with N>LONG_MAX,
   createInstance creates one legacy Scene session and frameAtPosition(0)==0.
   Samsung still rejects that source. Never exercise undefined negative-result
   floating-to-size_t conversion at positive positions or huge frame loops.
-- [ ] Null/foreign createInstance still returns InvalidArgument; existing no-ref
+- [x] Null/foreign createInstance still returns InvalidArgument; existing no-ref
   suite keeps ReferenceUnavailable. No synthetic allocator mocks.
-- [ ] Build/run new target and record expected RED (ordinary construction count1
+- [x] Build/run new target and record expected RED (ordinary construction count1
   instead of0) for both variants; parity assertions should run before the count
   failure or as separate cases so their baseline validity is known.
 
 ### Minimal implementation
 
-- [ ] Add the private rounding compile definition on avemotion_runtime, choosing
+- [x] Add the private rounding compile definition on avemotion_runtime, choosing
   from AVEMOTION_RLOTTIE_VARIANT, not AVEMOTION_TELEGRAM_PARSED_MODEL.
-- [ ] Rename sceneAnimation to legacyFrameMappingAnimation. Load it in
+- [x] Rename sceneAnimation to legacyFrameMappingAnimation. Load it in
   createInstance only if metadata.totalFrames exceeds numeric_limits<long>::max().
   Preserve the existing null-load failure branch and message inside that branch.
-- [ ] In frameAtPosition use legacy pointer when present, otherwise:
+- [x] In frameAtPosition use legacy pointer when present, otherwise:
 
 ```cpp
 const auto& metadata = data_->asset->metadata();
@@ -109,34 +112,35 @@ const auto frame = static_cast<std::size_t>(scaled);
 return clampFrame(frame, metadata);
 ```
 
-- [ ] Leave exact extraction, model scan and CPU animation code untouched. Keep
+- [x] Leave exact extraction, model scan and CPU animation code untouched. Keep
   no-reference mapping0 branch. No new timer/thread/global mutable state.
-- [ ] Update only intentional setup-count expectations: seams creation0/after
+- [x] Update only intentional setup-count expectations: seams creation0/after
   sample1; reference_session_tests counts==samples (instancesCreated unchanged);
   asset_model_tests afterScene1 instead of2. Preserve all visual/counter isolation
   assertions and add clear comments about outlier versus ordinary paths.
-- [ ] Validator adds integer --expected-setup-scene-sessions (default0), asserts
+- [x] Validator adds integer --expected-setup-scene-sessions (default0), asserts
   exact supplied count and rejects negative option values; old baseline can use1.
   Run against saved Part25A reports with1 and against newly produced smoke with0.
   Confirm wrong explicit expectation fails. Do not alter corpus instrument/schema.
-- [ ] Document actual lifecycle/diagnostic change in docs/CORPUS_LAB.md; do not
+- [x] Document actual lifecycle/diagnostic change in docs/CORPUS_LAB.md; do not
   rewrite old Part25A report measurements (controller adds successor notes).
 
 ### Verify and commit
 
-- [ ] Run focused mapping/seams/reference_sessions/asset_model/playback/Player/TGS
+- [x] Run focused mapping/seams/reference_sessions/asset_model/playback/Player/TGS
   on Telegram and Samsung under VsDevCmd. Then complete Telegram/Samsung suites;
   record known Samsung scene/plan hashes explicitly. Source/corpus/goldens stay.
-- [ ] Review own diff and git diff --check. Commit only task files with message
+- [x] Review own diff and git diff --check. Commit only task files with message
   `perf: avoid retained mapping trees for ordinary instances`.
-- [ ] Report real commit SHA from git rev-parse HEAD, RED/GREEN exact commands,
+- [x] Report real commit SHA from git rev-parse HEAD, RED/GREEN exact commands,
   raw outputs, variant edge cases and intentional error/counter contract change.
   Controller performs independent task review and fresh focused gate before push.
 
 ## Task 2: Preserve minimal active-state regression cases
 
 **Files:** create selected small JSON under tests/fixtures/reference_sessions/;
-modify tests/reference_session_tests.cpp and docs/PART25B_REFERENCE_LIFECYCLE_REPORT.md.
+modify tests/reference_session_tests.cpp. Controller owns the durable findings
+in docs/PART25B_REFERENCE_LIFECYCLE_REPORT.md; implementer writes its task report.
 **Interfaces:** existing complete comparator/fresh-oracle harness; no vendor APIs.
 
 - [ ] Read completed out/part25b-active-state/findings.md. Promote exactly
@@ -146,6 +150,8 @@ modify tests/reference_session_tests.cpp and docs/PART25B_REFERENCE_LIFECYCLE_RE
   and exported alpha respectively; no additional trim fixture is needed here.
 - [ ] Add them to the existing ascending/reverse/repeated/viewport comparisons;
   do not change comparator exclusions, corpus generator or16 measured inputs.
+- [ ] Correct the existing CPU-isolation PASS text to sceneSessions=2 (two exact
+  samples, no ordinary setup session). This is output text only; keep assertions.
 - [ ] At128square assert translation frame0 point2/3 x is nonzero and frame1 x
   is exactly0 (authored x changes0.0000012→0.0000005). Telegram local matrix dx
   is0 atframe1. Opacity changes50.19605→50.19610: Telegram paint alpha127→128;
@@ -165,7 +171,7 @@ modify tests/reference_session_tests.cpp and docs/PART25B_REFERENCE_LIFECYCLE_RE
 and append historical successor notes to Part25A report/findings as needed.
 Raw artifacts out/benchmarks/part25b/ and out/part25b-final/ are ignored.
 
-- [ ] Before candidate Release rebuild preserve the existing c484f4b binary
+- [x] Before candidate Release rebuild preserve the existing c484f4b binary
   (SHA256614714992fbacd80c1714683080811b66f5192aa4fd8ed8cd70ab42cea514f3b)
   to a unique baseline output path; verify hash. It is valid for273f2b3 because
   src/include/apps instrument are unchanged since c484f4b. Record the evidence.
