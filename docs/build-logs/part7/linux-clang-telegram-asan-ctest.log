@@ -1,0 +1,45 @@
+Test project /mnt/data/work/part7/out/build/linux-clang-telegram-asan
+      Start  1: avemotion.core
+ 1/20 Test  #1: avemotion.core .......................   Passed    0.01 sec
+      Start  2: avemotion.render.plan
+ 2/20 Test  #2: avemotion.render.plan ................   Passed    0.01 sec
+      Start  3: avemotion.direct2d.header
+ 3/20 Test  #3: avemotion.direct2d.header ............   Passed    0.01 sec
+      Start  4: avemotion.vendor.verify
+ 4/20 Test  #4: avemotion.vendor.verify ..............   Passed    0.61 sec
+      Start  5: avemotion.reference
+ 5/20 Test  #5: avemotion.reference ..................   Passed    0.12 sec
+      Start  6: avemotion.runtime.seams
+ 6/20 Test  #6: avemotion.runtime.seams ..............   Passed    0.15 sec
+      Start  7: avemotion.runtime.parsed_model
+ 7/20 Test  #7: avemotion.runtime.parsed_model .......   Passed    6.28 sec
+      Start  8: avemotion.runtime.asset_model
+ 8/20 Test  #8: avemotion.runtime.asset_model ........   Passed    4.39 sec
+      Start  9: avemotion.runtime.playback
+ 9/20 Test  #9: avemotion.runtime.playback ...........   Passed    0.02 sec
+      Start 10: avemotion.render.model_plan
+10/20 Test #10: avemotion.render.model_plan ..........   Passed    0.08 sec
+      Start 11: avemotion.runtime.canonical
+11/20 Test #11: avemotion.runtime.canonical ..........   Passed    0.16 sec
+      Start 12: avemotion.vendor.manifest
+12/20 Test #12: avemotion.vendor.manifest ............   Passed    0.01 sec
+      Start 13: avemotion.characterize.smoke
+13/20 Test #13: avemotion.characterize.smoke .........   Passed    0.02 sec
+      Start 14: avemotion.scene.characterize.smoke
+14/20 Test #14: avemotion.scene.characterize.smoke ...   Passed    0.02 sec
+      Start 15: avemotion.scene.golden
+15/20 Test #15: avemotion.scene.golden ...............   Passed    0.09 sec
+      Start 16: avemotion.plan.characterize.smoke
+16/20 Test #16: avemotion.plan.characterize.smoke ....   Passed    0.02 sec
+      Start 17: avemotion.model.characterize
+17/20 Test #17: avemotion.model.characterize .........   Passed    2.03 sec
+      Start 18: avemotion.model.golden
+18/20 Test #18: avemotion.model.golden ...............   Passed    0.01 sec
+      Start 19: avemotion.model.parsed_golden
+19/20 Test #19: avemotion.model.parsed_golden ........   Passed    0.01 sec
+      Start 20: avemotion.plan.golden
+20/20 Test #20: avemotion.plan.golden ................   Passed    0.10 sec
+
+100% tests passed, 0 tests failed out of 20
+
+Total Test time (real) =  14.13 sec

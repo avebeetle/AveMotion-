@@ -1,0 +1,67 @@
+Test project /mnt/data/work_part18/out/build/linux-clang-telegram-asan
+      Start  1: avemotion.core
+ 1/31 Test  #1: avemotion.core ..................................   Passed    0.01 sec
+      Start  2: avemotion.evaluation.properties
+ 2/31 Test  #2: avemotion.evaluation.properties .................   Passed    0.02 sec
+      Start  3: avemotion.render.plan
+ 3/31 Test  #3: avemotion.render.plan ...........................   Passed    0.01 sec
+      Start  4: avemotion.render.polystar_geometry
+ 4/31 Test  #4: avemotion.render.polystar_geometry ..............   Passed    0.01 sec
+      Start  5: avemotion.render.repeater_transform
+ 5/31 Test  #5: avemotion.render.repeater_transform .............   Passed    0.02 sec
+      Start  6: avemotion.render.trim_path
+ 6/31 Test  #6: avemotion.render.trim_path ......................   Passed    0.01 sec
+      Start  7: avemotion.direct2d.header
+ 7/31 Test  #7: avemotion.direct2d.header .......................   Passed    0.02 sec
+      Start  8: avemotion.direct2d.contract
+ 8/31 Test  #8: avemotion.direct2d.contract .....................   Passed    0.01 sec
+      Start  9: avemotion.vendor.verify
+ 9/31 Test  #9: avemotion.vendor.verify .........................   Passed    0.61 sec
+      Start 10: avemotion.reference
+10/31 Test #10: avemotion.reference .............................   Passed    0.13 sec
+      Start 11: avemotion.runtime.seams
+11/31 Test #11: avemotion.runtime.seams .........................   Passed    0.15 sec
+      Start 12: avemotion.evaluation.telegram_parity
+12/31 Test #12: avemotion.evaluation.telegram_parity ............   Passed    1.96 sec
+      Start 13: avemotion.runtime.parsed_model
+13/31 Test #13: avemotion.runtime.parsed_model ..................   Passed    5.12 sec
+      Start 14: avemotion.render.source_geometry
+14/31 Test #14: avemotion.render.source_geometry ................   Passed    3.44 sec
+      Start 15: avemotion.render.source_geometry_characterize
+15/31 Test #15: avemotion.render.source_geometry_characterize ...   Passed    2.18 sec
+      Start 16: avemotion.render.source_geometry_golden
+16/31 Test #16: avemotion.render.source_geometry_golden .........   Passed    0.01 sec
+      Start 17: avemotion.runtime.asset_model
+17/31 Test #17: avemotion.runtime.asset_model ...................   Passed    3.55 sec
+      Start 18: avemotion.runtime.playback
+18/31 Test #18: avemotion.runtime.playback ......................   Passed    0.02 sec
+      Start 19: avemotion.render.model_plan
+19/31 Test #19: avemotion.render.model_plan .....................   Passed    0.09 sec
+      Start 20: avemotion.runtime.canonical
+20/31 Test #20: avemotion.runtime.canonical .....................   Passed    0.15 sec
+      Start 21: avemotion.vendor.manifest
+21/31 Test #21: avemotion.vendor.manifest .......................   Passed    0.01 sec
+      Start 22: avemotion.characterize.smoke
+22/31 Test #22: avemotion.characterize.smoke ....................   Passed    0.02 sec
+      Start 23: avemotion.scene.characterize.smoke
+23/31 Test #23: avemotion.scene.characterize.smoke ..............   Passed    0.01 sec
+      Start 24: avemotion.scene.golden
+24/31 Test #24: avemotion.scene.golden ..........................   Passed    0.08 sec
+      Start 25: avemotion.plan.characterize.smoke
+25/31 Test #25: avemotion.plan.characterize.smoke ...............   Passed    0.01 sec
+      Start 26: avemotion.model.characterize
+26/31 Test #26: avemotion.model.characterize ....................   Passed    1.96 sec
+      Start 27: avemotion.model.golden
+27/31 Test #27: avemotion.model.golden ..........................   Passed    0.01 sec
+      Start 28: avemotion.model.parsed_golden
+28/31 Test #28: avemotion.model.parsed_golden ...................   Passed    0.01 sec
+      Start 29: avemotion.evaluation.characterize
+29/31 Test #29: avemotion.evaluation.characterize ...............   Passed    1.84 sec
+      Start 30: avemotion.evaluation.golden
+30/31 Test #30: avemotion.evaluation.golden .....................   Passed    0.01 sec
+      Start 31: avemotion.plan.golden
+31/31 Test #31: avemotion.plan.golden ...........................   Passed    0.09 sec
+
+100% tests passed, 0 tests failed out of 31
+
+Total Test time (real) =  21.57 sec

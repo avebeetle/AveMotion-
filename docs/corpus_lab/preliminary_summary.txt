@@ -1,0 +1,17 @@
+AveMotion private corpus laboratory
+schema=1
+privacy=hashed-aliases
+files=16
+loaded=16
+failed=0
+nativeDirect2DReady=6
+fallbackAssets=5
+unsupportedAssets=0
+telegramProfileAccepted=1
+samplesPerAsset=5
+renderSize=64
+rankingFormula=blockedAssets*1000+occurrences*25+supportWeight-effort*50
+rankingStatus=preliminary-until-representative-private-corpus
+topCandidate=native-subset-completion
+topCandidateScore=6525
+sourceAssetsCopied=0

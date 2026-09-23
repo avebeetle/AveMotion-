@@ -1,0 +1,75 @@
+-- The C compiler identification is Clang 17.0.0
+-- The CXX compiler identification is Clang 17.0.0
+-- The ASM compiler identification is Clang with GNU-like command-line
+-- Found assembler: /usr/local/swift/usr/bin/clang
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/local/swift/usr/bin/clang - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/local/swift/usr/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: /opt/pyvenv/bin/python3 (found version "3.13.5") found components: Interpreter
+-- Configuring done (4.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/work_part13/out/build/linux-clang-offline-asan
+[1/35] Building CXX object CMakeFiles/avemotion_core.dir/src/core/Hash.cpp.o
+[2/35] Linking CXX static library libavemotion_core.a
+[3/35] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModel.cpp.o
+[4/35] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Playback.cpp.o
+[5/35] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RecordingBackend.cpp.o
+[6/35] Building CXX object CMakeFiles/avemotion_evaluation.dir/src/evaluation/PropertyEvaluator.cpp.o
+[7/35] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModelBuilder.cpp.o
+[8/35] Linking CXX static library libavemotion_model.a
+[9/35] Linking CXX static library libavemotion_evaluation.a
+[10/35] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/UpstreamInfo.cpp.o
+[11/35] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/ReferenceRuntime.cpp.o
+[12/35] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[13/35] Linking CXX static library libavemotion_runtime.a
+[14/35] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/PrimitivePathGenerator.cpp.o
+[15/35] Linking CXX static library libavemotion_reference.a
+[16/35] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/HeadlessBackend.cpp.o
+[17/35] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/SourceGeometryProjector.cpp.o
+[18/35] Building CXX object CMakeFiles/avemotion_core_tests.dir/tests/core_tests.cpp.o
+[19/35] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/RenderPlanner.cpp.o
+[20/35] Linking CXX static library libavemotion_rendering.a
+[21/35] Building CXX object CMakeFiles/avemotion_probe.dir/apps/probe/main.cpp.o
+[22/35] Building CXX object CMakeFiles/avemotion_direct2d_header_tests.dir/tests/direct2d_header_tests.cpp.o
+[23/35] Building CXX object CMakeFiles/avemotion_polystar_geometry_tests.dir/tests/polystar_geometry_tests.cpp.o
+[24/35] Building CXX object CMakeFiles/avemotion_render_plan_tests.dir/tests/render_plan_tests.cpp.o
+[25/35] Linking CXX executable avemotion_probe
+[26/35] Building CXX object CMakeFiles/avemotion_offline_tests.dir/tests/offline_tests.cpp.o
+[27/35] Linking CXX executable avemotion_core_tests
+[28/35] Building CXX object CMakeFiles/avemotion_runtime_offline_tests.dir/tests/runtime_offline_tests.cpp.o
+[29/35] Linking CXX executable avemotion_polystar_geometry_tests
+[30/35] Linking CXX executable avemotion_render_plan_tests
+[31/35] Linking CXX executable avemotion_direct2d_header_tests
+[32/35] Linking CXX executable avemotion_offline_tests
+[33/35] Linking CXX executable avemotion_runtime_offline_tests
+[34/35] Building CXX object CMakeFiles/avemotion_property_evaluator_tests.dir/tests/property_evaluator_tests.cpp.o
+[35/35] Linking CXX executable avemotion_property_evaluator_tests
+Internal ctest changing into directory: /mnt/data/work_part13/out/build/linux-clang-offline-asan
+Test project /mnt/data/work_part13/out/build/linux-clang-offline-asan
+    Start 1: avemotion.core
+1/8 Test #1: avemotion.core .......................   Passed    0.01 sec
+    Start 2: avemotion.evaluation.properties
+2/8 Test #2: avemotion.evaluation.properties ......   Passed    0.02 sec
+    Start 3: avemotion.render.plan
+3/8 Test #3: avemotion.render.plan ................   Passed    0.01 sec
+    Start 4: avemotion.render.polystar_geometry
+4/8 Test #4: avemotion.render.polystar_geometry ...   Passed    0.01 sec
+    Start 5: avemotion.direct2d.header
+5/8 Test #5: avemotion.direct2d.header ............   Passed    0.01 sec
+    Start 6: avemotion.vendor.verify
+6/8 Test #6: avemotion.vendor.verify ..............   Passed    0.61 sec
+    Start 7: avemotion.offline
+7/8 Test #7: avemotion.offline ....................   Passed    0.01 sec
+    Start 8: avemotion.runtime.offline
+8/8 Test #8: avemotion.runtime.offline ............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 8
+
+Total Test time (real) =   0.67 sec

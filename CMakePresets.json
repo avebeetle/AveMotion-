@@ -1,0 +1,445 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "BUILD_TESTING": "ON",
+        "AVEMOTION_BUILD_PROBE": "ON",
+        "AVEMOTION_BUILD_CHARACTERIZER": "ON",
+        "AVEMOTION_BUILD_CORPUS_LAB": "ON",
+        "AVEMOTION_ENABLE_INSTALL": "OFF",
+        "AVEMOTION_BUILD_SCENE_CHARACTERIZER": "ON",
+        "AVEMOTION_BUILD_PLAN_CHARACTERIZER": "ON",
+        "AVEMOTION_BUILD_PROPERTY_CHARACTERIZER": "ON"
+      }
+    },
+    {
+      "name": "linux-clang-samsung-debug",
+      "inherits": "base",
+      "displayName": "Linux Clang Debug + Samsung rlottie",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "AVEMOTION_RLOTTIE_VARIANT": "samsung"
+      }
+    },
+    {
+      "name": "linux-gcc-samsung-release",
+      "inherits": "base",
+      "displayName": "Linux GCC Release + Samsung rlottie",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
+        "AVEMOTION_RLOTTIE_VARIANT": "samsung"
+      }
+    },
+    {
+      "name": "linux-clang-telegram-debug",
+      "inherits": "base",
+      "displayName": "Linux Clang Debug + Telegram rlottie",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram"
+      }
+    },
+    {
+      "name": "linux-gcc-telegram-release",
+      "inherits": "base",
+      "displayName": "Linux GCC Release + Telegram rlottie",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram"
+      }
+    },
+    {
+      "name": "linux-clang-samsung-asan",
+      "inherits": "linux-clang-samsung-debug",
+      "displayName": "Linux Clang ASan + Samsung rlottie",
+      "cacheVariables": {
+        "CMAKE_C_FLAGS": "-fsanitize=address -fno-omit-frame-pointer",
+        "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address",
+        "CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=address"
+      }
+    },
+    {
+      "name": "linux-clang-telegram-asan",
+      "inherits": "linux-clang-telegram-debug",
+      "displayName": "Linux Clang ASan + Telegram rlottie",
+      "cacheVariables": {
+        "CMAKE_C_FLAGS": "-fsanitize=address -fno-omit-frame-pointer",
+        "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address",
+        "CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=address"
+      }
+    },
+    {
+      "name": "linux-clang-offline",
+      "inherits": "base",
+      "displayName": "Linux Clang facade without rlottie",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "AVEMOTION_RLOTTIE_VARIANT": "none",
+        "AVEMOTION_ENABLE_INSTALL": "ON",
+        "AVEMOTION_BUILD_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_SCENE_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PLAN_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PROPERTY_CHARACTERIZER": "OFF"
+      }
+    },
+    {
+      "name": "windows-msvc-direct2d",
+      "inherits": "base",
+      "displayName": "Windows MSVC Debug + native Direct2D WARP gate",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "AVEMOTION_RLOTTIE_VARIANT": "none",
+        "AVEMOTION_ENABLE_INSTALL": "ON",
+        "AVEMOTION_BUILD_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_SCENE_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PLAN_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_MODEL_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PROPERTY_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_BACKEND": "ON",
+        "AVEMOTION_BUILD_DIRECT2D_CONTRACT_TEST": "ON",
+        "AVEMOTION_BUILD_PROBE": "OFF"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "windows-msvc-direct2d-capture",
+      "inherits": "base",
+      "displayName": "Windows MSVC Debug + Telegram Direct2D capture corpus",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram",
+        "AVEMOTION_ENABLE_INSTALL": "OFF",
+        "AVEMOTION_BUILD_PROBE": "OFF",
+        "AVEMOTION_BUILD_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_SCENE_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PLAN_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_MODEL_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PROPERTY_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_BACKEND": "ON",
+        "AVEMOTION_BUILD_DIRECT2D_CONTRACT_TEST": "ON",
+        "AVEMOTION_BUILD_DIRECT2D_CAPTURE_TEST": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "windows-msvc-win32-preview",
+      "inherits": "base",
+      "displayName": "Windows MSVC Debug + live Win32 Direct2D preview",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram",
+        "AVEMOTION_ENABLE_INSTALL": "OFF",
+        "AVEMOTION_BUILD_PROBE": "OFF",
+        "AVEMOTION_BUILD_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_SCENE_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PLAN_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_MODEL_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PROPERTY_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_BACKEND": "ON",
+        "AVEMOTION_BUILD_DIRECT2D_CONTRACT_TEST": "ON",
+        "AVEMOTION_BUILD_DIRECT2D_CAPTURE_TEST": "ON",
+        "AVEMOTION_BUILD_WIN32_PREVIEW": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-gcc-corpus-lab",
+      "inherits": "base",
+      "displayName": "Linux GCC Release + private corpus laboratory",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram",
+        "AVEMOTION_ENABLE_INSTALL": "OFF",
+        "AVEMOTION_BUILD_PROBE": "OFF",
+        "AVEMOTION_BUILD_VALIDATOR_TOOL": "OFF",
+        "AVEMOTION_BUILD_VALIDATION_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_CORPUS_LAB": "ON",
+        "AVEMOTION_BUILD_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_SCENE_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PLAN_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_MODEL_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PROPERTY_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_BACKEND": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_CONTRACT_TEST": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_CAPTURE_TEST": "OFF",
+        "AVEMOTION_BUILD_WIN32_PREVIEW": "OFF"
+      }
+    },
+    {
+      "name": "windows-msvc-corpus-lab",
+      "inherits": "base",
+      "displayName": "Windows MSVC Release + private corpus laboratory",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram",
+        "AVEMOTION_ENABLE_INSTALL": "OFF",
+        "AVEMOTION_BUILD_PROBE": "OFF",
+        "AVEMOTION_BUILD_VALIDATOR_TOOL": "OFF",
+        "AVEMOTION_BUILD_VALIDATION_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_CORPUS_LAB": "ON",
+        "AVEMOTION_BUILD_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_SCENE_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PLAN_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_MODEL_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_PROPERTY_CHARACTERIZER": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_BACKEND": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_CONTRACT_TEST": "OFF",
+        "AVEMOTION_BUILD_DIRECT2D_CAPTURE_TEST": "OFF",
+        "AVEMOTION_BUILD_WIN32_PREVIEW": "OFF"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "windows-msvc-samsung-debug",
+      "inherits": "base",
+      "displayName": "Windows MSVC Debug + Samsung rlottie",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "AVEMOTION_RLOTTIE_VARIANT": "samsung"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "windows-msvc-telegram-debug",
+      "inherits": "base",
+      "displayName": "Windows MSVC Debug + Telegram rlottie",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "windows-msvc-telegram-release",
+      "inherits": "base",
+      "displayName": "Windows MSVC Release + Telegram rlottie",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "AVEMOTION_RLOTTIE_VARIANT": "telegram"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux-clang-samsung-debug",
+      "configurePreset": "linux-clang-samsung-debug"
+    },
+    {
+      "name": "linux-gcc-samsung-release",
+      "configurePreset": "linux-gcc-samsung-release"
+    },
+    {
+      "name": "linux-clang-telegram-debug",
+      "configurePreset": "linux-clang-telegram-debug"
+    },
+    {
+      "name": "linux-gcc-telegram-release",
+      "configurePreset": "linux-gcc-telegram-release"
+    },
+    {
+      "name": "linux-clang-samsung-asan",
+      "configurePreset": "linux-clang-samsung-asan"
+    },
+    {
+      "name": "linux-clang-telegram-asan",
+      "configurePreset": "linux-clang-telegram-asan"
+    },
+    {
+      "name": "linux-clang-offline",
+      "configurePreset": "linux-clang-offline"
+    },
+    {
+      "name": "windows-msvc-direct2d",
+      "configurePreset": "windows-msvc-direct2d"
+    },
+    {
+      "name": "windows-msvc-direct2d-capture",
+      "configurePreset": "windows-msvc-direct2d-capture"
+    },
+    {
+      "name": "windows-msvc-win32-preview",
+      "configurePreset": "windows-msvc-win32-preview"
+    },
+    {
+      "name": "linux-gcc-corpus-lab",
+      "configurePreset": "linux-gcc-corpus-lab"
+    },
+    {
+      "name": "windows-msvc-corpus-lab",
+      "configurePreset": "windows-msvc-corpus-lab"
+    },
+    {
+      "name": "windows-msvc-samsung-debug",
+      "configurePreset": "windows-msvc-samsung-debug"
+    },
+    {
+      "name": "windows-msvc-telegram-debug",
+      "configurePreset": "windows-msvc-telegram-debug"
+    },
+    {
+      "name": "windows-msvc-telegram-release",
+      "configurePreset": "windows-msvc-telegram-release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "linux-clang-samsung-debug",
+      "configurePreset": "linux-clang-samsung-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-gcc-samsung-release",
+      "configurePreset": "linux-gcc-samsung-release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-clang-telegram-debug",
+      "configurePreset": "linux-clang-telegram-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-gcc-telegram-release",
+      "configurePreset": "linux-gcc-telegram-release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-clang-samsung-asan",
+      "configurePreset": "linux-clang-samsung-asan",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-clang-telegram-asan",
+      "configurePreset": "linux-clang-telegram-asan",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-clang-offline",
+      "configurePreset": "linux-clang-offline",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-direct2d",
+      "configurePreset": "windows-msvc-direct2d",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-direct2d-capture",
+      "configurePreset": "windows-msvc-direct2d-capture",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-win32-preview",
+      "configurePreset": "windows-msvc-win32-preview",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-gcc-corpus-lab",
+      "configurePreset": "linux-gcc-corpus-lab",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-corpus-lab",
+      "configurePreset": "windows-msvc-corpus-lab",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-samsung-debug",
+      "configurePreset": "windows-msvc-samsung-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-telegram-debug",
+      "configurePreset": "windows-msvc-telegram-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-msvc-telegram-release",
+      "configurePreset": "windows-msvc-telegram-release",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

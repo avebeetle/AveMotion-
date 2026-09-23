@@ -1,0 +1,20 @@
+-- Install configuration: "Debug"
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/lib/libavemotion_core.a
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/lib/libavemotion_reference.a
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/lib/libavemotion_runtime.a
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/reference
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/reference/UpstreamInfo.hpp
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/reference/ReferenceRuntime.hpp
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/runtime
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/runtime/RecordingBackend.hpp
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/runtime/EvaluatedScene.hpp
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/runtime/Diagnostics.hpp
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/runtime/Runtime.hpp
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/core
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/include/avemotion/core/Hash.hpp
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/lib/cmake/AveMotion/AveMotionTargets.cmake
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/lib/cmake/AveMotion/AveMotionTargets-debug.cmake
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/lib/cmake/AveMotion/AveMotionConfig.cmake
+-- Installing: /mnt/data/work_part3/AveMotion/out/install-part3-doc/lib/cmake/AveMotion/AveMotionConfigVersion.cmake

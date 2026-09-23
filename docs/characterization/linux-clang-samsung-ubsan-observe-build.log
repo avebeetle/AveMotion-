@@ -1,0 +1,12 @@
+[1/12] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/varenaalloc.cpp.o
+[2/12] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieitem_capi.cpp.o
+[3/12] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieitem.cpp.o
+[4/12] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieloader.cpp.o
+[5/12] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottiemodel.cpp.o
+[6/12] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieparser.cpp.o
+[7/12] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieanimation.cpp.o
+[8/12] Linking CXX static library _deps/rlottie-samsung/librlottie.a
+[9/12] Linking CXX executable avemotion_probe
+[10/12] Linking CXX executable avemotion_characterize
+[11/12] Linking CXX executable avemotion_manifest_tests
+[12/12] Linking CXX executable avemotion_reference_tests

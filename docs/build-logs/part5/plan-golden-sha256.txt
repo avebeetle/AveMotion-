@@ -1,0 +1,2 @@
+8784dcdebb5d43b7d4ad1644b313cea10a8a5dba45de707a19857438614ffaf1  tests/golden/plan-telegram.tsv
+bffd0e5630ab5fe59ea6e851cb2a8f3a0b19a9853b17130970751b799af50a1a  tests/golden/plan-samsung.tsv

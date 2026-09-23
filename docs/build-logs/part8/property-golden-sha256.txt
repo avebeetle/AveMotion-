@@ -1,0 +1,1 @@
+66259ac79ec437fe8d81b2eaf1c9432d3c398351cedab38ecf575170d21def52  tests/golden/property-telegram.tsv

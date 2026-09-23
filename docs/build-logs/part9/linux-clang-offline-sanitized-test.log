@@ -1,0 +1,21 @@
+=== test offline ASan+UBSan ===
+Internal ctest changing into directory: /mnt/data/work/avemotion-part9/out/build/linux-clang-offline-sanitized
+Test project /mnt/data/work/avemotion-part9/out/build/linux-clang-offline-sanitized
+    Start 1: avemotion.core
+1/7 Test #1: avemotion.core ....................   Passed    0.01 sec
+    Start 2: avemotion.evaluation.properties
+2/7 Test #2: avemotion.evaluation.properties ...   Passed    0.02 sec
+    Start 3: avemotion.render.plan
+3/7 Test #3: avemotion.render.plan .............   Passed    0.01 sec
+    Start 4: avemotion.direct2d.header
+4/7 Test #4: avemotion.direct2d.header .........   Passed    0.01 sec
+    Start 5: avemotion.vendor.verify
+5/7 Test #5: avemotion.vendor.verify ...........   Passed    0.56 sec
+    Start 6: avemotion.offline
+6/7 Test #6: avemotion.offline .................   Passed    0.01 sec
+    Start 7: avemotion.runtime.offline
+7/7 Test #7: avemotion.runtime.offline .........   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 7
+
+Total Test time (real) =   0.61 sec

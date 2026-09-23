@@ -1,0 +1,1 @@
+AveMotion polystar geometry tests passed

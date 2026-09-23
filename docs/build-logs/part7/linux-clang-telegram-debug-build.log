@@ -1,0 +1,16 @@
+[1/16] Building CXX object CMakeFiles/avemotion_asset_model_tests.dir/tests/asset_model_tests.cpp.o
+[2/16] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[3/16] Linking CXX static library libavemotion_runtime.a
+[4/16] Linking CXX executable avemotion_scene_characterize
+[5/16] Linking CXX executable avemotion_plan_characterize
+[6/16] Linking CXX executable avemotion_render_plan_tests
+[7/16] Linking CXX executable avemotion_direct2d_header_tests
+[8/16] Linking CXX executable avemotion_model_characterize
+[9/16] Linking CXX executable avemotion_runtime_seams_tests
+[10/16] Linking CXX executable avemotion_parsed_model_tests
+[11/16] Linking CXX executable avemotion_asset_model_tests
+[12/16] Linking CXX executable avemotion_playback_tests
+[13/16] Linking CXX executable avemotion_model_render_plan_tests
+[14/16] Linking CXX executable avemotion_canonical_geometry_tests
+[15/16] Linking CXX executable avemotion_scene_golden_tests
+[16/16] Linking CXX executable avemotion_plan_golden_tests

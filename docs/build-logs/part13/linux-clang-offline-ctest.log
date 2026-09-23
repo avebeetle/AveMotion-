@@ -1,0 +1,21 @@
+Test project /mnt/data/work_part13/out/build/linux-clang-offline
+    Start 1: avemotion.core
+1/8 Test #1: avemotion.core .......................   Passed    0.00 sec
+    Start 2: avemotion.evaluation.properties
+2/8 Test #2: avemotion.evaluation.properties ......   Passed    0.00 sec
+    Start 3: avemotion.render.plan
+3/8 Test #3: avemotion.render.plan ................   Passed    0.00 sec
+    Start 4: avemotion.render.polystar_geometry
+4/8 Test #4: avemotion.render.polystar_geometry ...   Passed    0.00 sec
+    Start 5: avemotion.direct2d.header
+5/8 Test #5: avemotion.direct2d.header ............   Passed    0.00 sec
+    Start 6: avemotion.vendor.verify
+6/8 Test #6: avemotion.vendor.verify ..............   Passed    0.58 sec
+    Start 7: avemotion.offline
+7/8 Test #7: avemotion.offline ....................   Passed    0.00 sec
+    Start 8: avemotion.runtime.offline
+8/8 Test #8: avemotion.runtime.offline ............   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 8
+
+Total Test time (real) =   0.60 sec

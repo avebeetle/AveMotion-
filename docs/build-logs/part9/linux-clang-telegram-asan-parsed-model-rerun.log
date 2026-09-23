@@ -1,0 +1,27 @@
+Internal ctest changing into directory: /mnt/data/work/avemotion-part9/out/build/linux-clang-telegram-asan
+UpdateCTestConfiguration  from :/mnt/data/work/avemotion-part9/out/build/linux-clang-telegram-asan/DartConfiguration.tcl
+Parse Config file:/mnt/data/work/avemotion-part9/out/build/linux-clang-telegram-asan/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/mnt/data/work/avemotion-part9/out/build/linux-clang-telegram-asan/DartConfiguration.tcl
+Parse Config file:/mnt/data/work/avemotion-part9/out/build/linux-clang-telegram-asan/DartConfiguration.tcl
+Test project /mnt/data/work/avemotion-part9/out/build/linux-clang-telegram-asan
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 9
+    Start 9: avemotion.runtime.parsed_model
+
+9: Test command: /mnt/data/work/avemotion-part9/out/build/linux-clang-telegram-asan/avemotion_parsed_model_tests
+9: Working Directory: /mnt/data/work/avemotion-part9/out/build/linux-clang-telegram-asan
+9: Test timeout computed to be: 300
+9: AveMotion direct parsed-model tests passed for 8 assets static-properties=266 animated-properties=43 tracks=43 segments=71 compositions=15 precomposition-refs=24 transform-parents=8
+1/1 Test #9: avemotion.runtime.parsed_model ...   Passed    5.12 sec
+
+The following tests passed:
+	avemotion.runtime.parsed_model
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   5.12 sec

@@ -1,0 +1,8 @@
+AveMotion Part 23 validation environment
+Date: 2026-07-28
+CMake: cmake version 3.31.6
+Ninja: 1.12.1
+Clang: clang version 17.0.0 (https://github.com/swiftlang/llvm-project.git 10999b6d034fe318f3d56c83bddb6572593a8bb0)
+GCC: g++ (Debian 14.2.0-19) 14.2.0
+Python: Python 3.13.5
+Platform: Linux 6.12.13 x86_64 GNU/Linux

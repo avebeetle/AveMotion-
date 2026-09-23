@@ -1,0 +1,13 @@
+old_rows=65
+new_rows=70
+old_fields=66
+new_fields=70
+new_fields_only=repeater_fill_applications,repeater_stroke_applications,repeater_nested_paint_applications,repeater_animated_paint_applications
+missing_old_rows=0
+changed_old_fields=0
+added_rows=5
+added=repeater_content_group.json|p000|0
+added=repeater_content_group.json|p025|15
+added=repeater_content_group.json|p050|30
+added=repeater_content_group.json|p075|45
+added=repeater_content_group.json|p100|60

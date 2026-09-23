@@ -1,0 +1,11 @@
+[1/11] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/HeadlessBackend.cpp.o
+[2/11] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/RenderPlanner.cpp.o
+[3/11] Linking CXX static library libavemotion_rendering.a
+[4/11] Building CXX object CMakeFiles/avemotion_plan_characterize.dir/apps/plan_characterize/main.cpp.o
+[5/11] Building CXX object CMakeFiles/avemotion_render_plan_tests.dir/tests/render_plan_tests.cpp.o
+[6/11] Building CXX object CMakeFiles/avemotion_direct2d_header_tests.dir/tests/direct2d_header_tests.cpp.o
+[7/11] Linking CXX executable avemotion_plan_characterize
+[8/11] Linking CXX executable avemotion_render_plan_tests
+[9/11] Linking CXX executable avemotion_direct2d_header_tests
+[10/11] Building CXX object CMakeFiles/avemotion_plan_golden_tests.dir/tests/plan_golden_tests.cpp.o
+[11/11] Linking CXX executable avemotion_plan_golden_tests

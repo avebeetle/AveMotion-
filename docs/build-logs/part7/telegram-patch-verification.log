@@ -1,0 +1,10 @@
+Part 7 Telegram patch series reproduces the vendored source exactly.
+
+archive: /mnt/data/rlottie-master.zip
+archive sha256: c60add305b5c4251bc031941de917579b9517de39b6c864f2ad57f4f3e15b6d0
+patches:
+  0001-modern-toolchain-build-only.patch
+  0002-avemotion-local-geometry-metadata.patch
+  0003-avemotion-stable-source-ids.patch
+  0004-avemotion-parsed-model-introspection.patch
+result: PASS

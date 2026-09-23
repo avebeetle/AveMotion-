@@ -1,0 +1,180 @@
+=== configure linux-clang-samsung-asan ===
+Preset CMake variables:
+
+  AVEMOTION_BUILD_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_PLAN_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_PROBE="ON"
+  AVEMOTION_BUILD_PROPERTY_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_SCENE_CHARACTERIZER="ON"
+  AVEMOTION_ENABLE_INSTALL="OFF"
+  AVEMOTION_RLOTTIE_VARIANT="samsung"
+  BUILD_TESTING="ON"
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_CXX_COMPILER="clang++"
+  CMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
+  CMAKE_C_COMPILER="clang"
+  CMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
+  CMAKE_EXE_LINKER_FLAGS="-fsanitize=address"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  CMAKE_SHARED_LINKER_FLAGS="-fsanitize=address"
+
+-- The C compiler identification is Clang 17.0.0
+-- The CXX compiler identification is Clang 17.0.0
+-- The ASM compiler identification is Clang with GNU-like command-line
+-- Found assembler: /usr/local/swift/usr/bin/clang
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/local/swift/usr/bin/clang - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/local/swift/usr/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Deprecation Warning at third_party/rlottie/samsung/source/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- AveMotion reference variant: samsung (2cab35db755b0e39df40b679969495e90d39c578)
+-- Found Python3: /opt/pyvenv/bin/python3 (found version "3.13.5") found components: Interpreter
+-- Configuring done (4.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/avemotion_part10_work/out/build/linux-clang-samsung-asan
+=== build linux-clang-samsung-asan ===
+[1/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_stroker.cpp.o
+[2/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_math.cpp.o
+[3/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_raster.cpp.o
+[4/86] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModel.cpp.o
+[5/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vrect.cpp.o
+[6/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/stb/stb_image.cpp.o
+[7/86] Building CXX object CMakeFiles/avemotion_core.dir/src/core/Hash.cpp.o
+[8/86] Linking CXX static library libavemotion_core.a
+[9/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdasher.cpp.o
+[10/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbrush.cpp.o
+[11/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpainter.cpp.o
+[12/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_neon.cpp.o
+[13/86] Building CXX object CMakeFiles/avemotion_evaluation.dir/src/evaluation/PropertyEvaluator.cpp.o
+[14/86] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModelBuilder.cpp.o
+[15/86] Linking CXX static library libavemotion_model.a
+[16/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbitmap.cpp.o
+[17/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_common.cpp.o
+[18/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vrle.cpp.o
+[19/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdebug.cpp.o
+[20/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_sse2.cpp.o
+[21/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpath.cpp.o
+[22/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpathmesure.cpp.o
+[23/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vmatrix.cpp.o
+[24/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/velapsedtimer.cpp.o
+[25/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vinterpolator.cpp.o
+[26/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/varenaalloc.cpp.o
+[27/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper.cpp.o
+[28/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vimageloader.cpp.o
+[29/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbezier.cpp.o
+[30/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawable.cpp.o
+[31/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieproxymodel.cpp.o
+[32/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/zip/zip.cpp.o
+/mnt/data/avemotion_part10_work/third_party/rlottie/samsung/source/src/lottie/zip/zip.cpp:155:20: warning: unused function 'zip_archive_finalize' [-Wunused-function]
+  155 | static inline void zip_archive_finalize(mz_zip_archive *pzip) {
+      |                    ^~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+[33/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vraster.cpp.o
+[34/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieloader.cpp.o
+[35/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieitem_capi.cpp.o
+[36/86] Linking CXX static library libavemotion_evaluation.a
+[37/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottiekeypath.cpp.o
+[38/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieitem.cpp.o
+[39/86] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Playback.cpp.o
+[40/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieanimation.cpp.o
+[41/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottiemodel.cpp.o
+[42/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/binding/c/lottieanimation_capi.cpp.o
+[43/86] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RecordingBackend.cpp.o
+[44/86] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/ReferenceRuntime.cpp.o
+[45/86] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/UpstreamInfo.cpp.o
+[46/86] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/HeadlessBackend.cpp.o
+[47/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieparser.cpp.o
+[48/86] Linking CXX static library _deps/rlottie-samsung/librlottie.a
+[49/86] Linking CXX static library libavemotion_reference.a
+[50/86] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/RenderPlanner.cpp.o
+[51/86] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RlottieSceneBridge.cpp.o
+[52/86] Building CXX object CMakeFiles/avemotion_probe.dir/apps/probe/main.cpp.o
+[53/86] Building CXX object CMakeFiles/avemotion_core_tests.dir/tests/core_tests.cpp.o
+[54/86] Building CXX object CMakeFiles/avemotion_scene_characterize.dir/apps/scene_characterize/main.cpp.o
+[55/86] Building CXX object CMakeFiles/avemotion_characterize.dir/apps/characterize/main.cpp.o
+[56/86] Building CXX object CMakeFiles/avemotion_direct2d_header_tests.dir/tests/direct2d_header_tests.cpp.o
+[57/86] Building CXX object CMakeFiles/avemotion_render_plan_tests.dir/tests/render_plan_tests.cpp.o
+[58/86] Building CXX object CMakeFiles/avemotion_plan_characterize.dir/apps/plan_characterize/main.cpp.o
+[59/86] Building CXX object CMakeFiles/avemotion_reference_tests.dir/tests/reference_tests.cpp.o
+[60/86] Building CXX object CMakeFiles/avemotion_runtime_seams_tests.dir/tests/runtime_seams_tests.cpp.o
+[61/86] Building CXX object CMakeFiles/avemotion_manifest_tests.dir/tests/manifest_tests.cpp.o
+[62/86] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[63/86] Linking CXX static library libavemotion_runtime.a
+[64/86] Linking CXX static library libavemotion_rendering.a
+[65/86] Building CXX object CMakeFiles/avemotion_property_evaluator_tests.dir/tests/property_evaluator_tests.cpp.o
+[66/86] Linking CXX executable avemotion_probe
+[67/86] Linking CXX executable avemotion_characterize
+[68/86] Building CXX object CMakeFiles/avemotion_asset_model_tests.dir/tests/asset_model_tests.cpp.o
+[69/86] Linking CXX executable avemotion_core_tests
+[70/86] Linking CXX executable avemotion_property_evaluator_tests
+[71/86] Linking CXX executable avemotion_render_plan_tests
+[72/86] Building CXX object CMakeFiles/avemotion_canonical_geometry_tests.dir/tests/canonical_geometry_tests.cpp.o
+[73/86] Building CXX object CMakeFiles/avemotion_playback_tests.dir/tests/playback_tests.cpp.o
+[74/86] Linking CXX executable avemotion_direct2d_header_tests
+[75/86] Linking CXX executable avemotion_scene_characterize
+[76/86] Linking CXX executable avemotion_plan_characterize
+[77/86] Building CXX object CMakeFiles/avemotion_plan_golden_tests.dir/tests/plan_golden_tests.cpp.o
+[78/86] Linking CXX executable avemotion_playback_tests
+[79/86] Linking CXX executable avemotion_runtime_seams_tests
+[80/86] Building CXX object CMakeFiles/avemotion_scene_golden_tests.dir/tests/scene_golden_tests.cpp.o
+[81/86] Linking CXX executable avemotion_manifest_tests
+[82/86] Linking CXX executable avemotion_reference_tests
+[83/86] Linking CXX executable avemotion_asset_model_tests
+[84/86] Linking CXX executable avemotion_canonical_geometry_tests
+[85/86] Linking CXX executable avemotion_plan_golden_tests
+[86/86] Linking CXX executable avemotion_scene_golden_tests
+=== test linux-clang-samsung-asan ===
+Test project /mnt/data/avemotion_part10_work/out/build/linux-clang-samsung-asan
+      Start  1: avemotion.core
+ 1/16 Test  #1: avemotion.core .......................   Passed    0.01 sec
+      Start  2: avemotion.evaluation.properties
+ 2/16 Test  #2: avemotion.evaluation.properties ......   Passed    0.02 sec
+      Start  3: avemotion.render.plan
+ 3/16 Test  #3: avemotion.render.plan ................   Passed    0.01 sec
+      Start  4: avemotion.direct2d.header
+ 4/16 Test  #4: avemotion.direct2d.header ............   Passed    0.01 sec
+      Start  5: avemotion.vendor.verify
+ 5/16 Test  #5: avemotion.vendor.verify ..............   Passed    0.62 sec
+      Start  6: avemotion.reference
+ 6/16 Test  #6: avemotion.reference ..................   Passed    0.11 sec
+      Start  7: avemotion.runtime.seams
+ 7/16 Test  #7: avemotion.runtime.seams ..............   Passed    0.12 sec
+      Start  8: avemotion.runtime.asset_model
+ 8/16 Test  #8: avemotion.runtime.asset_model ........   Passed    0.02 sec
+      Start  9: avemotion.runtime.playback
+ 9/16 Test  #9: avemotion.runtime.playback ...........   Passed    0.01 sec
+      Start 10: avemotion.runtime.canonical
+10/16 Test #10: avemotion.runtime.canonical ..........   Passed    0.11 sec
+      Start 11: avemotion.vendor.manifest
+11/16 Test #11: avemotion.vendor.manifest ............   Passed    0.01 sec
+      Start 12: avemotion.characterize.smoke
+12/16 Test #12: avemotion.characterize.smoke .........   Passed    0.02 sec
+      Start 13: avemotion.scene.characterize.smoke
+13/16 Test #13: avemotion.scene.characterize.smoke ...   Passed    0.01 sec
+      Start 14: avemotion.scene.golden
+14/16 Test #14: avemotion.scene.golden ...............   Passed    0.06 sec
+      Start 15: avemotion.plan.characterize.smoke
+15/16 Test #15: avemotion.plan.characterize.smoke ....   Passed    0.02 sec
+      Start 16: avemotion.plan.golden
+16/16 Test #16: avemotion.plan.golden ................   Passed    0.07 sec
+
+100% tests passed, 0 tests failed out of 16
+
+Total Test time (real) =   1.21 sec

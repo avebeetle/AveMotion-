@@ -1,0 +1,34 @@
+AveMotion Part 6 final validation matrix
+
+Environment
+- OS: Linux x86-64, kernel 6.12.13
+- CMake: 3.31.6
+- Ninja: 1.12.1
+- Clang: 17.0.0
+- GCC: 14.2.0
+- Python: 3.13.5
+
+Build and test results
+- linux-clang-telegram-debug: 18/18 passed
+- linux-gcc-telegram-release: 18/18 passed
+- linux-clang-telegram-asan: 18/18 passed
+- linux-clang-samsung-debug: 15/15 passed
+- linux-gcc-samsung-release: 15/15 passed
+- linux-clang-samsung-asan: 15/15 passed
+- linux-clang-offline: 6/6 passed
+- CMake install/export: passed
+- clean external find_package(AveMotion 0.6) consumer: configured, built, linked and ran
+
+Compiler parity
+- Telegram CPU manifests: 40/40 identical
+- Samsung CPU manifests: 40/40 identical
+- Telegram evaluated scenes: 40/40 identical
+- Samsung evaluated scenes: 40/40 identical
+- Telegram render plans: 40/40 identical
+- Samsung render plans: 40/40 identical
+- Telegram immutable models: 8/8 identical
+
+Windows status
+- MSVC/Direct2D targets and CI presets are present.
+- Windows SDK compilation and native Direct2D execution were not available in
+  this Linux environment and remain an external gate.

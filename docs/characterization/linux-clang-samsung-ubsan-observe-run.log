@@ -1,0 +1,61 @@
+/mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/freetype/v_ft_raster.cpp:1391:37: runtime error: signed integer overflow: -2147483648 - 2147483647 cannot be represented in type 'int'
+    #0 0x564e962fdd94 in gray_raster_render(gray_TRaster_*, SW_FT_Raster_Params_ const*) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/freetype/v_ft_raster.cpp:1391:37
+    #1 0x564e961dd567 in VRleTask::render(FTOutline&) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:369:9
+    #2 0x564e961d9f65 in VRleTask::operator()(FTOutline&, SW_FT_StrokerRec_*&) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:408:9
+    #3 0x564e961d920c in RleTaskScheduler::run(unsigned int) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:464:13
+    #4 0x564e961d8e62 in RleTaskScheduler::RleTaskScheduler()::'lambda'()::operator()() const /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:474:44
+    #5 0x564e961d8e04 in void std::__invoke_impl<void, RleTaskScheduler::RleTaskScheduler()::'lambda'()>(std::__invoke_other, RleTaskScheduler::RleTaskScheduler()::'lambda'()&&) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/invoke.h:61:14
+    #6 0x564e961d8d14 in std::__invoke_result<RleTaskScheduler::RleTaskScheduler()::'lambda'()>::type std::__invoke<RleTaskScheduler::RleTaskScheduler()::'lambda'()>(RleTaskScheduler::RleTaskScheduler()::'lambda'()&&) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/invoke.h:96:14
+    #7 0x564e961d8cc8 in void std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>::_M_invoke<0ul>(std::_Index_tuple<0ul>) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:301:13
+    #8 0x564e961d8c14 in std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>::operator()() /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:308:11
+    #9 0x564e961d8a08 in std::thread::_State_impl<std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>>::_M_run() /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:253:13
+    #10 0x7f836bce1223  (/lib/x86_64-linux-gnu/libstdc++.so.6+0xe1223) (BuildId: 133b71e0013695cc7832680a74edb51008c4fc4c)
+
+SUMMARY: UndefinedBehaviorSanitizer: signed-integer-overflow /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/freetype/v_ft_raster.cpp:1391:37
+/mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vrect.h:34:63: runtime error: signed integer overflow: 2147483647 + 2 cannot be represented in type 'int'
+    #0 0x564e961dfc5c in VRect::VRect(int, int, int, int) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vrect.h:34:63
+    #1 0x564e961d1e55 in bboxCb(int, int, int, int, void*) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:266:26
+    #2 0x564e962fdf39 in gray_raster_render(gray_TRaster_*, SW_FT_Raster_Params_ const*) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/freetype/v_ft_raster.cpp:1390:5
+    #3 0x564e961dd567 in VRleTask::render(FTOutline&) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:369:9
+    #4 0x564e961d9f65 in VRleTask::operator()(FTOutline&, SW_FT_StrokerRec_*&) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:408:9
+    #5 0x564e961d920c in RleTaskScheduler::run(unsigned int) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:464:13
+    #6 0x564e961d8e62 in RleTaskScheduler::RleTaskScheduler()::'lambda'()::operator()() const /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:474:44
+    #7 0x564e961d8e04 in void std::__invoke_impl<void, RleTaskScheduler::RleTaskScheduler()::'lambda'()>(std::__invoke_other, RleTaskScheduler::RleTaskScheduler()::'lambda'()&&) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/invoke.h:61:14
+    #8 0x564e961d8d14 in std::__invoke_result<RleTaskScheduler::RleTaskScheduler()::'lambda'()>::type std::__invoke<RleTaskScheduler::RleTaskScheduler()::'lambda'()>(RleTaskScheduler::RleTaskScheduler()::'lambda'()&&) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/invoke.h:96:14
+    #9 0x564e961d8cc8 in void std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>::_M_invoke<0ul>(std::_Index_tuple<0ul>) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:301:13
+    #10 0x564e961d8c14 in std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>::operator()() /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:308:11
+    #11 0x564e961d8a08 in std::thread::_State_impl<std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>>::_M_run() /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:253:13
+    #12 0x7f836bce1223  (/lib/x86_64-linux-gnu/libstdc++.so.6+0xe1223) (BuildId: 133b71e0013695cc7832680a74edb51008c4fc4c)
+
+SUMMARY: UndefinedBehaviorSanitizer: signed-integer-overflow /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vrect.h:34:63
+/mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vrect.h:34:55: runtime error: signed integer overflow: 2147483647 + 1 cannot be represented in type 'int'
+    #0 0x564e961dfc13 in VRect::VRect(int, int, int, int) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vrect.h:34:55
+    #1 0x564e961d1e55 in bboxCb(int, int, int, int, void*) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:266:26
+    #2 0x564e962fdf39 in gray_raster_render(gray_TRaster_*, SW_FT_Raster_Params_ const*) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/freetype/v_ft_raster.cpp:1390:5
+    #3 0x564e961dd567 in VRleTask::render(FTOutline&) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:369:9
+    #4 0x564e961d9f65 in VRleTask::operator()(FTOutline&, SW_FT_StrokerRec_*&) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:408:9
+    #5 0x564e961d920c in RleTaskScheduler::run(unsigned int) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:464:13
+    #6 0x564e961d8e62 in RleTaskScheduler::RleTaskScheduler()::'lambda'()::operator()() const /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:474:44
+    #7 0x564e961d8e04 in void std::__invoke_impl<void, RleTaskScheduler::RleTaskScheduler()::'lambda'()>(std::__invoke_other, RleTaskScheduler::RleTaskScheduler()::'lambda'()&&) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/invoke.h:61:14
+    #8 0x564e961d8d14 in std::__invoke_result<RleTaskScheduler::RleTaskScheduler()::'lambda'()>::type std::__invoke<RleTaskScheduler::RleTaskScheduler()::'lambda'()>(RleTaskScheduler::RleTaskScheduler()::'lambda'()&&) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/invoke.h:96:14
+    #9 0x564e961d8cc8 in void std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>::_M_invoke<0ul>(std::_Index_tuple<0ul>) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:301:13
+    #10 0x564e961d8c14 in std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>::operator()() /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:308:11
+    #11 0x564e961d8a08 in std::thread::_State_impl<std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>>::_M_run() /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:253:13
+    #12 0x7f836bce1223  (/lib/x86_64-linux-gnu/libstdc++.so.6+0xe1223) (BuildId: 133b71e0013695cc7832680a74edb51008c4fc4c)
+
+SUMMARY: UndefinedBehaviorSanitizer: signed-integer-overflow /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vrect.h:34:55
+/mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/freetype/v_ft_raster.cpp:1392:38: runtime error: signed integer overflow: -2147483648 - 2147483647 cannot be represented in type 'int'
+    #0 0x564e962fde69 in gray_raster_render(gray_TRaster_*, SW_FT_Raster_Params_ const*) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/freetype/v_ft_raster.cpp:1392:38
+    #1 0x564e961dd567 in VRleTask::render(FTOutline&) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:369:9
+    #2 0x564e961d9f65 in VRleTask::operator()(FTOutline&, SW_FT_StrokerRec_*&) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:408:9
+    #3 0x564e961d920c in RleTaskScheduler::run(unsigned int) /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:464:13
+    #4 0x564e961d8e62 in RleTaskScheduler::RleTaskScheduler()::'lambda'()::operator()() const /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/vraster.cpp:474:44
+    #5 0x564e961d8e04 in void std::__invoke_impl<void, RleTaskScheduler::RleTaskScheduler()::'lambda'()>(std::__invoke_other, RleTaskScheduler::RleTaskScheduler()::'lambda'()&&) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/invoke.h:61:14
+    #6 0x564e961d8d14 in std::__invoke_result<RleTaskScheduler::RleTaskScheduler()::'lambda'()>::type std::__invoke<RleTaskScheduler::RleTaskScheduler()::'lambda'()>(RleTaskScheduler::RleTaskScheduler()::'lambda'()&&) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/invoke.h:96:14
+    #7 0x564e961d8cc8 in void std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>::_M_invoke<0ul>(std::_Index_tuple<0ul>) /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:301:13
+    #8 0x564e961d8c14 in std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>::operator()() /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:308:11
+    #9 0x564e961d8a08 in std::thread::_State_impl<std::thread::_Invoker<std::tuple<RleTaskScheduler::RleTaskScheduler()::'lambda'()>>>::_M_run() /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_thread.h:253:13
+    #10 0x7f836bce1223  (/lib/x86_64-linux-gnu/libstdc++.so.6+0xe1223) (BuildId: 133b71e0013695cc7832680a74edb51008c4fc4c)
+
+SUMMARY: UndefinedBehaviorSanitizer: signed-integer-overflow /mnt/data/AveMotion-Part2/third_party/rlottie/samsung/source/src/vector/freetype/v_ft_raster.cpp:1392:38
+AveMotion reference tests passed for samsung @ 2cab35db755b0e39df40b679969495e90d39c578

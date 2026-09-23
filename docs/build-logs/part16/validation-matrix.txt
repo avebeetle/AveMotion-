@@ -1,0 +1,16 @@
+AveMotion Part 16 validation matrix
+
+Telegram + Clang Debug:          30/30 PASS
+Telegram + GCC Release:          30/30 PASS
+Telegram + Clang ASan:           30/30 PASS
+Samsung + Clang Debug:           19/19 PASS
+Samsung + GCC Release:           19/19 PASS
+Samsung + Clang ASan:            19/19 PASS
+Standalone/offline Clang:        10/10 PASS
+Standalone ASan + UBSan:         10/10 PASS
+CMake install/export:                 PASS
+External find_package consumer:       PASS
+Clang/GCC source-geometry golden: byte-identical to committed golden
+
+Native Windows/MSVC/Direct2D execution remains an external Windows gate because
+this build environment is Linux without the Windows SDK.

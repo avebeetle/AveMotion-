@@ -1,0 +1,314 @@
+diff --git a/third_party/rlottie/telegram/source/inc/rlottiecommon.h b/third_party/rlottie/telegram/source/inc/rlottiecommon.h
+index 07e751a..d0a8c3a 100644
+--- a/third_party/rlottie/telegram/source/inc/rlottiecommon.h
++++ b/third_party/rlottie/telegram/source/inc/rlottiecommon.h
+@@ -125,6 +125,21 @@ typedef struct LOTNode {
+ #define ChangeFlagPaint 0x0010
+ #define ChangeFlagAll (ChangeFlagPath & ChangeFlagPaint)
+ 
++/*
++ * AveMotion extraction metadata.
++ *
++ * These fields are an additive extension maintained by the AveMotion fork.
++ * They expose the distinction rlottie already keeps internally between a
++ * paint item's local path, its evaluated transform and the final viewport
++ * path used by the CPU rasterizer. The legacy fields above remain unchanged
++ * and continue to drive the reference pixel/render-tree oracles.
++ */
++#define AveSourceFlagLocalGeometry 0x0001
++#define AveSourceFlagGeometryStatic 0x0002
++#define AveSourceFlagLocalSolidPaint 0x0004
++#define AveSourceFlagPaintStatic 0x0008
++#define AveSourceFlagOpacitySeparated 0x0010
++
+     struct {
+         const float *ptPtr;
+         size_t       ptCount;
+@@ -171,6 +186,26 @@ typedef struct LOTNode {
+     int       mFlag;
+     LOTBrushType mBrushType;
+     LOTFillRule  mFillRule;
++
++    struct {
++        const float *ptPtr;
++        size_t       ptCount;
++        const char  *elmPtr;
++        size_t       elmCount;
++    } mAveLocalPath;
++
++    struct {
++        float m11; float m12; float m13;
++        float m21; float m22; float m23;
++        float m31; float m32; float m33;
++    } mAveLocalTransform;
++
++    struct {
++        unsigned char r, g, b, a;
++    } mAveLocalColor;
++
++    float        mAveOpacity;
++    unsigned int mAveSourceFlags;
+ } LOTNode;
+ 
+ 
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp b/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
+index 2d636e0..b5e2fc6 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
+@@ -1028,9 +1028,24 @@ bool LOTStrokeItem::resolveKeyPath(LOTKeyPath &keyPath, uint depth,
+ LOTContentGroupItem::LOTContentGroupItem(LOTGroupData *data)
+     : LOTContentItem(ContentType::Group), mData(data)
+ {
++    mLocalTransformStatic = !mData || !mData->mTransform
++        || mData->mTransform->isStatic();
+     addChildren(mData);
+ }
+ 
++bool LOTContentGroupItem::transformChainStaticTo(
++    const LOTContentGroupItem *ancestor) const
++{
++    const LOTContentItem *current = this;
++    while (current && current != ancestor) {
++        if (current->type() != ContentType::Group) return false;
++        const auto *group = static_cast<const LOTContentGroupItem *>(current);
++        if (!group->localTransformStatic()) return false;
++        current = group->parent();
++    }
++    return current == ancestor;
++}
++
+ void LOTContentGroupItem::addChildren(LOTGroupData *data)
+ {
+     if (!data) return;
+@@ -1203,6 +1218,19 @@ const VPath &LOTPathDataItem::finalPath()
+     }
+     return mFinalPath;
+ }
++
++const VMatrix &LOTPathDataItem::sourceMatrix() const
++{
++    return static_cast<const LOTContentGroupItem *>(parent())->matrix();
++}
++
++bool LOTPathDataItem::sourceGeometryStaticFor(
++    const LOTContentGroupItem *ancestor) const
++{
++    if (!mStaticPath || !mModifiersStatic) return false;
++    const auto *group = static_cast<const LOTContentGroupItem *>(parent());
++    return group && group->transformChainStaticTo(ancestor);
++}
+ LOTRectItem::LOTRectItem(LOTRectData *data)
+     : LOTPathDataItem(data->isStatic()), mData(data)
+ {
+@@ -1320,11 +1348,39 @@ void LOTPaintDataItem::updateRenderNode()
+     }
+ }
+ 
++void LOTPaintDataItem::updateAveSourceGeometry()
++{
++    const auto *paintGroup = static_cast<const LOTContentGroupItem *>(parent());
++    if (!paintGroup || mPathItems.empty()) return;
++
++    bool invertible = false;
++    const VMatrix inversePaint = paintGroup->matrix().inverted(&invertible);
++    if (!invertible) return;
++
++    VPath localPath;
++    bool geometryStatic = true;
++    for (const auto *pathItem : mPathItems) {
++        if (!pathItem) return;
++        VPath path;
++        path.clone(pathItem->localPath());
++        const VMatrix relative = pathItem->sourceMatrix() * inversePaint;
++        path.transform(relative);
++        localPath.addPath(path);
++        geometryStatic &= pathItem->sourceGeometryStaticFor(paintGroup);
++    }
++    mDrawable.setAveLocalGeometry(
++        localPath,
++        paintGroup->matrix(),
++        geometryStatic);
++}
++
+ void LOTPaintDataItem::renderList(std::vector<VDrawable *> &list)
+ {
+     if (mRenderNodeUpdate) {
++        mDrawable.clearAveSourceMetadata();
+         updateRenderNode();
+         LOTPaintDataItem::updateRenderNode();
++        updateAveSourceGeometry();
+         mRenderNodeUpdate = false;
+     }
+     list.push_back(&mDrawable);
+@@ -1355,6 +1411,10 @@ void LOTFillItem::updateRenderNode()
+     VBrush brush(color);
+     mDrawable.setBrush(brush);
+     mDrawable.setFillRule(mModel.fillRule());
++    mDrawable.setAveLocalSolidPaint(
++        mColor,
++        parentAlpha(),
++        mStaticContent);
+ }
+ 
+ LOTGFillItem::LOTGFillItem(LOTGFillData *data)
+@@ -1541,12 +1601,15 @@ void LOTTrimItem::update()
+ void LOTTrimItem::addPathItems(std::vector<LOTPathDataItem *> &list,
+                                size_t                          startOffset)
+ {
+-    std::copy(list.begin() + startOffset, list.end(),
+-              back_inserter(mPathItems));
++    for (auto item = list.begin() + startOffset; item != list.end(); ++item) {
++        (*item)->markModifierStatic(mData->isStatic());
++        mPathItems.push_back(*item);
++    }
+ }
+ 
+ LOTRepeaterItem::LOTRepeaterItem(LOTRepeaterData *data) : mRepeaterData(data)
+ {
++    setLocalTransformStatic(mRepeaterData->isStatic());
+     assert(mRepeaterData->content());
+ 
+     mCopies = mRepeaterData->maxCopies();
+@@ -1621,6 +1684,38 @@ static void updateGStops(LOTNode *n, const VGradient *grad)
+     }
+ }
+ 
++void LOTDrawable::clearAveSourceMetadata()
++{
++    mAveLocalPath = {};
++    mAveLocalTransform = {};
++    mAveLocalColor = {};
++    mAveOpacity = 1.0f;
++    mAveSourceFlags = 0U;
++}
++
++void LOTDrawable::setAveLocalGeometry(
++    const VPath &path,
++    const VMatrix &transform,
++    bool geometryStatic)
++{
++    mAveLocalPath.clone(path);
++    mAveLocalTransform = transform;
++    mAveSourceFlags |= AveSourceFlagLocalGeometry;
++    if (geometryStatic) mAveSourceFlags |= AveSourceFlagGeometryStatic;
++}
++
++void LOTDrawable::setAveLocalSolidPaint(
++    const VColor &color,
++    float separatedOpacity,
++    bool paintStatic)
++{
++    mAveLocalColor = color;
++    mAveOpacity = separatedOpacity;
++    mAveSourceFlags |= AveSourceFlagLocalSolidPaint;
++    mAveSourceFlags |= AveSourceFlagOpacitySeparated;
++    if (paintStatic) mAveSourceFlags |= AveSourceFlagPaintStatic;
++}
++
+ void LOTDrawable::sync()
+ {
+     if (!mCNode) {
+@@ -1629,6 +1724,32 @@ void LOTDrawable::sync()
+         mCNode->mGradient.stopCount = 0;
+     }
+ 
++    mCNode->mAveLocalPath.ptPtr = nullptr;
++    mCNode->mAveLocalPath.ptCount = 0;
++    mCNode->mAveLocalPath.elmPtr = nullptr;
++    mCNode->mAveLocalPath.elmCount = 0;
++    mCNode->mAveLocalTransform = {
++        mAveLocalTransform.m_11(), mAveLocalTransform.m_12(), mAveLocalTransform.m_13(),
++        mAveLocalTransform.m_21(), mAveLocalTransform.m_22(), mAveLocalTransform.m_23(),
++        mAveLocalTransform.m_tx(), mAveLocalTransform.m_ty(), mAveLocalTransform.m_33()};
++    mCNode->mAveLocalColor = {
++        mAveLocalColor.r,
++        mAveLocalColor.g,
++        mAveLocalColor.b,
++        mAveLocalColor.a};
++    mCNode->mAveOpacity = mAveOpacity;
++    mCNode->mAveSourceFlags = mAveSourceFlags;
++    if ((mAveSourceFlags & AveSourceFlagLocalGeometry) != 0U) {
++        const auto &localElements = mAveLocalPath.elements();
++        const auto &localPoints = mAveLocalPath.points();
++        mCNode->mAveLocalPath.elmPtr = reinterpret_cast<const char *>(
++            localElements.data());
++        mCNode->mAveLocalPath.elmCount = localElements.size();
++        mCNode->mAveLocalPath.ptPtr = reinterpret_cast<const float *>(
++            localPoints.data());
++        mCNode->mAveLocalPath.ptCount = 2 * localPoints.size();
++    }
++
+     mCNode->mFlag = ChangeFlagNone;
+     if (mFlag & DirtyState::None) return;
+ 
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieitem.h b/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
+index a359791..8c3691e 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
+@@ -51,8 +51,22 @@ class LOTDrawable : public VDrawable
+ {
+ public:
+     void sync();
++    void clearAveSourceMetadata();
++    void setAveLocalGeometry(
++        const VPath &path,
++        const VMatrix &transform,
++        bool geometryStatic);
++    void setAveLocalSolidPaint(
++        const VColor &color,
++        float separatedOpacity,
++        bool paintStatic);
+ public:
+     std::unique_ptr<LOTNode>  mCNode{nullptr};
++    VPath                     mAveLocalPath;
++    VMatrix                   mAveLocalTransform;
++    VColor                    mAveLocalColor;
++    float                     mAveOpacity{1.0f};
++    unsigned int              mAveSourceFlags{0U};
+ 
+     ~LOTDrawable() {
+         if (mCNode && mCNode->mGradient.stopPtr)
+@@ -290,6 +304,9 @@ public:
+    void processPaintItems(std::vector<LOTPathDataItem *> &list);
+    void renderList(std::vector<VDrawable *> &list) override;
+    const VMatrix & matrix() const { return mMatrix;}
++   bool transformChainStaticTo(const LOTContentGroupItem *ancestor) const;
++   bool localTransformStatic() const { return mLocalTransformStatic; }
++   void setLocalTransformStatic(bool value) { mLocalTransformStatic = value; }
+    const std::string & name() const
+    {
+        static const std::string TAG = "__";
+@@ -300,6 +317,7 @@ protected:
+    LOTGroupData                                  *mData{nullptr};
+    std::vector<std::unique_ptr<LOTContentItem>>   mContents;
+    VMatrix                                        mMatrix;
++   bool                                           mLocalTransformStatic{true};
+ };
+ 
+ class LOTPathDataItem : public LOTContentItem
+@@ -312,6 +330,9 @@ public:
+    const VPath &finalPath();
+    void updatePath(const VPath &path) {mTemp = path; mPathChanged = true; mNeedUpdate = true;}
+    bool staticPath() const { return mStaticPath; }
++   void markModifierStatic(bool value) { mModifiersStatic &= value; }
++   bool sourceGeometryStaticFor(const LOTContentGroupItem *ancestor) const;
++   const VMatrix &sourceMatrix() const;
+ protected:
+    virtual void updatePath(VPath& path, int frameNo) = 0;
+    virtual bool hasChanged(int prevFrame, int curFrame) = 0;
+@@ -331,6 +352,7 @@ private:
+    bool                                    mPathChanged{true};
+    bool                                    mNeedUpdate{true};
+    bool                                    mStaticPath;
++   bool                                    mModifiersStatic{true};
+ };
+ 
+ class LOTRectItem: public LOTPathDataItem
+@@ -404,6 +426,7 @@ public:
+ protected:
+    virtual void updateContent(int frameNo) = 0;
+    virtual void updateRenderNode();
++   void updateAveSourceGeometry();
+    inline float parentAlpha() const {return mParentAlpha;}
+ protected:
+    std::vector<LOTPathDataItem *>   mPathItems;

@@ -1,0 +1,19 @@
+Native Windows/MSVC/WARP execution status
+
+Prepared:
+- windows-msvc-direct2d preset
+- AveMotion::Direct2D build against Windows SDK
+- D3D11 WARP + ID2D1DeviceContext pixel smoke
+- CTest integration
+- GitHub Actions windows-direct2d-warp job
+- PPM and LastTest.log artifact upload
+- scripts/run_part18_windows.ps1 / .cmd
+
+Current environment:
+- Linux x86-64
+- no Windows SDK
+- no MSVC runtime
+- native WARP executable not run locally
+
+Local proof:
+- actual Direct2DBackend.cpp compiled and executed through deterministic test-only D2D/WRL contract under Clang, GCC and AddressSanitizer

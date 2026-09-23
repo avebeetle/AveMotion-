@@ -1,0 +1,9 @@
+variant	asset	asset_fnv64	schema	revision	model	topology	resources	logical_size	framerate	total_frames	declared_layers	observed_layers	declared_nodes	observed_nodes	declared_geometries	observed_geometries	static_geometries	declared_paints	observed_paints	static_paints	masks	clips	draw_order	child_refs	layer_node_refs
+telegram	1667-firework.json	32cf10be155c6455	1	9	df2e667c23ebb1b8	62b6579ed4c7ae40	ebfa766c25196c19	800x800	29.970001220703125	78	262	262	120	120	120	120	0	120	120	120	0	1	120	261	120
+telegram	ModernPictogramsForLottie_LoudMute.json	dab2a6e2529b17fd	1	6	c09cb07ae8772559	fdb088a6fa1da26a	2a0e138510fe1569	800x800	60	88	13	13	10	10	10	10	6	10	10	8	0	1	10	12	10
+telegram	StickAndBall.json	e7131282b35e2e14	1	2	f428fa593b987564	de0d5e768241b053	f61d4d4e09d98463	1080x1080	24	23	3	3	3	3	3	3	0	3	3	1	0	1	3	2	3
+telegram	dynamic_path_test.json	7a378a5ee043f6b4	1	1	c5d407d8c3123188	6adbc2703db7dcd9	32bf943ac2a672de	300x300	29.970001220703125	150	2	2	3	3	3	3	0	3	3	3	0	1	3	1	3
+telegram	gradient_animated_background.json	a78189500889cf1b	1	2	4a4209d980d3c371	8e1726eefcd55280	a96fc4ff35d5bd95	1080x1920	15	155	3	3	3	3	3	3	0	3	3	0	0	1	3	2	3
+telegram	mask.json	1c1102ff30a73b97	1	2	3d47eff39d5e65e9	e789403a2b8f5e4a	285347813cb7eb2d	500x500	60	30	2	2	1	1	1	1	0	1	1	0	1	1	1	1	1
+telegram	matte_two_item_with_lowerlayer.json	764f903aa7bfff66	1	2	161997b10e0601b3	c1693e6621f5f5d7	9b18dbe2228646ec	300x300	29.970001220703125	150	4	4	7	7	7	7	5	7	7	5	0	1	7	3	7
+telegram	polystar_line_clockwise_trim.json	8d8cd4aacce0760d	1	2	38d83774178909fa	1a7e83337e73ea68	285347813cb7eb2d	300x300	29.970001220703125	150	2	2	1	1	1	1	0	1	1	0	0	1	1	1	1

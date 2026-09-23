@@ -1,0 +1,35 @@
+Test project /mnt/data/work/part6/out/build/linux-gcc-samsung-release
+      Start  1: avemotion.core
+ 1/15 Test  #1: avemotion.core .......................   Passed    0.00 sec
+      Start  2: avemotion.render.plan
+ 2/15 Test  #2: avemotion.render.plan ................   Passed    0.00 sec
+      Start  3: avemotion.direct2d.header
+ 3/15 Test  #3: avemotion.direct2d.header ............   Passed    0.00 sec
+      Start  4: avemotion.vendor.verify
+ 4/15 Test  #4: avemotion.vendor.verify ..............   Passed    0.60 sec
+      Start  5: avemotion.reference
+ 5/15 Test  #5: avemotion.reference ..................   Passed    0.01 sec
+      Start  6: avemotion.runtime.seams
+ 6/15 Test  #6: avemotion.runtime.seams ..............   Passed    0.01 sec
+      Start  7: avemotion.runtime.asset_model
+ 7/15 Test  #7: avemotion.runtime.asset_model ........   Passed    0.00 sec
+      Start  8: avemotion.runtime.playback
+ 8/15 Test  #8: avemotion.runtime.playback ...........   Passed    0.00 sec
+      Start  9: avemotion.runtime.canonical
+ 9/15 Test  #9: avemotion.runtime.canonical ..........   Passed    0.01 sec
+      Start 10: avemotion.vendor.manifest
+10/15 Test #10: avemotion.vendor.manifest ............   Passed    0.00 sec
+      Start 11: avemotion.characterize.smoke
+11/15 Test #11: avemotion.characterize.smoke .........   Passed    0.00 sec
+      Start 12: avemotion.scene.characterize.smoke
+12/15 Test #12: avemotion.scene.characterize.smoke ...   Passed    0.00 sec
+      Start 13: avemotion.scene.golden
+13/15 Test #13: avemotion.scene.golden ...............   Passed    0.00 sec
+      Start 14: avemotion.plan.characterize.smoke
+14/15 Test #14: avemotion.plan.characterize.smoke ....   Passed    0.00 sec
+      Start 15: avemotion.plan.golden
+15/15 Test #15: avemotion.plan.golden ................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 15
+
+Total Test time (real) =   0.65 sec

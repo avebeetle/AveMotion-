@@ -1,0 +1,46 @@
+--- a/src/vector/varenaalloc.cpp
++++ b/src/vector/varenaalloc.cpp
+@@ -19,7 +19,7 @@
+ VArenaAlloc::VArenaAlloc(char* block, size_t size, size_t firstHeapAllocation)
+     : fDtorCursor {block}
+     , fCursor     {block}
+-    , fEnd        {block + ToU32(size)}
++    , fEnd        {block ? block + ToU32(size) : nullptr}
+     , fFirstBlock {block}
+     , fFirstSize  {ToU32(size)}
+     , fFirstHeapAllocationSize  {first_allocated_block(ToU32(size), ToU32(firstHeapAllocation))}
+@@ -38,8 +38,11 @@
+ }
+ 
+ void VArenaAlloc::reset() {
++    char* const firstBlock = fFirstBlock;
++    const uint32_t firstSize = fFirstSize;
++    const uint32_t firstHeapAllocationSize = fFirstHeapAllocationSize;
+     this->~VArenaAlloc();
+-    new (this) VArenaAlloc{fFirstBlock, fFirstSize, fFirstHeapAllocationSize};
++    new (this) VArenaAlloc{firstBlock, firstSize, firstHeapAllocationSize};
+ }
+ 
+ void VArenaAlloc::installFooter(FooterAction* action, uint32_t padding) {
+@@ -141,6 +144,9 @@
+     uintptr_t mask = alignment - 1;
+ 
+ restart:
++    if (fCursor == nullptr) {
++        this->ensureSpace(sizeIncludingFooter, alignment);
++    }
+     uint32_t skipOverhead = 0;
+     bool needsSkipFooter = fCursor != fDtorCursor;
+     if (needsSkipFooter) {
+--- a/src/vector/varenaalloc.h
++++ b/src/vector/varenaalloc.h
+@@ -150,6 +150,9 @@
+     void ensureSpace(uint32_t size, uint32_t alignment);
+ 
+     char* allocObject(uint32_t size, uint32_t alignment) {
++        if (fCursor == nullptr) {
++            this->ensureSpace(size, alignment);
++        }
+         uintptr_t mask = alignment - 1;
+         uintptr_t alignedOffset = (~reinterpret_cast<uintptr_t>(fCursor) + 1) & mask;
+         uintptr_t totalSize = size + alignedOffset;

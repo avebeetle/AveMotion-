@@ -1,0 +1,8 @@
+samsung:
+  expected:      f710dd5f7fcbe789d88438d8d0a876d7bdf0bc55831548286d064cb3e7f18b84
+  canonical:     f710dd5f7fcbe789d88438d8d0a876d7bdf0bc55831548286d064cb3e7f18b84 files=322 bytes=12189463
+  windows-like:  5e1115bf9fed2e246f6b1d6c5a42c4d98dcb38be7464e1995e161d03b3ebb479 files=322 bytes=12189463
+telegram:
+  expected:      5d03d1b9867a15f9fea916410e43dd6319eaea574ba4e0a2dee78d6f5d96dfb3
+  canonical:     5d03d1b9867a15f9fea916410e43dd6319eaea574ba4e0a2dee78d6f5d96dfb3 files=276 bytes=13277437
+  windows-like:  7deaf9545524c395ee151e356ec1d035897778fe7b066ee94bbe95e87b30aae1 files=276 bytes=13277437

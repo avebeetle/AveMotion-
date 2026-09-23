@@ -1,0 +1,21 @@
+Asset: tests/compatibility/tgs/telegram_sticker_basic.tgs
+Format: telegram-tgs
+Profile: telegram-sticker
+Result: ACCEPT
+Canvas: 512x512
+Frame rate: 60
+Duration: 1 s
+Frames: 61
+Structural: valid
+Direct2D native ready: yes
+Fallback occurrences: 0
+Unsupported occurrences: 0
+Complexity work units: 24
+Report fingerprint: 7965ded27cd15989
+Features:
+  - composition: 1 [native]
+  - shape-layer: 1 [native]
+  - ellipse: 1 [native]
+  - solid-fill: 1 [native]
+Issues:
+  - [info] telegram-bounds-not-proven: authored-model validation cannot prove that all animated bounds remain inside the canvas

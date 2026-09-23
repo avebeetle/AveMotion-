@@ -1,0 +1,46 @@
+Internal ctest changing into directory: /mnt/data/AveMotion-Part24-work/out/build/linux-clang-telegram-asan
+Test project /mnt/data/AveMotion-Part24-work/out/build/linux-clang-telegram-asan
+      Start 37: avemotion.runtime.asset_model
+ 1/20 Test #37: avemotion.runtime.asset_model .........   Passed    4.12 sec
+      Start 38: avemotion.runtime.playback
+ 2/20 Test #38: avemotion.runtime.playback ............   Passed    0.03 sec
+      Start 39: avemotion.player.scheduler
+ 3/20 Test #39: avemotion.player.scheduler ............   Passed    0.02 sec
+      Start 40: avemotion.render.model_plan
+ 4/20 Test #40: avemotion.render.model_plan ...........   Passed    0.11 sec
+      Start 41: avemotion.runtime.canonical
+ 5/20 Test #41: avemotion.runtime.canonical ...........   Passed    0.16 sec
+      Start 42: avemotion.vendor.manifest
+ 6/20 Test #42: avemotion.vendor.manifest .............   Passed    0.01 sec
+      Start 43: avemotion.characterize.smoke
+ 7/20 Test #43: avemotion.characterize.smoke ..........   Passed    0.02 sec
+      Start 44: avemotion.scene.characterize.smoke
+ 8/20 Test #44: avemotion.scene.characterize.smoke ....   Passed    0.02 sec
+      Start 45: avemotion.scene.golden
+ 9/20 Test #45: avemotion.scene.golden ................   Passed    0.09 sec
+      Start 46: avemotion.plan.characterize.smoke
+10/20 Test #46: avemotion.plan.characterize.smoke .....   Passed    0.02 sec
+      Start 47: avemotion.model.characterize
+11/20 Test #47: avemotion.model.characterize ..........   Passed    2.18 sec
+      Start 48: avemotion.model.golden
+12/20 Test #48: avemotion.model.golden ................   Passed    0.01 sec
+      Start 49: avemotion.model.parsed_golden
+13/20 Test #49: avemotion.model.parsed_golden .........   Passed    0.01 sec
+      Start 50: avemotion.evaluation.characterize
+14/20 Test #50: avemotion.evaluation.characterize .....   Passed    2.30 sec
+      Start 51: avemotion.evaluation.golden
+15/20 Test #51: avemotion.evaluation.golden ...........   Passed    0.01 sec
+      Start 52: avemotion.validation.characterize
+16/20 Test #52: avemotion.validation.characterize .....   Passed    2.25 sec
+      Start 53: avemotion.validation.golden
+17/20 Test #53: avemotion.validation.golden ...........   Passed    0.01 sec
+      Start 54: avemotion.validation.feature_golden
+18/20 Test #54: avemotion.validation.feature_golden ...   Passed    0.01 sec
+      Start 55: avemotion.validation.summary_golden
+19/20 Test #55: avemotion.validation.summary_golden ...   Passed    0.01 sec
+      Start 56: avemotion.plan.golden
+20/20 Test #56: avemotion.plan.golden .................   Passed    0.09 sec
+
+100% tests passed, 0 tests failed out of 20
+
+Total Test time (real) =  11.48 sec

@@ -1,0 +1,2 @@
+tests/golden/README.md
+tests/golden/source-geometry-telegram.tsv

@@ -1,0 +1,32 @@
+=== build offline ASan+UBSan ===
+[1/31] Building CXX object CMakeFiles/avemotion_core.dir/src/core/Hash.cpp.o
+[2/31] Linking CXX static library libavemotion_core.a
+[3/31] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModel.cpp.o
+[4/31] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Playback.cpp.o
+[5/31] Building CXX object CMakeFiles/avemotion_evaluation.dir/src/evaluation/PropertyEvaluator.cpp.o
+[6/31] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RecordingBackend.cpp.o
+[7/31] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/UpstreamInfo.cpp.o
+[8/31] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModelBuilder.cpp.o
+[9/31] Linking CXX static library libavemotion_model.a
+[10/31] Linking CXX static library libavemotion_evaluation.a
+[11/31] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/ReferenceRuntime.cpp.o
+[12/31] Linking CXX static library libavemotion_reference.a
+[13/31] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[14/31] Linking CXX static library libavemotion_runtime.a
+[15/31] Building CXX object CMakeFiles/avemotion_core_tests.dir/tests/core_tests.cpp.o
+[16/31] Building CXX object CMakeFiles/avemotion_probe.dir/apps/probe/main.cpp.o
+[17/31] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/HeadlessBackend.cpp.o
+[18/31] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/RenderPlanner.cpp.o
+[19/31] Linking CXX static library libavemotion_rendering.a
+[20/31] Building CXX object CMakeFiles/avemotion_direct2d_header_tests.dir/tests/direct2d_header_tests.cpp.o
+[21/31] Building CXX object CMakeFiles/avemotion_render_plan_tests.dir/tests/render_plan_tests.cpp.o
+[22/31] Building CXX object CMakeFiles/avemotion_offline_tests.dir/tests/offline_tests.cpp.o
+[23/31] Linking CXX executable avemotion_core_tests
+[24/31] Linking CXX executable avemotion_probe
+[25/31] Building CXX object CMakeFiles/avemotion_runtime_offline_tests.dir/tests/runtime_offline_tests.cpp.o
+[26/31] Linking CXX executable avemotion_direct2d_header_tests
+[27/31] Linking CXX executable avemotion_offline_tests
+[28/31] Linking CXX executable avemotion_render_plan_tests
+[29/31] Linking CXX executable avemotion_runtime_offline_tests
+[30/31] Building CXX object CMakeFiles/avemotion_property_evaluator_tests.dir/tests/property_evaluator_tests.cpp.o
+[31/31] Linking CXX executable avemotion_property_evaluator_tests

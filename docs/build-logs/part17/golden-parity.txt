@@ -1,0 +1,8 @@
+Committed source-geometry golden:
+d192c55dc4b9b54d8eca1f9a3e3b5f00fc45c7c9ae0681dd635301510fae63d0  tests/golden/source-geometry-telegram.tsv
+Clang output:
+d192c55dc4b9b54d8eca1f9a3e3b5f00fc45c7c9ae0681dd635301510fae63d0  out/build/linux-clang-telegram-debug/source-geometry-golden/source_geometry_manifest.tsv
+GCC output:
+d192c55dc4b9b54d8eca1f9a3e3b5f00fc45c7c9ae0681dd635301510fae63d0  out/build/linux-gcc-telegram-release/source-geometry-golden/source_geometry_manifest.tsv
+clang=byte-identical
+gcc=byte-identical

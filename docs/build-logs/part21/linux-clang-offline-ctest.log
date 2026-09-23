@@ -1,0 +1,41 @@
+Test project /mnt/data/AveMotion-Part21-repo/out/build/linux-clang-offline
+      Start  1: avemotion.cmake.legacy_subproject
+ 1/18 Test  #1: avemotion.cmake.legacy_subproject .........   Passed    0.77 sec
+      Start  2: avemotion.cmake.win32_manifest_wiring
+ 2/18 Test  #2: avemotion.cmake.win32_manifest_wiring .....   Passed    0.52 sec
+      Start  3: avemotion.cmake.player_wiring
+ 3/18 Test  #3: avemotion.cmake.player_wiring .............   Passed    0.54 sec
+      Start  4: avemotion.core
+ 4/18 Test  #4: avemotion.core ............................   Passed    0.00 sec
+      Start  5: avemotion.golden.cross_platform_policy
+ 5/18 Test  #5: avemotion.golden.cross_platform_policy ....   Passed    0.00 sec
+      Start  6: avemotion.golden.source_geometry_policy
+ 6/18 Test  #6: avemotion.golden.source_geometry_policy ...   Passed    0.56 sec
+      Start  7: avemotion.evaluation.properties
+ 7/18 Test  #7: avemotion.evaluation.properties ...........   Passed    0.00 sec
+      Start  8: avemotion.render.plan
+ 8/18 Test  #8: avemotion.render.plan .....................   Passed    0.00 sec
+      Start  9: avemotion.render.polystar_geometry
+ 9/18 Test  #9: avemotion.render.polystar_geometry ........   Passed    0.00 sec
+      Start 10: avemotion.render.repeater_transform
+10/18 Test #10: avemotion.render.repeater_transform .......   Passed    0.00 sec
+      Start 11: avemotion.render.trim_path
+11/18 Test #11: avemotion.render.trim_path ................   Passed    0.00 sec
+      Start 12: avemotion.capture.metrics
+12/18 Test #12: avemotion.capture.metrics .................   Passed    0.00 sec
+      Start 13: avemotion.direct2d.header
+13/18 Test #13: avemotion.direct2d.header .................   Passed    0.00 sec
+      Start 14: avemotion.direct2d.contract
+14/18 Test #14: avemotion.direct2d.contract ...............   Passed    0.00 sec
+      Start 15: avemotion.vendor.ordering
+15/18 Test #15: avemotion.vendor.ordering .................   Passed    0.55 sec
+      Start 16: avemotion.vendor.verify
+16/18 Test #16: avemotion.vendor.verify ...................   Passed    0.57 sec
+      Start 17: avemotion.offline
+17/18 Test #17: avemotion.offline .........................   Passed    0.00 sec
+      Start 18: avemotion.runtime.offline
+18/18 Test #18: avemotion.runtime.offline .................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 18
+
+Total Test time (real) =   3.53 sec

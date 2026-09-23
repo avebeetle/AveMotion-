@@ -1,0 +1,17 @@
+Preset CMake variables:
+
+  AVEMOTION_BUILD_CHARACTERIZER="OFF"
+  AVEMOTION_BUILD_PLAN_CHARACTERIZER="OFF"
+  AVEMOTION_BUILD_PROBE="ON"
+  AVEMOTION_BUILD_SCENE_CHARACTERIZER="OFF"
+  AVEMOTION_ENABLE_INSTALL="ON"
+  AVEMOTION_RLOTTIE_VARIANT="none"
+  BUILD_TESTING="ON"
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_CXX_COMPILER="clang++"
+  CMAKE_C_COMPILER="clang"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+
+-- Configuring done (3.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/work/part7/out/build/linux-clang-offline

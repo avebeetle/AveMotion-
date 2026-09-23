@@ -1,0 +1,104 @@
+[1/1] Cleaning all built files...
+Cleaning... 103 files.
+[1/103] Building CXX object CMakeFiles/avemotion_core.dir/src/core/Hash.cpp.o
+[2/103] Linking CXX static library libavemotion_core.a
+[3/103] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModel.cpp.o
+[4/103] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModelBuilder.cpp.o
+[5/103] Linking CXX static library libavemotion_model.a
+[6/103] Building CXX object CMakeFiles/avemotion_evaluation.dir/src/evaluation/PropertyEvaluator.cpp.o
+[7/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_math.cpp.o
+[8/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_raster.cpp.o
+[9/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_stroker.cpp.o
+[10/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/pixman/vregion.cpp.o
+In member function 'void VRegion::cleanUp(VRegionData*)',
+    inlined from 'VRegion::~VRegion()' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1869:33,
+    inlined from 'VRegion::~VRegion()' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1867:1,
+    inlined from 'void VRegion::_ZN7VRegion6detachEv.part.0()' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1803:40:
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1798:12: warning: 'void operator delete(void*, std::size_t)' called on unallocated object 'shared_empty' [-Wfree-nonheap-object]
+ 1798 |     delete x;
+      |            ^
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp: In member function 'void VRegion::_ZN7VRegion6detachEv.part.0()':
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1785:19: note: declared here
+ 1785 | const VRegionData shared_empty;
+      |                   ^~~~~~~~~~~~
+In member function 'void VRegion::cleanUp(VRegionData*)',
+    inlined from 'VRegion::~VRegion()' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1869:33,
+    inlined from 'VRegion::~VRegion()' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1867:1,
+    inlined from 'VRegion& VRegion::operator-=(const VRegion&)' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:2040:26:
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1798:12: warning: 'void operator delete(void*, std::size_t)' called on unallocated object 'shared_empty' [-Wfree-nonheap-object]
+ 1798 |     delete x;
+      |            ^
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp: In member function 'VRegion& VRegion::operator-=(const VRegion&)':
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/pixman/vregion.cpp:1785:19: note: declared here
+ 1785 | const VRegionData shared_empty;
+      |                   ^~~~~~~~~~~~
+[11/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/stb/stb_image.cpp.o
+In file included from /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/stb/stb_image.cpp:14:
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/stb/stb_image.h: In function 'int stbi__jpeg_info(stbi__context*, int*, int*, int*)':
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/stb/stb_image.h:950:29: warning: value computed is not used [-Wunused-value]
+  950 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                            ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/stb/stb_image.h:3775:7: note: in expansion of macro 'stbi__errpuc'
+ 3775 |       stbi__errpuc("outofmem", "Out of memory");
+      |       ^~~~~~~~~~~~
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/stb/stb_image.h: In function 'int stbi__parse_png_file(stbi__png*, int, int)':
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/stb/stb_image.h:4822:56: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+ 4822 |                   for (k = 0; k < s->img_n; ++k) tc[k] = (stbi_uc)(stbi__get16be(s) & 255) * stbi__depth_scale_table[z->depth]; // non 8-bit images will be larger
+      |                                                  ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/stb/stb_image.h:4741:25: note: at offset 3 into destination object 'tc' of size 3
+ 4741 |    stbi_uc has_trans=0, tc[3];
+      |                         ^~
+[12/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vrect.cpp.o
+[13/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdasher.cpp.o
+[14/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vbrush.cpp.o
+[15/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vbitmap.cpp.o
+[16/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vpainter.cpp.o
+[17/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vcompositionfunctions.cpp.o
+[18/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdrawhelper.cpp.o
+[19/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_sse2.cpp.o
+[20/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_neon.cpp.o
+[21/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vrle.cpp.o
+In file included from /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vrle.h:23,
+                 from /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vrle.cpp:19:
+In destructor 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::VRleData]',
+    inlined from 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::VRleData]' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vcowptr.h:50:5,
+    inlined from 'vcow_ptr<T>& vcow_ptr<T>::operator=(vcow_ptr<T>&&) [with T = VRle::VRleData]' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vcowptr.h:82:5,
+    inlined from 'vcow_ptr<T>::element_type& vcow_ptr<T>::write() [with T = VRle::VRleData]' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vcowptr.h:104:30,
+    inlined from 'static VRle VRle::toRle(const VRect&)' at /mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vrle.cpp:745:19:
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vcowptr.h:52:46: warning: 'void operator delete(void*, std::size_t)' called on unallocated object 'default_s' [-Wfree-nonheap-object]
+   52 |         if (mModel && (--mModel->mRef == 0)) delete mModel;
+      |                                              ^~~~~~~~~~~~~
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vcowptr.h: In static member function 'static VRle VRle::toRle(const VRect&)':
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/vector/vcowptr.h:45:22: note: declared here
+   45 |         static model default_s;
+      |                      ^~~~~~~~~
+[22/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vpath.cpp.o
+[23/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vpathmesure.cpp.o
+[24/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vmatrix.cpp.o
+[25/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/velapsedtimer.cpp.o
+[26/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdebug.cpp.o
+[27/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vinterpolator.cpp.o
+[28/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vbezier.cpp.o
+[29/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vraster.cpp.o
+[30/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdrawable.cpp.o
+[31/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vimageloader.cpp.o
+[32/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieitem.cpp.o
+[33/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieloader.cpp.o
+[34/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottiemodel.cpp.o
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/lottie/lottiemodel.cpp: In member function 'void LOTGradient::populate(VGradientStops&, int)':
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/lottie/lottiemodel.cpp:191:40: warning: comparison of integer expressions of different signedness: 'int' and 'long unsigned int' [-Wsign-compare]
+  191 |     if (colorPoints < 0 || colorPoints > size / 4) {  // for legacy bodymovin (ref: lottie-android)
+      |                            ~~~~~~~~~~~~^~~~~~~~~~
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/lottie/lottiemodel.cpp:195:53: warning: comparison of integer expressions of different signedness: 'int' and 'long unsigned int' [-Wsign-compare]
+  195 |     if ((opacityArraySize % 2 != 0) || (colorPoints > opacityArraySize / 2 && opacityArraySize < 4)) {
+      |                                         ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+[35/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieproxymodel.cpp.o
+[36/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieparser.cpp.o
+[37/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieanimation.cpp.o
+[38/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottiekeypath.cpp.o
+[39/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/binding/c/lottieanimation_capi.cpp.o
+[40/103] Linking CXX static library libavemotion_evaluation.a
+[41/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[42/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Playback.cpp.o
+[43/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RecordingBackend.cpp.o
+[44/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RlottieSceneBridge.cpp.o

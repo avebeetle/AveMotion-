@@ -1,0 +1,6 @@
+AveMotion Part 21 validation
+UTC 2026-07-27T14:04:34Z
+cmake version 3.31.6
+Ninja 1.12.1
+clang version 17.0.0 (https://github.com/swiftlang/llvm-project.git 10999b6d034fe318f3d56c83bddb6572593a8bb0)
+g++ (Debian 14.2.0-19) 14.2.0

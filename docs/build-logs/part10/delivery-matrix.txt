@@ -1,0 +1,38 @@
+AveMotion Part 10 delivery matrix
+=================================
+
+Primary semantic baseline: TelegramMessenger/rlottie@67f103bc8b625f2a4a9e94f1d8c7bd84c5a08d1d
+Comparison baseline: Samsung/rlottie@2cab35db755b0e39df40b679969495e90d39c578
+
+Linux build/test matrix
+-----------------------
+- Telegram + Clang 17 Debug: 24/24 PASS
+- Telegram + GCC 14 Release: 24/24 PASS
+- Telegram + Clang 17 AddressSanitizer: 24/24 PASS
+- Samsung + Clang 17 Debug: 16/16 PASS
+- Samsung + GCC 14 Release: 16/16 PASS
+- Samsung + Clang 17 AddressSanitizer: 16/16 PASS
+- Standalone/offline Clang 17 Debug: 7/7 PASS
+- Standalone/offline Clang 17 ASan+UBSan: 7/7 PASS
+
+Packaging
+---------
+- CMake install/export AveMotion 0.10: PASS
+- clean external find_package(AveMotion 0.10) consumer: configure/build/link/run PASS
+
+Determinism and parity
+----------------------
+- Telegram Clang/GCC property manifests: byte-identical
+- persisted property golden SHA-256:
+  e2fd5678112a997bc7dd6f23a3ccdf1ee575199478c24dd6a246c8fd0debe5a4
+- broad Telegram parity:
+  assets=9, samples=213, properties=27243, shapes=165,
+  shapePoints=3324, localTransforms=5769, worldTransforms=5769
+- supported values and every materialized Shape point: PASS
+- repeated exact-time Shape/property revisions: stable
+- retained Shape storage: no vector resizing after prepare()
+
+Windows gate
+------------
+- Direct2D public header remains isolated from non-Windows core: PASS on Linux
+- Direct2D implementation/MSVC runtime draw: NOT EXECUTED in this Linux environment

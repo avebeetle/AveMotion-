@@ -1,0 +1,45 @@
+Test project /mnt/data/work_part18/out/build/linux-gcc-samsung-release
+      Start  1: avemotion.core
+ 1/20 Test  #1: avemotion.core ........................   Passed    0.00 sec
+      Start  2: avemotion.evaluation.properties
+ 2/20 Test  #2: avemotion.evaluation.properties .......   Passed    0.00 sec
+      Start  3: avemotion.render.plan
+ 3/20 Test  #3: avemotion.render.plan .................   Passed    0.00 sec
+      Start  4: avemotion.render.polystar_geometry
+ 4/20 Test  #4: avemotion.render.polystar_geometry ....   Passed    0.00 sec
+      Start  5: avemotion.render.repeater_transform
+ 5/20 Test  #5: avemotion.render.repeater_transform ...   Passed    0.00 sec
+      Start  6: avemotion.render.trim_path
+ 6/20 Test  #6: avemotion.render.trim_path ............   Passed    0.00 sec
+      Start  7: avemotion.direct2d.header
+ 7/20 Test  #7: avemotion.direct2d.header .............   Passed    0.00 sec
+      Start  8: avemotion.direct2d.contract
+ 8/20 Test  #8: avemotion.direct2d.contract ...........   Passed    0.00 sec
+      Start  9: avemotion.vendor.verify
+ 9/20 Test  #9: avemotion.vendor.verify ...............   Passed    0.59 sec
+      Start 10: avemotion.reference
+10/20 Test #10: avemotion.reference ...................   Passed    0.01 sec
+      Start 11: avemotion.runtime.seams
+11/20 Test #11: avemotion.runtime.seams ...............   Passed    0.01 sec
+      Start 12: avemotion.runtime.asset_model
+12/20 Test #12: avemotion.runtime.asset_model .........   Passed    0.00 sec
+      Start 13: avemotion.runtime.playback
+13/20 Test #13: avemotion.runtime.playback ............   Passed    0.00 sec
+      Start 14: avemotion.runtime.canonical
+14/20 Test #14: avemotion.runtime.canonical ...........   Passed    0.01 sec
+      Start 15: avemotion.vendor.manifest
+15/20 Test #15: avemotion.vendor.manifest .............   Passed    0.00 sec
+      Start 16: avemotion.characterize.smoke
+16/20 Test #16: avemotion.characterize.smoke ..........   Passed    0.00 sec
+      Start 17: avemotion.scene.characterize.smoke
+17/20 Test #17: avemotion.scene.characterize.smoke ....   Passed    0.00 sec
+      Start 18: avemotion.scene.golden
+18/20 Test #18: avemotion.scene.golden ................   Passed    0.00 sec
+      Start 19: avemotion.plan.characterize.smoke
+19/20 Test #19: avemotion.plan.characterize.smoke .....   Passed    0.00 sec
+      Start 20: avemotion.plan.golden
+20/20 Test #20: avemotion.plan.golden .................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 20
+
+Total Test time (real) =   0.66 sec

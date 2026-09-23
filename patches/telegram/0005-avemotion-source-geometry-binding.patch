@@ -1,0 +1,268 @@
+diff --git a/third_party/rlottie/telegram/source/inc/rlottiecommon.h b/third_party/rlottie/telegram/source/inc/rlottiecommon.h
+index 9b7230c..fdd1297 100644
+--- a/third_party/rlottie/telegram/source/inc/rlottiecommon.h
++++ b/third_party/rlottie/telegram/source/inc/rlottiecommon.h
+@@ -139,6 +139,7 @@ typedef struct LOTNode {
+ #define AveSourceFlagLocalSolidPaint 0x0004
+ #define AveSourceFlagPaintStatic 0x0008
+ #define AveSourceFlagOpacitySeparated 0x0010
++#define AveSourceFlagModifierFree 0x0020
+ #define AveInvalidSourceId 0xffffffffU
+ 
+     struct {
+@@ -210,6 +211,9 @@ typedef struct LOTNode {
+     unsigned int mAveNodeId;
+     unsigned int mAveGeometryId;
+     unsigned int mAvePaintId;
++    unsigned int mAveSourcePathNodeId;
++    unsigned int mAveSourcePaintNodeId;
++    unsigned int mAveSourcePathCount;
+ } LOTNode;
+ 
+ 
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp b/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
+index e196408..ec8b021 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
+@@ -1284,7 +1284,7 @@ bool LOTPathDataItem::sourceGeometryStaticFor(
+     return group && group->transformChainStaticTo(ancestor);
+ }
+ LOTRectItem::LOTRectItem(LOTRectData *data)
+-    : LOTPathDataItem(data->isStatic()), mData(data)
++    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+ {
+ }
+ 
+@@ -1301,7 +1301,7 @@ void LOTRectItem::updatePath(VPath &path, int frameNo)
+ }
+ 
+ LOTEllipseItem::LOTEllipseItem(LOTEllipseData *data)
+-    : LOTPathDataItem(data->isStatic()), mData(data)
++    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+ {
+ }
+ 
+@@ -1317,7 +1317,7 @@ void LOTEllipseItem::updatePath(VPath &path, int frameNo)
+ }
+ 
+ LOTShapeItem::LOTShapeItem(LOTShapeData *data)
+-    : LOTPathDataItem(data->isStatic()), mData(data)
++    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+ {
+ }
+ 
+@@ -1327,7 +1327,7 @@ void LOTShapeItem::updatePath(VPath &path, int frameNo)
+ }
+ 
+ LOTPolystarItem::LOTPolystarItem(LOTPolystarData *data)
+-    : LOTPathDataItem(data->isStatic()), mData(data)
++    : LOTPathDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+ {
+ }
+ 
+@@ -1361,8 +1361,11 @@ void LOTPolystarItem::updatePath(VPath &path, int frameNo)
+  * PaintData Node handling
+  *
+  */
+-LOTPaintDataItem::LOTPaintDataItem(bool staticContent)
+-    : LOTContentItem(ContentType::Paint), mStaticContent(staticContent)
++LOTPaintDataItem::LOTPaintDataItem(
++    bool staticContent, unsigned int sourceNodeId)
++    : LOTContentItem(ContentType::Paint),
++      mStaticContent(staticContent),
++      mSourceNodeId(sourceNodeId)
+ {
+ }
+ 
+@@ -1411,6 +1414,13 @@ void LOTPaintDataItem::updateAveSourceGeometry()
+     const auto *paintGroup = static_cast<const LOTContentGroupItem *>(parent());
+     if (!paintGroup || mPathItems.empty()) return;
+ 
++    const auto *singlePath = mPathItems.size() == 1U ? mPathItems.front() : nullptr;
++    mDrawable.setAveSourceBinding(
++        singlePath ? singlePath->sourceNodeId() : AveInvalidSourceId,
++        mSourceNodeId,
++        static_cast<unsigned int>(mPathItems.size()),
++        singlePath && singlePath->modifierFree());
++
+     bool invertible = false;
+     const VMatrix inversePaint = paintGroup->matrix().inverted(&invertible);
+     if (!invertible) return;
+@@ -1452,7 +1462,7 @@ void LOTPaintDataItem::addPathItems(std::vector<LOTPathDataItem *> &list,
+ }
+ 
+ LOTFillItem::LOTFillItem(LOTFillData *data)
+-    : LOTPaintDataItem(data->isStatic()), mModel(data)
++    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mModel(data)
+ {
+ }
+ 
+@@ -1476,7 +1486,7 @@ void LOTFillItem::updateRenderNode()
+ }
+ 
+ LOTGFillItem::LOTGFillItem(LOTGFillData *data)
+-    : LOTPaintDataItem(data->isStatic()), mData(data)
++    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data)
+ {
+ }
+ 
+@@ -1496,7 +1506,7 @@ void LOTGFillItem::updateRenderNode()
+ }
+ 
+ LOTStrokeItem::LOTStrokeItem(LOTStrokeData *data)
+-    : LOTPaintDataItem(data->isStatic()), mModel(data){}
++    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mModel(data){}
+ 
+ void LOTStrokeItem::updateContent(int frameNo)
+ {
+@@ -1536,7 +1546,7 @@ void LOTStrokeItem::updateRenderNode()
+ }
+ 
+ LOTGStrokeItem::LOTGStrokeItem(LOTGStrokeData *data)
+-    : LOTPaintDataItem(data->isStatic()), mData(data){}
++    : LOTPaintDataItem(data->isStatic(), data->aveMotionSourceNodeId()), mData(data){}
+ 
+ void LOTGStrokeItem::updateContent(int frameNo)
+ {
+@@ -1752,6 +1762,18 @@ void LOTDrawable::setAveSourceIds(
+     mAvePaintId = paintId;
+ }
+ 
++void LOTDrawable::setAveSourceBinding(
++    unsigned int pathNodeId,
++    unsigned int paintNodeId,
++    unsigned int pathCount,
++    bool modifierFree)
++{
++    mAveSourcePathNodeId = pathNodeId;
++    mAveSourcePaintNodeId = paintNodeId;
++    mAveSourcePathCount = pathCount;
++    if (modifierFree) mAveSourceFlags |= AveSourceFlagModifierFree;
++}
++
+ void LOTDrawable::clearAveSourceMetadata()
+ {
+     mAveLocalPath = {};
+@@ -1759,6 +1781,9 @@ void LOTDrawable::clearAveSourceMetadata()
+     mAveLocalColor = {};
+     mAveOpacity = 1.0f;
+     mAveSourceFlags = 0U;
++    mAveSourcePathNodeId = AveInvalidSourceId;
++    mAveSourcePaintNodeId = AveInvalidSourceId;
++    mAveSourcePathCount = 0U;
+ }
+ 
+ void LOTDrawable::setAveLocalGeometry(
+@@ -1810,6 +1835,9 @@ void LOTDrawable::sync()
+     mCNode->mAveNodeId = mAveNodeId;
+     mCNode->mAveGeometryId = mAveGeometryId;
+     mCNode->mAvePaintId = mAvePaintId;
++    mCNode->mAveSourcePathNodeId = mAveSourcePathNodeId;
++    mCNode->mAveSourcePaintNodeId = mAveSourcePaintNodeId;
++    mCNode->mAveSourcePathCount = mAveSourcePathCount;
+     if ((mAveSourceFlags & AveSourceFlagLocalGeometry) != 0U) {
+         const auto &localElements = mAveLocalPath.elements();
+         const auto &localPoints = mAveLocalPath.points();
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieitem.h b/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
+index 27725f1..a98457a 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
+@@ -72,6 +72,11 @@ public:
+         unsigned int nodeId,
+         unsigned int geometryId,
+         unsigned int paintId);
++    void setAveSourceBinding(
++        unsigned int pathNodeId,
++        unsigned int paintNodeId,
++        unsigned int pathCount,
++        bool modifierFree);
+ public:
+     std::unique_ptr<LOTNode>  mCNode{nullptr};
+     VPath                     mAveLocalPath;
+@@ -82,6 +87,9 @@ public:
+     unsigned int              mAveNodeId{AveInvalidSourceId};
+     unsigned int              mAveGeometryId{AveInvalidSourceId};
+     unsigned int              mAvePaintId{AveInvalidSourceId};
++    unsigned int              mAveSourcePathNodeId{AveInvalidSourceId};
++    unsigned int              mAveSourcePaintNodeId{AveInvalidSourceId};
++    unsigned int              mAveSourcePathCount{0U};
+ 
+     ~LOTDrawable() {
+         if (mCNode && mCNode->mGradient.stopPtr)
+@@ -347,16 +355,24 @@ protected:
+ class LOTPathDataItem : public LOTContentItem
+ {
+ public:
+-   LOTPathDataItem(bool staticPath): LOTContentItem(ContentType::Path), mStaticPath(staticPath){}
++   LOTPathDataItem(bool staticPath, unsigned int sourceNodeId)
++       : LOTContentItem(ContentType::Path),
++         mStaticPath(staticPath),
++         mSourceNodeId(sourceNodeId) {}
+    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) final;
+    bool dirty() const {return mPathChanged;}
+    const VPath &localPath() const {return mTemp;}
+    const VPath &finalPath();
+    void updatePath(const VPath &path) {mTemp = path; mPathChanged = true; mNeedUpdate = true;}
+    bool staticPath() const { return mStaticPath; }
+-   void markModifierStatic(bool value) { mModifiersStatic &= value; }
++   void markModifierStatic(bool value) {
++       mHasModifiers = true;
++       mModifiersStatic &= value;
++   }
+    bool sourceGeometryStaticFor(const LOTContentGroupItem *ancestor) const;
+    const VMatrix &sourceMatrix() const;
++   unsigned int sourceNodeId() const { return mSourceNodeId; }
++   bool modifierFree() const { return !mHasModifiers; }
+ protected:
+    virtual void updatePath(VPath& path, int frameNo) = 0;
+    virtual bool hasChanged(int prevFrame, int curFrame) = 0;
+@@ -377,6 +393,8 @@ private:
+    bool                                    mNeedUpdate{true};
+    bool                                    mStaticPath;
+    bool                                    mModifiersStatic{true};
++   bool                                    mHasModifiers{false};
++   unsigned int                            mSourceNodeId{AveInvalidSourceId};
+ };
+ 
+ class LOTRectItem: public LOTPathDataItem
+@@ -443,7 +461,7 @@ private:
+ class LOTPaintDataItem : public LOTContentItem
+ {
+ public:
+-   LOTPaintDataItem(bool staticContent);
++   LOTPaintDataItem(bool staticContent, unsigned int sourceNodeId);
+    void addPathItems(std::vector<LOTPathDataItem *> &list, size_t startOffset);
+    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) override;
+    void renderList(std::vector<VDrawable *> &list) final;
+@@ -462,6 +480,7 @@ protected:
+    DirtyFlag                        mFlag;
+    bool                             mStaticContent;
+    bool                             mRenderNodeUpdate{true};
++   unsigned int                     mSourceNodeId{AveInvalidSourceId};
+ };
+ 
+ class LOTFillItem : public LOTPaintDataItem
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h b/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
+index df76107..896517d 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
++++ b/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
+@@ -384,11 +384,19 @@ public:
+     void setStatic(bool value) {mStatic = value;}
+     bool hidden() const {return mHidden;}
+     const std::string& name() const{ return mName;}
++    // AveMotion parsed-model seam. The canonical SourceNodeId is assigned
++    // after parsing and read later by the runtime item tree. It is metadata
++    // only and does not participate in rlottie evaluation.
++    void setAveMotionSourceNodeId(unsigned int value) const {
++        mAveMotionSourceNodeId = value;
++    }
++    unsigned int aveMotionSourceNodeId() const { return mAveMotionSourceNodeId; }
+ public:
+     std::string               mName;
+     bool                      mStatic{true};
+     bool                      mHidden{false};
+     LOTData::Type             mType;
++    mutable unsigned int      mAveMotionSourceNodeId{0xffffffffU};
+ };
+ 
+ class LOTGroupData: public LOTData

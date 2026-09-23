@@ -1,0 +1,55 @@
+AveMotion Part 8 final validation matrix
+
+Telegram + Clang Debug
+- build: PASS
+- CTest: 24/24 PASS
+
+Telegram + GCC Release
+- build: PASS
+- CTest: 24/24 PASS
+
+Telegram + Clang AddressSanitizer
+- build: PASS
+- CTest: 24/24 PASS
+
+Samsung + Clang Debug
+- build: PASS
+- CTest: 16/16 PASS
+
+Samsung + GCC Release
+- build: PASS
+- CTest: 16/16 PASS
+
+Samsung + Clang AddressSanitizer
+- build: PASS
+- CTest: 16/16 PASS
+
+Offline/installable SDK + Clang
+- build: PASS
+- CTest: 7/7 PASS
+
+Offline AveMotion-owned code + Clang ASan/UBSan
+- build: PASS
+- CTest: 7/7 PASS
+
+Offline package integration
+- install/export: PASS
+- external find_package(AveMotion 0.8) consumer: PASS
+
+Property parity
+- assets: 8
+- unique source-frame samples: 196
+- supported property comparisons: 24,969
+- supported local-transform comparisons: 4,752
+- skipped spatial values: 389
+- skipped animated shape/gradient values: 195
+- skipped unsupported transforms: 915
+- direct binary searches: 332
+- forward cursor fast paths: 332
+- reverse cursor fast paths: 332
+
+Compiler parity
+- Telegram property characterization manifest: Clang == GCC byte-for-byte
+
+Prior-oracle preservation
+- pre-Part8 pixel/scene/plan/model goldens: unchanged from Part 7

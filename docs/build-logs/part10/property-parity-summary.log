@@ -1,0 +1,4 @@
+=== property parity stats ===
+Telegram parity passed: assets=9, samples=213, properties=27243, spatialProperties=406, shapes=165, shapePoints=3324, transforms=5769, worldTransforms=5769, skippedComplex=30, skippedTransforms=0, skippedWorldTransforms=0, directBinarySearches=619, forwardCursorFastPaths=619, reverseCursorFastPaths=619, spatialLengthIterations=5814, spatialLengthMaximum=90
+=== synthetic property evaluator tests ===
+AveMotion canonical property evaluator tests passed

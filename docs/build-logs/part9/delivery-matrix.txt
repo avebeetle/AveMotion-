@@ -1,0 +1,49 @@
+AveMotion Part 9 delivery matrix
+================================
+
+Telegram semantics baseline
+---------------------------
+linux-clang-telegram-debug:  configure/build passed, CTest 24/24
+linux-gcc-telegram-release:  configure/build passed, CTest 24/24
+linux-clang-telegram-asan:   configure/build passed, CTest 24/24
+
+Samsung comparison baseline
+---------------------------
+linux-clang-samsung-debug:   configure/build passed, CTest 16/16
+linux-gcc-samsung-release:   configure/build passed, CTest 16/16
+linux-clang-samsung-asan:    configure/build passed, CTest 16/16
+
+Standalone SDK
+--------------
+linux-clang-offline:         configure/build passed, CTest 7/7
+offline ASan+UBSan:          configure/build passed, CTest 7/7
+CMake install/export:        passed
+external find_package:       configure/build/run passed
+
+Determinism and regression
+--------------------------
+Telegram broad parity:       9 assets, 213 samples
+properties compared:         26,748
+spatial properties:          406
+local transforms:            5,769
+world transforms:            5,769
+max spatial search steps:    90
+Clang/GCC property manifest: byte-identical
+property golden SHA-256:     c67ccd48ea6bc401be307be6a0a6353f967d6dfc624accededaba66e8961a20f
+older pixel/scene/plan/model goldens: unchanged
+
+Environment
+-----------
+Linux x86-64
+CMake 3.31.6
+Ninja 1.12.1
+Clang 17
+GCC 14.2
+Python 3.13
+
+Note
+----
+The first aggregate Telegram ASan CTest invocation was externally interrupted
+while starting test 9. The same test passed alone in 5.12 seconds, tests 9-24
+then passed as a group, and a clean full rerun subsequently passed 24/24 in
+17.14 seconds. No code or sanitizer failure was observed.

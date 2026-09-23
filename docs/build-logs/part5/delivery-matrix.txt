@@ -1,0 +1,14 @@
+AveMotion Part 5 final delivery validation
+
+Telegram + Clang Debug:        13/13 passed
+Telegram + GCC Release:        13/13 passed
+Telegram + Clang ASan:         13/13 passed
+Samsung + Clang Debug:         13/13 passed
+Samsung + GCC Release:         13/13 passed
+Samsung + Clang ASan:          13/13 passed
+Offline/installable package:    6/6 passed
+Installed find_package consumer: configure/build/run passed
+
+Direct2D implementation was not compiled or executed because this environment
+has no Windows SDK. The public Direct2D header portability test passed in every
+Linux configuration; Windows/MSVC remains an external CI gate.

@@ -1,0 +1,2 @@
+8a7bbc1974d6d74002dca2e258d97e0d55dacfb49cbcecf8ccb56ea2e3d06dda  tests/fixtures/repeater_geometry.json
+f0abb0e349e0831d31f3388ec2c8b76bf39a07b1dadadcf04510bbcc3878288d  tests/golden/source-geometry-telegram.tsv

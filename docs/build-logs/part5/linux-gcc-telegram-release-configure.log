@@ -1,0 +1,45 @@
+Preset CMake variables:
+
+  AVEMOTION_BUILD_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_PLAN_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_PROBE="ON"
+  AVEMOTION_BUILD_SCENE_CHARACTERIZER="ON"
+  AVEMOTION_ENABLE_INSTALL="OFF"
+  AVEMOTION_RLOTTIE_VARIANT="telegram"
+  BUILD_TESTING="ON"
+  CMAKE_BUILD_TYPE="Release"
+  CMAKE_CXX_COMPILER="g++"
+  CMAKE_C_COMPILER="gcc"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+
+-- The C compiler identification is GNU 14.2.0
+-- The CXX compiler identification is GNU 14.2.0
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/gcc
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Deprecation Warning at third_party/rlottie/telegram/source/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- AveMotion reference variant: telegram (67f103bc8b625f2a4a9e94f1d8c7bd84c5a08d1d)
+-- Found Python3: /opt/pyvenv/bin/python3 (found version "3.13.5") found components: Interpreter
+-- Configuring done (3.6s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/work/part5repo/out/build/linux-gcc-telegram-release

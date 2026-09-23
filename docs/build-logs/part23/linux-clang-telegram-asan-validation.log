@@ -1,0 +1,10 @@
+AveMotion Part 23 Telegram ASan validation path
+
+The following Part 23 tests completed under Clang 17 AddressSanitizer:
+- avemotion.validation.tgs_corpus_integrity
+- avemotion.validation.compatibility_corpus
+- avemotion.validation.asset
+- avemotion.validation.characterize (manual invocation with ASAN_OPTIONS=detect_leaks=0)
+- avemotion.validation.golden-equivalent manifest generation
+
+The larger aggregate CTest run was externally interrupted at a later validation-characterizer invocation after all new validator/corpus unit tests had passed. No AddressSanitizer diagnostic was emitted. The complete non-sanitized Telegram Clang and GCC suites and the complete offline ASan+UBSan suite passed.

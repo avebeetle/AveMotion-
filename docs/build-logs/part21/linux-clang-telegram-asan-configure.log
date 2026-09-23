@@ -1,0 +1,32 @@
+CMake Deprecation Warning at third_party/rlottie/telegram/source/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+Preset CMake variables:
+
+  AVEMOTION_BUILD_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_PLAN_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_PROBE="ON"
+  AVEMOTION_BUILD_PROPERTY_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_SCENE_CHARACTERIZER="ON"
+  AVEMOTION_ENABLE_INSTALL="OFF"
+  AVEMOTION_RLOTTIE_VARIANT="telegram"
+  BUILD_TESTING="ON"
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_CXX_COMPILER="clang++"
+  CMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
+  CMAKE_C_COMPILER="clang"
+  CMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
+  CMAKE_EXE_LINKER_FLAGS="-fsanitize=address"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  CMAKE_SHARED_LINKER_FLAGS="-fsanitize=address"
+
+
+-- AveMotion reference variant: telegram (67f103bc8b625f2a4a9e94f1d8c7bd84c5a08d1d)
+-- Configuring done (3.7s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/AveMotion-Part21-repo/out/build/linux-clang-telegram-asan

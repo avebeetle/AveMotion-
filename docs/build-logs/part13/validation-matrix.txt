@@ -1,0 +1,30 @@
+AveMotion Part 13 validation matrix
+===================================
+
+Version: 0.13.0
+Primary semantic oracle: TelegramMessenger/rlottie@67f103bc8b625f2a4a9e94f1d8c7bd84c5a08d1d
+Comparison branch: Samsung/rlottie@2cab35db755b0e39df40b679969495e90d39c578
+
+- Telegram + Clang 17 Debug: 28/28 PASS
+- Telegram + GCC 14 Release: 28/28 PASS
+- Telegram + Clang 17 ASan: 28/28 PASS
+- Samsung + Clang 17 Debug: 17/17 PASS
+- Samsung + GCC 14 Release: 17/17 PASS
+- Samsung + Clang 17 ASan: 17/17 PASS
+- Standalone/offline Clang: 8/8 PASS
+- Standalone/offline Clang ASan + UBSan: 8/8 PASS
+- CMake install/export: PASS
+- External find_package(AveMotion 0.13): configure/build/link/run PASS
+- Source geometry manifest Clang/GCC parity: byte-identical PASS
+- Persisted source geometry golden SHA-256:
+  a5b201633505dde12562d62a15ea264886258fa2d1e6ffc5e7ba64bb1741ae8d
+- Dedicated Polystar/Polygon fixture: 61/61 source frames exact Telegram parity
+- Dedicated fixture composition: 5 stars + 3 polygons per frame
+- Property/evaluation/generation failures: 0
+- Repeated-time geometry rebuilds: 0
+- Direct-seek/sequential cache-key mismatch: 0
+- Workspace reallocation after prepare(): 0
+
+Windows note:
+The current environment is Linux without Windows SDK. MSVC and actual Direct2D
+execution are covered by retained Windows presets/CI and remain external gates.

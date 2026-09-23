@@ -1,0 +1,27 @@
+Asset: tests/compatibility/tgs/repeater_content_group.tgs
+Format: telegram-tgs
+Profile: telegram-sticker
+Result: REJECT
+Canvas: 800x420
+Frame rate: 60
+Duration: 1 s
+Frames: 61
+Structural: valid
+Direct2D native ready: no
+Fallback occurrences: 0
+Unsupported occurrences: 0
+Complexity work units: 231
+Report fingerprint: dbd17624d3d73f2d
+Features:
+  - composition: 1 [native]
+  - shape-layer: 1 [native]
+  - rectangle: 4 [native]
+  - ellipse: 2 [native]
+  - solid-fill: 5 [native]
+  - solid-stroke: 5 [native]
+  - repeater: 4 [native-subset]
+Issues:
+  - [info] native-subset-required: repeater occurs 4 time(s) and is classified as native-subset
+  - [error] telegram-canvas-mismatch: Telegram animated stickers require a 512x512 canvas
+  - [info] telegram-bounds-not-proven: authored-model validation cannot prove that all animated bounds remain inside the canvas
+  - [error] telegram-forbidden-feature: repeater occurs 4 time(s) but is forbidden by the Telegram animated-sticker authoring profile

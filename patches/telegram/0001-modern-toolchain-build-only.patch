@@ -1,0 +1,121 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -41,23 +41,37 @@
+         "${CMAKE_CURRENT_BINARY_DIR}"
+     )
+
+-#declare target compilation options
+-target_compile_options(rlottie
+-                    PUBLIC
+-                    PRIVATE
+-                        -std=c++14
+-                        -fno-exceptions
+-                        -fno-unwind-tables
+-                        -fno-asynchronous-unwind-tables
+-                        -fno-rtti
+-                        -Wall
+-                        -Werror
+-                        -Wextra
+-                        -Wnon-virtual-dtor
+-                        -Woverloaded-virtual
+-                        -Wno-unused-parameter
+-                        -fvisibility=hidden
+-                    )
++#declare common target compilation options
++if(MSVC)
++    target_compile_options(rlottie
++                        PUBLIC
++                        PRIVATE
++                            /std:c++14
++                            /EHs-c- # disable exceptions
++                            /GR- # disable RTTI
++                            /W3
++                        )
++else()
++    target_compile_options(rlottie
++                        PUBLIC
++                        PRIVATE
++                            -std=c++14
++                            -fno-exceptions
++                            -fno-unwind-tables
++                            -fno-asynchronous-unwind-tables
++                            -fno-rtti
++                            -Wall
++                            -Wextra
++                            -Wnon-virtual-dtor
++                            -Woverloaded-virtual
++                            -Wno-unused-parameter
++                            -fvisibility=hidden
++                        )
++endif()
++
++if (WIN32 AND NOT BUILD_SHARED_LIBS)
++    target_compile_definitions(rlottie PUBLIC -DLOT_BUILD=0)
++endif()
+
+ #declare dependancy
+ set( CMAKE_THREAD_PREFER_PTHREAD TRUE )
+@@ -78,7 +92,7 @@
+                         PUBLIC
+                              "-Wl, -undefined error"
+                           )
+-else()
++elseif(NOT MSVC)
+     target_link_libraries(rlottie
+                         PUBLIC
+                              "-Wl,--no-undefined"
+@@ -121,6 +135,7 @@
+          LIBRARY     DESTINATION    ${LIB_INSTALL_DIR}
+          ARCHIVE     DESTINATION    ${LIB_INSTALL_DIR}
+          INCLUDES    DESTINATION    include
++         RUNTIME     DESTINATION    bin
+        )
+
+ #install config file.
+--- a/example/CMakeLists.txt
++++ b/example/CMakeLists.txt
+@@ -1,8 +1,14 @@
+ add_executable(lottie2gif "lottie2gif.cpp")
+
+-target_compile_options(lottie2gif
+-                       PRIVATE
+-                       -std=c++11)
++if(MSVC)
++    target_compile_options(lottie2gif
++                           PRIVATE
++                           /std:c++11)
++else()
++    target_compile_options(lottie2gif
++                           PRIVATE
++                           -std=c++11)
++endif()
+
+ target_link_libraries(lottie2gif rlottie)
+
+--- a/src/vector/stb/CMakeLists.txt
++++ b/src/vector/stb/CMakeLists.txt
+@@ -2,9 +2,11 @@
+     add_library(rlottie-image-loader SHARED
+                 stb_image.cpp
+                )
+-    target_compile_options(rlottie-image-loader PRIVATE
+-                           -fvisibility=hidden
+-                          )
++    if(NOT MSVC)
++        target_compile_options(rlottie-image-loader PRIVATE
++                               -fvisibility=hidden
++                              )
++    endif()
+     set_target_properties(rlottie-image-loader PROPERTIES
+                           DEFINE_SYMBOL LOT_BUILD
+                          )
+--- a/src/vector/vrle.cpp
++++ b/src/vector/vrle.cpp
+@@ -17,6 +17,7 @@
+  */
+
+ #include "vrle.h"
++#include <limits>
+ #include <vrect.h>
+ #include <algorithm>
+ #include <array>

@@ -1,0 +1,24 @@
+[1/24] Building CXX object CMakeFiles/avemotion_evaluation.dir/src/evaluation/PropertyEvaluator.cpp.o
+[2/24] Linking CXX static library libavemotion_evaluation.a
+[3/24] Building CXX object CMakeFiles/avemotion_property_characterize.dir/apps/property_characterize/main.cpp.o
+[4/24] Building CXX object CMakeFiles/avemotion_property_evaluator_tests.dir/tests/property_evaluator_tests.cpp.o
+[5/24] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[6/24] Linking CXX executable avemotion_property_evaluator_tests
+[7/24] Building CXX object CMakeFiles/avemotion_property_parity_tests.dir/tests/property_parity_tests.cpp.o
+[8/24] Building CXX object CMakeFiles/avemotion_runtime.dir/src/model/TelegramParsedModelBuilder.cpp.o
+[9/24] Linking CXX static library libavemotion_runtime.a
+[10/24] Linking CXX executable avemotion_property_characterize
+[11/24] Linking CXX executable avemotion_model_characterize
+[12/24] Linking CXX executable avemotion_scene_characterize
+[13/24] Linking CXX executable avemotion_plan_characterize
+[14/24] Linking CXX executable avemotion_direct2d_header_tests
+[15/24] Linking CXX executable avemotion_render_plan_tests
+[16/24] Linking CXX executable avemotion_property_parity_tests
+[17/24] Linking CXX executable avemotion_runtime_seams_tests
+[18/24] Linking CXX executable avemotion_parsed_model_tests
+[19/24] Linking CXX executable avemotion_asset_model_tests
+[20/24] Linking CXX executable avemotion_playback_tests
+[21/24] Linking CXX executable avemotion_model_render_plan_tests
+[22/24] Linking CXX executable avemotion_canonical_geometry_tests
+[23/24] Linking CXX executable avemotion_scene_golden_tests
+[24/24] Linking CXX executable avemotion_plan_golden_tests

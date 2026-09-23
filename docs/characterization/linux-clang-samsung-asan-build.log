@@ -1,0 +1,67 @@
+[1/1] Cleaning all built files...
+Cleaning... 61 files.
+[1/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_math.cpp.o
+[2/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_raster.cpp.o
+[3/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_stroker.cpp.o
+[4/61] Building CXX object CMakeFiles/avemotion_core.dir/src/core/Hash.cpp.o
+[5/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/stb/stb_image.cpp.o
+[6/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vrect.cpp.o
+[7/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdasher.cpp.o
+[8/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbrush.cpp.o
+[9/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbitmap.cpp.o
+[10/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpainter.cpp.o
+[11/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_common.cpp.o
+[12/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_sse2.cpp.o
+[13/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_neon.cpp.o
+[14/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper.cpp.o
+[15/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vrle.cpp.o
+[16/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpath.cpp.o
+[17/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vmatrix.cpp.o
+[18/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpathmesure.cpp.o
+[19/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdebug.cpp.o
+[20/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vinterpolator.cpp.o
+[21/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/velapsedtimer.cpp.o
+[22/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbezier.cpp.o
+[23/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vraster.cpp.o
+[24/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawable.cpp.o
+[25/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/varenaalloc.cpp.o
+[26/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vimageloader.cpp.o
+[27/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/zip/zip.cpp.o
+/mnt/data/work_part3/AveMotion/third_party/rlottie/samsung/source/src/lottie/zip/zip.cpp:155:20: warning: unused function 'zip_archive_finalize' [-Wunused-function]
+  155 | static inline void zip_archive_finalize(mz_zip_archive *pzip) {
+      |                    ^~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+[28/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieitem_capi.cpp.o
+[29/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieitem.cpp.o
+[30/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieloader.cpp.o
+[31/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieproxymodel.cpp.o
+[32/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottiemodel.cpp.o
+[33/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieanimation.cpp.o
+[34/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieparser.cpp.o
+[35/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottiekeypath.cpp.o
+[36/61] Linking CXX static library libavemotion_core.a
+[37/61] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/binding/c/lottieanimation_capi.cpp.o
+[38/61] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/UpstreamInfo.cpp.o
+[39/61] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/ReferenceRuntime.cpp.o
+[40/61] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RecordingBackend.cpp.o
+[41/61] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[42/61] Linking CXX static library _deps/rlottie-samsung/librlottie.a
+[43/61] Linking CXX static library libavemotion_reference.a
+[44/61] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RlottieSceneBridge.cpp.o
+[45/61] Linking CXX static library libavemotion_runtime.a
+[46/61] Building CXX object CMakeFiles/avemotion_probe.dir/apps/probe/main.cpp.o
+[47/61] Building CXX object CMakeFiles/avemotion_characterize.dir/apps/characterize/main.cpp.o
+[48/61] Building CXX object CMakeFiles/avemotion_scene_characterize.dir/apps/scene_characterize/main.cpp.o
+[49/61] Building CXX object CMakeFiles/avemotion_core_tests.dir/tests/core_tests.cpp.o
+[50/61] Building CXX object CMakeFiles/avemotion_runtime_seams_tests.dir/tests/runtime_seams_tests.cpp.o
+[51/61] Building CXX object CMakeFiles/avemotion_reference_tests.dir/tests/reference_tests.cpp.o
+[52/61] Building CXX object CMakeFiles/avemotion_manifest_tests.dir/tests/manifest_tests.cpp.o
+[53/61] Linking CXX executable avemotion_probe
+[54/61] Linking CXX executable avemotion_characterize
+[55/61] Linking CXX executable avemotion_scene_characterize
+[56/61] Linking CXX executable avemotion_core_tests
+[57/61] Building CXX object CMakeFiles/avemotion_scene_golden_tests.dir/tests/scene_golden_tests.cpp.o
+[58/61] Linking CXX executable avemotion_reference_tests
+[59/61] Linking CXX executable avemotion_manifest_tests
+[60/61] Linking CXX executable avemotion_runtime_seams_tests
+[61/61] Linking CXX executable avemotion_scene_golden_tests

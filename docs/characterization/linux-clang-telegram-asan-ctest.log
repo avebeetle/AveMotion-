@@ -1,0 +1,21 @@
+Test project /mnt/data/work_part3/AveMotion/out/build/linux-clang-telegram-asan
+    Start 1: avemotion.core
+1/8 Test #1: avemotion.core .......................   Passed    0.01 sec
+    Start 2: avemotion.vendor.verify
+2/8 Test #2: avemotion.vendor.verify ..............   Passed    0.56 sec
+    Start 3: avemotion.reference
+3/8 Test #3: avemotion.reference ..................   Passed    0.11 sec
+    Start 4: avemotion.runtime.seams
+4/8 Test #4: avemotion.runtime.seams ..............   Passed    0.13 sec
+    Start 5: avemotion.vendor.manifest
+5/8 Test #5: avemotion.vendor.manifest ............   Passed    0.01 sec
+    Start 6: avemotion.characterize.smoke
+6/8 Test #6: avemotion.characterize.smoke .........   Passed    0.02 sec
+    Start 7: avemotion.scene.characterize.smoke
+7/8 Test #7: avemotion.scene.characterize.smoke ...   Passed    0.01 sec
+    Start 8: avemotion.scene.golden
+8/8 Test #8: avemotion.scene.golden ...............   Passed    0.07 sec
+
+100% tests passed, 0 tests failed out of 8
+
+Total Test time (real) =   0.93 sec

@@ -1,0 +1,315 @@
+diff --git a/third_party/rlottie/telegram/source/inc/rlottiecommon.h b/third_party/rlottie/telegram/source/inc/rlottiecommon.h
+index d0a8c3a..9b7230c 100644
+--- a/third_party/rlottie/telegram/source/inc/rlottiecommon.h
++++ b/third_party/rlottie/telegram/source/inc/rlottiecommon.h
+@@ -139,6 +139,7 @@ typedef struct LOTNode {
+ #define AveSourceFlagLocalSolidPaint 0x0004
+ #define AveSourceFlagPaintStatic 0x0008
+ #define AveSourceFlagOpacitySeparated 0x0010
++#define AveInvalidSourceId 0xffffffffU
+ 
+     struct {
+         const float *ptPtr;
+@@ -206,6 +207,9 @@ typedef struct LOTNode {
+ 
+     float        mAveOpacity;
+     unsigned int mAveSourceFlags;
++    unsigned int mAveNodeId;
++    unsigned int mAveGeometryId;
++    unsigned int mAvePaintId;
+ } LOTNode;
+ 
+ 
+@@ -239,6 +243,12 @@ typedef struct LOTLayerNode {
+     unsigned char mAlpha;
+     const char  *keypath;
+ 
++    unsigned int mAveLayerId;
++    unsigned int mAveLayerCount;
++    unsigned int mAveNodeCount;
++    unsigned int mAveGeometryCount;
++    unsigned int mAvePaintCount;
++
+ } LOTLayerNode;
+ 
+ /**
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp b/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
+index b5e2fc6..e196408 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieitem.cpp
+@@ -85,6 +85,7 @@ LOTCompItem::LOTCompItem(LOTModel *model)
+     mCompData = model->mRoot.get();
+     mRootLayer = createLayerItem(mCompData->mRootLayer.get());
+     mRootLayer->setComplexContent(false);
++    mRootLayer->assignAveSourceIds(mAveSourceIds);
+     mViewSize = mCompData->size();
+ }
+ 
+@@ -155,6 +156,12 @@ bool LOTCompItem::update(int frameNo, const VSize &size, bool keepAspectRatio)
+ void LOTCompItem::buildRenderTree()
+ {
+     mRootLayer->buildLayerNode();
++    if (auto *root = mRootLayer->layerNode()) {
++        root->mAveLayerCount = mAveSourceIds.nextLayer;
++        root->mAveNodeCount = mAveSourceIds.nextNode;
++        root->mAveGeometryCount = mAveSourceIds.nextGeometry;
++        root->mAvePaintCount = mAveSourceIds.nextPaint;
++    }
+ }
+ 
+ const LOTLayerNode *LOTCompItem::renderTree() const
+@@ -220,6 +227,11 @@ VRle LOTMaskItem::rle()
+     return mRasterizer.rle();
+ }
+ 
++void LOTLayerItem::assignAveSourceIds(AveSourceIdState &ids)
++{
++    mAveLayerId = ids.nextLayer++;
++}
++
+ void LOTLayerItem::buildLayerNode()
+ {
+     if (!mLayerCNode) {
+@@ -238,7 +250,12 @@ void LOTLayerItem::buildLayerNode()
+         mLayerCNode->mClipPath.ptCount = 0;
+         mLayerCNode->mClipPath.elmCount = 0;
+         mLayerCNode->keypath = name().c_str();
++        mLayerCNode->mAveLayerCount = 0U;
++        mLayerCNode->mAveNodeCount = 0U;
++        mLayerCNode->mAveGeometryCount = 0U;
++        mLayerCNode->mAvePaintCount = 0U;
+     }
++    mLayerCNode->mAveLayerId = mAveLayerId;
+     if (complexContent()) mLayerCNode->mAlpha = uchar(combinedAlpha() * 255.f);
+     mLayerCNode->mVisible = visible();
+     // update matte
+@@ -552,6 +569,14 @@ LOTCompLayerItem::LOTCompLayerItem(LOTLayerData *layerModel)
+     if (mLayers.size() > 1) setComplexContent(true);
+ }
+ 
++void LOTCompLayerItem::assignAveSourceIds(AveSourceIdState &ids)
++{
++    LOTLayerItem::assignAveSourceIds(ids);
++    for (auto &layer : mLayers) {
++        layer->assignAveSourceIds(ids);
++    }
++}
++
+ void LOTCompLayerItem::buildLayerNode()
+ {
+     LOTLayerItem::buildLayerNode();
+@@ -769,6 +794,13 @@ void LOTSolidLayerItem::updateContent()
+     }
+ }
+ 
++void LOTSolidLayerItem::assignAveSourceIds(AveSourceIdState &ids)
++{
++    LOTLayerItem::assignAveSourceIds(ids);
++    mRenderNode.setAveSourceIds(
++        ids.nextNode++, ids.nextGeometry++, ids.nextPaint++);
++}
++
+ void LOTSolidLayerItem::buildLayerNode()
+ {
+     LOTLayerItem::buildLayerNode();
+@@ -828,6 +860,13 @@ void LOTImageLayerItem::renderList(std::vector<VDrawable *> &list)
+     list.push_back(&mRenderNode);
+ }
+ 
++void LOTImageLayerItem::assignAveSourceIds(AveSourceIdState &ids)
++{
++    LOTLayerItem::assignAveSourceIds(ids);
++    mRenderNode.setAveSourceIds(
++        ids.nextNode++, ids.nextGeometry++, ids.nextPaint++);
++}
++
+ void LOTImageLayerItem::buildLayerNode()
+ {
+     LOTLayerItem::buildLayerNode();
+@@ -940,6 +979,12 @@ std::unique_ptr<LOTContentItem> LOTShapeLayerItem::createContentItem(
+     }
+ }
+ 
++void LOTShapeLayerItem::assignAveSourceIds(AveSourceIdState &ids)
++{
++    LOTLayerItem::assignAveSourceIds(ids);
++    mRoot->assignAveSourceIds(ids);
++}
++
+ void LOTShapeLayerItem::updateContent()
+ {
+     mRoot->update(frameNo(), combinedMatrix(), combinedAlpha(), flag());
+@@ -1062,6 +1107,13 @@ void LOTContentGroupItem::addChildren(LOTGroupData *data)
+     std::reverse(mContents.begin(), mContents.end());
+ }
+ 
++void LOTContentGroupItem::assignAveSourceIds(AveSourceIdState &ids)
++{
++    for (auto &content : mContents) {
++        content->assignAveSourceIds(ids);
++    }
++}
++
+ void LOTContentGroupItem::update(int frameNo, const VMatrix &parentMatrix,
+                                  float parentAlpha, const DirtyFlag &flag)
+ {
+@@ -1314,6 +1366,12 @@ LOTPaintDataItem::LOTPaintDataItem(bool staticContent)
+ {
+ }
+ 
++void LOTPaintDataItem::assignAveSourceIds(AveSourceIdState &ids)
++{
++    mDrawable.setAveSourceIds(
++        ids.nextNode++, ids.nextGeometry++, ids.nextPaint++);
++}
++
+ void LOTPaintDataItem::update(int   frameNo, const VMatrix & /*parentMatrix*/,
+                               float parentAlpha, const DirtyFlag &flag)
+ {
+@@ -1684,6 +1742,16 @@ static void updateGStops(LOTNode *n, const VGradient *grad)
+     }
+ }
+ 
++void LOTDrawable::setAveSourceIds(
++    unsigned int nodeId,
++    unsigned int geometryId,
++    unsigned int paintId)
++{
++    mAveNodeId = nodeId;
++    mAveGeometryId = geometryId;
++    mAvePaintId = paintId;
++}
++
+ void LOTDrawable::clearAveSourceMetadata()
+ {
+     mAveLocalPath = {};
+@@ -1739,6 +1807,9 @@ void LOTDrawable::sync()
+         mAveLocalColor.a};
+     mCNode->mAveOpacity = mAveOpacity;
+     mCNode->mAveSourceFlags = mAveSourceFlags;
++    mCNode->mAveNodeId = mAveNodeId;
++    mCNode->mAveGeometryId = mAveGeometryId;
++    mCNode->mAvePaintId = mAvePaintId;
+     if ((mAveSourceFlags & AveSourceFlagLocalGeometry) != 0U) {
+         const auto &localElements = mAveLocalPath.elements();
+         const auto &localPoints = mAveLocalPath.points();
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieitem.h b/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
+index 8c3691e..27725f1 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieitem.h
+@@ -47,6 +47,14 @@ class LOTLayerItem;
+ class LOTMaskItem;
+ class VDrawable;
+ 
++struct AveSourceIdState final
++{
++   unsigned int nextLayer{0U};
++   unsigned int nextNode{0U};
++   unsigned int nextGeometry{0U};
++   unsigned int nextPaint{0U};
++};
++
+ class LOTDrawable : public VDrawable
+ {
+ public:
+@@ -60,6 +68,10 @@ public:
+         const VColor &color,
+         float separatedOpacity,
+         bool paintStatic);
++    void setAveSourceIds(
++        unsigned int nodeId,
++        unsigned int geometryId,
++        unsigned int paintId);
+ public:
+     std::unique_ptr<LOTNode>  mCNode{nullptr};
+     VPath                     mAveLocalPath;
+@@ -67,6 +79,9 @@ public:
+     VColor                    mAveLocalColor;
+     float                     mAveOpacity{1.0f};
+     unsigned int              mAveSourceFlags{0U};
++    unsigned int              mAveNodeId{AveInvalidSourceId};
++    unsigned int              mAveGeometryId{AveInvalidSourceId};
++    unsigned int              mAvePaintId{AveInvalidSourceId};
+ 
+     ~LOTDrawable() {
+         if (mCNode && mCNode->mGradient.stopPtr)
+@@ -94,6 +109,7 @@ private:
+    int                                         mCurFrameNo;
+    std::vector<LOTNode *>                      mRenderList;
+    std::vector<VDrawable *>                    mDrawableList;
++   AveSourceIdState                            mAveSourceIds;
+ };
+ 
+ class LOTLayerMaskItem;
+@@ -125,6 +141,7 @@ public:
+    void setComplexContent(bool value) { mComplexContent = value;}
+    bool complexContent() const {return mComplexContent;}
+    virtual void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha);
++   virtual void assignAveSourceIds(AveSourceIdState &ids);
+    VMatrix matrix(int frameNo) const;
+    virtual void renderList(std::vector<VDrawable *> &){}
+    virtual void render(VPainter *painter, const VRle &mask, const VRle &matteRle);
+@@ -157,6 +174,7 @@ protected:
+    int                                         mFrameNo{-1};
+    DirtyFlag                                   mDirtyFlag{DirtyFlagBit::All};
+    bool                                        mComplexContent{false};
++   unsigned int                                mAveLayerId{AveInvalidSourceId};
+ };
+ 
+ class LOTCompLayerItem: public LOTLayerItem
+@@ -166,6 +184,7 @@ public:
+    void renderList(std::vector<VDrawable *> &list)final;
+    void render(VPainter *painter, const VRle &mask, const VRle &matteRle) final;
+    void buildLayerNode() final;
++   void assignAveSourceIds(AveSourceIdState &ids) final;
+    bool resolveKeyPath(LOTKeyPath &keyPath, uint depth, LOTVariant &value) override;
+ protected:
+    void updateContent() final;
+@@ -184,6 +203,7 @@ class LOTSolidLayerItem: public LOTLayerItem
+ public:
+    explicit LOTSolidLayerItem(LOTLayerData *layerData);
+    void buildLayerNode() final;
++   void assignAveSourceIds(AveSourceIdState &ids) final;
+ protected:
+    void updateContent() final;
+    void renderList(std::vector<VDrawable *> &list) final;
+@@ -201,6 +221,7 @@ public:
+    static std::unique_ptr<LOTContentItem> createContentItem(LOTData *contentData);
+    void renderList(std::vector<VDrawable *> &list)final;
+    void buildLayerNode() final;
++   void assignAveSourceIds(AveSourceIdState &ids) final;
+    bool resolveKeyPath(LOTKeyPath &keyPath, uint depth, LOTVariant &value) override;
+ protected:
+    void updateContent() final;
+@@ -221,6 +242,7 @@ class LOTImageLayerItem: public LOTLayerItem
+ public:
+    explicit LOTImageLayerItem(LOTLayerData *layerData);
+    void buildLayerNode() final;
++   void assignAveSourceIds(AveSourceIdState &ids) final;
+ protected:
+    void updateContent() final;
+    void renderList(std::vector<VDrawable *> &list) final;
+@@ -284,6 +306,7 @@ public:
+    LOTContentItem(ContentType type=ContentType::Unknown):mType(type) {}
+    virtual void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) = 0;
+    virtual void renderList(std::vector<VDrawable *> &){}
++   virtual void assignAveSourceIds(AveSourceIdState &) {}
+    void setParent(LOTContentItem *parent) {mParent = parent;}
+    LOTContentItem *parent() const {return mParent;}
+    virtual bool resolveKeyPath(LOTKeyPath &, uint, LOTVariant &) {return false;}
+@@ -303,6 +326,7 @@ public:
+    void processTrimItems(std::vector<LOTPathDataItem *> &list);
+    void processPaintItems(std::vector<LOTPathDataItem *> &list);
+    void renderList(std::vector<VDrawable *> &list) override;
++   void assignAveSourceIds(AveSourceIdState &ids) override;
+    const VMatrix & matrix() const { return mMatrix;}
+    bool transformChainStaticTo(const LOTContentGroupItem *ancestor) const;
+    bool localTransformStatic() const { return mLocalTransformStatic; }
+@@ -423,6 +447,7 @@ public:
+    void addPathItems(std::vector<LOTPathDataItem *> &list, size_t startOffset);
+    void update(int frameNo, const VMatrix &parentMatrix, float parentAlpha, const DirtyFlag &flag) override;
+    void renderList(std::vector<VDrawable *> &list) final;
++   void assignAveSourceIds(AveSourceIdState &ids) final;
+ protected:
+    virtual void updateContent(int frameNo) = 0;
+    virtual void updateRenderNode();

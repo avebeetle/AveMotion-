@@ -1,0 +1,17 @@
+AveMotion Part 14 validation matrix
+Version: 0.14.0
+
+- Telegram + Clang Debug: 29/29 PASS
+- Telegram + GCC Release: 29/29 PASS
+- Telegram + Clang ASan: 29/29 PASS
+- Samsung + Clang Debug: 18/18 PASS
+- Samsung + GCC Release: 18/18 PASS
+- Samsung + Clang ASan: 18/18 PASS
+- Standalone/offline Clang: 9/9 PASS
+- Standalone/offline Clang ASan + UBSan: 9/9 PASS
+- Source-geometry Clang/GCC manifest: byte-identical
+- Source-geometry golden SHA-256:
+  f79f5087f1e61fdbf9d153a073a396975ab25e3195be9f164f70db34ee01fb8c
+
+- CMake install/export: PASS
+- External find_package(AveMotion 0.14): configure/build/link/run PASS

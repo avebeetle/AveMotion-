@@ -1,0 +1,15 @@
+AveMotion render plan
+  instance:        2
+  evaluation:      3
+  plan sequence:   3
+  plan:            c3367a44c824354e
+  topology:        0347c1c1497d356c
+  geometry ids:    7a81bd940794c7c7
+  paint ids:       29320f320e42f8ef
+  presentation:    01f1e2e6def08676
+  source items:    4
+  visible items:   4
+  geometry updates:4
+  paint updates:   0
+  visual changed:  1
+  dirty valid:     1

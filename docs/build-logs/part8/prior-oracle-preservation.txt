@@ -1,0 +1,1 @@
+All pre-Part8 pixel/scene/plan/model goldens are byte-identical to Part7.

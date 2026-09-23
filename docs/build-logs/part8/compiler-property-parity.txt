@@ -1,0 +1,1 @@
+Telegram property manifests are byte-identical between Clang and GCC.

@@ -1,0 +1,1 @@
+bd42276cf5e098b8219b5cb6c919d7eeb817bd1cbeac70ece4fde733dfb8628f  tests/golden/source-geometry-telegram.tsv

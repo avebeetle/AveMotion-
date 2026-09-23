@@ -1,0 +1,28 @@
+AveMotion Part 7 final validation matrix
+
+Environment:
+  CMake 3.31.6
+  Ninja 1.12.1
+  Clang 17
+  GCC 14.2
+  Linux x86-64
+
+Configurations:
+  Telegram + Clang Debug:        20/20 PASS
+  Telegram + GCC Release:        20/20 PASS
+  Telegram + Clang ASan:         20/20 PASS
+  Samsung + Clang Debug:         15/15 PASS
+  Samsung + GCC Release:         15/15 PASS
+  Samsung + Clang ASan:          15/15 PASS
+  Offline/installable SDK:        6/6 PASS
+  CMake install/export:                PASS
+  external find_package consumer:      PASS
+  Telegram patch reproduction:         PASS
+  Telegram vendor fingerprint:         PASS
+  Samsung vendor fingerprint:          PASS
+  Clang/GCC model summary parity:      PASS
+  Clang/GCC parsed detail parity:      PASS
+  prior scene/render-plan oracles:     PASS
+
+Windows/MSVC/Direct2D execution:
+  NOT RUN in this Linux environment. Windows presets/targets remain prepared.

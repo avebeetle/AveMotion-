@@ -1,0 +1,13 @@
+AveMotion Part 24 validation matrix
+===================================
+Telegram + Clang Debug:        56/56 PASS
+Telegram + GCC Release:        56/56 PASS
+Telegram + Clang ASan 1-36:    36/36 PASS
+Telegram + Clang ASan 37-56:   20/20 PASS
+Samsung + GCC Release:         37/37 PASS
+Standalone/offline Clang:      27/27 PASS
+Safe ZIP runner:               PASS
+Dedicated corpus preset:       PASS
+CMake install/export 0.24.0:   PASS
+External find_package:         PASS
+Vendor integrity:              PASS

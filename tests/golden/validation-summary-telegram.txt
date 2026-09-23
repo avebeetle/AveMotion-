@@ -1,0 +1,12 @@
+assets=16
+applicationAccepted=16
+nativeDirect2DReady=6
+fallbackAssets=5
+unsupportedAssets=0
+telegramAccepted=1
+nodes=330
+properties=829
+tracks=80
+segments=108
+shapePoints=400
+workUnits=2808

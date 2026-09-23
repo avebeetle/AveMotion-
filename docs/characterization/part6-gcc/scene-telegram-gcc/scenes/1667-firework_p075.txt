@@ -1,0 +1,14 @@
+AveMotion evaluated scene
+  instance:   1
+  frame:      58
+  viewport:   128x128
+  scene:      346ca5f88d9f0b45
+  topology:   4f9a18fcda180109
+  geometry:   c710e2aa84a286c5
+  paint:      1b0971ab681a4e03
+  layers:     262 (visible 244)
+  draw items: 102
+  masks:      0
+  path verbs: 1356
+  path points:2031
+  changed:    topology=0 geometry=1 paint=0 visual=1

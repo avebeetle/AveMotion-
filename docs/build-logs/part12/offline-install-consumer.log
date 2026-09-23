@@ -1,0 +1,91 @@
+Preset CMake variables:
+
+  AVEMOTION_BUILD_CHARACTERIZER="OFF"
+  AVEMOTION_BUILD_PLAN_CHARACTERIZER="OFF"
+  AVEMOTION_BUILD_PROBE="ON"
+  AVEMOTION_BUILD_PROPERTY_CHARACTERIZER="OFF"
+  AVEMOTION_BUILD_SCENE_CHARACTERIZER="OFF"
+  AVEMOTION_ENABLE_INSTALL="ON"
+  AVEMOTION_RLOTTIE_VARIANT="none"
+  BUILD_TESTING="ON"
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_CXX_COMPILER="clang++"
+  CMAKE_C_COMPILER="clang"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+
+-- Configuring done (3.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/work_part11/out/build/linux-clang-offline
+[1/5] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/PrimitivePathGenerator.cpp.o
+[2/5] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/SourceGeometryProjector.cpp.o
+[3/5] Linking CXX static library libavemotion_rendering.a
+[4/5] Linking CXX executable avemotion_direct2d_header_tests
+[5/5] Linking CXX executable avemotion_render_plan_tests
+Test project /mnt/data/work_part11/out/build/linux-clang-offline
+    Start 1: avemotion.core
+1/7 Test #1: avemotion.core ....................   Passed    0.00 sec
+    Start 2: avemotion.evaluation.properties
+2/7 Test #2: avemotion.evaluation.properties ...   Passed    0.01 sec
+    Start 3: avemotion.render.plan
+3/7 Test #3: avemotion.render.plan .............   Passed    0.00 sec
+    Start 4: avemotion.direct2d.header
+4/7 Test #4: avemotion.direct2d.header .........   Passed    0.00 sec
+    Start 5: avemotion.vendor.verify
+5/7 Test #5: avemotion.vendor.verify ...........   Passed    0.63 sec
+    Start 6: avemotion.offline
+6/7 Test #6: avemotion.offline .................   Passed    0.00 sec
+    Start 7: avemotion.runtime.offline
+7/7 Test #7: avemotion.runtime.offline .........   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 7
+
+Total Test time (real) =   0.65 sec
+-- Install configuration: "Debug"
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/libavemotion_core.a
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/libavemotion_model.a
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/libavemotion_evaluation.a
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/libavemotion_reference.a
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/libavemotion_runtime.a
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/libavemotion_rendering.a
+-- Installing: /mnt/data/work_part11/out/install-part12/include
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/core
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/core/Hash.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/render
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/render/SourceGeometryProjector.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/render/RenderPlan.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/render/HeadlessBackend.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/render/RenderPlanner.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/evaluation
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/evaluation/PropertyEvaluator.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/runtime
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/runtime/EvaluatedScene.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/runtime/RecordingBackend.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/runtime/Diagnostics.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/runtime/Handles.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/runtime/Runtime.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/runtime/Playback.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/backends
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/backends/direct2d
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/backends/direct2d/Direct2DBackend.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/model
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/model/Ids.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/model/AssetModel.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/reference
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/reference/UpstreamInfo.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/include/avemotion/reference/ReferenceRuntime.hpp
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/cmake/AveMotion/AveMotionTargets.cmake
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/cmake/AveMotion/AveMotionTargets-debug.cmake
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/cmake/AveMotion/AveMotionConfig.cmake
+-- Installing: /mnt/data/work_part11/out/install-part12/lib/cmake/AveMotion/AveMotionConfigVersion.cmake
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/work_part11/out/consumer-part12
+[1/2] Building CXX object CMakeFiles/avemotion_installed_consumer.dir/main.cpp.o
+[2/2] Linking CXX executable avemotion_installed_consumer

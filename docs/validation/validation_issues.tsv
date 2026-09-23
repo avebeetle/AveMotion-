@@ -1,0 +1,84 @@
+asset	profile	severity	code	feature	node	property	message
+1667-firework	application	warning	reference-fallback-required	precomposition			precomposition occurs 22 time(s) and is classified as reference-fallback
+1667-firework	telegram-sticker	warning	reference-fallback-required	precomposition			precomposition occurs 22 time(s) and is classified as reference-fallback
+1667-firework	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+1667-firework	telegram-sticker	error	telegram-frame-rate-out-of-range	unknown			Telegram animated sticker frame rate must be between 30 and 60 FPS
+1667-firework	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+ModernPictogramsForLottie_LoudMute	application	warning	reference-fallback-required	precomposition			precomposition occurs 2 time(s) and is classified as reference-fallback
+ModernPictogramsForLottie_LoudMute	application	info	native-subset-required	trim-path			trim-path occurs 2 time(s) and is classified as native-subset
+ModernPictogramsForLottie_LoudMute	application	warning	reference-fallback-required	matte			matte occurs 2 time(s) and is classified as reference-fallback
+ModernPictogramsForLottie_LoudMute	telegram-sticker	warning	reference-fallback-required	precomposition			precomposition occurs 2 time(s) and is classified as reference-fallback
+ModernPictogramsForLottie_LoudMute	telegram-sticker	info	native-subset-required	trim-path			trim-path occurs 2 time(s) and is classified as native-subset
+ModernPictogramsForLottie_LoudMute	telegram-sticker	warning	reference-fallback-required	matte			matte occurs 2 time(s) and is classified as reference-fallback
+ModernPictogramsForLottie_LoudMute	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+ModernPictogramsForLottie_LoudMute	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+ModernPictogramsForLottie_LoudMute	telegram-sticker	error	telegram-forbidden-feature	matte			matte occurs 2 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+StickAndBall	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+StickAndBall	telegram-sticker	error	telegram-frame-rate-out-of-range	unknown			Telegram animated sticker frame rate must be between 30 and 60 FPS
+StickAndBall	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+dynamic_path_test	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+dynamic_path_test	telegram-sticker	error	telegram-frame-rate-out-of-range	unknown			Telegram animated sticker frame rate must be between 30 and 60 FPS
+dynamic_path_test	telegram-sticker	error	telegram-duration-exceeded	unknown			Telegram animated sticker duration exceeds 3 seconds
+dynamic_path_test	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+dynamic_path_test	telegram-sticker	error	telegram-forbidden-feature	star			star occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+gradient_animated_background	application	warning	reference-fallback-required	solid-layer			solid-layer occurs 1 time(s) and is classified as reference-fallback
+gradient_animated_background	application	warning	reference-fallback-required	gradient-fill			gradient-fill occurs 1 time(s) and is classified as reference-fallback
+gradient_animated_background	telegram-sticker	warning	reference-fallback-required	solid-layer			solid-layer occurs 1 time(s) and is classified as reference-fallback
+gradient_animated_background	telegram-sticker	warning	reference-fallback-required	gradient-fill			gradient-fill occurs 1 time(s) and is classified as reference-fallback
+gradient_animated_background	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+gradient_animated_background	telegram-sticker	error	telegram-frame-rate-out-of-range	unknown			Telegram animated sticker frame rate must be between 30 and 60 FPS
+gradient_animated_background	telegram-sticker	error	telegram-duration-exceeded	unknown			Telegram animated sticker duration exceeds 3 seconds
+gradient_animated_background	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+gradient_animated_background	telegram-sticker	error	telegram-forbidden-feature	solid-layer			solid-layer occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+mask	application	warning	reference-fallback-required	solid-layer			solid-layer occurs 1 time(s) and is classified as reference-fallback
+mask	application	warning	reference-fallback-required	mask			mask occurs 1 time(s) and is classified as reference-fallback
+mask	telegram-sticker	warning	reference-fallback-required	solid-layer			solid-layer occurs 1 time(s) and is classified as reference-fallback
+mask	telegram-sticker	warning	reference-fallback-required	mask			mask occurs 1 time(s) and is classified as reference-fallback
+mask	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+mask	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+mask	telegram-sticker	error	telegram-forbidden-feature	solid-layer			solid-layer occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+mask	telegram-sticker	error	telegram-forbidden-feature	mask			mask occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+matte_two_item_with_lowerlayer	application	warning	reference-fallback-required	matte			matte occurs 1 time(s) and is classified as reference-fallback
+matte_two_item_with_lowerlayer	telegram-sticker	warning	reference-fallback-required	matte			matte occurs 1 time(s) and is classified as reference-fallback
+matte_two_item_with_lowerlayer	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+matte_two_item_with_lowerlayer	telegram-sticker	error	telegram-frame-rate-out-of-range	unknown			Telegram animated sticker frame rate must be between 30 and 60 FPS
+matte_two_item_with_lowerlayer	telegram-sticker	error	telegram-duration-exceeded	unknown			Telegram animated sticker duration exceeds 3 seconds
+matte_two_item_with_lowerlayer	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+matte_two_item_with_lowerlayer	telegram-sticker	error	telegram-forbidden-feature	star			star occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+matte_two_item_with_lowerlayer	telegram-sticker	error	telegram-forbidden-feature	matte			matte occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+polystar_line_clockwise_trim	application	info	native-subset-required	trim-path			trim-path occurs 1 time(s) and is classified as native-subset
+polystar_line_clockwise_trim	telegram-sticker	info	native-subset-required	trim-path			trim-path occurs 1 time(s) and is classified as native-subset
+polystar_line_clockwise_trim	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+polystar_line_clockwise_trim	telegram-sticker	error	telegram-frame-rate-out-of-range	unknown			Telegram animated sticker frame rate must be between 30 and 60 FPS
+polystar_line_clockwise_trim	telegram-sticker	error	telegram-duration-exceeded	unknown			Telegram animated sticker duration exceeds 3 seconds
+polystar_line_clockwise_trim	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+polystar_line_clockwise_trim	telegram-sticker	error	telegram-forbidden-feature	star			star occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+auto_orient_spatial	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+auto_orient_spatial	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+auto_orient_spatial	telegram-sticker	error	telegram-forbidden-feature	auto-orient			auto-orient occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+multi_trim_path_geometry	application	info	native-subset-required	trim-path			trim-path occurs 6 time(s) and is classified as native-subset
+multi_trim_path_geometry	telegram-sticker	info	native-subset-required	trim-path			trim-path occurs 6 time(s) and is classified as native-subset
+multi_trim_path_geometry	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+multi_trim_path_geometry	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+multi_trim_path_geometry	telegram-sticker	error	telegram-forbidden-feature	star			star occurs 2 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+polystar_polygon_geometry	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+polystar_polygon_geometry	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+polystar_polygon_geometry	telegram-sticker	error	telegram-forbidden-feature	star			star occurs 5 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+primitive_geometry	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+primitive_geometry	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+repeater_content_group	application	info	native-subset-required	repeater			repeater occurs 4 time(s) and is classified as native-subset
+repeater_content_group	telegram-sticker	info	native-subset-required	repeater			repeater occurs 4 time(s) and is classified as native-subset
+repeater_content_group	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+repeater_content_group	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+repeater_content_group	telegram-sticker	error	telegram-forbidden-feature	repeater			repeater occurs 4 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+repeater_geometry	application	info	native-subset-required	repeater			repeater occurs 6 time(s) and is classified as native-subset
+repeater_geometry	telegram-sticker	info	native-subset-required	repeater			repeater occurs 6 time(s) and is classified as native-subset
+repeater_geometry	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+repeater_geometry	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+repeater_geometry	telegram-sticker	error	telegram-forbidden-feature	repeater			repeater occurs 6 time(s) but is forbidden by the Telegram animated-sticker authoring profile
+telegram_sticker_basic	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+trim_path_geometry	application	info	native-subset-required	trim-path			trim-path occurs 8 time(s) and is classified as native-subset
+trim_path_geometry	telegram-sticker	info	native-subset-required	trim-path			trim-path occurs 8 time(s) and is classified as native-subset
+trim_path_geometry	telegram-sticker	error	telegram-canvas-mismatch	unknown			Telegram animated stickers require a 512x512 canvas
+trim_path_geometry	telegram-sticker	info	telegram-bounds-not-proven	unknown			authored-model validation cannot prove that all animated bounds remain inside the canvas
+trim_path_geometry	telegram-sticker	error	telegram-forbidden-feature	star			star occurs 1 time(s) but is forbidden by the Telegram animated-sticker authoring profile

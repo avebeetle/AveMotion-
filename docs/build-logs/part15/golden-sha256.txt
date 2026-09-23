@@ -1,0 +1,4 @@
+b9d99319180465fab83244a3e2ef585c10738af3b172c18aecab89217a71f275  tests/golden/source-geometry-telegram.tsv
+4bf3f3c1397bbeb6c5821a676eec82ca5299ba94be39fdad2e63e079d64b0dd3  tests/fixtures/multi_trim_path_geometry.json
+b9d99319180465fab83244a3e2ef585c10738af3b172c18aecab89217a71f275  out/build/linux-clang-telegram-debug/source-geometry-golden/source_geometry_manifest.tsv
+b9d99319180465fab83244a3e2ef585c10738af3b172c18aecab89217a71f275  out/build/linux-gcc-telegram-release/source-geometry-golden/source_geometry_manifest.tsv

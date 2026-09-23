@@ -1,0 +1,7 @@
+[1/7] Building CXX object CMakeFiles/avemotion_evaluation.dir/src/evaluation/PropertyEvaluator.cpp.o
+[2/7] Linking CXX static library libavemotion_evaluation.a
+[3/7] Linking CXX executable avemotion_runtime_offline_tests
+[4/7] Linking CXX executable avemotion_direct2d_header_tests
+[5/7] Linking CXX executable avemotion_render_plan_tests
+[6/7] Building CXX object CMakeFiles/avemotion_property_evaluator_tests.dir/tests/property_evaluator_tests.cpp.o
+[7/7] Linking CXX executable avemotion_property_evaluator_tests

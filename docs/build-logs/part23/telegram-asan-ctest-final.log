@@ -1,0 +1,61 @@
+Internal ctest changing into directory: /mnt/data/AveMotion-Part23-repo/out/build/linux-clang-telegram-asan
+Test project /mnt/data/AveMotion-Part23-repo/out/build/linux-clang-telegram-asan
+      Start  1: avemotion.cmake.legacy_subproject
+ 1/51 Test  #1: avemotion.cmake.legacy_subproject ...............   Passed    0.84 sec
+      Start  2: avemotion.cmake.win32_manifest_wiring
+ 2/51 Test  #2: avemotion.cmake.win32_manifest_wiring ...........   Passed    0.61 sec
+      Start  3: avemotion.cmake.player_wiring
+ 3/51 Test  #3: avemotion.cmake.player_wiring ...................   Passed    0.63 sec
+      Start  4: avemotion.cmake.tgs_wiring
+ 4/51 Test  #4: avemotion.cmake.tgs_wiring ......................   Passed    0.64 sec
+      Start  5: avemotion.cmake.validation_wiring
+ 5/51 Test  #5: avemotion.cmake.validation_wiring ...............   Passed    0.59 sec
+      Start  6: avemotion.validation.tgs_corpus_integrity
+ 6/51 Test  #6: avemotion.validation.tgs_corpus_integrity .......   Passed    0.62 sec
+      Start  7: avemotion.core
+ 7/51 Test  #7: avemotion.core ..................................   Passed    0.00 sec
+      Start  8: avemotion.formats.tgs
+ 8/51 Test  #8: avemotion.formats.tgs ...........................   Passed    0.01 sec
+      Start  9: avemotion.runtime.tgs
+ 9/51 Test  #9: avemotion.runtime.tgs ...........................   Passed    0.31 sec
+      Start 10: avemotion.validation.compatibility_corpus
+10/51 Test #10: avemotion.validation.compatibility_corpus .......   Passed    4.97 sec
+      Start 11: avemotion.golden.cross_platform_policy
+11/51 Test #11: avemotion.golden.cross_platform_policy ..........   Passed    0.00 sec
+      Start 12: avemotion.golden.source_geometry_policy
+12/51 Test #12: avemotion.golden.source_geometry_policy .........   Passed    0.57 sec
+      Start 13: avemotion.validation.asset
+13/51 Test #13: avemotion.validation.asset ......................   Passed    0.01 sec
+      Start 14: avemotion.evaluation.properties
+14/51 Test #14: avemotion.evaluation.properties .................   Passed    0.01 sec
+      Start 15: avemotion.render.plan
+15/51 Test #15: avemotion.render.plan ...........................   Passed    0.00 sec
+      Start 16: avemotion.render.polystar_geometry
+16/51 Test #16: avemotion.render.polystar_geometry ..............   Passed    0.00 sec
+      Start 17: avemotion.render.repeater_transform
+17/51 Test #17: avemotion.render.repeater_transform .............   Passed    0.00 sec
+      Start 18: avemotion.render.trim_path
+18/51 Test #18: avemotion.render.trim_path ......................   Passed    0.00 sec
+      Start 19: avemotion.capture.metrics
+19/51 Test #19: avemotion.capture.metrics .......................   Passed    0.00 sec
+      Start 20: avemotion.direct2d.header
+20/51 Test #20: avemotion.direct2d.header .......................   Passed    0.00 sec
+      Start 21: avemotion.direct2d.contract
+21/51 Test #21: avemotion.direct2d.contract .....................   Passed    0.00 sec
+      Start 22: avemotion.vendor.ordering
+22/51 Test #22: avemotion.vendor.ordering .......................   Passed    0.57 sec
+      Start 23: avemotion.vendor.verify
+23/51 Test #23: avemotion.vendor.verify .........................   Passed    0.66 sec
+      Start 24: avemotion.reference
+24/51 Test #24: avemotion.reference .............................   Passed    0.11 sec
+      Start 25: avemotion.runtime.seams
+25/51 Test #25: avemotion.runtime.seams .........................   Passed    0.15 sec
+      Start 26: avemotion.evaluation.telegram_parity
+26/51 Test #26: avemotion.evaluation.telegram_parity ............   Passed    2.18 sec
+      Start 27: avemotion.runtime.parsed_model
+27/51 Test #27: avemotion.runtime.parsed_model ..................   Passed    5.81 sec
+      Start 28: avemotion.direct2d.capture_preflight
+28/51 Test #28: avemotion.direct2d.capture_preflight ............   Passed    0.46 sec
+      Start 29: avemotion.render.source_geometry
+29/51 Test #29: avemotion.render.source_geometry ................   Passed    3.41 sec
+      Start 30: avemotion.render.source_geometry_characterize

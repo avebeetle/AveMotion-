@@ -1,0 +1,165 @@
+=== build linux-gcc-samsung-release ===
+[1/86] Building CXX object CMakeFiles/avemotion_core.dir/src/core/Hash.cpp.o
+[2/86] Linking CXX static library libavemotion_core.a
+[3/86] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModel.cpp.o
+[4/86] Building CXX object CMakeFiles/avemotion_evaluation.dir/src/evaluation/PropertyEvaluator.cpp.o
+[5/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_math.cpp.o
+[6/86] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModelBuilder.cpp.o
+[7/86] Linking CXX static library libavemotion_model.a
+[8/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_raster.cpp.o
+[9/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_stroker.cpp.o
+[10/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vrect.cpp.o
+[11/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdasher.cpp.o
+[12/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbrush.cpp.o
+[13/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbitmap.cpp.o
+[14/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpainter.cpp.o
+[15/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/stb/stb_image.cpp.o
+In file included from /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/stb/stb_image.cpp:14:
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/stb/stb_image.h: In function 'int stbi__jpeg_info(stbi__context*, int*, int*, int*)':
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/stb/stb_image.h:956:29: warning: value computed is not used [-Wunused-value]
+  956 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                            ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/stb/stb_image.h:3811:7: note: in expansion of macro 'stbi__errpuc'
+ 3811 |       stbi__errpuc("outofmem", "Out of memory");
+      |       ^~~~~~~~~~~~
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/stb/stb_image.h: In function 'int stbi__parse_png_file(stbi__png*, int, int)':
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/stb/stb_image.h:4858:56: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+ 4858 |                   for (k = 0; k < s->img_n; ++k) tc[k] = (stbi_uc)(stbi__get16be(s) & 255) * stbi__depth_scale_table[z->depth]; // non 8-bit images will be larger
+      |                                                  ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/stb/stb_image.h:4777:25: note: at offset 3 into destination object 'tc' of size 3
+ 4777 |    stbi_uc has_trans=0, tc[3];
+      |                         ^~
+[16/86] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_common.cpp.o
+=== resume build linux-gcc-samsung-release ===
+[1/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_neon.cpp.o
+[2/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_sse2.cpp.o
+[3/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpathmesure.cpp.o
+[4/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vpath.cpp.o
+[5/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawhelper.cpp.o
+[6/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdebug.cpp.o
+[7/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/velapsedtimer.cpp.o
+[8/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vrle.cpp.o
+In file included from /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vrle.h:27,
+                 from /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vrle.cpp:24:
+In destructor 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]',
+    inlined from 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:54:5,
+    inlined from 'vcow_ptr<T>& vcow_ptr<T>::operator=(vcow_ptr<T>&&) [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:86:5,
+    inlined from 'vcow_ptr<T>::element_type& vcow_ptr<T>::write() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:108:30,
+    inlined from 'VRle VRle::operator&(const VRle&) const' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vrle.cpp:699:19:
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:56:46: warning: 'void operator delete(void*, std::size_t)' called on unallocated object 'default_s' [-Wfree-nonheap-object]
+   56 |         if (mModel && (--mModel->mRef == 0)) delete mModel;
+      |                                              ^~~~~~~~~~~~~
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h: In member function 'VRle VRle::operator&(const VRle&) const':
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:49:22: note: declared here
+   49 |         static model default_s;
+      |                      ^~~~~~~~~
+In destructor 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]',
+    inlined from 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:54:5,
+    inlined from 'vcow_ptr<T>& vcow_ptr<T>::operator=(vcow_ptr<T>&&) [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:86:5,
+    inlined from 'vcow_ptr<T>::element_type& vcow_ptr<T>::write() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:108:30,
+    inlined from 'VRle operator&(const VRect&, const VRle&)' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vrle.cpp:737:19:
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:56:46: warning: 'void operator delete(void*, std::size_t)' called on unallocated object 'default_s' [-Wfree-nonheap-object]
+   56 |         if (mModel && (--mModel->mRef == 0)) delete mModel;
+      |                                              ^~~~~~~~~~~~~
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h: In function 'VRle operator&(const VRect&, const VRle&)':
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:49:22: note: declared here
+   49 |         static model default_s;
+      |                      ^~~~~~~~~
+In destructor 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]',
+    inlined from 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:54:5,
+    inlined from 'vcow_ptr<T>& vcow_ptr<T>::operator=(vcow_ptr<T>&&) [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:86:5,
+    inlined from 'vcow_ptr<T>::element_type& vcow_ptr<T>::write() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:108:30,
+    inlined from 'VRle VRle::operator-(const VRle&) const' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vrle.cpp:686:19:
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:56:46: warning: 'void operator delete(void*, std::size_t)' called on unallocated object 'default_s' [-Wfree-nonheap-object]
+   56 |         if (mModel && (--mModel->mRef == 0)) delete mModel;
+      |                                              ^~~~~~~~~~~~~
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h: In member function 'VRle VRle::operator-(const VRle&) const':
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:49:22: note: declared here
+   49 |         static model default_s;
+      |                      ^~~~~~~~~
+In destructor 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]',
+    inlined from 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:54:5,
+    inlined from 'vcow_ptr<T>& vcow_ptr<T>::operator=(vcow_ptr<T>&&) [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:86:5,
+    inlined from 'vcow_ptr<T>::element_type& vcow_ptr<T>::write() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:108:30,
+    inlined from 'VRle operator-(const VRect&, const VRle&)' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vrle.cpp:724:19:
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:56:46: warning: 'void operator delete(void*, std::size_t)' called on unallocated object 'default_s' [-Wfree-nonheap-object]
+   56 |         if (mModel && (--mModel->mRef == 0)) delete mModel;
+      |                                              ^~~~~~~~~~~~~
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h: In function 'VRle operator-(const VRect&, const VRle&)':
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:49:22: note: declared here
+   49 |         static model default_s;
+      |                      ^~~~~~~~~
+In destructor 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]',
+    inlined from 'vcow_ptr<T>::~vcow_ptr() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:54:5,
+    inlined from 'vcow_ptr<T>& vcow_ptr<T>::operator=(vcow_ptr<T>&&) [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:86:5,
+    inlined from 'vcow_ptr<T>::element_type& vcow_ptr<T>::write() [with T = VRle::Data]' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:108:30,
+    inlined from 'VRle VRle::opGeneric(const VRle&, Data::Op) const' at /mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vrle.cpp:672:19:
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:56:46: warning: 'void operator delete(void*, std::size_t)' called on unallocated object 'default_s' [-Wfree-nonheap-object]
+   56 |         if (mModel && (--mModel->mRef == 0)) delete mModel;
+      |                                              ^~~~~~~~~~~~~
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h: In member function 'VRle VRle::opGeneric(const VRle&, Data::Op) const':
+/mnt/data/work/avemotion-part9/third_party/rlottie/samsung/source/src/vector/vcowptr.h:49:22: note: declared here
+   49 |         static model default_s;
+      |                      ^~~~~~~~~
+[9/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vmatrix.cpp.o
+[10/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vinterpolator.cpp.o
+[11/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vbezier.cpp.o
+[12/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/varenaalloc.cpp.o
+[13/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vimageloader.cpp.o
+[14/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vdrawable.cpp.o
+[15/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/vector/vraster.cpp.o
+[16/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieloader.cpp.o
+[17/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieitem_capi.cpp.o
+[18/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieproxymodel.cpp.o
+[19/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/zip/zip.cpp.o
+[20/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottiemodel.cpp.o
+[21/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieitem.cpp.o
+[22/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottiekeypath.cpp.o
+[23/70] Linking CXX static library libavemotion_evaluation.a
+[24/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/binding/c/lottieanimation_capi.cpp.o
+[25/70] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Playback.cpp.o
+[26/70] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RecordingBackend.cpp.o
+[27/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieanimation.cpp.o
+[28/70] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/ReferenceRuntime.cpp.o
+[29/70] Building CXX object _deps/rlottie-samsung/CMakeFiles/rlottie.dir/src/lottie/lottieparser.cpp.o
+[30/70] Linking CXX static library _deps/rlottie-samsung/librlottie.a
+[31/70] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/UpstreamInfo.cpp.o
+[32/70] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RlottieSceneBridge.cpp.o
+[33/70] Linking CXX static library libavemotion_reference.a
+[34/70] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[35/70] Linking CXX static library libavemotion_runtime.a
+[36/70] Building CXX object CMakeFiles/avemotion_probe.dir/apps/probe/main.cpp.o
+[37/70] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/HeadlessBackend.cpp.o
+[38/70] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/RenderPlanner.cpp.o
+[39/70] Linking CXX static library libavemotion_rendering.a
+[40/70] Building CXX object CMakeFiles/avemotion_core_tests.dir/tests/core_tests.cpp.o
+[41/70] Building CXX object CMakeFiles/avemotion_characterize.dir/apps/characterize/main.cpp.o
+[42/70] Building CXX object CMakeFiles/avemotion_scene_characterize.dir/apps/scene_characterize/main.cpp.o
+[43/70] Building CXX object CMakeFiles/avemotion_plan_characterize.dir/apps/plan_characterize/main.cpp.o
+[44/70] Building CXX object CMakeFiles/avemotion_direct2d_header_tests.dir/tests/direct2d_header_tests.cpp.o
+[45/70] Building CXX object CMakeFiles/avemotion_render_plan_tests.dir/tests/render_plan_tests.cpp.o
+[46/70] Building CXX object CMakeFiles/avemotion_property_evaluator_tests.dir/tests/property_evaluator_tests.cpp.o
+[47/70] Building CXX object CMakeFiles/avemotion_runtime_seams_tests.dir/tests/runtime_seams_tests.cpp.o
+[48/70] Building CXX object CMakeFiles/avemotion_reference_tests.dir/tests/reference_tests.cpp.o
+[49/70] Building CXX object CMakeFiles/avemotion_manifest_tests.dir/tests/manifest_tests.cpp.o
+[50/70] Building CXX object CMakeFiles/avemotion_playback_tests.dir/tests/playback_tests.cpp.o
+[51/70] Building CXX object CMakeFiles/avemotion_asset_model_tests.dir/tests/asset_model_tests.cpp.o
+[52/70] Linking CXX executable avemotion_probe
+[53/70] Linking CXX executable avemotion_characterize
+[54/70] Linking CXX executable avemotion_scene_characterize
+[55/70] Linking CXX executable avemotion_plan_characterize
+[56/70] Linking CXX executable avemotion_core_tests
+[57/70] Linking CXX executable avemotion_property_evaluator_tests
+[58/70] Linking CXX executable avemotion_render_plan_tests
+[59/70] Linking CXX executable avemotion_direct2d_header_tests
+[60/70] Linking CXX executable avemotion_reference_tests
+[61/70] Linking CXX executable avemotion_runtime_seams_tests
+[62/70] Linking CXX executable avemotion_asset_model_tests
+[63/70] Linking CXX executable avemotion_playback_tests
+[64/70] Linking CXX executable avemotion_manifest_tests
+[65/70] Building CXX object CMakeFiles/avemotion_canonical_geometry_tests.dir/tests/canonical_geometry_tests.cpp.o
+[66/70] Building CXX object CMakeFiles/avemotion_scene_golden_tests.dir/tests/scene_golden_tests.cpp.o
+[67/70] Linking CXX executable avemotion_scene_golden_tests
+[68/70] Linking CXX executable avemotion_canonical_geometry_tests
+[69/70] Building CXX object CMakeFiles/avemotion_plan_golden_tests.dir/tests/plan_golden_tests.cpp.o
+[70/70] Linking CXX executable avemotion_plan_golden_tests

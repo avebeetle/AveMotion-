@@ -1,0 +1,16 @@
+AveMotion 0.18.1 install/export validation
+==========================================
+
+Commands:
+  cmake --install out/build/linux-clang-offline --prefix <clean-prefix>
+  cmake -S tests/consumer -B <clean-build> -G Ninja \
+        -DCMAKE_PREFIX_PATH=<clean-prefix> -DCMAKE_CXX_COMPILER=clang++
+  cmake --build <clean-build>
+  <clean-build>/avemotion_installed_consumer
+
+Result:
+  install: PASS
+  find_package(AveMotion 0.18.1): PASS
+  compile: PASS
+  link: PASS
+  run: PASS

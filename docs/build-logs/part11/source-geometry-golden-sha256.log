@@ -1,0 +1,5 @@
+63525991cb5880cfceec5ef7389e73782ca9cb819d12858317339f9c1aee9f9a  out/build/linux-clang-telegram-debug/source-geometry-golden/source_geometry_manifest.tsv
+63525991cb5880cfceec5ef7389e73782ca9cb819d12858317339f9c1aee9f9a  out/build/linux-gcc-telegram-release/source-geometry-golden/source_geometry_manifest.tsv
+63525991cb5880cfceec5ef7389e73782ca9cb819d12858317339f9c1aee9f9a  tests/golden/source-geometry-telegram.tsv
+clang_gcc_match=yes
+committed_match=yes

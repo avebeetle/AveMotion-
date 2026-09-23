@@ -1,0 +1,23 @@
+AveMotion Part 12 validation matrix
+
+Local environment: Linux x86-64, CMake/Ninja, Clang 17, GCC 14.
+
+- Telegram + Clang Debug: 27/27 PASS
+- Telegram + GCC Release: 27/27 PASS
+- Telegram + Clang AddressSanitizer: 27/27 PASS
+- Samsung + Clang Debug: 16/16 PASS
+- Samsung + GCC Release: 16/16 PASS
+- Samsung + Clang AddressSanitizer: 16/16 PASS
+- Standalone/offline Clang: 7/7 PASS
+- Standalone/offline Clang ASan+UBSan: 7/7 PASS
+- CMake install/export: PASS
+- External find_package(AveMotion 0.12) configure/build/link/run: PASS
+- Telegram/Samsung vendor fingerprint verification: PASS
+- Telegram Clang/GCC source-geometry manifest byte parity: PASS
+- Primitive fixture: 7/7 primitives x 5 samples, 35/35 Telegram parity PASS
+- Windows CMake presets: Telegram Debug, Telegram Release, Samsung Debug present
+- Windows GitHub Actions matrix: Telegram Debug/Release and Samsung Debug configured
+
+Windows limitation:
+The current execution host has no Windows SDK. MSVC and the actual Direct2D
+implementation are therefore external Windows CI/host gates, not local claims.

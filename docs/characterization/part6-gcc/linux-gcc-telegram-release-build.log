@@ -1,0 +1,8 @@
+[1/8] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/RenderPlanner.cpp.o
+[2/8] Linking CXX static library libavemotion_rendering.a
+[3/8] Linking CXX executable avemotion_render_plan_tests
+[4/8] Linking CXX executable avemotion_plan_characterize
+[5/8] Linking CXX executable avemotion_direct2d_header_tests
+[6/8] Linking CXX executable avemotion_model_render_plan_tests
+[7/8] Linking CXX executable avemotion_canonical_geometry_tests
+[8/8] Linking CXX executable avemotion_plan_golden_tests

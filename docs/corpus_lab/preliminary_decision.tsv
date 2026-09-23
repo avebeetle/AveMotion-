@@ -1,0 +1,6 @@
+rank	family	score	blocked_assets	assets	occurrences	effort	rationale
+1	native-subset-completion	6525	6	6	27	5	finish the already-native Trim/Repeater subsets
+2	masks-and-mattes	2700	3	3	4	12	add bounded offscreen composition for masks and mattes
+3	nested-composition-time	2400	2	2	24	8	remove nested-composition and local-time fallback
+4	layer-and-media-support	1750	2	2	2	10	support non-shape authored layer resources
+5	gradients	975	1	1	1	5	add evaluated gradients and Direct2D gradient resources

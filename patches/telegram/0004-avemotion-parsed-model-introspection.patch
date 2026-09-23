@@ -1,0 +1,62 @@
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h b/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
+index d263e46..df76107 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
++++ b/third_party/rlottie/telegram/source/src/lottie/lottiemodel.h
+@@ -479,6 +479,21 @@ public:
+         if (isStatic()) return impl.mStaticData.mOpacity;
+         return impl.mData->opacity(frameNo);
+     }
++    // AveMotion parsed-model seam. Static transforms are preserved as an
++    // already-composed matrix by rlottie; animated transforms retain their
++    // component tracks in TransformData.
++    const TransformData *aveMotionDynamicData() const noexcept
++    {
++        return isStatic() ? nullptr : impl.mData.get();
++    }
++    VMatrix aveMotionStaticMatrix() const
++    {
++        return isStatic() ? impl.mStaticData.mMatrix : VMatrix{};
++    }
++    float aveMotionStaticOpacity() const noexcept
++    {
++        return isStatic() ? impl.mStaticData.mOpacity : 1.0f;
++    }
+     LOTTransformData(const LOTTransformData&) = delete;
+     LOTTransformData(LOTTransformData&&) = delete;
+     LOTTransformData& operator=(LOTTransformData&) = delete;
+@@ -517,6 +532,7 @@ struct ExtraLayerData
+     LottieColor                mSolidColor;
+     std::string                mPreCompRefId;
+     LOTAnimatable<float>       mTimeRemap;  /* "tm" */
++    bool                       mHasTimeRemap{false};
+     LOTCompositionData        *mCompRef{nullptr};
+     std::shared_ptr<LOTAsset>  mAsset;
+     std::vector<std::shared_ptr<LOTMaskData>>  mMasks;
+diff --git a/third_party/rlottie/telegram/source/src/lottie/lottieparser.cpp b/third_party/rlottie/telegram/source/src/lottie/lottieparser.cpp
+index 5dccf17..a9aee79 100644
+--- a/third_party/rlottie/telegram/source/src/lottie/lottieparser.cpp
++++ b/third_party/rlottie/telegram/source/src/lottie/lottieparser.cpp
+@@ -983,6 +983,7 @@ std::shared_ptr<LOTData> LottieParserImpl::parseLayer(bool record)
+             RAPIDJSON_ASSERT(PeekType() == kNumberType);
+             layer->mTimeStreatch = GetDouble();
+         } else if (0 == strcmp(key, "tm")) {  // time remapping
++            layer->extra()->mHasTimeRemap = true;
+             parseProperty(layer->extra()->mTimeRemap);
+         } else if (0 == strcmp(key, "ip")) {
+             RAPIDJSON_ASSERT(PeekType() == kNumberType);
+diff --git a/third_party/rlottie/telegram/source/src/vector/vinterpolator.h b/third_party/rlottie/telegram/source/src/vector/vinterpolator.h
+index 2201882..92b0d40 100644
+--- a/third_party/rlottie/telegram/source/src/vector/vinterpolator.h
++++ b/third_party/rlottie/telegram/source/src/vector/vinterpolator.h
+@@ -43,6 +43,11 @@ public:
+ 
+     float value(float aX) const;
+ 
++    // AveMotion model-extraction seam. These accessors expose authored
++    // temporal Bézier controls without altering interpolation behavior.
++    VPointF aveMotionControlPoint1() const { return VPointF(mX1, mY1); }
++    VPointF aveMotionControlPoint2() const { return VPointF(mX2, mY2); }
++
+     void GetSplineDerivativeValues(float aX, float& aDX, float& aDY) const;
+ 
+ private:

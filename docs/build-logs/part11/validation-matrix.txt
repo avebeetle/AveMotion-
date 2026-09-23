@@ -1,0 +1,35 @@
+AveMotion Part 11 validation matrix
+===================================
+
+Toolchain:
+- CMake 3.31.6
+- Ninja 1.12.1
+- Clang 17.0.0
+- GCC 14.2.0
+- Linux x86-64
+
+Reference builds:
+- Telegram + Clang Debug: 27/27 PASS
+- Telegram + GCC Release: 27/27 PASS
+- Telegram + Clang AddressSanitizer: 27/27 PASS
+- Samsung + Clang Debug: 16/16 PASS
+- Samsung + GCC Release: 16/16 PASS
+- Samsung + Clang AddressSanitizer: 16/16 PASS
+
+Standalone builds:
+- Offline Clang: 7/7 PASS
+- Offline Clang AddressSanitizer + UndefinedBehaviorSanitizer: 7/7 PASS
+
+Packaging:
+- CMake install/export: PASS
+- External find_package(AveMotion 0.11) configure/build/link/run: PASS
+
+Determinism/reproducibility:
+- Source geometry golden Clang == GCC: PASS
+- Committed source geometry golden == generated: PASS
+- Telegram original ZIP + patches 0001..0005 == vendored tree: PASS
+- Vendor source fingerprints: PASS
+
+Direct2D:
+- Public header isolation test on Linux: PASS
+- Windows/MSVC implementation compilation/runtime: NOT RUN (Windows SDK unavailable in this environment)

@@ -1,0 +1,201 @@
+Start testing: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+----------------------------------------------------------
+1/12 Testing: avemotion.core
+1/12 Test: avemotion.core
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_core_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.core" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion core tests passed
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.core" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.core" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/12 Testing: avemotion.evaluation.properties
+2/12 Test: avemotion.evaluation.properties
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_property_evaluator_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.evaluation.properties" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion canonical property evaluator tests passed
+<end of output>
+Test time =   0.17 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.evaluation.properties" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.evaluation.properties" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/12 Testing: avemotion.render.plan
+3/12 Test: avemotion.render.plan
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_render_plan_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.render.plan" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion render-plan tests passed
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.render.plan" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.render.plan" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/12 Testing: avemotion.render.polystar_geometry
+4/12 Test: avemotion.render.polystar_geometry
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_polystar_geometry_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.render.polystar_geometry" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion polystar geometry tests passed
+<end of output>
+Test time =   0.11 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.render.polystar_geometry" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.render.polystar_geometry" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/12 Testing: avemotion.render.repeater_transform
+5/12 Test: avemotion.render.repeater_transform
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_repeater_transform_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.render.repeater_transform" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion Telegram-compatible repeater transform passed
+<end of output>
+Test time =   0.11 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.render.repeater_transform" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.render.repeater_transform" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/12 Testing: avemotion.render.trim_path
+6/12 Test: avemotion.render.trim_path
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_trim_path_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.render.trim_path" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion trim path tests passed
+<end of output>
+Test time =   0.21 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.render.trim_path" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.render.trim_path" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/12 Testing: avemotion.direct2d.header
+7/12 Test: avemotion.direct2d.header
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_direct2d_header_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.direct2d.header" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.direct2d.header" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.direct2d.header" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/12 Testing: avemotion.direct2d.contract
+8/12 Test: avemotion.direct2d.contract
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_direct2d_contract_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.direct2d.contract" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion Direct2D contract tests passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.direct2d.contract" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.direct2d.contract" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/12 Testing: avemotion.direct2d.smoke
+9/12 Test: avemotion.direct2d.smoke
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_direct2d_smoke_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.direct2d.smoke" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion Direct2D WARP smoke test passed
+artifact=C:/Users/¿Ì‡ÒÚ‡ÒËˇ/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/direct2d-artifacts\avemotion-direct2d-warp.ppm
+drawCalls=4
+geometryCacheHits=9
+geometryCacheMisses=3
+resourceDomainResets=3
+<end of output>
+Test time =   0.11 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.direct2d.smoke" end time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+"avemotion.direct2d.smoke" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/12 Testing: avemotion.vendor.verify
+10/12 Test: avemotion.vendor.verify
+Command: "C:/Program Files/Python313/python.exe" "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/scripts/verify_vendor.py"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.vendor.verify" start time: Jul 26 23:13 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+Vendor verification failed:
+- samsung: source tree hash mismatch: expected f710dd5f7fcbe789d88438d8d0a876d7bdf0bc55831548286d064cb3e7f18b84, got 5e1115bf9fed2e246f6b1d6c5a42c4d98dcb38be7464e1995e161d03b3ebb479
+- telegram: source tree hash mismatch: expected 5d03d1b9867a15f9fea916410e43dd6319eaea574ba4e0a2dee78d6f5d96dfb3, got 7deaf9545524c395ee151e356ec1d035897778fe7b066ee94bbe95e87b30aae1
+<end of output>
+Test time =  67.52 sec
+----------------------------------------------------------
+Test Failed.
+"avemotion.vendor.verify" end time: Jul 26 23:14 RTZ 2 (ÁËÏ‡)
+"avemotion.vendor.verify" time elapsed: 00:01:07
+----------------------------------------------------------
+
+11/12 Testing: avemotion.offline
+11/12 Test: avemotion.offline
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_offline_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.offline" start time: Jul 26 23:14 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion offline facade tests passed
+<end of output>
+Test time =   0.24 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.offline" end time: Jul 26 23:14 RTZ 2 (ÁËÏ‡)
+"avemotion.offline" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/12 Testing: avemotion.runtime.offline
+12/12 Test: avemotion.runtime.offline
+Command: "C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d/avemotion_runtime_offline_tests.exe"
+Directory: C:/Users/–ê–Ω–∞—Å—Ç–∞—Å–∏—è/Desktop/AveMotion-WindowsDirect2D-Part18/out/build/windows-msvc-direct2d
+"avemotion.runtime.offline" start time: Jul 26 23:14 RTZ 2 (ÁËÏ‡)
+Output:
+----------------------------------------------------------
+AveMotion offline runtime seam tests passed
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Passed.
+"avemotion.runtime.offline" end time: Jul 26 23:14 RTZ 2 (ÁËÏ‡)
+"avemotion.runtime.offline" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jul 26 23:14 RTZ 2 (ÁËÏ‡)

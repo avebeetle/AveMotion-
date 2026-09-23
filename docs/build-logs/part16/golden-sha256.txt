@@ -1,0 +1,3 @@
+f0abb0e349e0831d31f3388ec2c8b76bf39a07b1dadadcf04510bbcc3878288d  out/build/linux-clang-telegram-debug/source-geometry-golden/source_geometry_manifest.tsv
+f0abb0e349e0831d31f3388ec2c8b76bf39a07b1dadadcf04510bbcc3878288d  out/build/linux-gcc-telegram-release/source-geometry-golden/source_geometry_manifest.tsv
+f0abb0e349e0831d31f3388ec2c8b76bf39a07b1dadadcf04510bbcc3878288d  tests/golden/source-geometry-telegram.tsv

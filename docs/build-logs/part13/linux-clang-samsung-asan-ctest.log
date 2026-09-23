@@ -1,0 +1,39 @@
+Test project /mnt/data/work_part13/out/build/linux-clang-samsung-asan
+      Start  1: avemotion.core
+ 1/17 Test  #1: avemotion.core .......................   Passed    0.01 sec
+      Start  2: avemotion.evaluation.properties
+ 2/17 Test  #2: avemotion.evaluation.properties ......   Passed    0.02 sec
+      Start  3: avemotion.render.plan
+ 3/17 Test  #3: avemotion.render.plan ................   Passed    0.01 sec
+      Start  4: avemotion.render.polystar_geometry
+ 4/17 Test  #4: avemotion.render.polystar_geometry ...   Passed    0.01 sec
+      Start  5: avemotion.direct2d.header
+ 5/17 Test  #5: avemotion.direct2d.header ............   Passed    0.01 sec
+      Start  6: avemotion.vendor.verify
+ 6/17 Test  #6: avemotion.vendor.verify ..............   Passed    0.66 sec
+      Start  7: avemotion.reference
+ 7/17 Test  #7: avemotion.reference ..................   Passed    0.11 sec
+      Start  8: avemotion.runtime.seams
+ 8/17 Test  #8: avemotion.runtime.seams ..............   Passed    0.13 sec
+      Start  9: avemotion.runtime.asset_model
+ 9/17 Test  #9: avemotion.runtime.asset_model ........   Passed    0.02 sec
+      Start 10: avemotion.runtime.playback
+10/17 Test #10: avemotion.runtime.playback ...........   Passed    0.01 sec
+      Start 11: avemotion.runtime.canonical
+11/17 Test #11: avemotion.runtime.canonical ..........   Passed    0.11 sec
+      Start 12: avemotion.vendor.manifest
+12/17 Test #12: avemotion.vendor.manifest ............   Passed    0.01 sec
+      Start 13: avemotion.characterize.smoke
+13/17 Test #13: avemotion.characterize.smoke .........   Passed    0.02 sec
+      Start 14: avemotion.scene.characterize.smoke
+14/17 Test #14: avemotion.scene.characterize.smoke ...   Passed    0.01 sec
+      Start 15: avemotion.scene.golden
+15/17 Test #15: avemotion.scene.golden ...............   Passed    0.06 sec
+      Start 16: avemotion.plan.characterize.smoke
+16/17 Test #16: avemotion.plan.characterize.smoke ....   Passed    0.01 sec
+      Start 17: avemotion.plan.golden
+17/17 Test #17: avemotion.plan.golden ................   Passed    0.07 sec
+
+100% tests passed, 0 tests failed out of 17
+
+Total Test time (real) =   1.30 sec

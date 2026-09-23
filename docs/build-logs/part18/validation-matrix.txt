@@ -1,0 +1,14 @@
+AveMotion Part 18 local validation matrix
+
+linux-clang-telegram-debug: 31/31 PASS
+linux-gcc-telegram-release: 31/31 PASS
+linux-clang-telegram-asan: 31/31 PASS
+linux-gcc-samsung-release: 20/20 PASS
+linux-clang-offline: 11/11 PASS
+Direct2D production contract, Clang: PASS
+Direct2D production contract, GCC: PASS
+Direct2D production contract, AddressSanitizer: PASS
+CMake install/export: PASS
+External installed-package consumer: PASS
+Vendor fingerprints: PASS
+Native Windows MSVC/WARP: prepared external gate; not executed in Linux environment

@@ -1,0 +1,61 @@
+Test project /mnt/data/AveMotion-Part21-repo/out/build/linux-gcc-samsung-release
+      Start  1: avemotion.cmake.legacy_subproject
+ 1/28 Test  #1: avemotion.cmake.legacy_subproject .........   Passed    0.84 sec
+      Start  2: avemotion.cmake.win32_manifest_wiring
+ 2/28 Test  #2: avemotion.cmake.win32_manifest_wiring .....   Passed    0.63 sec
+      Start  3: avemotion.cmake.player_wiring
+ 3/28 Test  #3: avemotion.cmake.player_wiring .............   Passed    0.57 sec
+      Start  4: avemotion.core
+ 4/28 Test  #4: avemotion.core ............................   Passed    0.00 sec
+      Start  5: avemotion.golden.cross_platform_policy
+ 5/28 Test  #5: avemotion.golden.cross_platform_policy ....   Passed    0.00 sec
+      Start  6: avemotion.golden.source_geometry_policy
+ 6/28 Test  #6: avemotion.golden.source_geometry_policy ...   Passed    0.65 sec
+      Start  7: avemotion.evaluation.properties
+ 7/28 Test  #7: avemotion.evaluation.properties ...........   Passed    0.00 sec
+      Start  8: avemotion.render.plan
+ 8/28 Test  #8: avemotion.render.plan .....................   Passed    0.00 sec
+      Start  9: avemotion.render.polystar_geometry
+ 9/28 Test  #9: avemotion.render.polystar_geometry ........   Passed    0.00 sec
+      Start 10: avemotion.render.repeater_transform
+10/28 Test #10: avemotion.render.repeater_transform .......   Passed    0.01 sec
+      Start 11: avemotion.render.trim_path
+11/28 Test #11: avemotion.render.trim_path ................   Passed    0.00 sec
+      Start 12: avemotion.capture.metrics
+12/28 Test #12: avemotion.capture.metrics .................   Passed    0.00 sec
+      Start 13: avemotion.direct2d.header
+13/28 Test #13: avemotion.direct2d.header .................   Passed    0.00 sec
+      Start 14: avemotion.direct2d.contract
+14/28 Test #14: avemotion.direct2d.contract ...............   Passed    0.00 sec
+      Start 15: avemotion.vendor.ordering
+15/28 Test #15: avemotion.vendor.ordering .................   Passed    0.61 sec
+      Start 16: avemotion.vendor.verify
+16/28 Test #16: avemotion.vendor.verify ...................   Passed    0.64 sec
+      Start 17: avemotion.reference
+17/28 Test #17: avemotion.reference .......................   Passed    0.01 sec
+      Start 18: avemotion.runtime.seams
+18/28 Test #18: avemotion.runtime.seams ...................   Passed    0.01 sec
+      Start 19: avemotion.runtime.asset_model
+19/28 Test #19: avemotion.runtime.asset_model .............   Passed    0.00 sec
+      Start 20: avemotion.runtime.playback
+20/28 Test #20: avemotion.runtime.playback ................   Passed    0.00 sec
+      Start 21: avemotion.player.scheduler
+21/28 Test #21: avemotion.player.scheduler ................   Passed    0.00 sec
+      Start 22: avemotion.runtime.canonical
+22/28 Test #22: avemotion.runtime.canonical ...............   Passed    0.01 sec
+      Start 23: avemotion.vendor.manifest
+23/28 Test #23: avemotion.vendor.manifest .................   Passed    0.00 sec
+      Start 24: avemotion.characterize.smoke
+24/28 Test #24: avemotion.characterize.smoke ..............   Passed    0.00 sec
+      Start 25: avemotion.scene.characterize.smoke
+25/28 Test #25: avemotion.scene.characterize.smoke ........   Passed    0.00 sec
+      Start 26: avemotion.scene.golden
+26/28 Test #26: avemotion.scene.golden ....................   Passed    0.00 sec
+      Start 27: avemotion.plan.characterize.smoke
+27/28 Test #27: avemotion.plan.characterize.smoke .........   Passed    0.00 sec
+      Start 28: avemotion.plan.golden
+28/28 Test #28: avemotion.plan.golden .....................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 28
+
+Total Test time (real) =   4.03 sec

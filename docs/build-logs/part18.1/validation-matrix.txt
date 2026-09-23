@@ -1,0 +1,33 @@
+AveMotion Part 18.1 validation matrix
+====================================
+
+Root-cause proof
+----------------
+- Synthetic canonical-vs-Windows-like ordering regression: PASS
+- Samsung canonical vendor hash: PASS
+- Telegram canonical vendor hash: PASS
+- Emulated legacy Windows hashes exactly match the two hashes reported by the native run: PASS
+
+Local Linux validation
+----------------------
+- Clang 17 offline configure/build: PASS
+- Clang 17 offline CTest: 12/12 PASS
+- Clang 17 + Telegram configure/build: PASS
+- Clang 17 + Telegram CTest: 32/32 PASS
+- CMake install/export for AveMotion 0.18.1: PASS
+- Clean external find_package(AveMotion 0.18.1): configure/build/link/run PASS
+
+Received Windows validation before hotfix
+-----------------------------------------
+- Visual Studio 2022 / MSVC configure: PASS
+- Build: 47/47 PASS
+- Direct2D header: PASS
+- Direct2D contract: PASS
+- Native D3D11 WARP + Direct2D smoke: PASS
+- WARP capture: produced and visually valid
+- Compiled functional/offline tests: PASS
+- Legacy vendor verifier: FAIL only because host-native Path ordering was case-insensitive
+
+Expected hotfix rerun
+---------------------
+- windows-msvc-direct2d full suite: 13/13 PASS

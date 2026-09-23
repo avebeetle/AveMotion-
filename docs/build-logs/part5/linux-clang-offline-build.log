@@ -1,0 +1,5 @@
+[1/5] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[2/5] Linking CXX static library libavemotion_runtime.a
+[3/5] Linking CXX executable avemotion_direct2d_header_tests
+[4/5] Linking CXX executable avemotion_render_plan_tests
+[5/5] Linking CXX executable avemotion_runtime_offline_tests

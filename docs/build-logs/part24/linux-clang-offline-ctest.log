@@ -1,0 +1,59 @@
+Test project /mnt/data/AveMotion-Part24-work/out/build/linux-clang-offline
+      Start  1: avemotion.cmake.legacy_subproject
+ 1/27 Test  #1: avemotion.cmake.legacy_subproject ...........   Passed    0.81 sec
+      Start  2: avemotion.cmake.win32_manifest_wiring
+ 2/27 Test  #2: avemotion.cmake.win32_manifest_wiring .......   Passed    0.59 sec
+      Start  3: avemotion.cmake.player_wiring
+ 3/27 Test  #3: avemotion.cmake.player_wiring ...............   Passed    0.60 sec
+      Start  4: avemotion.cmake.tgs_wiring
+ 4/27 Test  #4: avemotion.cmake.tgs_wiring ..................   Passed    0.59 sec
+      Start  5: avemotion.cmake.validation_wiring
+ 5/27 Test  #5: avemotion.cmake.validation_wiring ...........   Passed    0.64 sec
+      Start  6: avemotion.cmake.corpus_lab_wiring
+ 6/27 Test  #6: avemotion.cmake.corpus_lab_wiring ...........   Passed    0.67 sec
+      Start  7: avemotion.corpus.zip_safety
+ 7/27 Test  #7: avemotion.corpus.zip_safety .................   Passed    0.59 sec
+      Start  8: avemotion.validation.tgs_corpus_integrity
+ 8/27 Test  #8: avemotion.validation.tgs_corpus_integrity ...   Passed    0.59 sec
+      Start  9: avemotion.core
+ 9/27 Test  #9: avemotion.core ..............................   Passed    0.00 sec
+      Start 10: avemotion.formats.tgs
+10/27 Test #10: avemotion.formats.tgs .......................   Passed    0.00 sec
+      Start 11: avemotion.runtime.tgs
+11/27 Test #11: avemotion.runtime.tgs .......................   Passed    0.00 sec
+      Start 12: avemotion.golden.cross_platform_policy
+12/27 Test #12: avemotion.golden.cross_platform_policy ......   Passed    0.00 sec
+      Start 13: avemotion.golden.source_geometry_policy
+13/27 Test #13: avemotion.golden.source_geometry_policy .....   Passed    0.61 sec
+      Start 14: avemotion.validation.asset
+14/27 Test #14: avemotion.validation.asset ..................   Passed    0.00 sec
+      Start 15: avemotion.corpus.analysis
+15/27 Test #15: avemotion.corpus.analysis ...................   Passed    0.00 sec
+      Start 16: avemotion.evaluation.properties
+16/27 Test #16: avemotion.evaluation.properties .............   Passed    0.00 sec
+      Start 17: avemotion.render.plan
+17/27 Test #17: avemotion.render.plan .......................   Passed    0.00 sec
+      Start 18: avemotion.render.polystar_geometry
+18/27 Test #18: avemotion.render.polystar_geometry ..........   Passed    0.00 sec
+      Start 19: avemotion.render.repeater_transform
+19/27 Test #19: avemotion.render.repeater_transform .........   Passed    0.00 sec
+      Start 20: avemotion.render.trim_path
+20/27 Test #20: avemotion.render.trim_path ..................   Passed    0.00 sec
+      Start 21: avemotion.capture.metrics
+21/27 Test #21: avemotion.capture.metrics ...................   Passed    0.00 sec
+      Start 22: avemotion.direct2d.header
+22/27 Test #22: avemotion.direct2d.header ...................   Passed    0.00 sec
+      Start 23: avemotion.direct2d.contract
+23/27 Test #23: avemotion.direct2d.contract .................   Passed    0.00 sec
+      Start 24: avemotion.vendor.ordering
+24/27 Test #24: avemotion.vendor.ordering ...................   Passed    0.57 sec
+      Start 25: avemotion.vendor.verify
+25/27 Test #25: avemotion.vendor.verify .....................   Passed    0.69 sec
+      Start 26: avemotion.offline
+26/27 Test #26: avemotion.offline ...........................   Passed    0.00 sec
+      Start 27: avemotion.runtime.offline
+27/27 Test #27: avemotion.runtime.offline ...................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 27
+
+Total Test time (real) =   7.00 sec

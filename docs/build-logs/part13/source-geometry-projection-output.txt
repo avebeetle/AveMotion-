@@ -1,0 +1,1 @@
+AveMotion source geometry projection passed: projected=119 static=81 animated=38 points=2060 rectangles=17 rounded=18 ellipses=25 stars=25 polygons=15 skipped-modified=9 skipped-multiple=0

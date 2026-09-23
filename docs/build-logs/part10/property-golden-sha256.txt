@@ -1,0 +1,3 @@
+e2fd5678112a997bc7dd6f23a3ccdf1ee575199478c24dd6a246c8fd0debe5a4  out/build/linux-clang-telegram-debug/property-characterize-golden/property_manifest.tsv
+e2fd5678112a997bc7dd6f23a3ccdf1ee575199478c24dd6a246c8fd0debe5a4  out/build/linux-gcc-telegram-release/property-characterize-golden/property_manifest.tsv
+e2fd5678112a997bc7dd6f23a3ccdf1ee575199478c24dd6a246c8fd0debe5a4  tests/golden/property-telegram.tsv

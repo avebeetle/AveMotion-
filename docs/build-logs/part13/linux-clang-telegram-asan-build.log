@@ -1,0 +1,110 @@
+[1/103] Building CXX object CMakeFiles/avemotion_core.dir/src/core/Hash.cpp.o
+[2/103] Linking CXX static library libavemotion_core.a
+[3/103] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModel.cpp.o
+[4/103] Building CXX object CMakeFiles/avemotion_evaluation.dir/src/evaluation/PropertyEvaluator.cpp.o
+[5/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_math.cpp.o
+[6/103] Building CXX object CMakeFiles/avemotion_model.dir/src/model/AssetModelBuilder.cpp.o
+[7/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_raster.cpp.o
+[8/103] Linking CXX static library libavemotion_model.a
+[9/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/freetype/v_ft_stroker.cpp.o
+[10/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/pixman/vregion.cpp.o
+[11/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/stb/stb_image.cpp.o
+[12/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vrect.cpp.o
+[13/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdasher.cpp.o
+[14/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vbrush.cpp.o
+[15/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vbitmap.cpp.o
+[16/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vpainter.cpp.o
+[17/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vcompositionfunctions.cpp.o
+[18/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_sse2.cpp.o
+[19/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdrawhelper_neon.cpp.o
+[20/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdrawhelper.cpp.o
+[21/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vrle.cpp.o
+[22/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vpath.cpp.o
+[23/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vpathmesure.cpp.o
+[24/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vmatrix.cpp.o
+[25/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdebug.cpp.o
+[26/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/velapsedtimer.cpp.o
+[27/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vinterpolator.cpp.o
+[28/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vbezier.cpp.o
+[29/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vdrawable.cpp.o
+[30/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vraster.cpp.o
+[31/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/vector/vimageloader.cpp.o
+[32/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieloader.cpp.o
+[33/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottiemodel.cpp.o
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/lottie/lottiemodel.cpp:191:40: warning: comparison of integers of different signs: 'int' and 'size_type' (aka 'unsigned long') [-Wsign-compare]
+  191 |     if (colorPoints < 0 || colorPoints > size / 4) {  // for legacy bodymovin (ref: lottie-android)
+      |                            ~~~~~~~~~~~ ^ ~~~~~~~~
+/mnt/data/work_part13/third_party/rlottie/telegram/source/src/lottie/lottiemodel.cpp:195:53: warning: comparison of integers of different signs: 'int' and 'size_type' (aka 'unsigned long') [-Wsign-compare]
+  195 |     if ((opacityArraySize % 2 != 0) || (colorPoints > opacityArraySize / 2 && opacityArraySize < 4)) {
+      |                                         ~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.
+[34/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieproxymodel.cpp.o
+[35/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieitem.cpp.o
+[36/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieanimation.cpp.o
+[37/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottiekeypath.cpp.o
+[38/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/lottie/lottieparser.cpp.o
+[39/103] Linking CXX static library libavemotion_evaluation.a
+[40/103] Building CXX object _deps/rlottie-telegram/CMakeFiles/rlottie.dir/src/binding/c/lottieanimation_capi.cpp.o
+[41/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Playback.cpp.o
+[42/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RecordingBackend.cpp.o
+[43/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/RlottieSceneBridge.cpp.o
+[44/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/runtime/Runtime.cpp.o
+[45/103] Linking CXX static library _deps/rlottie-telegram/librlottie.a
+[46/103] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/ReferenceRuntime.cpp.o
+[47/103] Building CXX object CMakeFiles/avemotion_reference.dir/src/reference/UpstreamInfo.cpp.o
+[48/103] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/RenderPlanner.cpp.o
+[49/103] Building CXX object CMakeFiles/avemotion_runtime.dir/src/model/TelegramParsedModelBuilder.cpp.o
+[50/103] Linking CXX static library libavemotion_runtime.a
+[51/103] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/PrimitivePathGenerator.cpp.o
+[52/103] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/SourceGeometryProjector.cpp.o
+[53/103] Linking CXX static library libavemotion_reference.a
+[54/103] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/HeadlessBackend.cpp.o
+[55/103] Linking CXX static library libavemotion_rendering.a
+[56/103] Building CXX object CMakeFiles/avemotion_probe.dir/apps/probe/main.cpp.o
+[57/103] Building CXX object CMakeFiles/avemotion_characterize.dir/apps/characterize/main.cpp.o
+[58/103] Building CXX object CMakeFiles/avemotion_scene_characterize.dir/apps/scene_characterize/main.cpp.o
+[59/103] Building CXX object CMakeFiles/avemotion_plan_characterize.dir/apps/plan_characterize/main.cpp.o
+[60/103] Building CXX object CMakeFiles/avemotion_model_characterize.dir/apps/model_characterize/main.cpp.o
+[61/103] Building CXX object CMakeFiles/avemotion_property_characterize.dir/apps/property_characterize/main.cpp.o
+[62/103] Building CXX object CMakeFiles/avemotion_core_tests.dir/tests/core_tests.cpp.o
+[63/103] Building CXX object CMakeFiles/avemotion_source_geometry_characterize.dir/apps/source_geometry_characterize/main.cpp.o
+[64/103] Building CXX object CMakeFiles/avemotion_render_plan_tests.dir/tests/render_plan_tests.cpp.o
+[65/103] Building CXX object CMakeFiles/avemotion_polystar_geometry_tests.dir/tests/polystar_geometry_tests.cpp.o
+[66/103] Building CXX object CMakeFiles/avemotion_property_evaluator_tests.dir/tests/property_evaluator_tests.cpp.o
+[67/103] Building CXX object CMakeFiles/avemotion_direct2d_header_tests.dir/tests/direct2d_header_tests.cpp.o
+[68/103] Building CXX object CMakeFiles/avemotion_reference_tests.dir/tests/reference_tests.cpp.o
+[69/103] Building CXX object CMakeFiles/avemotion_runtime_seams_tests.dir/tests/runtime_seams_tests.cpp.o
+[70/103] Building CXX object CMakeFiles/avemotion_property_parity_tests.dir/tests/property_parity_tests.cpp.o
+[71/103] Building CXX object CMakeFiles/avemotion_parsed_model_tests.dir/tests/parsed_model_tests.cpp.o
+[1/32] Building CXX object CMakeFiles/avemotion_source_geometry_projection_tests.dir/tests/source_geometry_projection_tests.cpp.o
+[2/32] Building CXX object CMakeFiles/avemotion_asset_model_tests.dir/tests/asset_model_tests.cpp.o
+[3/32] Building CXX object CMakeFiles/avemotion_playback_tests.dir/tests/playback_tests.cpp.o
+[4/32] Building CXX object CMakeFiles/avemotion_model_render_plan_tests.dir/tests/model_render_plan_tests.cpp.o
+[5/32] Building CXX object CMakeFiles/avemotion_manifest_tests.dir/tests/manifest_tests.cpp.o
+[6/32] Building CXX object CMakeFiles/avemotion_canonical_geometry_tests.dir/tests/canonical_geometry_tests.cpp.o
+[7/32] Building CXX object CMakeFiles/avemotion_scene_golden_tests.dir/tests/scene_golden_tests.cpp.o
+[8/32] Linking CXX executable avemotion_probe
+[9/32] Building CXX object CMakeFiles/avemotion_plan_golden_tests.dir/tests/plan_golden_tests.cpp.o
+[10/32] Linking CXX executable avemotion_characterize
+[11/32] Linking CXX executable avemotion_scene_characterize
+[12/32] Linking CXX executable avemotion_plan_characterize
+[13/32] Linking CXX executable avemotion_model_characterize
+[14/32] Linking CXX executable avemotion_property_characterize
+[15/32] Linking CXX executable avemotion_core_tests
+[16/32] Linking CXX executable avemotion_source_geometry_characterize
+[17/32] Linking CXX executable avemotion_property_evaluator_tests
+[18/32] Linking CXX executable avemotion_render_plan_tests
+[19/32] Linking CXX executable avemotion_polystar_geometry_tests
+[20/32] Linking CXX executable avemotion_direct2d_header_tests
+[21/32] Linking CXX executable avemotion_reference_tests
+[22/32] Linking CXX executable avemotion_runtime_seams_tests
+[23/32] Linking CXX executable avemotion_property_parity_tests
+[24/32] Linking CXX executable avemotion_parsed_model_tests
+[25/32] Linking CXX executable avemotion_source_geometry_projection_tests
+[26/32] Linking CXX executable avemotion_asset_model_tests
+[27/32] Linking CXX executable avemotion_playback_tests
+[28/32] Linking CXX executable avemotion_model_render_plan_tests
+[29/32] Linking CXX executable avemotion_canonical_geometry_tests
+[30/32] Linking CXX executable avemotion_manifest_tests
+[31/32] Linking CXX executable avemotion_scene_golden_tests
+[32/32] Linking CXX executable avemotion_plan_golden_tests

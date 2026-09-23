@@ -1,0 +1,104 @@
+CMake Deprecation Warning at third_party/rlottie/telegram/source/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+Preset CMake variables:
+
+  AVEMOTION_BUILD_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_PLAN_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_PROBE="ON"
+  AVEMOTION_BUILD_PROPERTY_CHARACTERIZER="ON"
+  AVEMOTION_BUILD_SCENE_CHARACTERIZER="ON"
+  AVEMOTION_ENABLE_INSTALL="OFF"
+  AVEMOTION_RLOTTIE_VARIANT="telegram"
+  BUILD_TESTING="ON"
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_CXX_COMPILER="clang++"
+  CMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
+  CMAKE_C_COMPILER="clang"
+  CMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
+  CMAKE_EXE_LINKER_FLAGS="-fsanitize=address"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  CMAKE_SHARED_LINKER_FLAGS="-fsanitize=address"
+
+
+-- AveMotion reference variant: telegram (67f103bc8b625f2a4a9e94f1d8c7bd84c5a08d1d)
+-- Configuring done (3.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/work_part11/out/build/linux-clang-telegram-asan
+[1/13] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/PrimitivePathGenerator.cpp.o
+[2/13] Building CXX object CMakeFiles/avemotion_rendering.dir/src/render/SourceGeometryProjector.cpp.o
+[3/13] Linking CXX static library libavemotion_rendering.a
+[4/13] Linking CXX executable avemotion_render_plan_tests
+[5/13] Building CXX object CMakeFiles/avemotion_source_geometry_characterize.dir/apps/source_geometry_characterize/main.cpp.o
+[6/13] Building CXX object CMakeFiles/avemotion_source_geometry_projection_tests.dir/tests/source_geometry_projection_tests.cpp.o
+[7/13] Linking CXX executable avemotion_direct2d_header_tests
+[8/13] Linking CXX executable avemotion_plan_characterize
+[9/13] Linking CXX executable avemotion_source_geometry_characterize
+[10/13] Linking CXX executable avemotion_source_geometry_projection_tests
+[11/13] Linking CXX executable avemotion_model_render_plan_tests
+[12/13] Linking CXX executable avemotion_canonical_geometry_tests
+[13/13] Linking CXX executable avemotion_plan_golden_tests
+Test project /mnt/data/work_part11/out/build/linux-clang-telegram-asan
+      Start  1: avemotion.core
+ 1/27 Test  #1: avemotion.core ..................................   Passed    0.01 sec
+      Start  2: avemotion.evaluation.properties
+ 2/27 Test  #2: avemotion.evaluation.properties .................   Passed    0.04 sec
+      Start  3: avemotion.render.plan
+ 3/27 Test  #3: avemotion.render.plan ...........................   Passed    0.02 sec
+      Start  4: avemotion.direct2d.header
+ 4/27 Test  #4: avemotion.direct2d.header .......................   Passed    0.02 sec
+      Start  5: avemotion.vendor.verify
+ 5/27 Test  #5: avemotion.vendor.verify .........................   Passed    0.61 sec
+      Start  6: avemotion.reference
+ 6/27 Test  #6: avemotion.reference .............................   Passed    0.16 sec
+      Start  7: avemotion.runtime.seams
+ 7/27 Test  #7: avemotion.runtime.seams .........................   Passed    0.21 sec
+      Start  8: avemotion.evaluation.telegram_parity
+ 8/27 Test  #8: avemotion.evaluation.telegram_parity ............   Passed    2.78 sec
+      Start  9: avemotion.runtime.parsed_model
+ 9/27 Test  #9: avemotion.runtime.parsed_model ..................   Passed    8.95 sec
+      Start 10: avemotion.render.source_geometry
+10/27 Test #10: avemotion.render.source_geometry ................   Passed    3.69 sec
+      Start 11: avemotion.render.source_geometry_characterize
+11/27 Test #11: avemotion.render.source_geometry_characterize ...   Passed    2.22 sec
+      Start 12: avemotion.render.source_geometry_golden
+12/27 Test #12: avemotion.render.source_geometry_golden .........   Passed    0.01 sec
+      Start 13: avemotion.runtime.asset_model
+13/27 Test #13: avemotion.runtime.asset_model ...................   Passed    3.97 sec
+      Start 14: avemotion.runtime.playback
+14/27 Test #14: avemotion.runtime.playback ......................   Passed    0.03 sec
+      Start 15: avemotion.render.model_plan
+15/27 Test #15: avemotion.render.model_plan .....................   Passed    0.08 sec
+      Start 16: avemotion.runtime.canonical
+16/27 Test #16: avemotion.runtime.canonical .....................   Passed    0.22 sec
+      Start 17: avemotion.vendor.manifest
+17/27 Test #17: avemotion.vendor.manifest .......................   Passed    0.01 sec
+      Start 18: avemotion.characterize.smoke
+18/27 Test #18: avemotion.characterize.smoke ....................   Passed    0.02 sec
+      Start 19: avemotion.scene.characterize.smoke
+19/27 Test #19: avemotion.scene.characterize.smoke ..............   Passed    0.02 sec
+      Start 20: avemotion.scene.golden
+20/27 Test #20: avemotion.scene.golden ..........................   Passed    0.09 sec
+      Start 21: avemotion.plan.characterize.smoke
+21/27 Test #21: avemotion.plan.characterize.smoke ...............   Passed    0.02 sec
+      Start 22: avemotion.model.characterize
+22/27 Test #22: avemotion.model.characterize ....................   Passed    2.10 sec
+      Start 23: avemotion.model.golden
+23/27 Test #23: avemotion.model.golden ..........................   Passed    0.01 sec
+      Start 24: avemotion.model.parsed_golden
+24/27 Test #24: avemotion.model.parsed_golden ...................   Passed    0.01 sec
+      Start 25: avemotion.evaluation.characterize
+25/27 Test #25: avemotion.evaluation.characterize ...............   Passed    1.77 sec
+      Start 26: avemotion.evaluation.golden
+26/27 Test #26: avemotion.evaluation.golden .....................   Passed    0.01 sec
+      Start 27: avemotion.plan.golden
+27/27 Test #27: avemotion.plan.golden ...........................   Passed    0.09 sec
+
+100% tests passed, 0 tests failed out of 27
+
+Total Test time (real) =  27.18 sec

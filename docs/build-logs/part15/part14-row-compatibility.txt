@@ -1,0 +1,5 @@
+Part14 rows: 55
+Part15 rows: 60
+Part14 fields compared per row: 48
+Compatibility mismatches: 0
+Result: every Part14 row preserves every Part14 semantic field.

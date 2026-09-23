@@ -1,0 +1,22 @@
+[0/1] Re-running CMake...
+CMake Deprecation Warning at third_party/rlottie/telegram/source/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- AveMotion reference variant: telegram (67f103bc8b625f2a4a9e94f1d8c7bd84c5a08d1d)
+-- Configuring done (3.8s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/AveMotion-Part23-repo/out/build/linux-clang-telegram-asan
+[1/9] Building CXX object CMakeFiles/avemotion_validation.dir/src/validation/AssetValidator.cpp.o
+[2/9] Linking CXX static library libavemotion_validation.a
+[3/9] Building CXX object CMakeFiles/avemotion_validation_characterize.dir/apps/validation_characterize/main.cpp.o
+[4/9] Linking CXX executable avemotion_validate
+[5/9] Linking CXX executable avemotion_validation_characterize
+[6/9] Building CXX object CMakeFiles/avemotion_asset_validator_tests.dir/tests/asset_validator_tests.cpp.o
+[7/9] Linking CXX executable avemotion_asset_validator_tests
+[8/9] Linking CXX executable avemotion_validation_corpus_tests

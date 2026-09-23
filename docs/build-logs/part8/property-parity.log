@@ -1,0 +1,1 @@
+Telegram parity passed: assets=8, samples=196, properties=24969, transforms=4752, skippedSpatial=389, skippedComplex=195, skippedTransforms=915, directBinarySearches=332, forwardCursorFastPaths=332, reverseCursorFastPaths=332

@@ -1,0 +1,13 @@
+Test project /mnt/data/work_part3/AveMotion/out/build/linux-clang-offline
+    Start 1: avemotion.core
+1/4 Test #1: avemotion.core ...................   Passed    0.00 sec
+    Start 2: avemotion.vendor.verify
+2/4 Test #2: avemotion.vendor.verify ..........   Passed    0.55 sec
+    Start 3: avemotion.offline
+3/4 Test #3: avemotion.offline ................   Passed    0.00 sec
+    Start 4: avemotion.runtime.offline
+4/4 Test #4: avemotion.runtime.offline ........   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) =   0.55 sec
