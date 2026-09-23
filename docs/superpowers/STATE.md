@@ -19,24 +19,35 @@ controlled Windows/performance gates. Existing design evidence is
 `out/part25a-recording-design/proposal.md`; existing epsilon evidence is
 `out/part25b-active-state/findings.md`. Runtime still uses fresh samples.
 
-Two independent bounded workers are active: `recording_reset_audit` owns only
-`out/part25c-lifecycle/reset-audit.md` and source inspection;
-`recording_skipped_probe` owns only `out/part25c-skipped-probe/` for repeater and
-negative-time probes. Neither edits product/vendor code or commits. Controller
-owns new spec/plan and provenance/integration audit. No product implementer yet.
-Do not duplicate these live workers. Their completed reports feed the new design;
+Reset and skipped-content audits are complete at `out/part25c-lifecycle/reset-audit.md`
+and `out/part25c-skipped-probe/findings.md`. Task1 Telegram implementation
+`bd2724d` passed independent task review with no blocking findings. Controller
+fresh configure/build and focused recording/vendor checks passed4/4,18.70s.
+Next is Task2 Samsung; check the ledger and live agents before dispatching.
+Controller owns review and subsequent integration plan. Reports feed the design;
 do not stop automation merely because an intermediate block completes.
 
 Written/approved new spec: docs/superpowers/specs/2026-09-23-recording-lifecycle-design.md.
 Plan: docs/superpowers/plans/2026-09-23-recording-lifecycle.md.
 Ledger: .superpowers/sdd/2026-09-23-recording-lifecycle/progress.md.
-Part25C isolates vendor-only lifecycle (Telegram, then Samsung, then full gates);
+Part25C isolates vendor-only lifecycle (Telegram, then Samsung, repository byte
+preservation, then full gates);
 Runtime adoption is next Part25D, not silently included before parity. Selected
 all-owner constructor-state reset simplifies the prior publication projection
 proposal. Source audit identifies typed/CNode reset, correct dasher overload,
 variant visibility and Telegram raster-submission suppression as required.
 Fresh baseline Telegram61/61 passed49.49s; preserved Release baseline hash
 be9b98b42fd0f610665163da3c676316bc14725a6cdf862c87ee2208f418da69.
+Task1 has functional and callback-lifetime RED/GREEN evidence,33 fixture histories,
+4584 full-scene comparisons and full Telegram62/62 PASS. All five patched vendor
+files reproduce byte for byte. Minor deferred: narrow exception override produces
+D9025 warnings; final command enables required unwinding and owner test passes.
+New confirmed next-stage risk: eager sessions capture source IDs before later
+parsed-model stamping; Part25D must prove ordering/refresh, not naively reuse.
+Read-only audit: out/part25c-lifecycle/model-scan-oracle-audit.md.
+Repository byte preservation is a separate Task3: existing autocrlf and absent
+attributes alter protected vendor bytes on Git roundtrip. No global Git/Windows
+setting will change, no source/license byte or golden is normalized to hide it.
 
 ## Part25B completed handoff (renewed two-hour window)
 

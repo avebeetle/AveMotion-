@@ -72,6 +72,18 @@ render task, or invoking a scheduler. These failures are misuse of the additive
 private seam; existing ordinary callers retain their behavior. The future
 Runtime adapter never calls forbidden operations on a recording object.
 
+### Guard compilation addendum
+
+The Telegram target disables C++ exceptions. The additive misuse errors require
+stack unwinding in `src/lottie/lottieanimation.cpp`, including its by-value
+callback wrappers. Enable exceptions only for that translation unit (`/EHsc`
+under MSVC, `-fexceptions` otherwise), with source options ordered after the
+target's disabling flags. Keep evaluator/raster translation units and ordinary
+algorithm branches unchanged. Guards throw before calling those no-EH paths.
+Test destruction of a callback-owned resource on rejection and preserve the
+effective compile command. Apply the same narrow requirement to Samsung only
+if its actual flags require it; do not claim an unexecuted GCC/Clang build.
+
 Recording accepts positive dimensions representable by the existing integer
 viewport API. Invalid dimensions return null without publishing a stale tree;
 the next valid sample must remain correct. Existing frame mapping/clamping is
@@ -154,7 +166,8 @@ reverse full timelines, deterministic seeks/repeats, 128x128 and 96x160 viewport
 changes, zero/invalid dimensions then recovery, and two separate recording
 sessions evaluated concurrently. Metadata queries before enable remain allowed.
 
-Fixture families include all 16 top-level corpus JSONs and nested dash/epsilon
+Fixture families include the 16 smoke-corpus JSON inputs (8 files directly in
+`tests/corpus` and 8 directly in `tests/fixtures`) and nested dash/epsilon
 fixtures, plus new self-authored regressions for skipped repeater copies and
 negative child time. Exercise inactive/zero-alpha precomps, masks/mattes/clip,
 complex/noncomplex layer publication, static and animated trims, individual
@@ -186,6 +199,29 @@ patch can reproduce the changed files from base45a21a4, byte for byte. Update
 lists; preserve original commit/archive values and all license text. Document
 the opt-in behavior in patch READMEs, docs/THIRD_PARTY.md and the stage report.
 This is not a new licensing decision or permission for binary redistribution.
+
+### Repository byte-preservation addendum
+
+The installed Git uses core.autocrlf=true and this repository has no attributes.
+A read-only raw-blob audit found nine untouched vendored files whose working
+bytes differ from the committed blobs through newline normalization (both
+variants' vs2019 files and Telegram example/efl_animview.cpp). Therefore a Git
+roundtrip cannot currently reproduce all bytes protected by UPSTREAM.json.
+This predates Part25C; do not silently recompute source fingerprints to bless it.
+
+Add repository-local `-text` rules for `/third_party/**`, `/patches/**`,
+`/tests/corpus/**` and `/tests/compatibility/tgs/**`. Preserve existing working
+bytes and re-index affected tracked files under those rules in a separate
+reviewed commit. No Windows/global Git configuration is changed, no license
+bytes or animation data are edited, and no history is rewritten. Test actual
+Git add/checkout roundtrips with LF/CRLF fixtures in an isolated temporary mini
+repository under core.autocrlf=true; do not merely grep the attributes file.
+Before final delivery, reconstruct the protected committed snapshot and run
+the unchanged vendor/corpus verifier there as well as in the live workspace.
+
+The numbered lifecycle patches remain diffs of actual changed upstream code,
+not an unexplained line-ending rewrite of otherwise untouched upstream files.
+Report both logical patch reproduction and Git byte-roundtrip verification.
 
 Once both variants pass and the final independent review is resolved, continue
 directly to Part25D persistent Runtime integration. Preserve the current Release

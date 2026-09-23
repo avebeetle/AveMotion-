@@ -32,12 +32,13 @@ may commit their scoped task only, never push or stage controller documents.
 2. Invisible ancestors or zero-copy repeaters hide descendants with prior state: reset all owned descendants, preserve full hierarchy and constructor visibility (Tasks1/2 fixtures and full comparator).
 3. Tiny changes or disabled stroke fields preserve prior payload: reset constructor baselines and compare inactive fields as well (Tasks1/2 epsilon and zero-dash fixtures).
 4. Failed/zero viewport sample or repeated publication returns old borrowed storage: reject, recover and preserve deep copies through next sample/destruction (Tasks1/2 lifetime tests).
-5. Mask/clip raster work survives into the next reset: recording must never submit it; ordinary CPU remains unchanged (Tasks1/2 source/lifetime review, repeated mask stress; Task3 full graphics/CPU gates).
+5. Mask/clip raster work survives into the next reset: recording must never submit it; ordinary CPU remains unchanged (Tasks1/2 source/lifetime review, repeated mask stress; Task4 full graphics/CPU gates).
 
 ## File responsibility map
 
 - Both `third_party/rlottie/<variant>/source/inc/rlottie.h`: additive private recording API contract.
 - Both `src/lottie/lottieanimation.cpp`: mode/pristine guards and recording entry.
+- Variant root `source/CMakeLists.txt` where needed: source options in the target declaration directory enable exceptions only for the guarded lottieanimation.cpp wrapper, leaving other target sources unchanged.
 - Both `src/lottie/lottieitem.h` and `lottieitem.cpp`: graph reset and recording-only path/raster behavior.
 - Samsung `src/lottie/lottieitem_capi.cpp`: non-consuming publication/reset.
 - Variant `src/vector/vdrawable.h` only where needed: typed stroke/dash payload reset in place; no raster algorithm edit.
@@ -75,6 +76,9 @@ remain independently pinned in `reference_session_tests.cpp`.
 
 ### Task 1: Telegram recording lifecycle and common differential tests
 
+**Status:** complete at bd2724d; independent task review approved. Detailed step
+evidence is in the task-1 report/ledger. Full Telegram62/62; controller focused4/4.
+
 **Files:** Telegram files in the map; new test/support/nested fixtures;
 `CMakeLists.txt`; `patches/telegram/0006-avemotion-recording-lifecycle.patch`,
 `patches/telegram/README.md`, `third_party/rlottie/UPSTREAM.json`,
@@ -88,7 +92,7 @@ Test target `avemotion_recording_lifecycle_tests`, CTest
 `avemotion.runtime.recording_lifecycle`, initially Telegram only.
 
 - [ ] Read spec and `out/part25c-lifecycle/reset-audit.md`; integrate the concrete reset map. Read `out/part25c-skipped-probe/findings.md` when available for fixtures; absence does not authorize guessing their semantics. Root will relay any late evidence.
-- [ ] Create the differential test first using an explicitly temporary candidate adapter that invokes retained ordinary `renderTree`. Cover existing nested dash and translation/width/opacity files, all16 top-level fixtures, static/animated trims, invisible/zero-alpha descendants and viewport history. Run it and save functional RED with exact field mismatch under `out/part25c-telegram/`. This adapter is replaced by recording API after RED, not retained as a fallback.
+- [ ] Create the differential test first using an explicitly temporary candidate adapter that invokes retained ordinary `renderTree`. Cover existing nested dash and translation/width/opacity files, all16 smoke inputs (8 JSON files directly in tests/corpus plus8 directly in tests/fixtures), static/animated trims, invisible/zero-alpha descendants and viewport history. Run it and save functional RED with exact field mismatch under `out/part25c-telegram/`. This adapter is replaced by recording API after RED, not retained as a fallback.
 - [ ] Add guard/lifetime tests before implementation. The exact guard assertions are:
 
 ```cpp
@@ -109,6 +113,7 @@ sample matches fresh. Preserve copied scene, sample another frame/dimensions,
 destroy candidate, then compare preserved copy to original oracle.
 
 - [ ] Add the one-way mode and synchronous pristine latch in AnimationImpl. Guard async before scheduler/task mutation; guard all setValue overloads through their common implementation. Use explicit `std::logic_error` for forbidden raster/property calls. Keep normal code branches unchanged.
+- [ ] Because Telegram disables exceptions target-wide, first pin callback-owner cleanup on guard rejection, then enable exceptions only for lottieanimation.cpp with source options (/EHsc or -fexceptions) after disabling target flags. Preserve effective compile commands, guard before entering no-EH evaluator/raster code, and report unexecuted cross-compiler coverage honestly.
 
 ```cpp
 bool AnimationImpl::enableRecordingLifecycle() {
@@ -169,7 +174,70 @@ git diff --check
 
 - [ ] Self-review and scoped commit `feat: add isolated Samsung recording lifecycle`; report raw evidence and concerns. Root review/push follows, not worker push.
 
-### Task 3: Whole-lifecycle validation, provenance and next-stage handoff
+### Task 3: Preserve protected source bytes through Git checkout
+
+**Files:** Create `.gitattributes`, `scripts/test_git_protected_bytes.py`;
+modify `CMakeLists.txt` for a Python/Git-available test; re-index only byte
+normalization differences under protected paths. Add rationale to
+`docs/THIRD_PARTY.md`. Do not edit vendor working bytes, patch contents,
+goldens, licenses or UPSTREAM.json fingerprint values.
+
+**Interfaces:** Consumes the exact fingerprints after Tasks1/2 and current
+working source bytes. Produces repository-local no-conversion rules, CTest
+`avemotion.vendor.git_protected_bytes` where Git is available, and a real
+committed-snapshot verification log. The test must run without requiring the
+AveMotion source directory itself to be a Git checkout (source archives work).
+
+- [ ] Write the behavior test before `.gitattributes`: create a mini Git repo
+  via Python tempfile under the normal test temporary root; copy the repository
+  attributes if present, then write literal LF and CRLF samples under all four
+  protected path families. Invoke Git with command-local core.autocrlf=true,
+  stage them, and `checkout-index --prefix=<separate-temp-output>/ --all`.
+  Compare exact bytes to literals; no Git commit, user identity, network,
+  global configuration, destructive cleanup of broad paths or source grep.
+  Expected RED: LF-protected samples become CRLF without attributes.
+
+```python
+cases = {
+    'third_party/probe/source.cpp': b'first\nsecond\n',
+    'third_party/probe/project.sln': b'first\r\nsecond\r\n',
+    'patches/probe/change.patch': b'first\nsecond\n',
+    'tests/corpus/probe.json': b'{"value":1}\n',
+    'tests/compatibility/tgs/SHA256SUMS.txt': b'hash  probe.tgs\n',
+    'tests/compatibility/tgs/probe.tgs': b'\x00\x0a\x0d\xff',
+}
+```
+
+- [ ] Capture RED command/output. Add repository `.gitattributes` with exact
+  rules below and rerun GREEN. Cover autocrlf=false as a second roundtrip too.
+
+```gitattributes
+/third_party/** -text
+/patches/** -text
+/tests/corpus/** -text
+/tests/compatibility/tgs/** -text
+```
+
+- [ ] Wire CTest only when existing Python and `find_package(Git QUIET)` both
+  resolve; pass explicit Git executable/source attributes path. No Git
+  repository assumption and no new installed dependency. Missing Git must not
+  block building a source archive; report the unavailable optional check.
+- [ ] Before re-index, save hashes of protected working bytes. Stage attributes
+  and re-index affected tracked protected files under no-conversion rules.
+  Confirm all working-byte hashes unchanged; only original normalized Git blob
+  representations change. Expected untouched files are four vs2019 files per
+  variant plus Telegram example/efl_animview.cpp; explain any additional file
+  before staging it. Preserve unrelated controller edits.
+- [ ] Run behavior test and existing vendor/corpus verifier. Reconstruct a full
+  protected snapshot from the corrected index into a new scratch directory,
+  with scripts/verify_vendor.py and required tests/corpus/SHA256SUMS; invoke
+  unchanged verifier there. Save raw output. Keep existing numbered lifecycle
+  patch artifacts unchanged because no working source bytes changed here.
+- [ ] Run full Telegram CTest once, report all known warnings/failures honestly,
+  self-review and commit scoped files as `build: preserve vendored bytes across Git checkouts`.
+  Root independent review and ordinary push follow; no worker push.
+
+### Task 4: Whole-lifecycle validation, provenance and next-stage handoff
 
 **Files:** `docs/PART25C_RECORDING_LIFECYCLE_REPORT.md`; controller STATE/ledger;
 only concrete final-review corrections through their original worker. No new
@@ -186,9 +254,10 @@ and ownership report for Part25D; no claim that Runtime sessions are persistent.
 
 ## Self-review and approval record
 
-The spec's API, graph resets, raster isolation, parity, provenance and gates map
-to Tasks1/2/3 respectively. Both variants have independent review boundaries;
-shared test/manifest updates are serialized. No placeholder implementation or
+The spec's API, graph resets, raster isolation and parity map to Tasks1/2;
+repository byte preservation maps to Task3 and final gates to Task4. Both
+variants have independent review boundaries; shared test/manifest updates are
+serialized. No placeholder implementation or
 fallback to fresh object reconstruction is permitted. Controller approves this
 written plan under explicit user delegation and chooses SDD. Prior Part25A/B
 plans remain historical evidence, not redispatched tasks.
