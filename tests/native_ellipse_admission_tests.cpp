@@ -64,7 +64,8 @@ void expectRejected(std::string_view json, NativeEllipseAdmissionCode code,
 void testBaseline() {
     const auto baseline = readFixture("telegram_sticker_basic.json");
     const auto accepted = auditNativeEllipseInput(baseline);
-    require(accepted.accepted(), "baseline should satisfy the specified input grammar");
+    require(accepted.accepted(), "baseline should satisfy the specified input grammar: code "
+        + std::to_string(static_cast<int>(accepted.code)) + " at " + accepted.path);
     require(accepted.path.empty(), "accepted result has no error path");
     const auto withUnknown = replaceOnce(baseline, "\"ty\": \"el\"",
         "\"unhandled\": 1, \"ty\": \"el\"");
@@ -123,6 +124,51 @@ void testAcceptedVariants(const std::string& baseline) {
     require(baseline.size() < 1'048'576, "fixture must fit byte cap");
     expectAccepted(baseline + std::string(1'048'576 - baseline.size(), ' '),
         "exact maximum input byte count");
+}
+
+void testExactDecimalNumbers(const std::string& baseline) {
+    using C = NativeEllipseAdmissionCode;
+    expectRejected(replaceOnce(baseline, "\"w\": 512", "\"w\": 1.0000000000000001"),
+        C::UnsupportedValue, "nonintegral width hidden by double rounding");
+    expectRejected(replaceOnce(baseline, "\"fr\": 60", "\"fr\": 240.00000000000001"),
+        C::UnsupportedValue, "frame rate beyond cap hidden by double rounding");
+    expectRejected(replaceOnce(baseline, "[0.08, 0.72, 0.95, 1]",
+        "[0.08, 0.72, 0.95, 1.0000000000000001]"),
+        C::UnsupportedValue, "alpha beyond one hidden by double rounding");
+    expectRejected(replaceOnce(baseline, "[-76, 0]", "[-32768.00000000000001, 0]"),
+        C::UnsupportedValue, "negative position just below bound");
+    expectRejected(replaceOnce(baseline, "[-76, 0]", "[32768.00000000000001, 0]"),
+        C::UnsupportedValue, "positive position just above bound");
+    expectAccepted(replaceOnce(baseline, "[-76, 0]", "[-32767.99999999999999, 0]"),
+        "negative position just inside bound");
+    expectAccepted(replaceOnce(baseline, "[-76, 0]", "[32767.99999999999999, 0]"),
+        "positive position just inside bound");
+    expectRejected(replaceOnce(baseline, "[120, 120]", "[16384.00000000000001, 120]"),
+        C::UnsupportedValue, "ellipse size just above bound");
+    expectRejected(replaceOnce(baseline, "\"r\": {\"a\": 0, \"k\": 0}",
+        "\"r\": {\"a\": 0, \"k\": 1e-9999}"),
+        C::UnsupportedValue, "underflow token differs from fixed zero");
+    expectRejected(replaceOnce(baseline, "\"a\": {\"a\": 0, \"k\": [0, 0, 0]}",
+        "\"a\": {\"a\": 0, \"k\": [1e-9999, 0, 0]}"),
+        C::UnsupportedValue, "underflow vector component differs from fixed zero");
+    expectRejected(replaceOnce(baseline, "\"e\": [76, 0]", "\"e\": [76.00000000000001, 0]"),
+        C::UnsupportedValue, "near-equal terminal value is not exact continuity");
+    expectAccepted(replaceOnce(baseline, "\"op\": 61,\n  \"w\"",
+        "\"op\": 6.1e1,\n  \"w\""), "exponent integral root op");
+    expectAccepted(replaceOnce(baseline, "\"w\": 512", "\"w\": 5.12e2"),
+        "exponent integral width");
+    expectAccepted(replaceOnce(baseline, "\"fr\": 60", "\"fr\": 1e-9999"),
+        "positive underflow token remains above zero");
+    expectAccepted(replaceOnce(baseline, "[120, 120]", "[1e-9999, 120]"),
+        "positive underflow ellipse size remains above zero");
+    expectAccepted(replaceOnce(baseline, "\"e\": [76, 0]", "\"e\": [7.6e1, 0]"),
+        "equivalent exponent terminal continuity");
+    expectRejected(replaceOnce(baseline, "\"ip\": 0,\n  \"op\": 61",
+        "\"ip\": 0e999999999999999999999999,\n  \"op\": 61"),
+        C::InvalidJson, "pinned DOM rejects huge positive exponent");
+    expectRejected(replaceOnce(baseline, "\"r\": {\"a\": 0, \"k\": 0}",
+        "\"r\": {\"a\": 0, \"k\": 1e-999999999999999999999999}"),
+        C::UnsupportedValue, "nonzero with huge negative exponent");
 }
 
 struct Mutation {
@@ -331,6 +377,7 @@ int main() {
         testBaseline();
         const auto baseline = readFixture("telegram_sticker_basic.json");
         testAcceptedVariants(baseline);
+        testExactDecimalNumbers(baseline);
         testGrammarRejections(baseline);
         testDocumentRejections(baseline);
         std::cout << "native ellipse admission tests passed\n";
