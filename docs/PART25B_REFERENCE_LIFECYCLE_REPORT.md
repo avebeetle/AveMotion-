@@ -1,7 +1,7 @@
 # Part25B — reference lifecycle foundations
 
 Date: 2026-09-23. Status: bounded implementation, task reviews, measurements and
-full Windows gates complete; final whole-change review pending.
+full Windows gates and independent whole-change review complete.
 Continuation base: `273f2b3`. Design/plan: `51bee54`.
 General persistent scene/model reuse remains unimplemented; Samsung is not all-green.
 
@@ -164,7 +164,25 @@ out/part25b-final/consumer-58236a9/avemotion_installed_consumer.exe
 
 Complete outputs are retained at `out/part25b-final/*-58236a9.txt`, including
 installed-consumer and release-frame-mapping logs. All full-gate test failures
-remain visible; no test was excluded. Final whole-change review is pending.
+remain visible; no test was excluded. The final whole-change reviewer independently
+checked these logs and all four Samsung baseline rows, without rerunning suites.
+
+### Final independent review
+
+The whole-change review over `273f2b3..d7133ac` found no Critical or Important
+defects and approved the bounded result. It also independently reaggregated all
+four timing reports and 24 memory reports and checked both executable hashes.
+Its only Minor finding was stale future-tense wording in STATE; docs-only cleanup
+`59592fa` passed a separate scoped review. No product fix was requested. The existing vendor
+C4251 warning remains a disclosed nonblocking limitation.
+
+Delivery commits: `d4217a4` (mapping optimization), `58236a9` (regressions),
+`d7133ac` (measurement/full-gate report), `59592fa` (reviewed state cleanup).
+The subsequent closeout commits only record verified status; production/tests
+remain exactly the state exercised by the complete `58236a9` gates. The remaining
+vendor warning and Samsung baseline failures are disclosed limitations, not open
+new-code review defects. The bounded scope finished before the two-hour deadline;
+the scheduler is being paused at handoff instead of repeating completed work.
 
 Known pre-existing limitation: Samsung scene.golden and plan.golden disagree with
 stored Polystar endpoint hashes on this MSVC runtime. Part25A reproduced the exact
@@ -278,6 +296,21 @@ exclude upstream retained trees and need not change when this optimization lands
    per-frame speedup.
 4. Raw SDD evidence is retained and known Samsung failures are not relaxed. Costs
    are scratch disk usage and an explicitly incomplete Samsung validation result.
+5. Accept the final review's remaining unclaimed evidence areas instead of
+   expanding closeout. Costs are the unchanged vendor warning, limited historical
+   auditability and no assurance beyond the tested scope: original worker terminal
+   RED/full-suite output has no standalone raw log; current complete controller
+   gates do. No pixel-equivalence, cross-platform/Release probe characterization,
+   race-detector, allocation, representative-corpus or statistical-speedup claim
+   is added.
+
+Reviewer behaviors set aside, all explicitly accepted by the controller:
+persistent reuse/reset (decision3); preservation of the removed ordinary load and
+counter (decision2); portable positive reversed-timeline/invalid-endpoint behavior
+(decision2); Samsung repair (decision4); vendor-warning repair and new graphics,
+fallback, threading or feature changes (outside this bounded stage); unproved
+pixel/platform/race/allocation/performance claims and unavailable standalone old
+logs (decision5). Nothing here silently converts those areas into verified work.
 
 Next substantial stage remains a separately designed fresh-equivalent recording
 lifecycle, covering topology, active/inactive subtrees, modifiers, comparison

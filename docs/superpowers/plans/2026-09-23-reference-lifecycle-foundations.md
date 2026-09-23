@@ -195,7 +195,7 @@ Raw artifacts out/benchmarks/part25b/ and out/part25b-final/ are ignored.
 - [x] Configure/build/full CTest all four presets: windows-msvc-telegram-debug,
   windows-msvc-samsung-debug, windows-msvc-win32-preview, windows-msvc-direct2d.
   Run local-prefix install/external consumer. Never exclude Samsung failures.
-- [ ] Independent whole-change review from273f2b3. One fix wave/scoped review
+- [x] Independent whole-change review from273f2b3. One fix wave/scoped review
   if needed, fresh final gates after fixes; record all declined claims/rulings.
 - [ ] Ordinary push main, verify remote equality, final partial/complete scoped
   report and pause avemotion-6 by07:11:24UTC or safe-scope completion.
