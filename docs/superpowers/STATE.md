@@ -2,6 +2,42 @@
 
 Updated: 2026-09-23
 
+## Active continuation — Part25C recording lifecycle
+
+At 07:09 UTC the user instructed continuous execution of all stages without
+pauses. This supersedes both historical time limits and the paused-scheduler
+instructions below. Automation `avemotion-6` is ACTIVE again with no previous
+deadline. Ordinary reversible decisions, written design/plan approval, main
+commits and ordinary pushes remain delegated. No new dependency installation,
+Windows change, destructive/security-sensitive action or licensing decision is
+authorized. Historical Part25A/B completed tasks must not be repeated.
+
+Continuation base: `45a21a4724bc69f290c805187ba6b42fd78bc10a` (clean main).
+Current design work: fresh-equivalent recording lifecycle, then persistent
+Instance scenes, one temporary model scan session, differential tests and
+controlled Windows/performance gates. Existing design evidence is
+`out/part25a-recording-design/proposal.md`; existing epsilon evidence is
+`out/part25b-active-state/findings.md`. Runtime still uses fresh samples.
+
+Two independent bounded workers are active: `recording_reset_audit` owns only
+`out/part25c-lifecycle/reset-audit.md` and source inspection;
+`recording_skipped_probe` owns only `out/part25c-skipped-probe/` for repeater and
+negative-time probes. Neither edits product/vendor code or commits. Controller
+owns new spec/plan and provenance/integration audit. No product implementer yet.
+Do not duplicate these live workers. Their completed reports feed the new design;
+do not stop automation merely because an intermediate block completes.
+
+Written/approved new spec: docs/superpowers/specs/2026-09-23-recording-lifecycle-design.md.
+Plan: docs/superpowers/plans/2026-09-23-recording-lifecycle.md.
+Ledger: .superpowers/sdd/2026-09-23-recording-lifecycle/progress.md.
+Part25C isolates vendor-only lifecycle (Telegram, then Samsung, then full gates);
+Runtime adoption is next Part25D, not silently included before parity. Selected
+all-owner constructor-state reset simplifies the prior publication projection
+proposal. Source audit identifies typed/CNode reset, correct dasher overload,
+variant visibility and Telegram raster-submission suppression as required.
+Fresh baseline Telegram61/61 passed49.49s; preserved Release baseline hash
+be9b98b42fd0f610665163da3c676316bc14725a6cdf862c87ee2208f418da69.
+
 ## Part25B completed handoff (renewed two-hour window)
 
 The user resumed autonomous work at 05:11 UTC with a deadline of
