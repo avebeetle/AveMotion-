@@ -19,18 +19,19 @@ recording refresh before any Runtime lifetime adoption. Task1d3e83f5 is complete
 independent review approved, fullTelegram64/64 and controller fresh focused4/4
 passed. Task2 Asset-owned source identity is complete atce1c114: independent
 review approved, Telegram65/65, Samsung runtime8/8 and controller fresh4/4 passed.
-Next is the bounded fixture-checkout Task5, then persistent integration Task3
-and full gates/measurements Task4. Capture Task5 dispatch BASE after controller
-docs commit/push; no product worker is active at this checkpoint.
+Bounded fixture-checkout Task5 is complete atb35126a: independent review approved,
+all29fixture hashes preserved, corrected Git checkout/TGS identity passed,
+fullTelegram65/65 and controller fresh4/4 passed. Next is persistent integration
+Task3, then full gates/measurements Task4. Capture dispatch BASE after this
+controllerdocs ordinary push; no product implementer active at this checkpoint.
 Check current ledger/live agents before dispatch; do not
 duplicate a live worker or repeat completed Part25A/B/C tasks. Automation stays ACTIVE.
 
 Independent scratch probe confirmed unprotected tests/fixtures JSON newline
 conversion in the corrected Git snapshot breaks existing JSON/TGS payload identity
-checks. Evidence:out/part25d-fixture-checkout/findings.md. No correction is yet
-implemented; spec addendum and Task5 brief approve protecting the omitted family
-and verifying an actual corrected-index checkout, without weakening tests or
-changing working fixture bytes. Execute2->5->3->4 (numbers kept stable).
+checks. Corrected atb35126a without fixture changes; report:
+docs/PART25D_FIXTURE_CHECKOUT_REPORT.md. Raw RED/GREEN and corrected-index checkout
+remain in out/part25d-task5-4472724-20260923. Execute2->5->3->4 (numbers kept stable).
 
 The future measurement runner has a read-only audit at
 out/benchmarks/part25c/measurement-runner-audit.md: strengthen lifetime/schema,
