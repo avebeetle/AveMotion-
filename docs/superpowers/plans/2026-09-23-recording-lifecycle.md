@@ -245,7 +245,9 @@ cases = {
 
 ### Task 4: Whole-lifecycle validation, provenance and next-stage handoff
 
-**Status:** active final gates/review, controller-owned after Tasks1–3 approval.
+**Status:** final full/Release/consumer gates complete at aec482f; controller
+whole-change report/review pending. Telegram63/63,preview57/57,none30/30;
+Samsung41/43 with only the two unchanged baseline Polystar failures.
 
 **Files:** `docs/PART25C_RECORDING_LIFECYCLE_REPORT.md`; controller STATE/ledger;
 only concrete final-review corrections through their original worker. No new

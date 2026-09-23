@@ -27,8 +27,11 @@ Task2 Samsung0ebd660 also passed independent review with no blocking findings:
 33histories/4650 comparisons, full40/42 (only exact known Polystar failures),
 controller fresh focused4/4. Task3 protected-byte fidelity8748dae is complete and
 independently approved:642working hashes unchanged,9index corrections, isolated
-checkout/vendor verifierPASS and Telegram63/63. Task4 final full gates/review
-is now controller-owned; no product implementer active. Check ledger/liveagents.
+checkout/vendor verifierPASS and Telegram63/63. Task4 controller full gates at
+aec482f:Telegram63/63,preview57/57,no-ref30/30,Samsung41/43 (only two unchanged
+Polystar failures). Both Release recording tests and installed consumer passed.
+Final whole-change report/review is pending; no product implementer active.
+Check ledger/liveagents.
 Controller owns review and subsequent integration plan. Reports feed the design;
 do not stop automation merely because an intermediate block completes.
 
