@@ -186,22 +186,22 @@ Use the six existing reference counters without redefining lifetime.
 
 ### 3.1 Full observable comparator and RED evidence
 
-- [ ] Register `avemotion_reference_session_tests` and CTest
+- [x] Register `avemotion_reference_session_tests` and CTest
   `avemotion.runtime.reference_sessions` only when reference runtime is enabled.
-- [ ] Build a test-only exact comparator covering recorder output plus scene
+- [x] Build a test-only exact comparator covering recorder output plus scene
   statistics/bounds/model counts, complete layers/child indices/masks, every draw
   item's source/model/local/projected geometry and paint, transforms, projection
   and repeater metadata, and canonical object values/alias relationships.
   Enumerate fields explicitly against `EvaluatedScene.hpp`; no bytewise struct
   comparison, epsilon relaxation or fingerprint-only shortcut.
-- [ ] Exclude only asset/instance handles and identity, evaluation sequence,
+- [x] Exclude only asset/instance handles and identity, evaluation sequence,
   history-derived `changes`, and upstream change bits. Assert reused-instance
   sequence and repeated-frame change behavior separately.
-- [ ] Test the comparator itself by copying one scene and independently changing
+- [x] Test the comparator itself by copying one scene and independently changing
   representative fields omitted by RecordingBackend fingerprints; require a
   descriptive mismatch. Include geometry, paint, layer/mask and source-local
   metadata mutations.
-- [ ] Demonstrate meaningful regression RED with a temporary narrowly scoped
+- [x] Demonstrate meaningful regression RED with a temporary narrowly scoped
   naive scene-session reuse mutation on the new dashed/access-order test. Save
   the exact patch and failing output under ignored `out/part25a-regression/`,
   restore that mutation with apply_patch, and verify the committed runtime diff
@@ -209,37 +209,37 @@ Use the six existing reference counters without redefining lifetime.
 
 ### 3.2 Access-order and viewport coverage
 
-- [ ] Add the static dashed rounded rectangle from
+- [x] Add the static dashed rounded rectangle from
   `out/part25a-probe/dash.json` as the small committed fixture, with no external
   asset or licensing dependency.
-- [ ] Use animated paths, multi-trim, Repeater, mask/matte and nested-composition
+- [x] Use animated paths, multi-trim, Repeater, mask/matte and nested-composition
   fixtures, including LoudMute and firework from the known failures. Read
   `out/part25a-probe/findings.md` for exact existing paths.
-- [ ] For each fixture, compare every valid source frame in ascending and reverse
+- [x] For each fixture, compare every valid source frame in ascending and reverse
   order on a reused Instance against new-Instance oracles. Add deterministic
   repeated non-monotonic seeks and `128x128 -> 96x160 -> 128x128` viewport changes.
   Preserve variant-reported totalFrames; precompute immutable oracle scenes once
   per frame/viewport where useful. Current fresh sampling must pass both variants.
-- [ ] Assert actual safe-path counts: every successful exact sample creates one
+- [x] Assert actual safe-path counts: every successful exact sample creates one
   additional scene-role session and advances scene samples once. Eager instance
   creation adds one scene session. Keep oracle diagnostics isolated from the
   measured Runtime; resets happen only while quiescent.
 
 ### 3.3 CPU isolation and separate-instance concurrency
 
-- [ ] On the dashed fixture, evaluate a scene, render two CPU frames, and evaluate
+- [x] On the dashed fixture, evaluate a scene, render two CPU frames, and evaluate
   the same scene again. Require identical complete content, one lazy CPU session,
   two CPU renders, three scene sessions including eager construction, and two
   scene samples. Repeated CPU calls must not recreate their session.
-- [ ] Prepare one asset before threading when supported, create exactly two
+- [x] Prepare one asset before threading when supported, create exactly two
   instances, and evaluate each on its own std::thread using different repeated
   frame orders. Join before reading results; compare with sequential fresh
   oracles. Never access an Instance from both workers and capture failures safely.
-- [ ] Run the new target under Telegram and Samsung, then focused runtime seams,
+- [x] Run the new target under Telegram and Samsung, then focused runtime seams,
   scene golden, playback and Player tests. Use MSVC VsDevCmd; full suites follow
   in Task 5. Record TSan unavailable unless an existing suitable toolchain is
   positively identified; MSVC/ASan success is not race detection.
-- [ ] Commit `test: lock reference scene access-order isolation`; report exact
+- [x] Commit `test: lock reference scene access-order isolation`; report exact
   RED/GREEN commands and comparator exclusions. Independent task review required.
 
 ## Task 4: Lock current model preparation lifetime and retry semantics

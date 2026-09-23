@@ -49,10 +49,25 @@ Original pre-review timing observations are superseded, not valid evidence.
 
 Task 2 removes observed unconditional recursive output-directory deletion in
 the corpus CLI and runner; its regression tests preserve unrelated files and
-inputs while regenerating the tool's named reports. Next: Task 3 full-content
-access-order/viewport/CPU/two-instance tests, Task 4 model lifetime/retry tests,
-then Task 5 full Windows gates and repeated baseline measurements. There is no
-optimized candidate, so no A-B speedup claim will be made from timing noise.
+inputs while regenerating the tool's named reports.
+
+Task 3 tests complete at `7b33c03`: independent task review passed; controller
+freshly rebuilt/reran the new reference-session target on Telegram (16.86 s)
+and Samsung (15.69 s), both 1/1 passed. The temporary naive-reuse mutation failed
+on actual dash geometry in both variants and is fully restored. No production
+runtime/vendor/golden changes. Full scene fields, nine fixture families, viewport,
+CPU and two-instance functional isolation are covered; TSan remains unavailable.
+
+The existing Samsung scene-golden test fails Polystar p100/frame150. Independent
+clean `cda415c` MSVC build reproduces the exact same hashes, so this is not a
+Task 3 regression. Raw baseline proof: out/part25a-samsung-golden/clean-baseline-build-test.txt.
+Numerical root-cause investigation continues; no golden/allowance is changed,
+and full Samsung validation remains unresolved rather than claimed green.
+
+Next: Task 4 model lifetime/retry tests, then Task 5 full Windows gates and final
+review. Repeated baseline measurements are captured in the provisional
+`docs/PART25A_PERSISTENT_SESSIONS_REPORT.md` (controller-owned, not yet final).
+There is no optimized candidate, so no A-B speedup claim will be made from noise.
 
 The plan has been corrected for explicit WARP/preview presets, actual CTest
 names, measured workspace growth, corpus schema changes, model-result errors,
