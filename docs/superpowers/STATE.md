@@ -2,6 +2,32 @@
 
 Updated: 2026-09-23
 
+## Active two-hour continuation (05:11–07:11 UTC)
+
+The user explicitly resumed autonomous work for two more hours after the Part25A
+handoff. New deadline: 2026-09-23T07:11:24Z (10:11 Moscow); no large new block
+after06:51UTC. Existing main-only/ordinary-push and reversible-decision authority
+continues. avemotion-6 was updated and reactivated through the app; this is not
+a duplicate automation. The historical paused entry below describes the prior run.
+
+Starting point:273f2b3, clean and equal to origin/main. Part25A Tasks0–5 remain
+complete as a safe partial result; do not redispatch them. Next-stage artifacts:
+docs/superpowers/specs/2026-09-23-reference-lifecycle-foundations-design.md,
+docs/superpowers/plans/2026-09-23-reference-lifecycle-foundations.md and their
+own plan-scoped SDD ledger:
+.superpowers/sdd/2026-09-23-reference-lifecycle-foundations/progress.md.
+
+Read-only preflight completed: source audit supports metadata mapping for ordinary
+counts with a legacy outlier path. Active-state probe reproduces21 mismatches in50
+comparisons on EACH variant, with three passing controls. Reports
+out/part25b-frame-mapping/audit.md and out/part25b-active-state/findings.md.
+Design/plan approved under delegated authority; Task1 implementation is next.
+General persistent reuse remains disabled. Three future-reuse regression fixtures
+will cover near-default translation, width and opacity. Task1 intentionally removes
+ordinary setup Scene construction1→0 and its duplicate-load failure opportunity.
+All rendering ownership stays unchanged. New deadline/ACTIVE status above supersede
+the historical prior-run statements below.
+
 ## Repository
 
 - Branch: `main`
@@ -12,7 +38,7 @@ Updated: 2026-09-23
 - Prior Git history: unavailable locally and absent from the previously empty
   remote; `cda415c` intentionally begins new history.
 
-## Current stage
+## Previous stage: Part25A safe partial handoff
 
 The user approved Part 25A and delegated autonomous planning/execution:
 
