@@ -346,7 +346,7 @@ Deferred optimization acceptance procedure:
 - [x] Mark the design partial, reuse-deferred (not implemented), and update `docs/superpowers/STATE.md` with exact commits, tests, measurements, and unresolved risks.
 - [x] Request an independent whole-branch code review against the spec. Resolve every Critical/Important finding with a focused test and re-review; record Minor findings explicitly if deferred.
 - [x] Rerun fresh final verification after review fixes. Commit documentation/review changes with `docs: report persistent session evidence`.
-- [ ] Push ordinary `main` commits to `origin/main`, verify local HEAD equals `origin/main`, and pause the six-hour heartbeat once all planned work is complete or the deadline is reached.
+- [x] Push ordinary `main` commits to `origin/main`, verify local HEAD equals `origin/main`, and pause the six-hour heartbeat once all planned work is complete or the deadline is reached.
 
 Final review: no Critical/Important findings; sole Minor comment fixed at7b5221d,
 scoped review approved. Fresh post-review four-preset results are unchanged:

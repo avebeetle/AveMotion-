@@ -367,6 +367,11 @@ are accepted because the required implementations/evidence are absent, and no
 such claim is made here. No review finding remains open in the delivered diff.
 The diagnosed pre-existing Samsung failures remain unresolved product limitations.
 
+Closeout: report commit `84f591a` was ordinarily pushed to main and remote SHA
+was verified. The `avemotion-6` schedule was paused through the app at04:54UTC
+after completion of the available safe scope, before its08:32UTC deadline.
+This does not mark the deferred persistent-session objective achieved.
+
 ## Commit map
 
 | Commit | Delivered change |

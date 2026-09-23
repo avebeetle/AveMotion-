@@ -102,8 +102,9 @@ Controller post-review full configure/build/CTest rerun at7b5221d: Telegram60/60
 (66.08s), with the same two baseline-proven hashes. Logs *-7b5221d.txt.
 
 Safe partial delivery is finalized; persistent reuse/2x target remain NOT
-implemented and Samsung is NOT fully green. Next is only final documentation
-push and stopping avemotion-6. Preserve raw evidence and the clean baseline
+implemented and Samsung is NOT fully green. Report commit84f591a was pushed by
+ordinary push and remote main matched it; avemotion-6 was paused through the app
+at04:54UTC, confirmed by tool response and saved status. Preserve raw evidence and the clean baseline
 scratch checkout for the unresolved Samsung/recording-lifecycle follow-up.
 Do not redispatch Tasks0–5 or reopen lifecycle implementation in this run.
 
@@ -138,6 +139,6 @@ controller. Check live agents and ledger ownership before deciding to skip;
 collect a finished worker's report and continue its review. Skip only a proven
 duplicate controller or already-running identical worker.
 
-Automation `avemotion-6` is ready to stop after this safe-scope handoff.
-Final closeout must verify the ordinary main push and pause it through the app
-tool; no remaining ordinary clarification or repeated execution is needed.
+Automation `avemotion-6` is PAUSED after the safe-scope handoff. Do not resume or
+repeat completed tasks automatically. A new approved stage is needed for the
+deferred recording-lifecycle work; no ordinary clarification is pending.
