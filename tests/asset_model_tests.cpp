@@ -8,6 +8,7 @@
 #include <iostream>
 #include <iterator>
 #include <string>
+#include <string_view>
 #include <unordered_set>
 #include <vector>
 
@@ -47,6 +48,113 @@ std::vector<fs::path> corpus() {
     return result;
 }
 
+void verifyModelPreparationLifetime(std::string_view variant) {
+    using namespace avemotion::runtime;
+    const auto path = fs::path{AVEMOTION_CORPUS_DIR} / "StickAndBall.json";
+    Runtime runtime;
+    const auto loaded = runtime.loadLottieJson(readText(path), path.filename().string());
+    require(static_cast<bool>(loaded), "lifetime fixture did not load");
+    runtime.resetDiagnostics(); // No Instance or model preparation is active.
+
+    const auto prepared = loaded.asset->prepareModel();
+    const auto afterFirst = runtime.diagnostics();
+    if (variant == "telegram") {
+        require(static_cast<bool>(prepared), "Telegram lifetime preparation failed: " + prepared.error);
+        require(prepared.model == loaded.asset->model(), "first preparation was not published");
+        const auto frames = loaded.asset->metadata().totalFrames;
+        require(frames > 1U, "lifetime fixture must span multiple frames");
+        require(afterFirst.referenceModelSessionsCreated == frames
+                    && afterFirst.referenceModelSamples == frames,
+                "fresh model scan must construct and sample one session per source frame");
+        require(afterFirst.referenceSceneSessionsCreated == 0U
+                    && afterFirst.referenceSceneSamples == 0U,
+                "model scan leaked work into the scene role");
+        require(afterFirst.assetModelBuildAttempts == 1U
+                    && afterFirst.assetModelBuildsSucceeded == 1U
+                    && afterFirst.assetModelBuildsFailed == 0U,
+                "first model preparation did not record one successful build");
+
+        const auto preparedAgain = loaded.asset->prepareModel();
+        require(preparedAgain && preparedAgain.model == prepared.model
+                    && loaded.asset->model() == prepared.model,
+                "second preparation did not reuse the published immutable model");
+        const auto afterSecond = runtime.diagnostics();
+        require(afterSecond.referenceModelSessionsCreated == frames
+                    && afterSecond.referenceModelSamples == frames
+                    && afterSecond.assetModelBuildAttempts == 1U
+                    && afterSecond.assetModelBuildsSucceeded == 1U
+                    && afterSecond.assetModelBuildsFailed == 0U,
+                "second preparation repeated model work");
+
+        auto created = runtime.createInstance(loaded.asset);
+        require(static_cast<bool>(created), "lifetime fixture instance creation failed");
+        const auto evaluated = created.instance->evaluateFrame(0U, 128U, 128U);
+        require(static_cast<bool>(evaluated), "lifetime fixture exact scene evaluation failed");
+        const auto afterScene = runtime.diagnostics();
+        require(afterScene.referenceModelSessionsCreated == frames
+                    && afterScene.referenceModelSamples == frames
+                    && afterScene.assetModelBuildAttempts == 1U
+                    && afterScene.assetModelBuildsSucceeded == 1U,
+                "exact Instance evaluation changed model preparation counters");
+        require(afterScene.referenceSceneSessionsCreated == 2U
+                    && afterScene.referenceSceneSamples == 1U,
+                "exact Instance evaluation did not use its own scene role");
+    } else {
+        require(!prepared && !prepared.model
+                    && prepared.error == "the selected comparison engine does not expose stable Telegram source IDs",
+                "comparison preparation changed its unsupported result");
+        require(!loaded.asset->model(), "comparison preparation published a model");
+        require(afterFirst.assetModelBuildAttempts == 1U
+                    && afterFirst.assetModelBuildsSucceeded == 0U
+                    && afterFirst.assetModelBuildsFailed == 1U,
+                "comparison preparation did not record its failure");
+        require(afterFirst.referenceModelSessionsCreated == 0U
+                    && afterFirst.referenceModelSamples == 0U
+                    && afterFirst.referenceSceneSessionsCreated == 0U
+                    && afterFirst.referenceSceneSamples == 0U,
+                "unsupported preparation constructed a reference session");
+    }
+}
+
+void verifyPreparationLimitRetry(std::string_view variant) {
+    using namespace avemotion::runtime;
+    const auto path = fs::path{AVEMOTION_CORPUS_DIR}.parent_path()
+        / "fixtures" / "dashed_stroke_session.json";
+    auto json = readText(path);
+    const auto original = std::string{"\"op\":61"};
+    const auto rootEnd = json.find("\"layers\"");
+    const auto rootOutPoint = json.find(original);
+    require(rootOutPoint != std::string::npos && rootOutPoint < rootEnd,
+            "long-timeline fixture has no root out-point to extend");
+    json.replace(rootOutPoint, original.size(), "\"op\":10001");
+
+    Runtime runtime;
+    const auto loaded = runtime.loadLottieJson(json, "model-preparation-over-limit.json");
+    require(static_cast<bool>(loaded), "valid long-timeline fixture did not load");
+    require(loaded.asset->metadata().totalFrames > 10'000U,
+            "long-timeline fixture did not cross the preparation limit");
+    runtime.resetDiagnostics(); // Only the two retries below contribute.
+    const auto expectedError = variant == "telegram"
+        ? "asset timeline exceeds reference-model preparation limit"
+        : "the selected comparison engine does not expose stable Telegram source IDs";
+    for (std::uint64_t attempt = 1U; attempt <= 2U; ++attempt) {
+        const auto prepared = loaded.asset->prepareModel();
+        require(!prepared && !prepared.model && prepared.error == expectedError,
+                "over-limit preparation did not preserve its variant-specific failure");
+        require(!loaded.asset->model(), "failed preparation published a model");
+        const auto counts = runtime.diagnostics();
+        require(counts.assetModelBuildAttempts == attempt
+                    && counts.assetModelBuildsFailed == attempt
+                    && counts.assetModelBuildsSucceeded == 0U,
+                "failed preparation was not retried and counted");
+        require(counts.referenceModelSessionsCreated == 0U
+                    && counts.referenceModelSamples == 0U
+                    && counts.referenceSceneSessionsCreated == 0U
+                    && counts.referenceSceneSamples == 0U,
+                "ineligible preparation constructed or sampled a reference session");
+    }
+}
+
 } // namespace
 
 int main() {
@@ -54,6 +162,9 @@ int main() {
     const auto upstream = reference::selectedUpstream();
     const auto assets = corpus();
     require(!assets.empty(), "characterization corpus is empty");
+
+    verifyModelPreparationLifetime(upstream.variant);
+    verifyPreparationLimitRetry(upstream.variant);
 
     runtime::Runtime runtime;
     std::size_t totalLayers = 0;
