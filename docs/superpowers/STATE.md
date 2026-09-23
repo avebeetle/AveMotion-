@@ -23,7 +23,10 @@ Reset and skipped-content audits are complete at `out/part25c-lifecycle/reset-au
 and `out/part25c-skipped-probe/findings.md`. Task1 Telegram implementation
 `bd2724d` passed independent task review with no blocking findings. Controller
 fresh configure/build and focused recording/vendor checks passed4/4,18.70s.
-Next is Task2 Samsung; check the ledger and live agents before dispatching.
+Task2 Samsung0ebd660 also passed independent review with no blocking findings:
+33histories/4650 comparisons, full40/42 (only exact known Polystar failures),
+controller fresh focused4/4. Next is Task3 protected-byte fidelity; check ledger
+and live agents before dispatching.
 Controller owns review and subsequent integration plan. Reports feed the design;
 do not stop automation merely because an intermediate block completes.
 
@@ -48,6 +51,14 @@ Read-only audit: out/part25c-lifecycle/model-scan-oracle-audit.md.
 Repository byte preservation is a separate Task3: existing autocrlf and absent
 attributes alter protected vendor bytes on Git roundtrip. No global Git/Windows
 setting will change, no source/license byte or golden is normalized to hide it.
+
+Part25D spec/plan prepared for immediate continuation after Part25C final gates:
+docs/superpowers/specs/2026-09-23-persistent-session-integration-design.md and
+docs/superpowers/plans/2026-09-23-persistent-session-integration.md; separate SDD
+ledger under .superpowers/sdd/2026-09-23-persistent-session-integration/.
+Additional actual baseline regression: cache eviction loses prepared authored
+IDs (3/3->0/0); out/part25d-cache-eviction/findings.md. D adds exact source lease,
+synchronized binding epoch, then persistent lifetimes. No D product edits yet.
 
 ## Part25B completed handoff (renewed two-hour window)
 

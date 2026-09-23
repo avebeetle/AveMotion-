@@ -145,6 +145,9 @@ git diff --check
 
 ### Task 2: Samsung recording lifecycle with the same oracle contract
 
+**Status:** complete at0ebd660; independent task review approved. Full40/42 with
+the two exact known Samsung baseline failures; controller focused4/4PASS.
+
 **Files:** Samsung files in map; common test/support only for concrete variant
 differences and added regression cases; `CMakeLists.txt`;
 `patches/samsung/0002-avemotion-recording-lifecycle.patch`, Samsung README,
