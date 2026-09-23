@@ -129,7 +129,8 @@ if(AVEMOTION_RLOTTIE_AVAILABLE)
         src/runtime/RlottieSceneBridge.cpp)
     if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
         list(APPEND AVEMOTION_RUNTIME_SOURCES
-            src/model/TelegramParsedModelBuilder.cpp)
+            src/model/TelegramParsedModelBuilder.cpp
+            src/runtime/NativeEllipseAdmission.cpp)
     endif()
 endif()
 
@@ -760,6 +761,18 @@ if(BUILD_TESTING)
         endif()
 
         if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
+            add_executable(avemotion_native_ellipse_admission_tests
+                tests/native_ellipse_admission_tests.cpp)
+            target_include_directories(avemotion_native_ellipse_admission_tests PRIVATE
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime")
+            target_link_libraries(avemotion_native_ellipse_admission_tests PRIVATE
+                AveMotion::Runtime)
+            target_compile_definitions(avemotion_native_ellipse_admission_tests PRIVATE
+                AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
+            avemotion_set_warnings(avemotion_native_ellipse_admission_tests)
+            add_test(NAME avemotion.runtime.native_ellipse_admission
+                COMMAND avemotion_native_ellipse_admission_tests)
+
             add_executable(avemotion_source_ownership_tests tests/source_ownership_tests.cpp)
             target_link_libraries(avemotion_source_ownership_tests PRIVATE
                 AveMotion::Runtime rlottie::rlottie Threads::Threads)
