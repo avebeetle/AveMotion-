@@ -2,7 +2,32 @@
 
 Updated: 2026-09-23
 
-## Current continuation — resumed interactively, automation still canceled
+## Current continuation — Part25I private admission, automation still canceled
+
+G preview correction36a17e4 is independently reviewed and pushed with871bb86.
+Actual GitHub run35861658145/job107183082122 SUCCESS, including live preview
+runner and artifact upload. Local policy was not bypassed. Overall Linux
+reference/ASan issues remain separate; do not claim whole CI green.
+
+H throwaway one-ellipse emitter proof passed1008/1008 pre-model scene comparisons,
+and controller fresh repetition passed1008/1008. No product native emitter or
+generalized parser/binding/history/performance claim. Reports:
+docs/PART25G_PREVIEW_AND_NATIVE_READINESS_REPORT.md and
+docs/PART25H_NATIVE_ELLIPSE_PROOF_REPORT.md; raw out/part25h-native-proof/.
+
+Current approved architectural prerequisite is Part25I strict raw input grammar
+admission only; it does not activate a new runtime route. Spec:
+docs/superpowers/specs/2026-09-23-native-ellipse-admission-design.md.
+Plan: docs/superpowers/plans/2026-09-23-native-ellipse-admission.md.
+Ledger: .superpowers/sdd/2026-09-23-native-ellipse-admission/progress.md.
+Spec7c5dbd8 and plan/refinementd72fbd3 are committed locally; stage/task1 base
+d72fbd32f9c732ceb2cc22da603f10a3ef3403f5. Sole product implementer
+/root/native_ellipse_admission owns four scoped files. Root owns reports/STATE.
+Task1 TDD and independent review precede Task2 full Windows/none gates and final
+review. Check ledger/live agents before dispatch; do not duplicate this worker.
+Automation remains deleted, no scheduled background continuation is implied.
+
+## Prior interactive G/H continuation
 
 The user said "делай" after reviewing the complete handoff. Development resumes
 interactively from e0ca016. The deleted 15-minute automation is NOT recreated.

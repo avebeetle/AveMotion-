@@ -54,9 +54,18 @@ Independent whole-diff review approved `e0ca016..36a17e4`, with no actionable
 P0-P3 findings. It additionally verified the isolated wrapper under dot-sourced
 invocation: success 0, throwing failure 1. Review:
 `out/part25g-preview-exit/review.md`. The reviewer explicitly left the fresh
-production CI result pending normal push; local tests do not establish it.
+production CI result pending normal push; local tests did not establish it.
 Historical static RED and the first no-VS run were tool-output evidence, not
 separately preserved raw files. The full successful suite logs are preserved.
+
+### Actual post-fix integration
+
+The ordinary push of `871bb8609ef4eeaef0295e09af39e337e03371b3`, containing the
+reviewed fix, triggered [run 35861658145](https://github.com/avebeetle/AveMotion-/actions/runs/35861658145).
+The [Win32 preview job 107183082122](https://github.com/avebeetle/AveMotion-/actions/runs/35861658145/job/107183082122)
+completed **success**, including the actual live preview lifecycle runner and
+evidence upload. This closes the bounded preview integration gate without local
+policy changes. The unrelated Linux jobs are not claimed fixed.
 
 ## Native-scene readiness: observations, not implementation
 
@@ -89,6 +98,7 @@ single-ellipse emission using existing AveMotion evaluation/geometry, with one
 reference-assisted preparation and no reference access inside emission. The
 fixed matrix covers all frames, forward/reverse/repeated access, square and
 nonsquare viewports, and a short active range. Its brief and evidence are in
-`out/part25h-native-proof/`. A negative result must preserve exact differences;
-it must not weaken the oracle. No product native emitter, speedup, zero-allocation
+`out/part25h-native-proof/`. This experiment subsequently passed its fixed matrix;
+see PART25H_NATIVE_ELLIPSE_PROOF_REPORT.md for its narrow scope and exclusions.
+No product native emitter, speedup, zero-allocation
 guarantee, broader feature support, or new fallback policy is delivered by G.
