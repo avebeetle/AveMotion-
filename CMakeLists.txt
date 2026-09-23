@@ -250,6 +250,9 @@ if(AVEMOTION_BUILD_CORPUS_LAB
         AveMotion::Evaluation
         AveMotion::Rendering
         AveMotion::Validation)
+    if(WIN32)
+        target_link_libraries(avemotion_corpus_lab PRIVATE Psapi)
+    endif()
     avemotion_set_warnings(avemotion_corpus_lab)
 endif()
 
@@ -486,6 +489,16 @@ if(BUILD_TESTING)
         COMMAND avemotion_asset_validator_tests)
 
     if(AVEMOTION_BUILD_CORPUS_LAB)
+        add_executable(avemotion_corpus_benchmark_metrics_tests
+            tests/corpus_benchmark_metrics_tests.cpp)
+        target_compile_features(avemotion_corpus_benchmark_metrics_tests PRIVATE cxx_std_20)
+        target_include_directories(avemotion_corpus_benchmark_metrics_tests PRIVATE
+            "${CMAKE_CURRENT_SOURCE_DIR}/apps/corpus_lab"
+            "${CMAKE_CURRENT_SOURCE_DIR}/include")
+        avemotion_set_warnings(avemotion_corpus_benchmark_metrics_tests)
+        add_test(NAME avemotion.corpus.benchmark_metrics
+            COMMAND avemotion_corpus_benchmark_metrics_tests)
+
         add_executable(avemotion_corpus_analysis_tests
             tests/corpus_analysis_tests.cpp)
         target_include_directories(avemotion_corpus_analysis_tests PRIVATE
@@ -517,6 +530,11 @@ if(BUILD_TESTING)
                 --expected-assets 16)
         set_tests_properties(avemotion.corpus.lab_output PROPERTIES
             DEPENDS avemotion.corpus.lab_smoke)
+        add_test(NAME avemotion.corpus.lab_output_safety
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/scripts/test_corpus_lab_output_safety.py
+                --root ${CMAKE_CURRENT_SOURCE_DIR}
+                --executable $<TARGET_FILE:avemotion_corpus_lab>)
     endif()
 
     add_executable(avemotion_property_evaluator_tests

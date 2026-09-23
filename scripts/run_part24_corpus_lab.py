@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import os
 from pathlib import Path, PurePosixPath
-import shutil
 import stat
 import subprocess
 import tempfile
@@ -58,6 +57,8 @@ def main() -> int:
     parser.add_argument("--include-names", action="store_true")
     parser.add_argument("--strict", action="store_true")
     parser.add_argument("--samples", type=int, default=60)
+    parser.add_argument("--warmup-samples", type=int, default=20)
+    parser.add_argument("--memory-instances", type=int, choices=(1, 16, 64))
     parser.add_argument("--load-repeats", type=int, default=3)
     parser.add_argument("--cpu-repeats", type=int, default=2)
     parser.add_argument("--render-size", type=int, default=128)
@@ -81,13 +82,14 @@ def main() -> int:
         input_path = args.input_dir
         if input_path is None or not input_path.exists():
             fail(f"input directory does not exist: {input_path}")
-    if args.output.exists():
-        shutil.rmtree(args.output)
     command = [str(executable), "--input", str(input_path),
                "--output", str(args.output), "--samples", str(args.samples),
+               "--warmup-samples", str(args.warmup_samples),
                "--load-repeats", str(args.load_repeats),
                "--cpu-repeats", str(args.cpu_repeats),
                "--render-size", str(args.render_size)]
+    if args.memory_instances is not None:
+        command.extend(["--memory-instances", str(args.memory_instances)])
     if args.include_names:
         command.append("--include-names")
     if args.strict:

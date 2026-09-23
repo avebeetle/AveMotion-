@@ -338,7 +338,7 @@ int main() {
         "hidden pre-playing removal failed");
 
     const auto stableStorage = player.diagnostics().storageGeneration;
-    for (int index = 0; index != 128; ++index) {
+    for (int index = 0; index != 1000; ++index) {
         const auto sample = add(afterCompletion, index * interval);
         static_cast<void>(player.tick(sample));
     }

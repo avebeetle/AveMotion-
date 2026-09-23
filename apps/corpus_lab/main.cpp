@@ -1,4 +1,5 @@
 #include "CorpusAnalysis.hpp"
+#include "BenchmarkMetrics.hpp"
 
 #include "avemotion/core/Hash.hpp"
 #include "avemotion/evaluation/PropertyEvaluator.hpp"
@@ -9,6 +10,7 @@
 #include "avemotion/validation/AssetValidator.hpp"
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cctype>
 #include <cmath>
@@ -32,6 +34,12 @@
 #include <utility>
 #include <vector>
 
+#if defined(_WIN32)
+#define NOMINMAX
+#include <windows.h>
+#include <psapi.h>
+#endif
+
 namespace {
 
 using namespace avemotion;
@@ -44,6 +52,8 @@ struct Options final {
     bool includeNames = false;
     bool strict = false;
     std::size_t samples = 60U;
+    std::size_t warmupSamples = 20U;
+    std::size_t memoryInstances = 0U;
     std::size_t loadRepeats = 3U;
     std::size_t cpuRepeats = 2U;
     std::size_t renderSize = 128U;
@@ -87,6 +97,17 @@ struct AssetResult final {
     std::int64_t firstPipelineUs = 0;
     std::int64_t steadyPipelineAverageUs = 0;
     std::int64_t cpuRenderMedianUs = 0;
+    std::int64_t exactSceneMedianNs = 0;
+    std::int64_t exactSceneP95Ns = 0;
+    std::int64_t pipelineMedianNs = 0;
+    std::int64_t pipelineP95Ns = 0;
+    corpus_lab::PhaseCounts setupCounts;
+    corpus_lab::PhaseCounts firstCounts;
+    corpus_lab::PhaseCounts steadyCounts;
+    std::array<std::size_t, 3> evaluatorRetainedBytes{};
+    std::array<std::size_t, 3> projectorRetainedBytes{};
+    std::array<std::uint64_t, 3> evaluatorStorageGeneration{};
+    std::array<std::uint64_t, 3> projectorStorageGeneration{};
     std::size_t modelBytes = 0U;
     std::size_t evaluatorWorkspaceBytes = 0U;
     std::size_t projectorWorkspaceBytes = 0U;
@@ -161,6 +182,16 @@ void require(bool condition, std::string_view message) {
             require(value && *value >= 1U && *value <= 10000U,
                     "--samples must be in [1, 10000]");
             options.samples = *value;
+        } else if (argument == "--warmup-samples") {
+            const auto value = parseSize(takeValue(argument));
+            require(value && *value <= 10000U,
+                    "--warmup-samples must be in [0, 10000]");
+            options.warmupSamples = *value;
+        } else if (argument == "--memory-instances") {
+            const auto value = parseSize(takeValue(argument));
+            require(value && (*value == 1U || *value == 16U || *value == 64U),
+                    "--memory-instances must be 1, 16, or 64");
+            options.memoryInstances = *value;
         } else if (argument == "--load-repeats") {
             const auto value = parseSize(takeValue(argument));
             require(value && *value >= 1U && *value <= 100U,
@@ -193,6 +224,10 @@ void require(bool condition, std::string_view message) {
     }
     require(!options.input.empty(), "--input is required");
     require(!options.output.empty(), "--output is required");
+#if !defined(_WIN32)
+    require(options.memoryInstances == 0U,
+            "--memory-instances requires Windows process memory information");
+#endif
     return options;
 }
 
@@ -423,6 +458,7 @@ AssetResult analyzeAsset(
     result.loadModelMedianUs = median(loadTimes);
 
     runtime::Runtime runtimeValue;
+    const auto setupBefore = runtimeValue.diagnostics();
     std::size_t jsonBytes = 0U;
     const auto loaded = loadAsset(runtimeValue, bytes, format, result.alias, jsonBytes);
     if (!loaded) {
@@ -518,10 +554,20 @@ AssetResult analyzeAsset(
     }
     result.evaluatorWorkspaceBytes = evaluationWorkspace.retainedBytes();
     result.projectorWorkspaceBytes = projectionWorkspace.retainedBytes();
+    const auto observeWorkspaces = [&](std::size_t boundary) {
+        result.evaluatorRetainedBytes[boundary] = evaluationWorkspace.retainedBytes();
+        result.projectorRetainedBytes[boundary] = projectionWorkspace.retainedBytes();
+        result.evaluatorStorageGeneration[boundary] = evaluationWorkspace.storageGeneration();
+        result.projectorStorageGeneration[boundary] = projectionWorkspace.storageGeneration();
+    };
+    observeWorkspaces(0U);
+    const auto setupAfter = runtimeValue.diagnostics();
+    result.setupCounts = corpus_lab::phaseDelta(setupBefore, setupAfter);
 
     render::MotionRenderPlanner planner;
-    auto runPipeline = [&](double progress, bool collect) -> bool {
-        const auto frame = instance.frameAtPosition(progress);
+    std::int64_t lastPipelineNs = 0;
+    auto runPipeline = [&](std::size_t frame, bool collect) -> bool {
+        const auto pipelineStart = Clock::now();
         const auto evaluated = evaluator.evaluate(
             static_cast<double>(frame), evaluationWorkspace);
         if (!evaluated) return false;
@@ -533,6 +579,7 @@ AssetResult analyzeAsset(
         if (!projected) return false;
         const auto built = planner.build(std::move(scene.scene));
         if (!built) return false;
+        lastPipelineNs = corpus_lab::nanoseconds(Clock::now() - pipelineStart);
         if (collect) {
             result.projectedItems += projected.statistics.projected;
             result.sourceDrawItems += built.plan.statistics.sourceDrawItemCount;
@@ -547,28 +594,59 @@ AssetResult analyzeAsset(
         return true;
     };
 
-    const auto firstStart = Clock::now();
-    if (!runPipeline(0.0, true)) {
+    for (std::size_t sample = 0U; sample < options.warmupSamples; ++sample) {
+        if (!runPipeline(sample % std::max<std::size_t>(1U, result.totalFrames), false)) {
+            result.status = "pipeline-failed";
+            result.error = "warm-up native pipeline sample failed";
+            return result;
+        }
+    }
+    observeWorkspaces(1U);
+
+    std::vector<std::int64_t> exactSceneTimes;
+    std::vector<std::int64_t> pipelineTimes;
+    exactSceneTimes.reserve(options.samples + 1U);
+    pipelineTimes.reserve(options.samples + 1U);
+    const auto measurePipeline = [&](std::size_t frame) -> bool {
+        const auto before = runtimeValue.diagnostics();
+        const bool ok = runPipeline(frame, true);
+        const auto after = runtimeValue.diagnostics();
+        if (!ok) return false;
+        exactSceneTimes.push_back(static_cast<std::int64_t>(
+            after.sceneEvaluationNanoseconds - before.sceneEvaluationNanoseconds));
+        pipelineTimes.push_back(lastPipelineNs);
+        return true;
+    };
+
+    const auto firstBefore = runtimeValue.diagnostics();
+    if (!measurePipeline(0U)) {
         result.status = "pipeline-failed";
         result.error = "first native pipeline sample failed";
         return result;
     }
-    result.firstPipelineUs = microseconds(Clock::now() - firstStart);
+    result.firstPipelineUs = lastPipelineNs / 1000;
+    const auto firstAfter = runtimeValue.diagnostics();
+    result.firstCounts = corpus_lab::phaseDelta(firstBefore, firstAfter);
 
-    const auto steadyStart = Clock::now();
+    const auto steadyBefore = firstAfter;
+    std::int64_t steadyPipelineTotalNs = 0;
     for (std::size_t sample = 0U; sample < options.samples; ++sample) {
-        const double progress = options.samples == 1U
-            ? 0.5
-            : static_cast<double>(sample)
-                / static_cast<double>(options.samples - 1U);
-        if (!runPipeline(progress, true)) {
+        if (!measurePipeline(sample % std::max<std::size_t>(1U, result.totalFrames))) {
             result.status = "pipeline-failed";
             result.error = "steady native pipeline sample failed";
             return result;
         }
+        steadyPipelineTotalNs += pipelineTimes.back();
     }
-    result.steadyPipelineAverageUs = microseconds(Clock::now() - steadyStart)
-        / static_cast<std::int64_t>(options.samples);
+    const auto steadyAfter = runtimeValue.diagnostics();
+    result.steadyCounts = corpus_lab::phaseDelta(steadyBefore, steadyAfter);
+    result.steadyPipelineAverageUs = steadyPipelineTotalNs
+        / static_cast<std::int64_t>(options.samples) / 1000;
+    result.exactSceneMedianNs = corpus_lab::medianNanoseconds(exactSceneTimes);
+    result.exactSceneP95Ns = corpus_lab::nearestRankP95Nanoseconds(exactSceneTimes);
+    result.pipelineMedianNs = corpus_lab::medianNanoseconds(pipelineTimes);
+    result.pipelineP95Ns = corpus_lab::nearestRankP95Nanoseconds(pipelineTimes);
+    observeWorkspaces(2U);
 
     if (options.cpuRepeats != 0U) {
         std::vector<std::int64_t> cpuTimes;
@@ -592,6 +670,50 @@ AssetResult analyzeAsset(
         + result.projectorWorkspaceBytes + result.sceneBytes + result.planBytes;
     result.status = "ok";
     return result;
+}
+
+void observeMemory(const Options& options,
+                   const std::filesystem::path& path) {
+#if defined(_WIN32)
+    std::uintmax_t totalBytes = 0U;
+    const auto bytes = readBytes(path, totalBytes, options.maximumTotalBytes);
+    require(!bytes.empty(), "memory input could not be read");
+    const auto format = formats::detectAssetFormat(bytes);
+    require(format != formats::AssetFormat::Unknown, "memory input format is unknown");
+    const auto alias = lab::stableAssetAlias(core::fnv1a64(bytes), 0U);
+    runtime::Runtime runtimeValue;
+    std::size_t jsonBytes = 0U;
+    const auto loaded = loadAsset(runtimeValue, bytes, format, alias, jsonBytes);
+    require(static_cast<bool>(loaded), "memory input failed to load");
+    const auto prepared = loaded.asset->prepareModel();
+    require(static_cast<bool>(prepared), "memory input model preparation failed");
+    std::vector<std::unique_ptr<runtime::Instance>> instances;
+    instances.reserve(options.memoryInstances);
+    for (std::size_t index = 0U; index < options.memoryInstances; ++index) {
+        auto created = runtimeValue.createInstance(loaded.asset);
+        require(static_cast<bool>(created), "memory instance creation failed");
+        instances.push_back(std::move(created.instance));
+    }
+    for (auto& instance : instances) {
+        const auto scene = instance->evaluateModelFrame(0U, 128U, 128U);
+        require(static_cast<bool>(scene), "memory frame evaluation failed");
+    }
+    PROCESS_MEMORY_COUNTERS counters{};
+    require(GetProcessMemoryInfo(GetCurrentProcess(), &counters,
+                                 sizeof(counters)) != 0,
+            "GetProcessMemoryInfo failed");
+    std::filesystem::create_directories(options.output);
+    std::ofstream report(options.output / "memory_observation.tsv",
+                         std::ios::binary | std::ios::trunc);
+    require(static_cast<bool>(report), "cannot create memory observation");
+    report << "asset\tinstances\tworking_set_bytes\tpeak_working_set_bytes\n"
+           << alias << '\t' << instances.size() << '\t'
+           << counters.WorkingSetSize << '\t' << counters.PeakWorkingSetSize << '\n';
+#else
+    static_cast<void>(options);
+    static_cast<void>(path);
+    fail("--memory-instances requires Windows process memory information");
+#endif
 }
 
 void writeReports(const Options& options, std::vector<AssetResult> results) {
@@ -662,7 +784,22 @@ void writeReports(const Options& options, std::vector<AssetResult> results) {
         << "\tprojected_items\tsource_draw_items\tunsupported_draw_items"
         << "\tmodel_bytes\tevaluator_workspace_bytes\tprojector_workspace_bytes"
         << "\tscene_bytes\tplan_bytes\tper_instance_bytes"
-        << "\tinstances_1_bytes\tinstances_16_bytes\tinstances_64_bytes\n";
+        << "\tinstances_1_bytes\tinstances_16_bytes\tinstances_64_bytes"
+        << "\texact_scene_median_ns\texact_scene_p95_ns"
+        << "\tpipeline_median_ns\tpipeline_p95_ns";
+    for (const auto phase : {"setup", "first", "steady"}) {
+        for (const auto role : {"metadata", "scene", "model", "cpu"}) {
+            benchmarks << '\t' << phase << '_' << role << "_sessions";
+        }
+    }
+    benchmarks << "\tsetup_model_samples\tfirst_scene_samples\tsteady_scene_samples";
+    for (const auto boundary : {"after_prepare", "after_warmup", "after_measured"}) {
+        for (const auto owner : {"evaluator", "projector"}) {
+            benchmarks << '\t' << owner << '_' << boundary << "_retained_bytes"
+                       << '\t' << owner << '_' << boundary << "_storage_generation";
+        }
+    }
+    benchmarks << '\n';
     issues << "asset\tprofile\tseverity\tcode\tfeature\tnode\tproperty\tmessage\n";
 
     for (const auto& result : results) {
@@ -702,7 +839,24 @@ void writeReports(const Options& options, std::vector<AssetResult> results) {
             << saturatingAdd(result.modelBytes,
                              saturatingMultiply(result.perInstanceBytes, 16U)) << '\t'
             << saturatingAdd(result.modelBytes,
-                             saturatingMultiply(result.perInstanceBytes, 64U)) << '\n';
+                             saturatingMultiply(result.perInstanceBytes, 64U))
+            << '\t' << result.exactSceneMedianNs << '\t' << result.exactSceneP95Ns
+            << '\t' << result.pipelineMedianNs << '\t' << result.pipelineP95Ns;
+        for (const auto& phase : {result.setupCounts, result.firstCounts,
+                                   result.steadyCounts}) {
+            benchmarks << '\t' << phase.metadataSessions << '\t' << phase.sceneSessions
+                       << '\t' << phase.modelSessions << '\t' << phase.cpuSessions;
+        }
+        benchmarks << '\t' << result.setupCounts.modelSamples
+                   << '\t' << result.firstCounts.sceneSamples
+                   << '\t' << result.steadyCounts.sceneSamples;
+        for (std::size_t boundary = 0U; boundary < 3U; ++boundary) {
+            benchmarks << '\t' << result.evaluatorRetainedBytes[boundary]
+                       << '\t' << result.evaluatorStorageGeneration[boundary]
+                       << '\t' << result.projectorRetainedBytes[boundary]
+                       << '\t' << result.projectorStorageGeneration[boundary];
+        }
+        benchmarks << '\n';
         for (const auto& [profile, issue] : result.issues) {
             issues << result.alias << '\t' << validation::toString(profile) << '\t'
                    << validation::toString(issue.severity) << '\t'
@@ -732,7 +886,7 @@ void writeReports(const Options& options, std::vector<AssetResult> results) {
 
     summary
         << "AveMotion private corpus laboratory\n"
-        << "schema=1\n"
+        << "schema=2\n"
         << "privacy=" << (options.includeNames ? "names-included" : "hashed-aliases") << '\n'
         << "files=" << results.size() << '\n'
         << "loaded=" << loaded << '\n'
@@ -742,7 +896,13 @@ void writeReports(const Options& options, std::vector<AssetResult> results) {
         << "unsupportedAssets=" << unsupported << '\n'
         << "telegramProfileAccepted=" << telegram << '\n'
         << "samplesPerAsset=" << options.samples << '\n'
+        << "measuredSamplesPerAsset=" << options.samples << '\n'
+        << "warmupSamplesPerAsset=" << options.warmupSamples << '\n'
+        << "frameOrder=first=0,warmup=sample%frames,steady=sample%frames\n"
+        << "timingUnits=nanoseconds\n"
+        << "sampledWorkload=first+measured;warmup-excluded\n"
         << "renderSize=" << options.renderSize << '\n'
+        << "viewport=" << options.renderSize << 'x' << options.renderSize << '\n'
         << "rankingFormula=blockedAssets*1000+occurrences*25+supportWeight-effort*50\n"
         << "rankingStatus=preliminary-until-representative-private-corpus\n";
     if (!priorities.empty()) {
@@ -760,8 +920,15 @@ int main(int argc, char** argv) {
     try {
         const auto options = parseOptions(argc, argv);
         const auto files = enumerateFiles(options);
-        std::filesystem::remove_all(options.output);
         std::filesystem::create_directories(options.output);
+        if (options.memoryInstances != 0U) {
+            require(files.size() == 1U,
+                    "--memory-instances requires exactly one input asset");
+            observeMemory(options, files.front());
+            std::cout << "AveMotion corpus memory observation completed\n"
+                      << "output=" << pathUtf8(options.output) << '\n';
+            return 0;
+        }
 
         std::uintmax_t totalBytes = 0U;
         std::map<std::uint64_t, std::size_t> aliasCollisions;
