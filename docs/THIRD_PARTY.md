@@ -8,6 +8,13 @@
 
 Exact archive and post-patch source-tree SHA-256 values are stored in
 `third_party/rlottie/UPSTREAM.json` and checked by `scripts/verify_vendor.py`.
+Repository `.gitattributes` disables line-ending conversion for vendored
+sources, local patches, the smoke corpus, and the TGS compatibility corpus.
+These rules preserve the exact bytes used by those fingerprints across Git
+checkouts, including on systems with `core.autocrlf=true`; they do not change
+upstream source, license, or corpus contents. The optional
+`avemotion.vendor.git_protected_bytes` CTest checks a real add/checkout
+roundtrip when Git is available.
 
 Telegram changes are explicit:
 

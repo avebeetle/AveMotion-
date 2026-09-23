@@ -680,6 +680,16 @@ if(BUILD_TESTING)
             ${CMAKE_CURRENT_SOURCE_DIR}/scripts/test_vendor_fingerprint_order.py)
     add_test(NAME avemotion.vendor.verify
         COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/verify_vendor.py)
+    find_package(Git QUIET)
+    if(GIT_FOUND)
+        add_test(NAME avemotion.vendor.git_protected_bytes
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/scripts/test_git_protected_bytes.py
+                --git ${GIT_EXECUTABLE}
+                --attributes ${CMAKE_CURRENT_SOURCE_DIR}/.gitattributes)
+    else()
+        message(STATUS "Git unavailable: skipping optional protected-byte checkout test")
+    endif()
 
     if(AVEMOTION_RLOTTIE_AVAILABLE)
         add_executable(avemotion_reference_tests tests/reference_tests.cpp)

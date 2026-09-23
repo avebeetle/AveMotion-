@@ -1,0 +1,4 @@
+/third_party/** -text
+/patches/** -text
+/tests/corpus/** -text
+/tests/compatibility/tgs/** -text
