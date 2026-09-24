@@ -247,3 +247,81 @@ Voices page; no claim of completed static host link, GUI/DPI or native playback.
 Ordinary host push completed and remote main exact equality verified:
 `ad608bf67636a885ccdd8dde3b55e821b3322bf0`. Engine documentation checkpoint
 follows. No Task 3 product writer started before review acceptance.
+
+## Task 3 and final-gate preparation
+
+After both Task 2 pushes, sole writer `/root/qt_lab_page` started Task 3 from
+host `ad608bf`; engine docs HEAD `0d4c793`. Ten explicit widget/entry/test/main/
+CMake paths, no worker/core/vendor changes. Root found no competing GUI process
+before releasing its sequential owned temporary-INI harness. Task 3 is not yet
+accepted. Root performs no competing builds/tests/GUI while that writer works.
+
+Independent read-only Task 4 measurement audit is retained in the plan workspace.
+It confirms Loop default but requires observed wrap/advancement for valid active
+samples. It distinguishes cumulative image/delivery/replacement counters from
+last-batch render time and Player counters reset by replacement. Controls must
+be serialized because acknowledgements share file generation; a post-Pause
+transition redraw is recorded separately before measuring settled pause.
+The prepared protocol/context now include these qualifications; no timing or
+memory measurement has yet run.
+
+Ruling: do not add a product API merely for scratch measurement metadata — the
+existing controller does not expose actual Runtime asset duration/frame count,
+which are not necessary for the agreed phase observations — retain authored
+metadata labels and mark Runtime-only fields unavailable unless independently
+observed. Cost if wrong is less metadata in this report, reversible in a later
+instrument design. No GUI FPS, native/GPU speedup or zero-allocation claim.
+
+Task 3 product commit `98841e0` is local only. Independent review confirms spec
+scope, but requests one Important fix: shared DPR physical-size calculation
+instead of duplicate canvas/page policies. Root verified the duplication;
+same implementer handles fix round 1/5 from `98841e0`. No push or Task 4 execution
+before scoped acceptance. Minimum-size containment/loaded-error coverage and
+pre-release seek-negative coverage are deferred Minors for final-review triage.
+
+Root read final retained worker30/30, page8/8, smoke and CTest3/3 output, viewed
+the unloaded minimum-size screenshot, and freshly rechecked protected source157/
+Release22 hashes unchanged. Final dynamic/static configure trees have no install
+scripts. Historical functional RED and complete build stdout exist only in task
+terminal responses; the implementation report explicitly does not relabel the
+old timeout log as RED. Native DPI, actual static host link and runtime matrix
+remain future gates; known original-source build warnings remain documented.
+
+Task 3 fix1 `115f70b` independently accepted for the duplication finding. Root
+fresh verification then caught an intermittent page-test failure: paused image
+counter advanced from 5 to 6 after control acknowledgement. Reproduced on the
+second bounded diagnostic run, raw `out/part26a-task3-repro-2.txt`. The existing
+worker acknowledges controls before its deferred paused redraw; that signal is
+not an idle fence. Same implementer handles fix2, limited to deterministic test
+synchronization after confirming the ordering. Do not weaken paused steady-state
+semantics or alter Player behavior. Task3 remains unaccepted/unpushed; positive
+reruns are recorded but do not hide the earlier failure.
+
+## Task 3 accepted
+
+Host range `ad608bf..3b4742602ced90896232254b3e724834689bd5c2` contains
+`98841e0` embedded page, `115f70b` shared DPR calculation and `3b47426` test-only
+pause synchronization. Independent fix1/fix2 reviews accepted their findings;
+no new Critical/Important breakage. The pause test snapshots delivery count at
+the acknowledgement, waits for the subsequent paused batch and diagnostics,
+then preserves its original no-growth interval and normalized seek/Stop checks.
+No worker/engine/API behavior was changed for the test failure.
+
+Retained focused25/25 fresh-process logs, full page9/9 and CTest3/3 passed.
+Root fresh committed-head CTest3/3 (worker30/30,page9/9,9.19s) passed with PTY:
+`ctest --test-dir D:/rvc/c++/DragonianVoice/Avelabs-UI/out/diagnostics/motionlab-2026-09-24/task3-page-md3 -C Release -V --output-log C:/Users/USER/Desktop/AveMotion-CorpusLab-Part24/out/part26a-task3-fix2-controller-ctest.log`.
+Dynamic Qt bin/plugin environment was process-local. Full Task3 diff check
+passed; exactly ten assigned files changed, no normal/test GUI process remained.
+Host remote was still `ad608bf`, engine remote `0d4c793` before scoped pushes.
+
+Cross-task limits are resolved by explicit scope: generated OFF project has no
+motion compile/link input; actual static /MT host link and broad host suites are
+Task4. Native DPI/manual normal-EXE acceptance remains deferred as the plan
+permits. Minimum-size containment/loaded-error and pre-release negative seek
+coverage Minors go to the final whole-stage reviewer, alongside build warnings.
+Historical RED raw-output limitations stay disclosed. Next Task4 uses the
+prepared protocol/context and does not repeat the completed development loops.
+
+Ordinary host push completed; remote main exact equality verified at
+`3b4742602ced90896232254b3e724834689bd5c2`. No force/rewrite, no foreign changes.
+Engine documentation checkpoint records this acceptance before Task4 dispatch.

@@ -215,16 +215,16 @@ guarded entry in `src/main.cpp`, opt-in target wiring in host CMake and
 unless argument list contains `--motion-lab`. The reusable lab widget is a
 parent-owned child section in the existing Voices page, not a new routed page.
 
-- [ ] Functional RED Qt tests: route label is visible; load doesn't auto-play;
+- [x] Functional RED Qt tests: route label is visible; load doesn't auto-play;
   Play/Pause/Stop and slider release send exact commands; hide/show and minimize
   update effective visibility; DPR/resize request bounded physical size.
-- [ ] Implement controls with objectNames for stable tests, fixed route badge
+- [x] Implement controls with objectNames for stable tests, fixed route badge
   `Experimental — Telegram reference CPU`, error text and measured diagnostics.
   Slider tracking is false; status never claims Direct2D/GPU/native playback.
-- [ ] Test usable controls and nonzero canvas at the host's minimum supported
+- [x] Test usable controls and nonzero canvas at the host's minimum supported
   window size. Use scrolling/size policies inside the lab widget if necessary;
   do not alter or hide the existing Voices contents to obtain space.
-- [ ] Add entry only behind compile definition supplied by ON option:
+- [x] Add entry only behind compile definition supplied by ON option:
 
 ```cpp
 #if defined(AVELABS_ENABLE_MOTION_LAB)
@@ -232,7 +232,7 @@ parent-owned child section in the existing Voices page, not a new routed page.
 #endif
 ```
 
-- [ ] Entry uses existing component/layout access, with null guards and a stable
+- [x] Entry uses existing component/layout access, with null guards and a stable
   objectName preventing duplicate insertion:
 
 ```cpp
@@ -242,12 +242,12 @@ if (!voices || !voices->layout()) return;
 voices->layout()->addWidget(new MotionLabPage(voices));
 ```
 
-- [ ] Do not modify menu/page service/docking or its current-page state. Test
+- [x] Do not modify menu/page service/docking or its current-page state. Test
   initial Voices click, Voices -> TTS -> Voices and Voices -> Sounds -> Voices;
   lab visibility/worker activity follows the existing page, original contents
   remain present, and model/view route keys remain consistent. No flag means no
   lab/controller/worker; OFF binary has no motion compile/link input.
-- [ ] GREEN worker/widget tests, independent review; commit/push. Source hashes
+- [x] GREEN worker/widget tests, independent review; commit/push. Source hashes
   for unrelated shell/tray/docking remain unchanged.
 
 ### Task 4: real-shell gates, measurements and handoff
@@ -292,5 +292,7 @@ worker lifetime before shell wiring; source generation and output limits before
 many-instance measurement. The reference CPU label prevents confusing this
 integration checkpoint with the long-term native engine. The controller selects
 subagent-driven execution under the user's delegation; no human reply is needed
-for ordinary reversible decisions. Current next action is coordination handoff
-plus Task 1, not re-running Part25I or changing the accepted UI.
+for ordinary reversible decisions. Current next action is Task 4 static-host,
+regression and measurement verification, not re-running Part25I or changing the
+accepted UI. Task 3 is accepted at `3b47426`; evidence and deferred coverage
+Minors remain in the ledger.

@@ -41,9 +41,17 @@ findings. Final isolated /MD QtTest 30/30 and CTest 2/2 passed; controller fresh
 CTest also 2/2 (3.45s). Protected source157/Release22 hashes match baseline.
 Ordinary host push completed; remote main equals `ad608bf`.
 
-Next: Task 3, widget/controls and guarded existing-Voices embedding. Its brief
-and context are in the workspace; check live agents and scratch ledger before
-dispatch to avoid duplicating an active writer. Do not repeat Tasks 1/2.
+Task 3 is accepted at host `3b47426`: widget/controls, guarded existing-Voices
+embedding (`98841e0`), shared DPR calculation (`115f70b`) and test-only pause
+synchronization correction (`3b47426`). Both independent scoped reviews passed.
+Root fresh CTest3/3 (worker30/30,page9/9,9.19s) passed; 25 focused pause runs also
+passed. Earlier intermittent counter6-vs5 failure is retained, not hidden:
+controlApplied precedes the deferred paused frame; the test now waits for it.
+Protected hashes remain unchanged. Ordinary host push completed and remote main
+exact equality verified at `3b47426`; engine documentation checkpoint follows.
+Next is Task 4; check live agents/scratch ledger before dispatch. Its gate
+inventory, measurement protocol and counter-consumer audit are prepared there;
+no benchmark has run yet. Do not repeat Tasks 1/2 or those read-only inventories.
 Actual static host/UI/native-DPI gates remain open. This is a normal checkpoint,
 not completion of the lab stage; keep our heartbeat active.
 SDD ledger: `.superpowers/sdd/2026-09-24-qt-motion-lab/progress.md`.
