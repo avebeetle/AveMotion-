@@ -9,14 +9,22 @@ User requests complete long-running continuation. Controller-approved spec:
 plan `docs/superpowers/plans/2026-09-24-native-ellipse-binding.md`;
 durable ledger `docs/superpowers/ledgers/2026-09-24-native-ellipse-binding.md`.
 Stage base d212a49; Part26B complete and pushed. Two read-only design audits
-complete in out/part26c-design; Task1 authored binder is next, then Task2 cold
-full-timeline certificate. No product route/Runtime.cpp/UI changes in C.
+complete in out/part26c-design. Task1 binder3f8bf0c complete and independently
+approved: functional RED/GREEN, full Telegram71/71, root fresh focused3/3.
+The initial full run lacked MSVC environment; corrected full run passes with
+no product workaround. Minor function-length observation retained for final
+review. Task2 cold full-timeline certificate is next. No route/Runtime.cpp/UI
+changes in C. Future emitter audit out/part26d-design/emitter-contract-audit.md.
 Extra cold scan and hidden upstream-ID provenance limitation explicitly scoped.
 Then continue D emitter parity, independent supported-subset ingestion/model,
 and isolated host integration; C is not the end of the long request.
 No automation resumed/created. Work directly main, one product writer, TDD,
 independent task and whole-stage review, scoped commits and ordinary push.
 UI/out must remain absent; current UI paths/constraints below remain binding.
+User reconfirmed Avelabs-UI is the future application's foundation: final host
+acceptance belongs there, not only engine tests. Keep engine unit/differential
+gates separate, then statically link own supported path into the isolated Motion
+Lab EXE; do not introduce a separate AveMotion DLL or overwrite accepted main UI.
 
 ## Previous handoff — Part26B owned exact native input complete
 

@@ -135,7 +135,15 @@ Add NativeEllipseCertificate.hpp/.cpp and NativeEllipseScanAudit.cpp. The
 header defines private value-owned slot metadata and results; the factory and
 scan validation are separate files. No installed header or public friend.
 
-Expose `prepareNativeEllipseCertificate(std::string_view)` and a scan audit
+Expose `prepareNativeEllipseCertificate(std::string_view)` and the private
+overload `prepareNativeEllipseCertificate(Runtime&, std::string_view)`.
+The one-argument form constructs a local Runtime and delegates. The overload
+still owns/loads the exact bytes itself, never accepts an arbitrary Asset, and
+does not retain the Runtime. It permits a test to keep that same Runtime alive
+for real diagnostic deltas during later native emission. Return
+`diagnosticsBefore` and `diagnosticsAfter` snapshots, including on failure;
+caller keeps the supplied Runtime quiescent while measuring deltas. No public
+API or production Runtime.cpp change. Also expose a scan audit
 class for direct mutated-scene tests. The audit takes const admitted input,
 Task1 binding, frozen model and expected AssetHandle/source hash, then
 `observe(std::size_t frame, const EvaluatedScene&)` in strict 0..N-1 order and
@@ -147,9 +155,12 @@ binding, unsupported slot, incomplete scan. Keep failure results empty.
 Certificate bundle owns exact JSON string, const descriptor, const Asset lease,
 const frozen model and the verified value metadata. Factory result reports
 admission, binding/scan category or reference preparation error separately and
-diagnostic snapshot (also on failure). It publishes const shared ownership only
+the two diagnostic snapshots (also on failure). It publishes const shared ownership only
 on success. No scene, Animation, Instance, render-tree or mutable upstream
 pointer is retained. Asset cannot own the certificate, avoiding self cycles.
+Reject over-limit input before copying its bytes or loading the reference;
+the existing admission result remains the authority for code/path. Bounded
+accepted bytes must be owned before reference load and retained in the bundle.
 Bind consumers to the exact asset object, handle including generation, hash and
 frozen model pointer; hash alone is not proof of identity. A different load of
 the same bytes cannot consume this certificate. Never expose a constructor
@@ -198,7 +209,9 @@ identity/handle mismatch, drift/unavailable local fields/static class demotion,
 early finish/skipped/repeated frames and poison semantics. Retain certificate
 after factory Runtime/Instance destruction; reject another same-byte asset.
 Two factories may run independently; no shared mutable audit state. Assert N
-model samples and N extra scene samples, zero CPU samples in successful factory.
+model samples and N extra scene samples, zero CPU samples in successful factory,
+using before/after deltas with a supplied Runtime, not unrelated live counters
+or only an immutable end snapshot. Test both overloads and a nonempty Runtime.
 Ineligibility must not change independent ordinary load/evaluation behavior.
 
 Focused checks while iterating; one full Telegram suite per task before commit.

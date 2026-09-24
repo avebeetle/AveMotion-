@@ -34,4 +34,27 @@ requires scoped staging and remote checks before each ordinary push.
 | Task1 | RED, binder, test matrix | Functional stub RED; exact float interpretation explicitly separate from raw grammar. |
 | Task2 | Factory, audit, failure/lifetime tests | No production route; double scan cost and hidden provenance limit explicit. |
 
-Design audits complete; no product writer started. Next: Task1 functional RED.
+Design commit cfe4d14 pushed and remote equality verified. Task1 writer
+/root/native_binding_implementation active; functional RED captured after clean
+target build: baseline authored binding published fails, 0/1, expected.
+
+Ruling: add a private supplied-Runtime factory overload before Task2 — the
+one-argument factory destroys its Runtime, preventing later real diagnostic
+deltas — slightly larger private API, but no public change or retained Runtime;
+both forms load their own exact bytes, snapshots are before/after and measured
+with a quiescent supplied Runtime. Future D audit confirmed this requirement.
+
+User reconfirmed host destination D:/rvc/c++/DragonianVoice/Avelabs-UI. Engine
+tests precede real host acceptance; long-work destination is statically embedded
+own supported playback in isolated Motion Lab, not a separate AveMotion DLL.
+
+Task 1: complete (cfe4d14..3f8bf0c), independent spec/quality review Approved;
+no Critical/Important findings. Functional RED and scalar-alias matrix RED/GREEN
+retained. Focused3/3, full Telegram71/71 in79.97s; root fresh rebuild+focused3/3
+at committed3f8bf0c,0.71s. Initial70/71 run was outside VsDevCmd; compiler
+discovery failure corrected by proper invocation, no test/product workaround.
+Task1 minor (deferred): long bindNativeEllipseModel function, line213; whole-stage
+review will triage. Environment-log minor is resolved, failed raw log retained.
+Cannot-verify items: none/Samsung actual graph gates belong to controller closure;
+source lease/slot proof is explicitly Task2, not a missing Task1 feature.
+Task2 may proceed after handoff commit/push. No code changes after root focus.

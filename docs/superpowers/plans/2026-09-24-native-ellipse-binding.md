@@ -44,7 +44,7 @@
 - Produces NativeEllipseBindingCode, NativeEllipseModelBinding, NativeEllipseBindingResult and bindNativeEllipseModel exactly as the spec Task1 contract.
 - Task2 consumes the returned IDs by name, not table constants. Read spec numeric and Task1 sections fully. No source ownership claims from this pure binder.
 
-- [ ] **Step 1: Add contract, failing test and Telegram-only target.**
+- [x] **Step 1: Add contract, failing test and Telegram-only target.**
 
 Start with a functional stub returning the default empty binding. Test real
 baseline through decodeNativeEllipseInput and Runtime load/prepareModel:
@@ -67,7 +67,7 @@ No changes to prior fixtures/tests are necessary. Run configure/build with
 windows-msvc-telegram-debug and `ctest --preset windows-msvc-telegram-debug -R
 native_ellipse_binding --output-on-failure`; retain the functional failure.
 
-- [ ] **Step 2: Implement bounded numeric conversion and checked topology.**
+- [x] **Step 2: Implement bounded numeric conversion and checked topology.**
 
 Use compact canonical token and explicit range guards:
 
@@ -86,7 +86,7 @@ helpers local and focused by numeric, table, topology, property responsibilities
 Never read out-of-range data even on malformed synthetic models. Return no
 binding on any failure. No generic graph framework or reference frame sampling.
 
-- [ ] **Step 3: Add behavioral matrix with actual mutated model/input values.**
+- [x] **Step 3: Add behavioral matrix with actual mutated model/input values.**
 
 ```cpp
 auto changed = *model.model;
@@ -107,7 +107,7 @@ times/tangents and confirm empty failure. Build a correctly reindexed source and
 property-table clone with all edge/owner/backreferences adjusted; it must bind.
 Assert effective fallback names and exact fr==double(float(parsed59.94)).
 
-- [ ] **Step 4: GREEN, full suite, self-review, scoped commit and report.**
+- [x] **Step 4: GREEN, full suite, self-review, scoped commit and report.**
 
 Run focused binding/admission/input tests until green, then one full Telegram
 CTest on current build. `git diff --check`; inspect own diff. Commit only listed
@@ -125,7 +125,7 @@ GREEN/full summary, limitations, signatures and commit. No worker subagents.
 
 **Interfaces:**
 - Consumes Task1 `NativeEllipseBindingResult bindNativeEllipseModel(const NativeEllipseInput&, const model::MotionAssetModel&)`; binding has root/layer/group/ellipse/fill and eight property IDs as spec.
-- Produces `prepareNativeEllipseCertificate(std::string_view)` returning private status plus const shared certificate, and `NativeEllipseScanAudit` with constructor taking input/binding/frozen model/expected handle/hash, observe(frame,scene), finish().
+- Produces `prepareNativeEllipseCertificate(std::string_view)` and `prepareNativeEllipseCertificate(Runtime&, std::string_view)`, returning private status plus const shared certificate and diagnosticsBefore/diagnosticsAfter; and `NativeEllipseScanAudit` with constructor taking input/binding/frozen model/expected handle/hash, observe(frame,scene), finish().
 - Define focused metadata/result types in the private header: explicit scan error categories in spec, fixed layer/draw value metadata, lease checks and diagnostic snapshot. No public header or Runtime.cpp edit.
 
 - [ ] **Step 1: Declare private contract and functional RED.**
@@ -147,13 +147,16 @@ pattern as binding target. Capture failing focused CTest after successful build.
 Factory control flow:
 
 ```cpp
-// Own exact JSON; decode; load SAME bytes; prepare; bind; create separate Instance.
+// Reject oversize through admission before copying; decode; own accepted exact
+// JSON; load SAME owned bytes; prepare; bind; create separate Instance.
 // Check model/asset metadata identity before constructing audit.
 for (std::size_t frame = 0; frame < input->endFrame; ++frame) {
     auto evaluated = instance.instance->evaluateFrame(frame, input->width, input->height);
     // Evaluation error -> empty result; otherwise audit.observe(frame, evaluated.scene).
 }
 // finish -> immutable metadata; record runtime.diagnostics(); publish external bundle.
+// one-argument overload owns a local Runtime and delegates; supplied-Runtime
+// overload still owns and loads bytes internally, stores no Runtime reference.
 ```
 
 Adapt InstanceResult member spelling to actual Runtime header, not a new wrapper.
@@ -161,8 +164,11 @@ Validate every invariant in spec Task2. Keep paths and mutable scenes local to
 the loop; store only fixed slot metadata and leases. `matchesAsset` or equivalent
 must require pointer identity plus handle/hash/model identity, not hash alone.
 Failed audit is permanently poisoned and cannot return a partial result.
-Expose diagnostic snapshots without adding global counters. Check N model and
-N scene samples separately; no ordinary caller or install boundary changes.
+Expose before/after diagnostic snapshots without adding global counters. Check
+N model and N scene sample deltas separately, including a nonempty supplied
+Runtime; no ordinary caller or install boundary changes.
+Test over-limit input returns admission ResourceLimit with no reference-load
+counter delta; do not copy an unbounded string before the admission byte guard.
 
 - [ ] **Step 3: Add full-timeline and fail-closed behavioral tests.**
 
@@ -180,8 +186,10 @@ target mutation. Cover baseline, static, activity[10,20), all boundary frames,
 early finish/skips/repeats, duplicate/extra/missingdraw, wrong IDs/local flags,
 byte drift, class demotion/final model disagreement, identity/counts/layout.
 Keep certificate after factory internals die; load same bytes anew and reject
-lease matching. Concurrent two independent factories must not share mutable
-state. On ineligible raw/model/scan cases, independently ordinary load/evaluate
+lease matching. Exercise both factory overloads; a supplied Runtime remains
+usable and measurable after preparation, never borrowed by the certificate.
+Concurrent two independent factories must not share mutable state.
+On ineligible raw/model/scan cases, independently ordinary load/evaluate
 still succeeds when valid for the reference. Assert expected counters and all
 stored field invariants, not only certificate non-null.
 
