@@ -37,7 +37,8 @@
 - [x] Task 1 — opt-in static dependency and no-install boundary.
 - [x] Task 2 — bounded serial worker and Qt controller.
 - [x] Task 3 — widget, controls and guarded shell entry.
-- [ ] Task 4 — real-shell gates, measurements and handoff.
+- [x] Task 4 — real-shell gates, measurements and handoff (technical acceptance;
+  final A publication/heartbeat pause follows).
 
 ## Evidence and review
 
@@ -387,3 +388,86 @@ Scheduler review's cross-task limitations remain final gates: final static relin
 sustained looping/continuity observations, protected-byte checks and whole-stage
 review. Native/manual acceptance stays deferred per plan. Ordinary scheduler
 push is released after remote reconciliation; no force or history rewrite.
+
+## Task 4 gates complete; final independent review pending
+
+Accepted scheduler was ordinarily pushed to U main fde867d; A documentation
+checkpoint97fe851 also pushed, both exact remote equal. Final /MT host relink
+and static CTest1/1 passed; EXE SHA256
+`4fe39d5defeda7092d2d636e10feb39f3a48fc5507dd4130386bf87f4b34366a`.
+Root read postfix build/test logs and independently rehashed the EXE.
+
+The same independent instrument auditor accepted all six original fixes and
+the two residual runner guards. Three additional retained mutants were RED
+(undetected zero-warm-wrap/no-warm-growth/spontaneous-stop), then GREEN. C++ EXE
+unchanged615c0b2d; provenance-audit3 records updated runner identity. Old outputs
+stay rejected. No product API or code was added for this scratch instrumentation.
+
+Final matrix command exit0; matrix-final1/index.json has9accepted/9total, all
+child exits0 and empty validation errors, index SHA256
+`5c4c83b44a7c0b227f2af31bb1fd4c42537fec0e5a6b754c5a9c9c25b992f21b`.
+Root read all row outcomes and extracted actual phase values:active5007–5011ms,
+301delivered batches,5active wraps,maxgap19–31ms; each settled pause/hidden
+window has0rendered/received/replaced delta. Process CPU is not claimed zero:
+hidden basic1/basic4 each15.625ms; measurements include console overhead.
+All rows are separate /MD QCore controller observations, never /MT GUI FPS.
+
+Root fresh protected check onfde867d matched157original source and22Release
+files exactly; final-protected-check.json retains aggregate hashes/method.
+Task4 implementer completed U documents in local035d4ff (two docs only, not
+pushed); no further writer/build/test/matrix is active. Final A report prepared
+as docs/PART26A_QT_MOTION_LAB_REPORT.md. Whole-stage independent review is next,
+including deferred Minors and qualified native/manual acceptance; stage remains
+open and heartbeat remains ACTIVE until actual final handoff.
+
+Whole-stage review32d77c3..035d4ff returned With fixes: no Critical, one Important
+keyboard/wheel seek defect, two non-blocking coverage Minors. Root checked actual
+sliderReleased-only source and accepted the matching Qt signal analysis. ONE
+combined final wave corrects user commit handling and adds real input, negative
+live-drag and programmatic feedback regressions with RED/GREEN. The loaded/error
+minimum-size containment Minor stays disclosed; reviewer found no actual clipping
+defect and existing unloaded screenshot is usable. No layout rewrite is assigned.
+
+Controller disposition of declined-to-judge lines: accept explicit spec/plan
+limits for normal EXE/data-root/native DPI, GPU/independent native core/internet
+corpus, hostile-file and hard-stop guarantees, redistribution/license permission,
+unchanged vendor/shell warnings, unrecoverable historical RED stdout, and universal
+FPS/no-leak/race/static-GUI claims. None is silently relabelled as verified.
+All raw matrix hashes/summaries were independently confirmed by final reviewer.
+Widget-only fix requires a new /MT EXE identity, but not another unchanged-
+controller matrix; preserve its original Ufde867d/A97fe851 provenance exactly.
+
+## Final review correction accepted and host pushed
+
+ONE combined final wave: product7093c839b1a165ecb579b5264fb4481b670e3cea,
+docs9cb73f051289d40c3c077445ef01904213bcefb4. Actual paused-fixture keyboard RED
+failed sawPosition(1.0) with slider already1000 (2pass/1fail), then focused GREEN
+keyboard/wheel, control-barrier no-live-drag and no-feedback each3/3. Only page
+wiring and its test changed; no worker/engine/matrix or layout change.
+
+Independent scoped re-review035d4ff..9cb73f0: I1 and M2 ADDRESSED, no new
+Critical/Important breakage. M1 loaded/error minimum-size containment stays
+nonblocking, explicitly disclosed, no proven clipping defect. No residual
+load-bearing finding, no second final fix wave. Root read full report/diff/raw
+outputs. Retained final-fix-re-review.md is the independent verdict.
+
+Root fresh verification on9cb73f0, process-local Qt paths, serial PTY CTest:
+`ctest --test-dir out/diagnostics/motionlab-2026-09-24/tests-md -C Release --output-on-failure --no-tests=error --parallel 1 -V --output-log C:/Users/USER/Desktop/AveMotion-CorpusLab-Part24/out/part26a/final-fix/root-final-md-ctest.log`
+exit0,3/3,6.50s,worker31/page11,zero failures/skips. Static command with the
+`build` tree and `root-final-static-ctest.log` exit0,1/1,0.03s. Protected157src
+and22Release aggregates match baseline; final-widget-protected-check.json records
+this new check separately from the earlier scheduler-head verification.
+
+Static EXE52683264bytes SHA481cad66bd5fb7520122abd0e9d4d1ce6922e3fe21ae74b8c3645de3ee2723c3,
+embedded clean U7093c83. At relink A97fe851 had docs-only pending edits; compiled
+engine/vendor unchanged. Actual new dumpbin evidence and0install scripts checked.
+Unchanged-component matrix keeps clean historical Ufde867d/A97fe851 provenance.
+
+Host final documentation commit6568155f0337bcebe2d2ba5cfa4cb2c99e483bbd records
+acceptance. Remote guard found exactly expectedfde867d; ordinary push succeeded,
+remote main equals6568155 and U working tree is clean. No force/rewrite/PR.
+Canonical A report is docs/PART26A_QT_MOTION_LAB_REPORT.md, including all9Rulings
+and their costs. No new ruling was needed for the existing slider contract fix.
+Task4 technical work is complete; final A docs commit/push and pausing this
+heartbeat remain controller bookkeeping. Preserve raw evidence and previous
+failures. No additional native/GPU/corpus development is authorized by completion.

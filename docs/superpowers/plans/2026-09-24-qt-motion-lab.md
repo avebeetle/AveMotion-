@@ -256,10 +256,10 @@ voices->layout()->addWidget(new MotionLabPage(voices));
 update A's Part26A ledger/STATE and write `docs/PART26A_QT_MOTION_LAB_REPORT.md`.
 Only fix independently reproduced defects with their own RED/GREEN cycle.
 
-- [ ] Configure/build the experimental static host using the common commands.
+- [x] Configure/build the experimental static host using the common commands.
   Record both exact source SHAs and any uncommitted state, EXE hash, CRT/Qt and
   compile/link provenance. Do not install/package into the accepted release.
-- [ ] Configure isolated tests at `tests/motionlab`; CTest includes real fixture
+- [x] Configure isolated tests at `tests/motionlab`; CTest includes real fixture
   worker/canvas tests, build boundaries and explicit install refusal. Reuse
   existing dynamic Qt Test if static Qt Test is absent; label runtime separately
   and still require the actual `/MT` experimental host link/smoke.
@@ -268,17 +268,17 @@ Only fix independently reproduced defects with their own RED/GREEN cycle.
   isolated harness compile both adapter and its AveMotion dependency with `/MD`
   in its own build tree; do not mix the `/MT` host archives into it. Static-only
   host option guards belong in the host root, not the reusable dependency helper.
-- [ ] Run relevant existing UI/tray/settings/diagnostics suites once after the
+- [x] Run relevant existing UI/tray/settings/diagnostics suites once after the
   host change, not on every heartbeat. Re-run engine MSVC/CTest/preview gates
   only for actual engine changes; CPU lab is not a replacement for D2D/WARP gates.
-- [ ] Coordinate one real GUI session with other tasks; use own process and
+- [x] Coordinate one real GUI session with other tasks; use own process and
   explicitly temporary settings/log locations, never the installed accepted EXE.
   If the host has no clean data-root facility, use Qt test harness isolation and
   report full-host manual smoke as deferred instead of writing normal settings.
-- [ ] Measure sequential warmed 1/4/16-instance active, paused and hidden phases
+- [x] Measure sequential warmed 1/4/16-instance active, paused and hidden phases
   over the same hashed fixtures; record actual times/counters/CPU/private bytes
   and stop reason. No universal FPS or no-leak claim from a brief run.
-- [ ] Whole-stage independent review, resolve findings and fresh impacted gates.
+- [x] Whole-stage independent review, resolve findings and fresh impacted gates.
   Report implementation, exact verification scope, manual/native-DPI limitations
   and remaining reference dependency. Preserve raw evidence and accepted bytes.
 - [ ] Scoped final commits and ordinary pushes after remote reconciliation.
@@ -292,7 +292,9 @@ worker lifetime before shell wiring; source generation and output limits before
 many-instance measurement. The reference CPU label prevents confusing this
 integration checkpoint with the long-term native engine. The controller selects
 subagent-driven execution under the user's delegation; no human reply is needed
-for ordinary reversible decisions. Current next action is Task 4 static-host,
-regression and measurement verification, not re-running Part25I or changing the
-accepted UI. Task 3 is accepted at `3b47426`; evidence and deferred coverage
-Minors remain in the ledger.
+for ordinary reversible decisions. Task4 technical acceptance is complete:
+whole-stage review and one scoped final review accept product `7093c83`; U final
+docs `6568155` are pushed. Root fresh lab3/3 and static1/1 pass; matrix9/9 and
+legacy8/8 retain their exact earlier provenance. M1 loaded/error containment
+remains a disclosed nonblocking coverage gap. Only final A docs publication and
+heartbeat pause remain; do not repeat Part25I, gates or change the accepted UI.

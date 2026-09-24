@@ -2,7 +2,24 @@
 
 Updated: 2026-09-24
 
-## Current continuation — Part26A experimental Qt Motion Lab
+## Current handoff — Part26A experimental Qt Motion Lab complete
+
+Bounded stage accepted, no unfinished product task. U product7093c83 and final
+docs6568155f0337bcebe2d2ba5cfa4cb2c99e483bbd are ordinarily pushed to main;
+exact remote equality and clean tree verified. Whole-stage review + one scoped
+final re-review accepted I1 keyboard/wheel and M2 negative drag coverage with no
+Critical/Important findings left. M1 loaded/error minimum-size containment and
+native/manual acceptance remain explicit limits, not completed checks.
+
+Root final committed-code gates: /MD lab3/3 (worker31/page11,6.50s), /MT smoke1/1
+(0.03s), protected157src/22Release byte matches. Final static EXE481cad66... has
+clean build identity7093c83; separate matrix9/9 retains Ufde867d/A97fe851 identity.
+No product writer/reviewer is still running. Canonical handoff:
+`docs/PART26A_QT_MOTION_LAB_REPORT.md`. Finish guarded A docs commit/push, then
+pause only `avemotion-avelabs-ui`; do not start a new native/GPU stage or repeat
+completed tasks. Retain all raw/SDD evidence. Earlier checkpoints below are history.
+
+### Historical execution checkpoints
 
 User resumed autonomous work every 15 minutes while asleep. Heartbeat
 `avemotion-avelabs-ui` is ACTIVE; the historical `avemotion-6` remains deleted.
@@ -49,7 +66,7 @@ passed. Earlier intermittent counter6-vs5 failure is retained, not hidden:
 controlApplied precedes the deferred paused frame; the test now waits for it.
 Protected hashes remain unchanged. Ordinary host push completed and remote main
 exact equality verified at `3b47426`; engine documentation checkpoint follows.
-Task 4 continues under `/root/qt_lab_final_gates`; do not duplicate it. Static
+Task 4's verification executor `/root/qt_lab_final_gates` has handed off. Static
 ftfix /MT host link, static smoke1/1, separate /MD lab3/3 and existing host8/8
 CTest gates passed on `3b47426`. Measurement validation then exposed active-play
 stalls: an early CoarseTimer expiry can leave the unchanged Player deadline
@@ -57,11 +74,23 @@ without an armed host timer. Bounded repair `fde867d` is independently approved
 with no findings; deterministic RED/GREEN and root fresh /MD CTest3/3 pass
 (worker31/page9,5.63s). Player/vendor/policy remain unchanged. Independent scratch
 instrument audit found active-wrap, dropped-counter, transition-attribution and
-provenance/error-retention gaps. The same executor is fixing those and relinking
-the /MT host; accepted matrix waits for focused instrument validation/review.
+provenance/error-retention gaps. All are fixed and independently re-audited.
+Final /MT relink/smoke1/1 passed; final sequential /MD controller matrix has9/9
+accepted rows at clean A97fe851/Ufde867d, with all retained invalid rows separate.
 Failed and weakly validated pre-fix rows are retained, not performance evidence.
 Read the workspace scheduler review, instrument audit and live ledger.
-Final static provenance/measurements/whole-stage review are still open. Native
+Task4 executor handed off U docs commit035d4ff (local, not pushed).
+Root report: docs/PART26A_QT_MOTION_LAB_REPORT.md. Whole-stage
+independent review returned one Important: keyboard/wheel seek does not reach
+playback. One combined final wave is DONE at product7093c83/docs9cb73f0, limited
+to page input wiring and tests. Functional RED and focused GREEN are retained;
+root fresh lab3/3 (worker31/page11,6.50s), static1/1 (0.03s), protected157src/22Release
+checks pass. New static EXE481cad66... embeds clean U7093c83; engine docs were dirty.
+Minimum-size loaded/error containment remains a disclosed non-blocking Minor.
+No worker/engine/matrix changes. Sole scoped reviewer
+`/root/qt_lab_final_scoped_review` is active over035d4ff..9cb73f0; no product writer.
+Read workspace final-fix-report.md and final-fix-re-review.md when ready.
+Final scoped review, docs/push/automation pause remain open. Native
 DPI and normal-EXE manual acceptance remain explicitly deferred. Keep heartbeat
 active; this is not completion of the bounded stage.
 SDD ledger: `.superpowers/sdd/2026-09-24-qt-motion-lab/progress.md`.
