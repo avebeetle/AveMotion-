@@ -45,9 +45,24 @@ out/part26d-design/oracle-test-contract-audit.md; no runtime test claim from aud
 
 ## Tasks
 
-- [ ] Task1 stream and independent scene matrix (not dispatched yet).
+- [x] Task1 stream and independent scene matrix, writer /root/native_stream_implementation, BASE fd68aa64ea6ee96c367808fccae036b0f777e56a through product1dd5932; independently Approved, no blocking findings.
 - [ ] Task2 full plan/lifetime/history/live counters/CPU isolation.
 - [ ] Root platform/provenance/private-boundary gates and whole-stage review.
 - [ ] D report/push and continue own-ingress design; no completed playback claim.
 
-No product code, build or D RED/GREEN has occurred at this checkpoint.
+Spec/plan/preflight fd68aa6 ordinary-pushed; exact remote equality and clean tree
+verified before dispatch. Task1 product1dd5932 committed, no product writer.
+Functional RED retained, worker fullTelegram73/73,29.34s. Root fresh focused gate
+at1dd5932 PASS1/1,9.62s with7920/7920 exact scene/record comparisons. All15 inputs
+C-certified; no skipped/ineligible cases. Oracle direct samples12495/parses150
+are separately counted expected work, not native emission. Root logs under
+out/part26d/task1/root-*. Review /root/native_stream_task_review active; no product
+push yet. Known existing rlottie.h C4251 warning reported, no pristine-build claim.
+UI clean712d454/protected EXEc92f26ee...82c2/UI-out absent freshly rechecked.
+
+Task1: complete (commits fd68aa6..1dd5932, review clean for all blocking items).
+Task1: minor (deferred): test-only rlottie.h C4251 warning; final review must triage,
+no claim that warning-bearing build output is pristine. No vendor/global suppression.
+Cannot-verify item (other numeric inputs/viewports) resolved as explicitly unclaimed
+scope, not a hidden missing test. Root fresh matrix verifies the planned requests.
+No Task1 fix round. Reviewed handoff/push follows; Task2 is next.

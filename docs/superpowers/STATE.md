@@ -13,7 +13,12 @@ SDD .superpowers/sdd/2026-09-24-native-ellipse-stream/progress.md.
 Controller self-approved under delegated authority, not unseen user review.
 Preflight complete: Task1 stream+independent scene matrix, Task2 full plan/history/
 ownership/CPU/live-counter tests, then platform/private-boundary/final review.
-Task1 not dispatched yet; no D product code or active product writer.
+Task1 product1dd5932 complete: independent task spec/quality Approved; no blocking
+findings, minor existing vendor-header C4251 warning deferred to final triage.
+Matrix7920/7920 and worker fullTelegram73/73; root fresh focused1/1,9.62s.
+No product writer. Reviewed docs/push and Task2 dispatch follow this update.
+Spec/plan/preflight docs ordinary-pushed atfd68aa6, exact remote equality verified.
+Read task-1-report.md when ready; root must review before product push. No duplicate.
 Oracle refinement uses cache-disabled parse/own stamped source+frozen model,
 no shared candidate source.15 named cases/7920 exact scene comparisons planned.
 D remains Telegram-private reference-assisted preparation and own scene emission;

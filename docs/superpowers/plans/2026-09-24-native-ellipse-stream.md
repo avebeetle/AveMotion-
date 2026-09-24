@@ -75,7 +75,7 @@ ctest --preset windows-msvc-telegram-debug --output-on-failure
 - Test NativeEllipseOracle(std::string json) owns independent bytes/source/model; freshScene(size_t frame,size_t width,size_t height) -> runtime::EvaluatedScene, independently increments attempt ordinal and computes successful fingerprint history. model() -> shared_ptr<const model::MotionAssetModel>; directSampleCount() -> size_t. It never accepts a candidate model/Asset as construction input.
 - Test-only normalization function normalizeNativeOracleIdentity(runtime::EvaluatedScene&, const runtime::detail::NativeEllipseCertificate&, uint64_t instanceId, uint64_t sequence) changes ONLY scene assetHandle/invalid instanceHandle/instanceId/evaluationSequence, never model, paths, history or fingerprints.
 
-- [ ] **Step 1: Declare contract and capture functional RED after successful build.**
+- [x] **Step 1: Declare contract and capture functional RED after successful build.**
 
 Register `avemotion_native_ellipse_stream_tests` and CTest
 `avemotion.render.native_ellipse_stream`. Link AveMotion::Rendering and the
@@ -100,7 +100,7 @@ require(emitted.scene->assetModelApplied, "native scene applies frozen model");
 Retain the functional failing output. Do not use a compiler/link error as the RED.
 Add desired differential/boundary assertions before their implementation changes.
 
-- [ ] **Step 2: Build the independent ordinary test oracle and exact baseline comparison.**
+- [x] **Step 2: Build the independent ordinary test oracle and exact baseline comparison.**
 
 Read tests/source_ownership_tests.cpp's preparedOrdinaryScene/source-lease helpers
 and tests/support/FreshModelOracle.hpp. The existing hash-key oracle is an example,
@@ -147,7 +147,7 @@ counts. Test two simultaneously live ordinary Animations are distinct and point
 to the oracle lease, and two cache-disabled parses have distinct source pointers;
 do not compare freed allocation addresses, which can legitimately be reused.
 
-- [ ] **Step 3: Implement creation, native generation, model application and history.**
+- [x] **Step 3: Implement creation, native generation, model application and history.**
 
 Creation checks certificate/asset/model/input consistency through matchesAsset,
 nonzero supplied identity and valid PropertyEvaluator, then prepares one owned
@@ -204,7 +204,7 @@ returns UnsupportedNumericOutput, no partial scene. Never prepareModel in create
 emit, or use SourceGeometryProjector/cached reference paths. Upstream change bits
 remain SceneChangeNone, documented as excluded from ordinary equality.
 
-- [ ] **Step 4: Run named exact matrix and boundary regressions.**
+- [x] **Step 4: Run named exact matrix and boundary regressions.**
 
 Build15 independent named inputs from the committed seed, with checked in-memory
 replacements (missing/ambiguous target is a test error, not silent no-op):
@@ -254,7 +254,7 @@ after failure; check every emitted transform/path coordinate finite. Do not forg
 an immutable certificate solely to enter defensive error paths. If numerical
 compatibility fails, retain mismatch evidence and diagnose before altering scope.
 
-- [ ] **Step 5: GREEN, full suite, self-review, commit and report.**
+- [x] **Step 5: GREEN, full suite, self-review, commit and report.**
 
 Run focused stream tests during iteration, then one full Telegram suite. Inspect
 private call path for absence of reference parser/bridge calls and constructor/
