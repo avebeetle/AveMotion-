@@ -279,7 +279,7 @@ names, call-path inspection and limits. No worker subagents or UI writes.
 - Produces avemotion::test::ExactRenderPlanComparison::difference(const render::MotionRenderPlan&,const render::MotionRenderPlan&) -> std::string; empty only when all contracted fields agree.
 - Uses render::MotionRenderPlanner::build(shared_ptr<const runtime::EvaluatedScene>, const render::PresentationState& = {}); use actual RenderPlanner.hpp error names, not a new planner abstraction.
 
-- [ ] **Step 1: Register lifecycle test and functional comparator RED.**
+- [x] **Step 1: Register lifecycle test and functional comparator RED.**
 
 Register target avemotion_native_ellipse_stream_lifecycle_tests and CTest
 avemotion.render.native_ellipse_stream_lifecycle with same private test dependencies.
@@ -314,7 +314,7 @@ fingerprint-only shortcut. Mutation matrix must cover each category (including
 sourceScene changes, draw/cache key, paint update, statistics/fingerprint/repaint).
 Value comparison doesn't claim model control-block equality; test owners separately.
 
-- [ ] **Step 2: Exercise independent ordered histories and planners.**
+- [x] **Step 2: Exercise independent ordered histories and planners.**
 
 For baseline, static-visible, activity and edge-crossing assets use independent
 native/oracle planners with same requests: frames[0,0,10,19,20,20,60,30,10,9,0].
@@ -339,7 +339,7 @@ new sequence/no resource updates, disappearance/reappearance, invalid viewport
 between successes and clamp. Assert actual codes for stale build, not just false.
 Do not mutate the oracle's model or rewrite mismatching fields to make plans equal.
 
-- [ ] **Step 3: Two-stream identities, immutable outputs and lifetime.**
+- [x] **Step 3: Two-stream identities, immutable outputs and lifetime.**
 
 Create two streams with IDs101/102 from one certificate. Interleave distinct
 forward/reverse frame/viewport sequences and keep prior snapshots/plans. Animated
@@ -364,7 +364,7 @@ require(draw.canonicalPaint.get() == &*scene.assetModel->paint(draw.modelPaint)-
         "paint points into frozen record");
 ```
 
-- [ ] **Step 4: Live counters and ordinary CPU isolation.**
+- [x] **Step 4: Live counters and ordinary CPU isolation.**
 
 Use prepareNativeEllipseCertificate(Runtime&,json) with a retained actual factory
 Runtime. Record its preparation deltas (N model plus N scene samples, noCPU); keep
@@ -380,8 +380,12 @@ vectors at frames0,30,60 before/after native emission, with native work interlea
 between matching ordinary renders. Retain normal buffer ownership and compare
 dimensions/stride as well. This is interference coverage, not native raster proof.
 No CPU API is added to NativeEllipseStream.
+Reviewed refinement: expected pixels come from a cache-disabled source distinct
+from the primary cached Runtime source; retain all expected buffers before native
+work. Retained scene/plan snapshots must independently own model/canonical values,
+with functional corruption witnesses proving shallow twins are insufficient.
 
-- [ ] **Step 5: GREEN, full suite, self-review, commit and report.**
+- [x] **Step 5: GREEN, full suite, self-review, commit and report.**
 
 Run focused stream/lifecycle tests while iterating, then one full Telegram suite
 and diff check. Commit only listed scoped files as `test: verify native stream plans and lifetimes`.

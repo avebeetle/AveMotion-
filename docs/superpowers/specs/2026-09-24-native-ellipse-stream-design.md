@@ -179,6 +179,10 @@ are released. Bounded concurrent two-stream runs are not TSan claims.
 
 CPU isolation: ordinary CPU frames before/after native work equal independent
 ordinary CPU output. This proves no interference, not an own CPU renderer.
+Review clarification: CPU expected output must come from a cache-disabled ordinary
+parse/source distinct from the primary Runtime source, not merely a second Runtime
+loading identical bytes through the shared cache. Retain pre-emission expected
+pixel vectors. This is test-only oracle independence; no Runtime/CPU API changes.
 
 ## Reference-work proof and gates
 

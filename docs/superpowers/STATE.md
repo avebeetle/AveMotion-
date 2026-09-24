@@ -2,7 +2,7 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26D private native scene stream planned
+## Current handoff — Part26D native stream final review
 
 User requests long complete continuation, Avelabs-UI is future static EXE host.
 C is complete and ordinary-pushed at6d154ca (product6b0be0f); do not repeat it.
@@ -16,9 +16,18 @@ ownership/CPU/live-counter tests, then platform/private-boundary/final review.
 Task1 product1dd5932 complete: independent task spec/quality Approved; no blocking
 findings, minor existing vendor-header C4251 warning deferred to final triage.
 Matrix7920/7920 and worker fullTelegram73/73; root fresh focused1/1,9.62s.
-No product writer. Reviewed docs/push and Task2 dispatch follow this update.
+Reviewed handoff9ca6181 ordinary-pushed, exact remote equality verified. Task2
+producte534a1e, implementer DONE, BASE9ca6181; task-2-report.md/raw out/part26d/task2.
+Task2 fixea9facf independently accepted by /root/native_stream_lifecycle_fix_review:
+I1 independent retained values and CPU cache-disabled distinct source both closed;
+two functional REDs then focused2/2 GREEN. No product writer. Root pre-fix20 logs
+archived/hash-verified at out/part26d/pre-fix-e534a1e. Fresh final gates active at
+ea9facf: Telegram74/74,109.09s; preview68/68,109.83s; none31/31,4.29s;
+vendor/TGS16 and fresh private graph boundaries pass. No live build.
+Whole-stage /root/native_stream_whole_stage_review active over6d154ca..ea9facf;
+docs/PART26D_NATIVE_STREAM_REPORT.md remains draft until its verdict.
 Spec/plan/preflight docs ordinary-pushed atfd68aa6, exact remote equality verified.
-Read task-1-report.md when ready; root must review before product push. No duplicate.
+Task1/task2 reports and fix1 review are complete; do not duplicate them.
 Oracle refinement uses cache-disabled parse/own stamped source+frozen model,
 no shared candidate source.15 named cases/7920 exact scene comparisons planned.
 D remains Telegram-private reference-assisted preparation and own scene emission;

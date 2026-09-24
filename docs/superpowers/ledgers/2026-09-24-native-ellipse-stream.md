@@ -42,11 +42,15 @@ out/part26d-design/oracle-test-contract-audit.md; no runtime test claim from aud
    following user choice — ordinary remote guards replace branch isolation, history
    remains append-only — cost if wrong: scratch retention and less isolation; no
    cleanup or history rewrite is authorized.
+4. Ruling: clarify independent CPU oracle as a cache-disabled distinct parsed
+   source, not only a second Runtime/Instance — retained pre-emission pixels already
+   prove frame stability, but a shared source can hide interference between sampled
+   frames — cost if wrong: an extra test-only parse/identity check, no production API.
 
 ## Tasks
 
 - [x] Task1 stream and independent scene matrix, writer /root/native_stream_implementation, BASE fd68aa64ea6ee96c367808fccae036b0f777e56a through product1dd5932; independently Approved, no blocking findings.
-- [ ] Task2 full plan/lifetime/history/live counters/CPU isolation.
+- [x] Task2 full plan/lifetime/history/live counters/CPU isolation; writer /root/native_stream_lifecycle_implementation, BASE9ca6181 through producte534a1e/fixea9facf, independently accepted.
 - [ ] Root platform/provenance/private-boundary gates and whole-stage review.
 - [ ] D report/push and continue own-ingress design; no completed playback claim.
 
@@ -65,4 +69,42 @@ Task1: minor (deferred): test-only rlottie.h C4251 warning; final review must tr
 no claim that warning-bearing build output is pristine. No vendor/global suppression.
 Cannot-verify item (other numeric inputs/viewports) resolved as explicitly unclaimed
 scope, not a hidden missing test. Root fresh matrix verifies the planned requests.
-No Task1 fix round. Reviewed handoff/push follows; Task2 is next.
+No Task1 fix round. Reviewed handoff9ca6181 ordinary-pushed with exact remote
+equality and clean tree. Task2 dispatched after that verification. Comparator
+functional RED recorded (wrong stamp detected), then initial GREEN; broader gates
+are pending the complete report. Scratch own-reader characterization is independent,
+does not modify product/shared builds/UI and is not an E implementation approval.
+
+Task2 producte534a1e has focused2/2/fullTelegram74/74 (37.74s). Independent review
+requires fix I1: retained pre-advance scene/plan copies share model/canonical
+pointees, so they cannot prove those shared values remain immutable. Use independent
+pre-advance values/oracle and a functional corruption-detection RED. Clarification4
+also strengthens CPU expected-source independence in the same scoped test fix.
+Task2 minor (deferred): C4251 repeats Task1 test-only vendor-header warning.
+Root pre-fix gates at e534a1e passed Telegram74/74,98.71s; preview68/68,103.70s;
+none31/31,3.90s; all-vendor/TGS16. These do not close the uncovered test requirement.
+Preserve all root logs in pre-fix-e534a1e before final-code reruns. Source graph and
+whole-stage review still pending. Fix round1 active with original Task2 implementer;
+20 pre-fix logs are preserved and hash-verified in pre-fix-e534a1e.
+Parallel read-only numeric compatibility design audit informs the following own
+reader stage; it does not authorize product implementation or duplicate the73-case
+characterization. All root builds were quiescent during the test fix.
+
+Task2: fix round1/5 (2 addressed,0 open; commits e534a1e..ea9facf).
+Task2: complete (commits9ca6181..ea9facf, review clean for blocking items).
+Original writer is DONE; scoped reviewer /root/native_stream_lifecycle_fix_review
+accepted I1 and CPU clarification4, no new breakage/out-of-scope observations.
+Independent value-owned model/scene/canonical/plan snapshots detect three test-owned
+corruptions. CPU expected source is cache-disabled/distinct; all expected buffers
+precede native work. Two functional REDs and focused2/2 GREEN10.57s retained under
+out/part26d/task2/fix1. No product stream change. Root final gates at ea9facf active;
+none31/31,4.29s and vendor/TGS16 passed. Final Telegram74/74,109.09s and preview
+68/68,109.83s also pass. Root identities record ea9facf with controller docs dirty.
+Final graph assertions/hashes in out/part26d/final-private-boundaries.json prove
+zero D sources/tests in none/Samsung; Telegram one stream/two tests in Rendering,
+one primitive-generator implementation and no Runtime->Rendering edge. Protected
+diff is empty; private header is outside installed include tree. U clean712d454,
+EXEc92f26ee...82c2 and UI/out absent freshly rechecked. No new UI gate claimed.
+Whole-stage /root/native_stream_whole_stage_review active over6d154ca..ea9facf.
+The corrected graph instrument's disabled-macro false positive is preserved and
+explained in out/part26d/private-graph-instrument-note.md, no product defect.
