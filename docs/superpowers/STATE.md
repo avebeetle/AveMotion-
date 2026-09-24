@@ -2,7 +2,44 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26E tasks accepted; final gates next
+## Current handoff — Part26E accepted; Part26F design next
+
+E product/test9212c03c1b4e60f8221932c19754964c7bd410b8 accepted. Independent final
+whole-stage review plus one combined final wave/scoped review resolves all findings.
+Root fresh none32/32,4.36s; Telegram76/76,89.88s; Win32-preview70/70,91.00s;
+Samsung configure/registration, all-vendor/TGS16 and private graph checks pass.
+Supplemental actual include traces98/155 headers classify only expected project,
+MSVC14.44.35207/SDK10.0.19041.0; canonical raw sets/hashes verified by root. Graphs,
+original objects,887 product/config inputs and four gate instruments stayed stable.
+Final report docs/PART26E_OWN_JSON_READER_REPORT.md. Seven rulings and all historical
+RED/process/instrument limitations are explicit; preserve raw/SDD. Ordinary guarded
+main push follows docs commit; verify Git on resume. No writer/build/review active.
+
+Continue F written spec/plan before code: scratch out/part26f-design/spec-draft.md
+and spec-draft-audit.md. Draft resolves raw-token ownership, noncontiguous child
+links and normalization factoring; root read all old admission implementation.
+Recommended one compiled first-party grammar/decimal core and separate own-document
+adapter, preserve old parser eligibility/order/paths/API. Not own model/playback yet.
+No UI writes/builds/GUI, UI/out recreation, new automation/dependency/settings/license
+change. Host remains clean712d454, accepted EXE c92f26ee...82c2 unchanged. User's
+long continuation and delegated design/SDD/main commits/push remain in effect.
+
+## Previous checkpoint — Part26E sole final fix wave
+
+Current HEAD/remote88ee923db546c2fecdd53cce53eaedb77e1e9d0c. Whole-stage review
+finished: Important empty-ancestor path distinction, Minor reachability check in
+both helpers. Spec execution addendum/Ruling7 preserve correct own path segments
+and old oracle/admission behavior. Task3 is the sole combined final test fix wave;
+then one scoped re-review and fresh root full gates. No product parser fix required
+by these findings. Prior scratch gate attempts failed BEFORE configure/build;
+corrected pwsh/first-executable selection has an isolated smoke, not final gates.
+Task3 sole final wave a98d588+9212c03 is complete, writer quiescent. Single scoped
+re-review88ee923..9212c03 addresses both findings, no new breakage. Early DONE/call-
+site audit and interrupted not-completed review are retained in ledger; no amend.
+Root fresh final gates at9212c03: none32/32,4.36s; Telegram76/76,89.88s. Preview
+active, then Samsung configure/provenance and actual include/link/install closure.
+No other product writer/build; do not duplicate gates. Draft report
+docs/PART26E_OWN_JSON_READER_REPORT.md, not final acceptance until closure.
 
 Long interactive continuation remains authorized; no automation is resumed.
 D complete/pushed85a4c34790058d39b2cc8832f794a9718025d51c, verified remote equality.

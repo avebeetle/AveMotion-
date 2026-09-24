@@ -129,11 +129,28 @@ in source order and arrays in index order. Within each object compare decoded
 length-aware keys against previous keys; a duplicate returns InvalidJson at that
 key before enqueue/count checking. Before enqueueing a child when4096 values are
 already present, return ResourceLimit at that child's path. This reproduces the
-existing resource algorithm for documents admitted by both scalar policies.
+existing resource traversal and precedence for documents admitted by both scalar
+policies, except the deliberate empty-ancestor diagnostic-path distinction below.
 
 Pointer escaping is `~` -> `~0`, `/` -> `~1`; array indexes are decimal. Paths may
 contain embedded zero from decoded keys and must own their bytes; callers must
 not infer NUL-terminated text. No schema/name256-byte restriction at reader level.
+
+Execution addendum (whole-stage review, controller-approved2026-09-24): preserve
+every empty object-name segment in the own reader's pointer. The old helper treats
+`/` both as root and as the first empty member, dropping a leading empty segment
+when a descendant is appended. This is a third deliberate private-contract
+difference, alongside numeric eligibility and scalar Unicode. For
+`{"":{"a":1,"a":2}}`, own InvalidJson path is `//a`, legacy `/a`; for
+`{"":{"":1,"":2}}`, own `//`, legacy `/`. A nonempty prefix
+`{"outer":{"":{"a":1,"a":2}}}` produces `/outer//a` on both sides.
+For a root empty member containing32 nested arrays, ResourceLimit paths are an
+extra leading slash plus31 `/0` segments (own) versus31 `/0` segments (legacy).
+For a root empty member containing4095 null children, ResourceLimit is `//4094`
+(own) versus `/4094` (legacy). Syntax-malformed suffix still takes precedence
+at `/` on both sides. Pin these literal outcomes independently and count actual
+differences, without modifying the old admission helper or its test oracle.
+Do not claim universal resource-path parity even on shared scalar policies.
 
 Storage must be O(input bytes), including rejected deep/broad syntax, not one large
 allocation per nesting level or quadratic ancestor strings while parsing. Use flat
@@ -177,7 +194,8 @@ whole-stage review and report must state that old route is still vendor-dependen
 After reader acceptance, separately design first-party native admission using the
 existing exact-decimal grammar once, own authored model/IDs/resources, and decouple
 emission from C's reference certificate. The connection must specify which numeric/
-Unicode contract its own API uses; do not silently switch existing APIs. Then add
+Unicode contract and empty-ancestor diagnostic paths its own API uses; do not
+silently switch existing APIs. Then add
 reference-neutral timing, native pixel gates and static isolated Avelabs integration.
 
 ## Self-review and approval

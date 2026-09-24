@@ -312,7 +312,9 @@ Run named same-policy resource/precedence boundaries independently:32/33 depth,
 different depths/source orders, deep/resource plus malformed suffix. Test the
 committed fixtures telegram_sticker_basic.json,repeater_content_group.json,
 primitive_geometry.json,trim_path_geometry.json and TGS decodedrepeater payload.
-No skipping a resource result; exact code/path compares even on rejection.
+No skipping a resource result; exact code/path compares even on rejection, with
+the later whole-stage addendum's explicitly inventoried empty-ancestor path cases
+asserting separate literal own/legacy expectations rather than false equality.
 
 - [ ] **Step 4: GREEN and reviewed handoff.**
 
@@ -323,6 +325,57 @@ git diff --check, self-review expected-output independence and exactpolicy cases
 scoped commit `test: compare own JSON reader with pinned parser policies`.
 No push; controller owns review and finalgates. Report commands/output, executed
 counts, actualdifferences, dependencyboundary and all limitations.
+
+### Task 3: One combined whole-stage fix wave
+
+This is the sole final fix wave, not a new product feature. FIX_BASE is
+88ee923db546c2fecdd53cce53eaedb77e1e9d0c. Read the full findings in
+.superpowers/sdd/2026-09-24-own-json-reader/final-review.md and the spec's
+empty-ancestor execution addendum; durable Ruling7 resolves the contract.
+
+**Files:** modify only tests/own_json_reader_tests.cpp and
+tests/own_json_reader_differential_tests.cpp. Keep each small graph checker local
+to its test translation unit; no new helper framework or product/header changes.
+Controller owns spec/plan/STATE/ledgers and final full gates.
+
+- [ ] **Step 1: Pin the empty-ancestor diagnostic distinction.**
+
+Retain a focused functional RED for the former shared-policy equality assumption
+using `{"":{"a":1,"a":2}}`; it must compile and expose own `//a` versus old `/a`.
+Then update test expectations to the controller-approved separate policy, not the
+reader, old admission, or oracle. Add literal expectations in direct and
+differential tests for duplicate `a` under an empty ancestor, duplicate empty
+name under an empty ancestor, root empty member containing32 nested arrays, and
+root empty member containing4095 null children. Exact codes/paths are in the spec
+addendum. Include the nonempty-prefix `/outer//a` control and malformed-suffix
+syntax `/` controls. Published document must be absent on every rejected result.
+Count deliberate differences separately; don't change the512+1024 all-byte
+generator, seed, case184, existing scalar witnesses, fixtures, or oracle behavior.
+
+- [ ] **Step 2: Prove arena reachability in both invariant helpers.**
+
+Use small local test-only predicates over span<const OwnJsonNode> (no product
+mutation API), with an iterative traversal from root index0, bounded index/visit
+checks, and total visited exactly equal to the arena size. Preserve existing
+parent-count, sibling, span, kind/value checks. Explicitly reject repeated visits,
+unreachable nodes, out-of-range edges and cycles without hanging. Build synthetic
+POD node vectors: a valid root tree control and root plus a disconnected two-node
+cycle whose nonroot parent counts all equal1. Add negative assertions first against
+the former parent-count-only check, capture successful-build functional RED, then
+strengthen the checker and use it on every published document. Exercise the helper
+in both test translation units; do not loosen any existing assertion.
+
+- [ ] **Step 3: Focused GREEN, report and scoped commit.**
+
+Use installed VsDevCmd x64, existing none and Telegram build trees, focused direct
+test in none and both reader tests in Telegram. Keep actual redirected RED/GREEN
+outputs under out/part26e/final-fix with commands/exits and source identity. Root
+runs final complete none/Telegram/preview suites after writer quiescence; readonly
+scoped review can overlap those stable-input gates, acceptance requires both. Do
+not duplicate them. git diff --check and scoped commit the two test files only,
+`test: pin reader path policy and prove arena reachability`; no push. Report
+at .superpowers/sdd/2026-09-24-own-json-reader/task-3-report.md, including complete
+findings addressed, chronology, counts and limitations. No subagents.
 
 ## Controller final gates and continuation
 

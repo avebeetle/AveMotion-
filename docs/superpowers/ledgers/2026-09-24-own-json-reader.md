@@ -53,6 +53,12 @@ out/part26e-numeric-characterization; these are probes, not E product tests.
    maintenance when generator design changes; it must assert exact input identity
    and independently expected full legacy values, never auto-whitelist mismatches.
    Additional witnesses require retained inputs and an explicit bounded inventory.
+7. Ruling: retain every empty ancestor segment in the private own reader's paths,
+   with explicit own/legacy diagnostic witnesses, rather than copy the legacy
+   root-marker ambiguity or silently repair the oracle — focused review probe
+   independently confirms duplicate/depth/count differences in unchanged old
+   admission; cost if wrong: a third private compatibility distinction, which
+   later own admission must preserve or explicitly adapt. No old API change.
 
 ## Preflight
 
@@ -76,7 +82,7 @@ main selected explicitly; no worktree required under user override.
 
 - [x] Task1 owned reader and direct tests. BASE06a64d47a250ee532149578bbcb78c42a24f7051; product331765f, independent spec/quality Approved, no code findings.
 - [x] Task2 independent comparison/policy evidence. BASE2c2ece7b689e93dbba7795ea82a59c1cbfee1d00; productd11a249, independent spec/quality Approved, one deferred Minor.
-- [ ] Root final gates, whole-stage review, report and ordinary push.
+- [x] Root final gates, whole-stage review and report. Guarded ordinary push follows scoped docs commit.
 - [ ] Follow-on own admission/model connection design; not part of E reader completion.
 
 Controller owns STATE/docs/ledgers; one worker owns product files at a time.
@@ -182,3 +188,57 @@ prove root reachability of every arena node; a disconnected cycle could pass.
 Location tests/own_json_reader_differential_tests.cpp:94-105. Reviewer calls this
 a coverage gap, not an observed reader defect. Whole-stage reviewer must explicitly
 triage it; no minor-only task fix loop and no silent dismissal.
+
+## Whole-stage review and sole combined final fix wave
+
+Task2 docs88ee923 ordinary-pushed; exact remote equality/clean tree verified.
+Whole-stage review85a4c34..88ee923: no Critical; one Important undocumented
+empty-ancestor diagnostic-path distinction and one Minor reachability gap in BOTH
+test helpers. Report final-review.md, original scratch probe under
+out/part26e/review-empty-ancestor. Controller verified source/probe and approved
+the explicit spec addendum above under delegated authority (Ruling7). Both findings
+enter the sole combined test fix wave, Task3, FIX_BASE88ee923. Production reader,
+old admission, and oracle remain untouched. No final platform success claimed yet.
+
+Scratch final-gate startup failed before configure/build first under WindowsPS5.1
+Get-FileHash resolution, then after installed pwsh selection because Get-Command
+returned two application paths. Corrected scratch helper selects the first exact
+executable and records command/launch failures; isolated version/JSON serialization
+smoke passed, earlier failure files retained. No Windows/policy setting change.
+Fresh final gates will run only after the final fix/re-review, at a stable SHA.
+
+Task3 initiala98d588 focused none1/1/Telegram2/2 passed; report was marked DONE
+before implementer quiescence. The worker then identified success paths not calling
+the strengthened check in both test units. Root held all final gates, interrupted
+the just-dispatched scoped reviewer, and required an append-only follow-up commit,
+not amend/history rewrite. This stays one fix wave/one completed scoped review
+over original88ee923..finalHEAD. Wait for actual final report/event before execution.
+
+Task3: complete (commits88ee923..9212c03, scoped review clean). Writer explicitly
+quiescent; one completed scoped review resolves Important path policy and Minor
+reachability, no new breakage. Final focused none1/1/Telegram2/2; direct80743,
+differential95798 checks with512+1024 cases/1582 common/24 differences. Both raw
+RED cycles and append-only call-site follow-up retained. Root fresh full none
+32/32,4.36s and Telegram76/76,89.88s at9212c03 pass; preview/provenance/boundary
+closure remains pending. Draft final report is not yet acceptance.
+
+## Final acceptance at9212c03
+
+Fresh final none32/32,4.36s; Telegram76/76,89.88s; Win32-preview70/70,91.00s,
+zero skipped/failed. Samsung configure/registration, all-vendor/TGS16 and exact
+boundary verifier pass. Manual complete link/rule/install/source reading confirms
+private reader/test scope and no route activation. Supplemental syntax-only include
+traces98 reader/155 unit headers: expected local headers plus installed MSVC/SDK,
+no unknown path. Root verified canonical raw sets and every header hash. The two
+trace commands are identical across presets per source; no full-suite duplication.
+Scratch PDB assertion failure and slash-normalization comparison are retained and
+explained, not product regressions. Final manifests bind887 product/config inputs,
+four gate instruments and generated graphs; all unchanged through supplemental
+trace, including original compiled objects. No final product patch after9212c03.
+
+Root resolves final review's declined-scope items in final report
+docs/PART26E_OWN_JSON_READER_REPORT.md: future own admission/model/playback/UI,
+finite conformance/memory/performance limits, intentional scalar/path distinctions,
+Samsung configure-only and historical TDD evidence limits are explicit. No open
+finding. All seven Rulings/costs are in the report. E accepted; remote still88ee923
+before scoped docs handoff/ordinary push. Continue F design after push verification.
