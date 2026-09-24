@@ -12,13 +12,19 @@ durable ledger: `docs/superpowers/ledgers/2026-09-24-owned-native-ellipse-input.
 Controller approved written artifacts under delegated reversible decisions;
 this is not a claim that the user reviewed these new files. Exact owned
 descriptor only, same Part25I grammar, Telegram-private, no native route/model
-certificate or none-package dependency change. One product task pending;
-read-only ingress/independence audits are complete. Work directly in main with
-TDD and independent task/final review. Preserve all evidence.
+certificate or none-package dependency change. Product3238191 is committed;
+task review accepted spec+quality with zero findings. Functional RED/GREEN,
+worker full70/70 and root fresh Telegram70/70, preview64/64, none31/31 pass.
+Vendor/TGS16 checks and none/Samsung generated parser-boundary checks pass.
+Whole-stage review pending, no writer. Report:
+`docs/PART26B_OWNED_NATIVE_INPUT_REPORT.md`. Work directly in main;
+preserve all evidence. SDD workspace:
+`.superpowers/sdd/2026-09-24-owned-native-ellipse-input/`.
 
 Separate UI task owns UI/out cleanup and new build/Release paths; no UI writes,
-builds or GUI from this stage. Archive needed old Part26A diagnostics before
-acknowledging its deletion; canonical measurements already live in AveMotion/out.
+builds or GUI from this stage. Old Part26A diagnostics archived112/112 hash
+verified outside UI/out and ACK quiescent sent; canonical measurements already
+live in AveMotion/out. New UI path handoff remains owned by its separate task.
 
 ## Previous handoff — Part26A experimental Qt Motion Lab complete
 
