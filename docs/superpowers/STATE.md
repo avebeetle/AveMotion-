@@ -23,15 +23,29 @@ record the controller's decisions honestly, never claim user review of unseen
 artifacts. One product writer at a time; TDD and independent task/final review.
 Spec/plan are complete and independently reviewed: no open Important/Critical
 design findings. The initial stacked-page idea was corrected to an embedded
-section of existing Voices content, preserving routing state. Next is Task 1
-after UI-writer handoff. No product implementation or fresh product test yet;
-no Part26A product implementer is active at this checkpoint.
+section of existing Voices content, preserving routing state. Task 1 is complete:
+host commits `d0331a7`, `c6330e6`, `7084563`, independently accepted after two
+scoped fix reviews. Ordinary host push to main completed at `7084563`.
+The helper now preserves caller cache state and enforces whole-build no-install,
+including nested callers through deferred root validation. No engine/vendor
+or Qt product code changed. Fresh 23-step boundary gate, /MT and /MD TGS smokes
+and CTest 1/1 passed. Raw RED/GREEN/review evidence is in `out/part26a/` and the
+plan workspace. Known configure/vendor warnings are explicitly recorded, not
+silently suppressed. Never execute install scripts from superseded RED trees.
 
-The UI task `01a0c813-5b67-75e3-9d01-cda8cbb4a4bf` is finishing its own narrow
-startup-only smoke tool/docs. It requests no concurrent writes in that checkout
-until handoff. Coordinate before first UI edit; main/CMake/src are not in its
-planned changes. Keep our design work in AveMotion meanwhile; do not stop its
-work or mix commits. Read current Git/agents, not historical running labels.
+Next: Task 2, bounded serial worker/controller and isolated QtTest harness.
+Its brief/context are prepared in the plan workspace. Check live agents and the
+scratch ledger before dispatch; Task 1 must not be repeated. This is a normal
+checkpoint, not completion of the lab stage; keep our heartbeat active.
+SDD ledger: `.superpowers/sdd/2026-09-24-qt-motion-lab/progress.md`.
+
+The UI task `01a0c813-5b67-75e3-9d01-cda8cbb4a4bf` handed off clean main at
+`32d77c3715f8d084e5eb9d8abc6017ad84c23420`, ordinary push/remote verified.
+Its smoke work and GUI processes are complete; its separate heartbeat is paused.
+This was Task 1's host BASE. Root verified no src/CMake changes since the RED.
+Scoped host edits are released; no second product writer. Protected baseline
+covers 157 existing src files except the allowed main hook, plus all 22 accepted
+Release files. Read actual Git/agents, not historical running labels.
 Preserve accepted UI build/Release, docking/tray/DPI/animations and reference
 install prohibition. No dependencies/Windows changes or new license decisions.
 

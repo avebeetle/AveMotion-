@@ -1,7 +1,8 @@
 # Part26A — experimental Qt Motion Lab in Avelabs UI
 
 Date: 2026-09-24. Status: controller-approved under delegated execution;
-implementation has not started. This is an internal experiment, not a release.
+implementation progress is tracked in the Part26A ledger and STATE.
+This is an internal experiment, not a release.
 
 ## Intent and authority
 
@@ -63,6 +64,14 @@ headers, Runtime, Player, geometry or rendering libraries.
 no characterizers, preview, tests, downloads or install. Do not set global
 `BUILD_TESTING` or other host options with FORCE. Scope dependency options and
 restore host values. Test the actual static link, not only target names.
+
+Execution clarification: isolation includes the existing engine wrapper's
+transitive forced cache writes (`BUILD_SHARED_LIBS` and its six `LOTTIE_*`
+switches). The host helper snapshots/restores those known entries, including
+absence and cache metadata, around dependency construction. Restoring a caller's
+previous state is allowed; imposing new host values through FORCE is not. Test
+both an empty initial cache and supplied sentinel values. Engine/vendor files
+remain unchanged in this host-integration task.
 
 The experimental executable remains in a fresh `out/diagnostics/motionlab-*`
 build directory. In lab mode, reject installation before any install write,
@@ -190,9 +199,19 @@ ownership change. Independent task and final review precede completion claims.
 - `include/avemotion/runtime/Runtime.hpp`: serial Instances and CPU frames.
 - Avelabs `docs/development/maintenance.md`, `docs/ROADMAP.md` and tray STATE.
 - https://doc.qt.io/qt-6.10/threads-qobject.html — GUI/main-thread separation.
-- https://github.com/desktop-app/lib_lottie/blob/master/lottie/details/lottie_frame_renderer.cpp
+- https://github.com/desktop-app/lib_lottie/blob/7d00b5048aff8dd93c0a9721abf50006d20682be/lottie/details/lottie_frame_renderer.cpp#L141-L172
   — previous read-only research on scheduling and buffered image preparation;
   no Telegram Desktop source is copied into the host adapter.
+
+Upstream pin verified on 2026-09-24 (`git ls-remote` HEAD and pinned raw source).
+`FrameRendererObject::queueGenerateFrames` coalesces render-queue work;
+`generateFrames` posts weak-owner notifications to the main thread. The useful
+principle here is bounded scheduling and owner-aware delivery, not importing
+Telegram's queue/frame machinery. Our corresponding checks are slow-consumer
+coalescing and destruction/late-delivery tests. Qt's thread-affinity contract
+requires GUI work on the main thread and timer use on its owning thread; worker
+readiness/shutdown tests cover that separation. Upstream behavior is precedent,
+not evidence that our not-yet-implemented adapter is correct.
 
 After this bounded stage, report and pause its heartbeat. Native raw-to-model
 correspondence, independent playback, Direct2D/Qt composition and a rights-cleared

@@ -34,7 +34,7 @@
 
 ## Tasks
 
-- [ ] Task 1 — opt-in static dependency and no-install boundary.
+- [x] Task 1 — opt-in static dependency and no-install boundary.
 - [ ] Task 2 — bounded serial worker and Qt controller.
 - [ ] Task 3 — widget, controls and guarded shell entry.
 - [ ] Task 4 — real-shell gates, measurements and handoff.
@@ -79,3 +79,80 @@ is not the final handoff: it will explicitly report completion of its smoke
 checkpoint and absence of live edits/build/GUI. Wait for that handoff before
 host writes, then re-read Git and begin Task 1. No product implementer is active
 for Part26A at this checkpoint; a heartbeat should not mistake this for one.
+
+## 2026-09-24 Task 1 execution
+
+SDD preflight and scratch ledger initialized at
+`.superpowers/sdd/2026-09-24-qt-motion-lab/progress.md`. All four task-internal
+checks and six shared-interface pairs recorded. Explicit main instruction
+overrides generic worktree setup; user-required evidence preservation overrides
+generic scratch cleanup. Scope/design unchanged.
+
+While UI was still owned by its smoke task, sole implementer
+`/root/qt_lab_build_boundary` prepared a test in AveMotion scratch. Actual host
+OFF and ON configurations both succeeded, then the ON target-graph assertion
+failed on missing avemotion_runtime (exit1). No host writes or GUI were needed.
+Evidence: `out/part26a/task1-red/`, including complete commands/stdout and the
+functional assertion. No GREEN or product completion is claimed yet.
+
+The other task handed off clean main `32d77c3715f8d084e5eb9d8abc6017ad84c23420`,
+matching remote, with edits/build/tests/GUI finished and its own heartbeat paused.
+Root verified its six changed paths are smoke tooling/docs, not src/CMake.
+The recorded RED is still applicable. Same Task 1 implementer is now released to
+the five scoped host files from this BASE; root retains review/docs/push.
+
+Protected working-byte snapshot before implementation: 157 existing src files
+except main; SHA256 `762b9e7bc375d74a5b8606baf04486aa71ef10dc562397ea2b2f7628d29f365c`.
+Accepted Release: 22 recursive files, aggregate SHA256
+`d0fcbbba63574fa882d236b5d3a565e7bf2e89791d2eca1a525bf4ccf14ab0f2`.
+Algorithm/details: plan workspace/protected-baseline.json. Main hook is the only
+allowed existing src edit; adding motionlab files does not alter this baseline.
+Upstream scheduling reference in spec now has a verified commit permalink;
+no external source was copied, no license or dependency changed.
+
+## Task 1 accepted and pushed
+
+Host commits: `d0331a7` (static dependency), `c6330e6` (standalone no-install
+guard), `7084563` (deferred root-scope enforcement). All five assigned paths;
+no production Qt/source, engine or vendor edits. Ordinary push completed after
+independent task review and two scoped fix reviews. Final scoped verdict:
+all findings addressed, no new Critical/Important breakage.
+
+Ruling: preserve/restore the seven known transitive forced cache entries,
+including absence and metadata — normal function-local settings alone did not
+isolate the caller — cost if wrong is reversible host-glue complexity. No new
+host cache policy is forced. Functional cache RED/GREEN includes empty cache,
+explicit sentinels, types and optional metadata; target stays static.
+
+Review found the first standalone /MD compatibility harness generated vendor
+install scripts, unlike the guarded host. First fix enforced local policy and
+fresh-tree checks; second review identified nested-scope leakage. Actual RED
+confirmed local TRUE/root FALSE still generated a root script. Ruling: validate
+the root value at deferred configure completion before generation — cost if
+wrong is a reversible false rejection — preserving caller policy, not forcing
+it. Function-local/subdirectory-only and later-cleared flags are now rejected;
+correct root-guarded nested calls succeed without any install script. No unsafe
+RED-tree install was ever executed. Those directories remain labelled evidence.
+
+Final commands (from U unless noted):
+
+- `python tests/motionlab/test_build_boundary.py --output-root C:/Users/USER/Desktop/AveMotion-CorpusLab-Part24/out/part26a/task1-review2-full`
+  — exit 0, all 23 steps passed, including actual /MT and /MD fixture smokes,
+  cache isolation, profile/path/variant refusals, stale-directory refusals and
+  host/default/component/vendor plus standalone vendor install refusal.
+- `ctest --test-dir C:/Users/USER/Desktop/AveMotion-CorpusLab-Part24/out/part26a/task1-review2-full/on -C Release --output-on-failure`
+  — exit 0, 1/1 passed. Root inspected full output and also independently ran
+  the preceding-fix smoke and script-absence check. One controller check used
+  the wrong directory name first; corrected after inventory, no product fault.
+- `git diff 32d77c3..7084563 --check` — passed. Protected source and accepted
+  Release hash checks passed after initial product edits; none of the later
+  fixes touched those paths. Their exact original paths stay the final gate.
+
+Raw logs: `out/part26a/task1-review2-full/`; complete execution/review reports:
+`.superpowers/sdd/2026-09-24-qt-motion-lab/task-1-{report,review,fix1-review,fix2-review}.md`.
+Engine HEAD throughout this task was `86e17e3` with documentation-only working
+changes; engine/vendor compiled sources unchanged. Full real AvelabsUI static
+link, GUI controls, visual/native DPI and measurements are Tasks 2-4, not claimed
+by this smoke. Remaining minor for final review: expected skip-install warning,
+unused overlay arguments and existing vendor compiler diagnostics; documented
+without blanket suppression. The whole lab stage is still in progress.

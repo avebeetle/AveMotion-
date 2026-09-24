@@ -86,8 +86,8 @@ AveMotion::Runtime and AveMotion::Player targets in an isolated dependency
 scope. Host variable `AVELABS_AVEMOTION_SOURCE_DIR` points to A. It must not
 force host options into the cache. No Qt product code is written in this task.
 
-- [ ] Obtain UI-writer handoff; snapshot actual main/status and protected paths.
-- [ ] Write a functional Python test that configures a real scratch host twice:
+- [x] Obtain UI-writer handoff; snapshot actual main/status and protected paths.
+- [x] Write a functional Python test that configures a real scratch host twice:
   OFF rejects no missing engine path; ON requires a valid explicit engine path,
   and its generated target graph has Runtime/Player but no probe/characterizer.
   On the original code ON is ignored, so asserting the Runtime target fails:
@@ -99,17 +99,17 @@ def assert_motion_engine_present(target_names):
     assert "avemotion_probe" not in target_names
 ```
 
-- [ ] Run that test against existing code and record the intended functional RED.
-- [ ] Implement default-OFF option, scoped `add_subdirectory` lean setup and
+- [x] Run that test against existing code and record the intended functional RED.
+- [x] Implement default-OFF option, scoped `add_subdirectory` lean setup and
   Windows/Release/static-Qt/runtime/path checks. Call helper only when ON.
   Disable AveMotion tests/tools/install inside dependency scope. Use normal
   scoped variables with modern option policy, not cache FORCE.
-- [ ] In lab-enabled host builds, enforce `CMAKE_SKIP_INSTALL_RULES=TRUE` at the
+- [x] In lab-enabled host builds, enforce `CMAKE_SKIP_INSTALL_RULES=TRUE` at the
   host root before generation and skip normal host install declarations. Verify
   no `cmake_install.cmake` exists anywhere in a fresh build tree, including the
   vendored dependency. Existing populated build dirs with stale install scripts
   must be refused for lab conversion; never delete arbitrary caller paths.
-- [ ] Add smoke executable using the existing public API:
+- [x] Add smoke executable using the existing public API:
 
 ```cpp
 #include "avemotion/runtime/Runtime.hpp"
@@ -126,10 +126,10 @@ int main(int argc, char** argv) {
 }
 ```
 
-- [ ] Build/run actual `/MT` smoke. Test ON missing path, wrong variant, wrong
+- [x] Build/run actual `/MT` smoke. Test ON missing path, wrong variant, wrong
   CRT and attempted default/component/subdirectory install into fresh targets.
   Verify failed install created no files; OFF configuration remains valid.
-- [ ] Independent scoped review; fix findings; commit only Task 1 files and
+- [x] Independent scoped review; fix findings; commit only Task 1 files and
   associated ledger/report. Reconcile remote before ordinary push.
 
 ### Task 2: bounded serial worker and Qt controller
