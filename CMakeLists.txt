@@ -131,7 +131,9 @@ if(AVEMOTION_RLOTTIE_AVAILABLE)
         list(APPEND AVEMOTION_RUNTIME_SOURCES
             src/model/TelegramParsedModelBuilder.cpp
             src/runtime/NativeEllipseAdmission.cpp
-            src/runtime/NativeEllipseBinding.cpp)
+            src/runtime/NativeEllipseBinding.cpp
+            src/runtime/NativeEllipseCertificate.cpp
+            src/runtime/NativeEllipseScanAudit.cpp)
     endif()
 endif()
 
@@ -798,6 +800,18 @@ if(BUILD_TESTING)
             avemotion_set_warnings(avemotion_native_ellipse_binding_tests)
             add_test(NAME avemotion.runtime.native_ellipse_binding
                 COMMAND avemotion_native_ellipse_binding_tests)
+
+            add_executable(avemotion_native_ellipse_certificate_tests
+                tests/native_ellipse_certificate_tests.cpp)
+            target_include_directories(avemotion_native_ellipse_certificate_tests PRIVATE
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime")
+            target_link_libraries(avemotion_native_ellipse_certificate_tests PRIVATE
+                AveMotion::Runtime)
+            target_compile_definitions(avemotion_native_ellipse_certificate_tests PRIVATE
+                AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
+            avemotion_set_warnings(avemotion_native_ellipse_certificate_tests)
+            add_test(NAME avemotion.runtime.native_ellipse_certificate
+                COMMAND avemotion_native_ellipse_certificate_tests)
 
             add_executable(avemotion_source_ownership_tests tests/source_ownership_tests.cpp)
             target_link_libraries(avemotion_source_ownership_tests PRIVATE
