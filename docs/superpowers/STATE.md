@@ -2,7 +2,27 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26C complete; continue native emitter design
+## Current handoff — Part26D private native scene stream planned
+
+User requests long complete continuation, Avelabs-UI is future static EXE host.
+C is complete and ordinary-pushed at6d154ca (product6b0be0f); do not repeat it.
+D spec docs/superpowers/specs/2026-09-24-native-ellipse-stream-design.md,
+plan docs/superpowers/plans/2026-09-24-native-ellipse-stream.md,
+durable ledger docs/superpowers/ledgers/2026-09-24-native-ellipse-stream.md,
+SDD .superpowers/sdd/2026-09-24-native-ellipse-stream/progress.md.
+Controller self-approved under delegated authority, not unseen user review.
+Preflight complete: Task1 stream+independent scene matrix, Task2 full plan/history/
+ownership/CPU/live-counter tests, then platform/private-boundary/final review.
+Task1 not dispatched yet; no D product code or active product writer.
+Oracle refinement uses cache-disabled parse/own stamped source+frozen model,
+no shared candidate source.15 named cases/7920 exact scene comparisons planned.
+D remains Telegram-private reference-assisted preparation and own scene emission;
+no production Runtime route, own ingress, own playback or pixel performance claim.
+After D continue own ingress/model, native timeline/raster, isolated Motion Lab.
+One product writer/TDD/independent reviews/direct main/scoped ordinary pushes.
+Preserve raw/SDD; no automation resumed; no UI writes/builds/GUI or UI/out recreation.
+
+## Previous handoff — Part26C complete; continue native emitter design
 
 User requests complete long-running continuation. Controller-approved spec:
 `docs/superpowers/specs/2026-09-24-native-ellipse-binding-design.md`;

@@ -124,6 +124,15 @@ not share mutable LOTModel/Animation/workspace/scene vectors/planner history. Ke
 an ordinary source lease for its whole use and verify independence using existing
 private animation-access test mechanisms. Do not toggle global caches concurrently.
 
+Use a cache-disabled seed parse and metadata-derived test-only descriptor/handle,
+not a descriptor-only Runtime Asset which might still retain a shared production
+cache source. Stamp the seed's exact retained model once; every preparation sample
+and expected request constructs a fresh ordinary Animation from that oracle-only
+lease. Frozen model update/finalization is independently built over its full
+timeline. The handle is test identity, not a Runtime registration. Reference sample
+counts are explicit; simultaneous live objects, not freed pointer addresses, prove
+distinct Animation ownership. This is the controller's oracle-audit refinement.
+
 For every expected request build a fresh ordinary Animation and extract its tree,
 then apply the independently frozen model. Before planner comparison normalize only expected scene assetHandle to the
 candidate's asset handle, expected instanceHandle to invalid, instanceId to the
