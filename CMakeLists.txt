@@ -773,6 +773,19 @@ if(BUILD_TESTING)
             add_test(NAME avemotion.runtime.native_ellipse_admission
                 COMMAND avemotion_native_ellipse_admission_tests)
 
+            add_executable(avemotion_native_ellipse_input_tests
+                tests/native_ellipse_input_tests.cpp)
+            target_include_directories(avemotion_native_ellipse_input_tests PRIVATE
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime")
+            target_link_libraries(avemotion_native_ellipse_input_tests PRIVATE
+                AveMotion::Runtime)
+            target_compile_definitions(avemotion_native_ellipse_input_tests PRIVATE
+                AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures"
+                AVEMOTION_TGS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/compatibility/tgs")
+            avemotion_set_warnings(avemotion_native_ellipse_input_tests)
+            add_test(NAME avemotion.runtime.native_ellipse_input
+                COMMAND avemotion_native_ellipse_input_tests)
+
             add_executable(avemotion_source_ownership_tests tests/source_ownership_tests.cpp)
             target_link_libraries(avemotion_source_ownership_tests PRIVATE
                 AveMotion::Runtime rlottie::rlottie Threads::Threads)

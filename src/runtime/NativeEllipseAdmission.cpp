@@ -1,4 +1,5 @@
 #include "NativeEllipseAdmission.hpp"
+#include "NativeEllipseInput.hpp"
 
 #include <rapidjson/document.h>
 #include <rapidjson/memorystream.h>
@@ -9,6 +10,7 @@
 #include <cstddef>
 #include <initializer_list>
 #include <limits>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -270,10 +272,14 @@ const Value* field(const Value& object, std::string_view key) {
 
 class Auditor final {
 public:
-    NativeEllipseAdmission run(const Value& root, std::string_view json) {
+    NativeEllipseAdmission run(const Value& root, std::string_view json,
+                               std::shared_ptr<const NativeEllipseInput>* output) {
         if (!resources(root)) return result_;
         if (!captureNumbers(root, json)) return result_;
         rootObject(root);
+        if (result_.accepted() && output != nullptr) {
+            *output = std::make_shared<const NativeEllipseInput>(materialize(root));
+        }
         return result_;
     }
 
@@ -508,7 +514,89 @@ private:
     bool fill(const Value& value, std::string_view path);
     bool groupTransform(const Value& value, std::string_view path);
     bool position(const Value& value, std::string_view path, std::int64_t rootOp);
+    NativeEllipseInput materialize(const Value& root) const;
+    NativeEllipseDecimal decimal(const Value& value) const;
+    std::int64_t structural(const Value& value, std::int64_t low, std::int64_t high) const;
+    NativeEllipseVec2 vec2(const Value& array) const;
+    static std::optional<std::string> name(const Value& object, std::string_view key);
 };
+
+NativeEllipseDecimal Auditor::decimal(const Value& value) const {
+    const auto& source = *exact(value);
+    return {source.negative, source.digits,
+        {source.power.negative, source.power.magnitude}};
+}
+
+std::int64_t Auditor::structural(const Value& value, std::int64_t low,
+                                std::int64_t high) const {
+    std::int64_t result = 0;
+    if (!boundedInteger(*exact(value), low, high, result)) {
+        throw std::logic_error("validated native ellipse integer could not be materialized");
+    }
+    return result;
+}
+
+NativeEllipseVec2 Auditor::vec2(const Value& array) const {
+    return {decimal(array[0]), decimal(array[1])};
+}
+
+std::optional<std::string> Auditor::name(const Value& object, std::string_view key) {
+    const auto* value = field(object, key);
+    if (!value) return std::nullopt;
+    return std::string{value->GetString(), value->GetStringLength()};
+}
+
+NativeEllipseInput Auditor::materialize(const Value& root) const {
+    NativeEllipseInput input;
+    input.width = static_cast<std::uint32_t>(structural(*field(root, "w"), 1, 8192));
+    input.height = static_cast<std::uint32_t>(structural(*field(root, "h"), 1, 8192));
+    input.endFrame = static_cast<std::uint32_t>(structural(*field(root, "op"), 2, 10000));
+    input.frameRate = decimal(*field(root, "fr"));
+    input.version = name(root, "v");
+    input.name = name(root, "nm");
+
+    const auto& layer = (*field(root, "layers"))[0];
+    input.layerId = static_cast<std::int32_t>(structural(*field(layer, "ind"), 1, 2147483647));
+    input.layerInFrame = static_cast<std::uint32_t>(structural(*field(layer, "ip"), 0, input.endFrame));
+    input.layerOutFrame = static_cast<std::uint32_t>(structural(*field(layer, "op"), 0, input.endFrame));
+    input.layerName = name(layer, "nm");
+    const auto& layerPosition = *field(*field(*field(layer, "ks"), "p"), "k");
+    input.layerTranslation = vec2(layerPosition);
+
+    const auto& group = (*field(layer, "shapes"))[0];
+    input.groupName = name(group, "nm");
+    const auto& items = *field(group, "it");
+    const auto& ellipse = items[0];
+    input.ellipseName = name(ellipse, "nm");
+    input.size = vec2(*field(*field(ellipse, "s"), "k"));
+    const auto& position = *field(ellipse, "p");
+    const auto animated = structural(*field(position, "a"), 0, 1);
+    const auto& key = *field(position, "k");
+    if (animated == 0) {
+        input.position = NativeEllipseStaticPosition{vec2(key)};
+    } else {
+        const auto& first = key[0];
+        const auto& last = key[1];
+        NativeEllipseAnimatedPosition motion;
+        motion.firstFrame = static_cast<std::uint32_t>(structural(*field(first, "t"), 0, 0));
+        motion.lastFrame = static_cast<std::uint32_t>(structural(*field(last, "t"), input.endFrame - 1, input.endFrame - 1));
+        motion.start = vec2(*field(first, "s"));
+        motion.end = vec2(*field(first, "e"));
+        const auto& incoming = *field(first, "i");
+        const auto& outgoing = *field(first, "o");
+        motion.incoming = {decimal(*field(incoming, "x")), decimal(*field(incoming, "y"))};
+        motion.outgoing = {decimal(*field(outgoing, "x")), decimal(*field(outgoing, "y"))};
+        input.position = std::move(motion);
+    }
+    const auto& fill = items[1];
+    input.fillName = name(fill, "nm");
+    const auto& color = *field(*field(fill, "c"), "k");
+    for (rapidjson::SizeType index = 0; index < 4; ++index) {
+        input.fillColor[index] = decimal(color[index]);
+    }
+    input.transformName = name(items[2], "nm");
+    return input;
+}
 
 bool Auditor::position(const Value& value, std::string_view path, std::int64_t rootOp) {
     if (!object(value, path, {"a", "k"})) return false;
@@ -663,7 +751,9 @@ bool Auditor::rootObject(const Value& root) {
 
 } // namespace
 
-NativeEllipseAdmission auditNativeEllipseInput(std::string_view json) {
+namespace {
+NativeEllipseAdmission parseNativeEllipseInput(
+    std::string_view json, std::shared_ptr<const NativeEllipseInput>* output) {
     if (json.size() > 1'048'576) return {Code::ResourceLimit, "/"};
     if (json.empty() || json.find('\0') != std::string_view::npos) {
         return {Code::InvalidJson, "/"};
@@ -672,7 +762,18 @@ NativeEllipseAdmission auditNativeEllipseInput(std::string_view json) {
     document.Parse<rapidjson::kParseIterativeFlag |
                    rapidjson::kParseValidateEncodingFlag>(json.data(), json.size());
     if (document.HasParseError()) return {Code::InvalidJson, "/"};
-    return Auditor{}.run(document, json);
+    return Auditor{}.run(document, json, output);
+}
+} // namespace
+
+NativeEllipseAdmission auditNativeEllipseInput(std::string_view json) {
+    return parseNativeEllipseInput(json, nullptr);
+}
+
+NativeEllipseInputResult decodeNativeEllipseInput(std::string_view json) {
+    NativeEllipseInputResult result;
+    result.admission = parseNativeEllipseInput(json, &result.input);
+    return result;
 }
 
 } // namespace avemotion::runtime::detail

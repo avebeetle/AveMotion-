@@ -1,4 +1,5 @@
 #include "NativeEllipseAdmission.hpp"
+#include "NativeEllipseInput.hpp"
 
 #include <cstdlib>
 #include <filesystem>
@@ -15,6 +16,7 @@ namespace {
 
 using avemotion::runtime::detail::NativeEllipseAdmissionCode;
 using avemotion::runtime::detail::auditNativeEllipseInput;
+using avemotion::runtime::detail::decodeNativeEllipseInput;
 
 void require(bool condition, std::string_view message) {
     if (!condition) throw std::runtime_error(std::string{message});
@@ -49,6 +51,9 @@ void expectAccepted(std::string_view json, std::string_view name) {
     require(result.accepted(), std::string{name} + ": expected Accepted, got code "
         + std::to_string(static_cast<int>(result.code)) + " at " + result.path);
     require(result.path.empty(), std::string{name} + ": accepted path must be empty");
+    const auto decoded = decodeNativeEllipseInput(json);
+    require(static_cast<bool>(decoded) && decoded.admission.path.empty(),
+        std::string{name} + ": accepted input must publish a complete descriptor");
 }
 
 void expectRejected(std::string_view json, NativeEllipseAdmissionCode code,
@@ -59,6 +64,10 @@ void expectRejected(std::string_view json, NativeEllipseAdmissionCode code,
         + std::to_string(static_cast<int>(result.code)) + " at " + result.path);
     require(!result.path.empty() && result.path.front() == '/',
         std::string{name} + ": rejection needs an owned pointer path");
+    const auto decoded = decodeNativeEllipseInput(json);
+    require(!decoded && !decoded.input && decoded.admission.code == result.code
+        && decoded.admission.path == result.path,
+        std::string{name} + ": decoder rejection must match audit code and path");
 }
 
 void testBaseline() {
