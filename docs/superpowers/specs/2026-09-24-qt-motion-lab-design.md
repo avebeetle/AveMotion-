@@ -124,6 +124,10 @@ stale-result filter would permanently discard the preserved session's frames.
 Coalesce controls through one latest-intent mailbox/notification, separate from
 the frame mailbox. Preserve the most recent desired transport state, size,
 count and absolute seek, not an accumulated list of mouse/timer actions.
+`MotionController::seek(double)` and `FrameBatch.position` use normalized [0,1]
+position, matching `Player::seekNormalized`; they are not seconds or frame
+indices. The widget maps its slider to this range. Handle non-finite requests
+explicitly rather than passing them into the playback clock.
 
 Hidden/minimized page sends hidden state for all entries with Freeze policy:
 no frame rendering/deadline timer while all entries are hidden. Showing resumes

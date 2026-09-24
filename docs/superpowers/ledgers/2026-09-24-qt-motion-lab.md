@@ -35,7 +35,7 @@
 ## Tasks
 
 - [x] Task 1 — opt-in static dependency and no-install boundary.
-- [ ] Task 2 — bounded serial worker and Qt controller.
+- [x] Task 2 — bounded serial worker and Qt controller.
 - [ ] Task 3 — widget, controls and guarded shell entry.
 - [ ] Task 4 — real-shell gates, measurements and handoff.
 
@@ -156,3 +156,94 @@ link, GUI controls, visual/native DPI and measurements are Tasks 2-4, not claime
 by this smoke. Remaining minor for final review: expected skip-install warning,
 unused overlay arguments and existing vendor compiler diagnostics; documented
 without blanket suppression. The whole lab stage is still in progress.
+
+## Task 2 execution checkpoint
+
+Sole product implementer `/root/qt_lab_worker`, host BASE
+`7084563835943e75d7c860fa160e0bb465c2cbdd`, is implementing the serial worker,
+controller and bounded mailboxes. No duplicate writer or overlapping GUI/build
+was started by the controller. Task 2 remains incomplete until final tests and
+independent review; intermediate passing test counts are not a final gate.
+
+Ruling: `seek(double)` and `FrameBatch.position` use normalized [0,1] positions,
+matching public `Player::seekNormalized` — the brief omitted units and the
+widget must not guess seconds/frame duration — cost if wrong is a reversible
+adapter/widget contract adjustment. Spec/plan clarified and same information
+sent to the implementer; no public engine API or playback semantics change.
+
+Task 4 preparation is complete in the retained SDD workspace:
+`task-4-measurement-protocol.md` records hashes of existing JSON/TGS fixtures
+and a bounded sequential active/paused/hidden protocol for 1/4/16 instances.
+No timings have yet been measured. Independent read-only
+`task-4-existing-gates.md` identifies eight existing host CTest entries and
+their scope. Those are historical baseline results, not fresh Part26A results.
+The ordinary host EXE lacks full temporary data-root isolation; use the existing
+temporary-INI harness and explicitly defer full-EXE manual acceptance. Never
+bypass script policy or install dependencies to run a gate.
+
+Task 2 implementation committed locally in host as
+`b92c3bc253db95c5285ca2863c4016a1064f5eae` (nine assigned paths only; clean host
+tree, no push). Functional RED/GREEN covered mailboxes and worker readiness,
+diagnostics, then two self-review regressions: coalesced Stop -> Seek lost the
+newer seek, and hidden count replacement lost automatic resume. Each was
+reproduced before its fix. Final raw QtTest: 25 passed, 0 failed/skipped;
+`ctest --test-dir D:/rvc/c++/DragonianVoice/Avelabs-UI/out/diagnostics/motionlab-2026-09-24/task2-md -C Release --output-on-failure`
+passed 2/2 (2.90s). Root read the complete final outputs, not only the summary.
+Evidence: `out/part26a-task2-*`, complete commands in SDD `task-2-report.md`.
+
+Independent Task 2 review is active over the complete `7084563..b92c3bc` range;
+this is not acceptance yet. The controller freshly verified protected source
+aggregate `762b9e7bc375d74a5b8606baf04486aa71ef10dc562397ea2b2f7628d29f365c`
+(157 files) and accepted Release aggregate
+`d0fcbbba63574fa882d236b5d3a565e7bf2e89791d2eca1a525bf4ccf14ab0f2`
+(22 files), both unchanged. Static host link/widget/native DPI are later gates.
+
+Independent Task 2 review returned spec FAIL / quality Needs fixes. Four
+Important findings (two P1, two P2): count/output state can diverge from retained
+registrations when replacement fails, per-frame diagnostic events bypass frame
+mailbox bounds, Seek -> Stop retains a superseded seek, and separate edge
+clamping distorts requested aspect ratio. Root checked the cited changed code;
+these are real spec gaps, not changes to the plan. Same implementer receives
+fix round 1/5 from `b92c3bc`, with targeted functional RED before each fix and
+fresh covering/full gates before scoped re-review. Task 2 is not accepted or
+pushed. Existing configure skip-install warning remains a recorded Minor.
+
+Cannot-verify items resolved by scope/evidence: UI activation/static host/DPI
+are Tasks 3/4; protected bytes freshly matched above; root read retained
+historical RED logs. Root also checked the current standalone Task 2 build
+recursively: zero cmake_install.cmake files. Prior Task 1 helper negative-install
+evidence remains applicable because the helper is unchanged. No unsafe install
+or GUI command was executed to establish this check.
+
+Ruling: Task 3 may extend `tests/motionlab/CMakeLists.txt` for its specified
+widget/shell test target — the original Task 3 file list omitted that necessary
+wiring although its tests were mandatory — cost if wrong is reversible test-
+build glue only. Plan and prepared brief corrected before dispatch; original
+UI harness and static-host/no-install policies are not changed by this ruling.
+
+## Task 2 accepted
+
+Scoped fix `ad608bf67636a885ccdd8dde3b55e821b3322bf0` addresses all four
+Important findings; independent scoped review says all addressed and no new
+Critical/Important breakage. Replacement state commits transactionally, diagnostics
+use a separate bounded latest snapshot, Stop supersedes an earlier seek, and
+output clamp derives one common scale. Each new regression failed before its
+fix: actual 16,777,216 pixels over the cap, eight queued diagnostics, stopped
+position 0.7, and landscape/portrait both incorrectly 1024x1024.
+
+Final covering QtTest 8/8, full worker QtTest 30/30 and CTest 2/2 pass. Controller
+fresh verification on committed `ad608bf`:
+`ctest --test-dir D:/rvc/c++/DragonianVoice/Avelabs-UI/out/diagnostics/motionlab-2026-09-24/task2-md -C Release --output-on-failure --output-log C:/Users/USER/Desktop/AveMotion-CorpusLab-Part24/out/part26a-task2-controller-ctest.log`
+with existing dynamic Qt bin prepended only in that process: exit 0, 2/2,
+3.45s. Full host range `7084563..ad608bf` passes `git diff --check`. No build or
+test code exists outside the assigned Task 2 paths. Known skip-install configure
+warning remains the only deferred review Minor; no blanket suppression.
+
+Full reports and scoped diff remain in SDD workspace, raw outputs in
+`out/part26a-task2-*`. Ordinary host push follows remote check (expected prior
+remote `7084563`); no force/rewrite. Next Task 3 adds opt-in UI in the existing
+Voices page; no claim of completed static host link, GUI/DPI or native playback.
+
+Ordinary host push completed and remote main exact equality verified:
+`ad608bf67636a885ccdd8dde3b55e821b3322bf0`. Engine documentation checkpoint
+follows. No Task 3 product writer started before review acceptance.

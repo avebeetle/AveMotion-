@@ -152,6 +152,8 @@ Public methods: `loadFile(QString)`, `play()`, `pause()`, `stop()`,
 `errorChanged(QString)`, `loaded(QString)`, `stopped()`.
 Register value types for queued connections. GUI generation changes immediately
 on load/shutdown; stale worker messages are discarded in the controller.
+`seek(double)` and `FrameBatch.position` are normalized [0,1] positions, not
+seconds/frame indices, mapping to the existing Player::seekNormalized contract.
 On replacement failure, the retained previous session is retagged with the
 newest request generation before further publication; verify it still advances.
 One latest-intent mailbox coalesces queued controls (transport/size/count/seek);
@@ -162,7 +164,7 @@ and timer in its worker thread. Corresponding control slots execute there only.
 Shared cancellation state is atomic so shutdown need not wait for a queued
 slot before preventing the next render in a batch. Generation-tag all requests.
 
-- [ ] Write deterministic mailbox tests first, initially using compilable empty
+- [x] Write deterministic mailbox tests first, initially using compilable empty
   behavior stubs so RED is an assertion failure, not a missing-header failure:
 
 ```cpp
@@ -173,13 +175,13 @@ QCOMPARE(mailbox.takeLatest()->generation, quint64(2));
 QVERIFY(!mailbox.takeLatest().has_value());
 ```
 
-- [ ] Record RED, implement replacement/notification locking, GREEN. Add a
+- [x] Record RED, implement replacement/notification locking, GREEN. Add a
   producer/consumer handshake test covering publish during drain.
-- [ ] Write worker tests with explicit readiness and blocked-publication test
+- [x] Write worker tests with explicit readiness and blocked-publication test
   seam: successful load/first frame, pause/seek, hidden Freeze, user pause then
   hide/show, generation A-to-B, load failure preserving prior usable session,
   stop/close while rendering and notification receiver destruction.
-- [ ] Start with stubs returning no frame; observe functional RED. Implement
+- [x] Start with stubs returning no frame; observe functional RED. Implement
   worker-owned Runtime/Player plus monotonic one-shot schedule callbacks; queue
   pump instead of reentering Player. Render CPU frames and deep-copy pixels:
 
@@ -190,20 +192,21 @@ QImage owned(reinterpret_cast<const uchar*>(cpu.argbPremultiplied.data()),
 owned = owned.copy();
 ```
 
-- [ ] Validate dimensions/stride with checked conversion before the QImage view.
+- [x] Validate dimensions/stride with checked conversion before the QImage view.
   Test image bytes after CpuFrame destruction. Tick-frame spans are consumed
   before further mutating Player calls; never send Instance pointers to GUI.
-- [ ] Add actual limits tests: 2 MiB+1 file read cap; malformed TGS/CRC; zero or
+- [x] Add actual limits tests: 2 MiB+1 file read cap; malformed TGS/CRC; zero or
   non-finite metadata; count only 1/4/16; edge <=1024 and total <=4194304 pixels.
   Coalesce latest seek/size/control intent to prevent queued mouse history.
-- [ ] GREEN with committed JSON/TGS fixtures and a deliberately slow mailbox
+- [x] GREEN with committed JSON/TGS fixtures and a deliberately slow mailbox
   consumer. Independently review thread/lifetime/queue contracts; commit/push.
 
 ### Task 3: widget, controls and guarded shell entry
 
 **Files:** Create `src/app/motionlab/MotionCanvas.h/.cpp`, `MotionLabPage.h/.cpp`,
 `MotionLabEntry.h/.cpp`, `tests/motionlab/tst_motion_page.cpp`; modify only the
-guarded entry in `src/main.cpp` and opt-in target wiring in host CMake.
+guarded entry in `src/main.cpp`, opt-in target wiring in host CMake and
+`tests/motionlab/CMakeLists.txt` for the new isolated widget/shell test target.
 
 **Interfaces:** `MotionCanvas : QWidget` stores last images and paints them;
 `void setBatch(const FrameBatch&)` takes ownership through QImage value semantics.

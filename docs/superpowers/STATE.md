@@ -27,16 +27,25 @@ section of existing Voices content, preserving routing state. Task 1 is complete
 host commits `d0331a7`, `c6330e6`, `7084563`, independently accepted after two
 scoped fix reviews. Ordinary host push to main completed at `7084563`.
 The helper now preserves caller cache state and enforces whole-build no-install,
-including nested callers through deferred root validation. No engine/vendor
-or Qt product code changed. Fresh 23-step boundary gate, /MT and /MD TGS smokes
+including nested callers through deferred root validation. That task changed no
+engine/vendor or Qt product code. Fresh 23-step boundary gate, /MT and /MD TGS smokes
 and CTest 1/1 passed. Raw RED/GREEN/review evidence is in `out/part26a/` and the
 plan workspace. Known configure/vendor warnings are explicitly recorded, not
 silently suppressed. Never execute install scripts from superseded RED trees.
 
-Next: Task 2, bounded serial worker/controller and isolated QtTest harness.
-Its brief/context are prepared in the plan workspace. Check live agents and the
-scratch ledger before dispatch; Task 1 must not be repeated. This is a normal
-checkpoint, not completion of the lab stage; keep our heartbeat active.
+Task 2 is accepted: host `b92c3bc` plus reviewed fix `ad608bf`. Serial worker,
+owned CPU images, generation filtering, bounded frame/control/diagnostic delivery
+and limits are implemented. Four initial review gaps each have functional
+RED/GREEN evidence; scoped re-review accepts all with no new Critical/Important
+findings. Final isolated /MD QtTest 30/30 and CTest 2/2 passed; controller fresh
+CTest also 2/2 (3.45s). Protected source157/Release22 hashes match baseline.
+Ordinary host push completed; remote main equals `ad608bf`.
+
+Next: Task 3, widget/controls and guarded existing-Voices embedding. Its brief
+and context are in the workspace; check live agents and scratch ledger before
+dispatch to avoid duplicating an active writer. Do not repeat Tasks 1/2.
+Actual static host/UI/native-DPI gates remain open. This is a normal checkpoint,
+not completion of the lab stage; keep our heartbeat active.
 SDD ledger: `.superpowers/sdd/2026-09-24-qt-motion-lab/progress.md`.
 
 The UI task `01a0c813-5b67-75e3-9d01-cda8cbb4a4bf` handed off clean main at
