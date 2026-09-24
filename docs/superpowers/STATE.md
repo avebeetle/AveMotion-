@@ -2,7 +2,23 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26B owned exact native input complete
+## Current work — Part26C native model / slot correspondence
+
+User requests complete long-running continuation. Controller-approved spec:
+`docs/superpowers/specs/2026-09-24-native-ellipse-binding-design.md`;
+plan `docs/superpowers/plans/2026-09-24-native-ellipse-binding.md`;
+durable ledger `docs/superpowers/ledgers/2026-09-24-native-ellipse-binding.md`.
+Stage base d212a49; Part26B complete and pushed. Two read-only design audits
+complete in out/part26c-design; Task1 authored binder is next, then Task2 cold
+full-timeline certificate. No product route/Runtime.cpp/UI changes in C.
+Extra cold scan and hidden upstream-ID provenance limitation explicitly scoped.
+Then continue D emitter parity, independent supported-subset ingestion/model,
+and isolated host integration; C is not the end of the long request.
+No automation resumed/created. Work directly main, one product writer, TDD,
+independent task and whole-stage review, scoped commits and ordinary push.
+UI/out must remain absent; current UI paths/constraints below remain binding.
+
+## Previous handoff — Part26B owned exact native input complete
 
 User's interactive "делай" resumes the separately designed native-ingress
 sequence after Part26A. No schedule resumed/created. Current spec:
