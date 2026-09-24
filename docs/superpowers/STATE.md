@@ -2,7 +2,21 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26E accepted; Part26F design next
+## Current handoff — Part26F plan/preflight ready
+
+E accepted and ordinary-pushed7000dd0b7470a17fd21ad3515a44eb7f140adae9; exact remote
+equality and clean tree verified. Do not repeat E tasks. F controller-approved spec
+docs/superpowers/specs/2026-09-24-own-ellipse-admission-design.md committed009dd2e;
+plan docs/superpowers/plans/2026-09-24-own-ellipse-admission.md; durable ledger
+docs/superpowers/ledgers/2026-09-24-own-ellipse-admission.md. Preflight complete,
+SDD chosen under delegated authority; ordinary docs push before sole Task1 writer.
+Task1 shared compiled decimal/grammar/materializer plus preserved Telegram frontend;
+Task2 separate own-document adapter/all-variant literal tests; then fresh full gates.
+No own model/playback or UI activation implied. Keep old APIs/tests/route protected,
+explicit E scalar/path differences, borrowed token lifetimes and noncontiguous
+sibling links. Follow current ledger/actual Git/agents, not historical running labels.
+
+## Previous handoff — Part26E accepted; Part26F design next
 
 E product/test9212c03c1b4e60f8221932c19754964c7bd410b8 accepted. Independent final
 whole-stage review plus one combined final wave/scoped review resolves all findings.
