@@ -197,6 +197,12 @@ add_library(avemotion_rendering STATIC
     src/render/SourceGeometryProjector.cpp
     src/render/HeadlessBackend.cpp)
 add_library(AveMotion::Rendering ALIAS avemotion_rendering)
+if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
+    target_sources(avemotion_rendering PRIVATE src/render/NativeEllipseStream.cpp)
+    target_include_directories(avemotion_rendering PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/model")
+endif()
 set_target_properties(avemotion_rendering PROPERTIES EXPORT_NAME Rendering)
 target_compile_features(avemotion_rendering PUBLIC cxx_std_20)
 target_include_directories(avemotion_rendering
@@ -764,6 +770,25 @@ if(BUILD_TESTING)
         endif()
 
         if(AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
+            add_executable(avemotion_native_ellipse_stream_tests
+                tests/native_ellipse_stream_tests.cpp)
+            target_include_directories(avemotion_native_ellipse_stream_tests PRIVATE
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/render"
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime"
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/model"
+                "${AVEMOTION_RLOTTIE_INCLUDE_DIR}"
+                "${AVEMOTION_RLOTTIE_INTERNAL_LOTTIE_DIR}"
+                "${AVEMOTION_RLOTTIE_INTERNAL_VECTOR_DIR}"
+                "${AVEMOTION_RLOTTIE_INTERNAL_PIXMAN_DIR}"
+                "${AVEMOTION_RLOTTIE_GENERATED_INCLUDE_DIR}")
+            target_link_libraries(avemotion_native_ellipse_stream_tests PRIVATE
+                AveMotion::Rendering rlottie::rlottie Threads::Threads)
+            target_compile_definitions(avemotion_native_ellipse_stream_tests PRIVATE
+                AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
+            avemotion_set_warnings(avemotion_native_ellipse_stream_tests)
+            add_test(NAME avemotion.render.native_ellipse_stream
+                COMMAND avemotion_native_ellipse_stream_tests)
+
             add_executable(avemotion_native_ellipse_admission_tests
                 tests/native_ellipse_admission_tests.cpp)
             target_include_directories(avemotion_native_ellipse_admission_tests PRIVATE
