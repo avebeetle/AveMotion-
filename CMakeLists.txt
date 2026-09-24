@@ -25,6 +25,7 @@ else()
 endif()
 
 add_library(avemotion_formats STATIC
+    src/formats/OwnJsonReader.cpp
     src/formats/Tgs.cpp
     $<TARGET_OBJECTS:avemotion_miniz>)
 add_library(AveMotion::Formats ALIAS avemotion_formats)
@@ -414,6 +415,7 @@ endif()
 include(CTest)
 if(BUILD_TESTING)
     find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    find_package(Threads REQUIRED)
 
     add_test(NAME avemotion.cmake.legacy_subproject
         COMMAND ${Python3_EXECUTABLE}
@@ -463,6 +465,18 @@ if(BUILD_TESTING)
         AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
     avemotion_set_warnings(avemotion_tgs_tests)
     add_test(NAME avemotion.formats.tgs COMMAND avemotion_tgs_tests)
+
+    add_executable(avemotion_own_json_reader_tests tests/own_json_reader_tests.cpp)
+    target_include_directories(avemotion_own_json_reader_tests PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/formats")
+    target_link_libraries(avemotion_own_json_reader_tests PRIVATE
+        AveMotion::Formats Threads::Threads)
+    target_compile_definitions(avemotion_own_json_reader_tests PRIVATE
+        AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures"
+        AVEMOTION_TEST_RAW_DIR="${CMAKE_CURRENT_SOURCE_DIR}/out/part26e/task1")
+    avemotion_set_warnings(avemotion_own_json_reader_tests)
+    add_test(NAME avemotion.formats.own_json_reader
+        COMMAND avemotion_own_json_reader_tests)
 
     add_executable(avemotion_tgs_runtime_tests tests/tgs_runtime_tests.cpp)
     target_link_libraries(avemotion_tgs_runtime_tests PRIVATE AveMotion::Runtime)
@@ -742,7 +756,6 @@ if(BUILD_TESTING)
         avemotion_set_warnings(avemotion_frame_mapping_tests)
         add_test(NAME avemotion.runtime.frame_mapping COMMAND avemotion_frame_mapping_tests)
 
-        find_package(Threads REQUIRED)
         add_executable(avemotion_reference_session_tests tests/reference_session_tests.cpp)
         target_link_libraries(avemotion_reference_session_tests
             PRIVATE AveMotion::Runtime AveMotion::Reference Threads::Threads)
