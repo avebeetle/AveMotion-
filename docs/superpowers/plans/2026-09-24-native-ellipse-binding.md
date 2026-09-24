@@ -128,7 +128,7 @@ GREEN/full summary, limitations, signatures and commit. No worker subagents.
 - Produces `prepareNativeEllipseCertificate(std::string_view)` and `prepareNativeEllipseCertificate(Runtime&, std::string_view)`, returning private status plus const shared certificate and diagnosticsBefore/diagnosticsAfter; and `NativeEllipseScanAudit` with constructor taking input/binding/frozen model/expected handle/hash, observe(frame,scene), finish().
 - Define focused metadata/result types in the private header: explicit scan error categories in spec, fixed layer/draw value metadata, lease checks and diagnostic snapshot. No public header or Runtime.cpp edit.
 
-- [ ] **Step 1: Declare private contract and functional RED.**
+- [x] **Step 1: Declare private contract and functional RED.**
 
 Declare success-only certificate factory stub, then exercise real baseline:
 
@@ -142,7 +142,7 @@ Register `avemotion_native_ellipse_certificate_tests` /
 `avemotion.runtime.native_ellipse_certificate`, same private include/link/fixture
 pattern as binding target. Capture failing focused CTest after successful build.
 
-- [ ] **Step 2: Implement factory ownership and streaming audit.**
+- [x] **Step 2: Implement factory ownership and streaming audit.**
 
 Factory control flow:
 
@@ -170,7 +170,7 @@ Runtime; no ordinary caller or install boundary changes.
 Test over-limit input returns admission ResourceLimit with no reference-load
 counter delta; do not copy an unbounded string before the admission byte guard.
 
-- [ ] **Step 3: Add full-timeline and fail-closed behavioral tests.**
+- [x] **Step 3: Add full-timeline and fail-closed behavioral tests.**
 
 ```cpp
 // Obtain normal real scenes from a separately loaded baseline Asset prepared first.
@@ -193,7 +193,7 @@ On ineligible raw/model/scan cases, independently ordinary load/evaluate
 still succeeds when valid for the reference. Assert expected counters and all
 stored field invariants, not only certificate non-null.
 
-- [ ] **Step 4: GREEN, full suite, self-review, scoped commit and report.**
+- [x] **Step 4: GREEN, full suite, self-review, scoped commit and report.**
 
 Run focused certificate/binding/input tests, one full Telegram suite and diff
 check. Commit only listed files as `feat: certify native ellipse render slots`.

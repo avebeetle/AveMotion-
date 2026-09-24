@@ -58,3 +58,32 @@ review will triage. Environment-log minor is resolved, failed raw log retained.
 Cannot-verify items: none/Samsung actual graph gates belong to controller closure;
 source lease/slot proof is explicitly Task2, not a missing Task1 feature.
 Task2 may proceed after handoff commit/push. No code changes after root focus.
+
+Task2 product9ba9376: complete implementation, independent review pending.
+Functional RED and final focused3/3/full72/72,85.53s retained. User input ended
+the original worker before its report/commit; inventory then proved no live agent
+or compiler/test, so a bounded finalizer inspected existing work and recovered
+handoff without repeating implementation. Root fresh scoped4/4,0.91s and full
+Telegram72/72,83.15s pass at9ba9376. Preview/none/provenance gates follow serially.
+The sole dirty spec refinement distinguishes default timeline clip from visual
+clipping. An interim static-path assumption was corrected: evaluateFrame canonical
+promotion deliberately clears a duplicate local path; this is not culling proof.
+No production route/native playback claim or UI change is made.
+
+Root pre-fix cross-preset gates at9ba9376 pass: preview66/66,85.73s;
+none/Direct2D31/31,3.39s; vendor all and TGS16. Fresh none40 source entries have
+zero reference/privateC; Samsung92 entries/36reference have zero privateC.
+Independent Task2 review: Needs fixes, I1 instanceId/instanceHandle omitted from
+per-frame identity. Root verified omission/public stamping; bounded fix round1/5
+dispatched with functional mixed-real-instance RED and invalid/drift checks.
+Final platform checks must cover fixedcode; no push while I1 remains open.
+
+Task2 fix round1/5: I1 addressed at0fa0508, scoped independent re-review accepts
+with no new Critical/Important or out-of-scope observations. Root fresh scoped
+4/4,0.89s. Task2 implementation/review complete(e63ffe3..0fa0508); final stage
+cross-preset gates and whole-stage review remain open. Pre-fix25 evidence files
+archived under out/part26c/pre-fix-9ba9376 before new runs; none were discarded.
+
+Post-fix root full Telegram72/72,87.76s at0fa0508 passes. Exact remote main
+e63ffe3 remains unchanged before task handoff. Scope docs include explicit
+instance identity clarification; report still marks final stage closure pending.

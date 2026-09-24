@@ -166,7 +166,9 @@ frozen model pointer; hash alone is not proof of identity. A different load of
 the same bytes cannot consume this certificate. Never expose a constructor
 that lets callers pair an unrelated asset with admitted bytes as certified.
 
-For each frame, check scene identity/hash/frame/viewport; exactly root and shape
+For each frame, check scene asset identity/hash/frame/viewport and one stable
+nonzero instanceId/valid instanceHandle including generation across the scan;
+capture the instance values from frame0 in audit-only state. Exactly root and shape
 layers, stable IDs/parentage/keyPaths/child references, no masks/clips/matte,
 opacity1; root visible, shape visible exactly inside the activity interval.
 Inside require exactly one draw, outside none (including layer draw ranges).
@@ -186,6 +188,10 @@ Paint is AssetStatic and matches observed local paint bytes; geometry is
 AssetStatic for static position, InstanceEvaluated for animated position.
 Check valid references/counts/ranges without assuming numeric IDs. No cached
 per-frame geometry. A nonempty admitted interval guarantees an active sample.
+`MotionAssetModel::clips` is timeline metadata, NOT scene clipping paths: require
+its single present, correctly addressed `default` clip covering [0,endFrame)
+with Loop hint. Do not reject that valid row as an unsupported visual clip.
+The no-clipping rule refers to evaluated clip paths and authored clipping effects.
 
 Existing bridge substitutes scene indexes when upstream render IDs are invalid,
 without exposing a provenance bit. C certifies OBSERVABLE binding consistency,

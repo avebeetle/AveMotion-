@@ -13,8 +13,14 @@ complete in out/part26c-design. Task1 binder3f8bf0c complete and independently
 approved: functional RED/GREEN, full Telegram71/71, root fresh focused3/3.
 The initial full run lacked MSVC environment; corrected full run passes with
 no product workaround. Minor function-length observation retained for final
-review. Task2 cold full-timeline certificate is next. No route/Runtime.cpp/UI
-changes in C. Future emitter audit out/part26d-design/emitter-contract-audit.md.
+review. Task2 cold full-timeline certificate committed9ba9376; worker full72/72,
+root fresh focused4/4 and full Telegram72/72, preview66/66, none31/31 pass.
+Task2 review found missing instance identity consistency; fix0fa0508 passed
+functional RED/GREEN and scoped independent re-review with no open findings.
+Root fresh focused4/4 passes on fixedcode; final cross-preset gates are running.
+Pre-fix gate logs are archived separately. No product writer and no
+route/Runtime.cpp/UI changes in C. Future emitter audit
+out/part26d-design/emitter-contract-audit.md and controller design-draft.md.
 Extra cold scan and hidden upstream-ID provenance limitation explicitly scoped.
 Then continue D emitter parity, independent supported-subset ingestion/model,
 and isolated host integration; C is not the end of the long request.
