@@ -189,7 +189,9 @@ void policy(std::string_view label, std::string_view bytes,
 }
 void observationMutations() {
     const std::string json = R"({"k":[true,12.00e-1,"\u00e9"]})";
-    const auto own = observeOwnJson(readOwnJson(json));
+    const auto result = readOwnJson(json);
+    indexes(result, json);
+    const auto own = observeOwnJson(result);
     const auto old = observeLegacyJson(json);
     require(own == old && own.values.size() == 5, "complete five-row ordinary observation");
     require(own.values[0].kind == OwnJsonKind::Object && own.values[0].childCount == 1
@@ -271,7 +273,10 @@ void unicodePolicies() {
     policy("raw-low", std::string{"\"\xED\xB0\x80\"", 5},
         OwnJsonReadCode::InvalidJson, "/", OwnJsonReadCode::InvalidJson, "/");
     compare("valid-pair", "\"\\uD83D\\uDE00\"");
-    const auto smile = observeOwnJson(readOwnJson("\"\\uD83D\\uDE00\""));
+    constexpr std::string_view smileJson = "\"\\uD83D\\uDE00\"";
+    const auto smileResult = readOwnJson(smileJson);
+    indexes(smileResult, smileJson);
+    const auto smile = observeOwnJson(smileResult);
     require(smile.values.size() == 1 && smile.values[0].valueBytes == "\xF0\x9F\x98\x80",
         "literal decoded surrogate pair");
     compare("malformed-suffix", "{\"x\":1} ?");

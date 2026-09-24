@@ -26,6 +26,7 @@ void require(bool condition, const char* message) {
         std::exit(EXIT_FAILURE);
     }
 }
+void checkArena(const OwnJsonDocument& doc, const OwnJsonReadStatistics& stats);
 
 void expect(std::string_view input, OwnJsonReadCode code, std::string_view path) {
     const auto result = readOwnJson(input);
@@ -44,6 +45,7 @@ void expect(std::string_view input, OwnJsonReadCode code, std::string_view path)
     require(result.statistics.framePeak <= input.size() + 1, "bounded logical frames");
     require(result.statistics.nodeCapacity <= input.size() + 1, "bounded node capacity");
     require(result.statistics.frameCapacity <= input.size() + 1, "bounded frame capacity");
+    if (result.document) checkArena(*result.document, result.statistics);
 }
 
 std::string nestedArrays(std::size_t count) {
@@ -173,6 +175,7 @@ void stress(std::string_view label, const std::string& input,
     require(s.nodeCount <= input.size() + 1 && s.framePeak <= input.size() + 1, "stress logical bounds");
     require(s.nodeCapacity <= input.size() + 1 && s.frameCapacity <= input.size() + 1, "stress capacity bounds");
     require(s.resourceQueueCount <= 4096, "stress queue bound");
+    if (result.document) checkArena(*result.document, result.statistics);
     if (code == OwnJsonReadCode::Parsed && (label == "cap-string" || label == "cap-exponent")) {
         require(result.document->valueBytes(0).has_value(), "cap scalar span exists");
         if (label == "cap-exponent") require(result.document->valueBytes(0) == input, "cap exponent exact");
@@ -231,6 +234,7 @@ void scalarAndSyntax() {
     for (const std::string input : {"0e309", "1e-999999999999999999999999", "-0.00e+00012"}) {
         auto result = readOwnJson(input);
         require(static_cast<bool>(result), "lexical exponent accepted");
+        checkArena(*result.document, result.statistics);
         require(result.document->valueBytes(0) == input, "lexical exponent exact");
     }
     for (const std::string input : {"\"A\"", "\"\xC3\xA9\"", "\"\xE2\x82\xAC\"",
@@ -241,6 +245,7 @@ void scalarAndSyntax() {
     }
     auto rawKey = readOwnJson("{\"\xC3\xA9\xE2\x82\xAC\xF0\x9F\x98\x80\":\"ok\"}");
     require(static_cast<bool>(rawKey), "raw UTF8 scalar key parsed");
+    checkArena(*rawKey.document, rawKey.statistics);
     require(rawKey.document->memberName(1) == "\xC3\xA9\xE2\x82\xAC\xF0\x9F\x98\x80", "raw UTF8 key exact");
     const std::string nulKey = "{\"a\\u0000b\":1,\"a\\u0000b\":2}";
     expect(nulKey, OwnJsonReadCode::InvalidJson, std::string{"/a\0b", 4});
@@ -318,6 +323,7 @@ void ownershipAndFixtures() {
     std::string source = "{\"k\":\"held\",\"n\":1e-999999999999999999}";
     auto parsed = readOwnJson(source);
     require(static_cast<bool>(parsed), "ownership parse");
+    checkArena(*parsed.document, parsed.statistics);
     auto held = parsed.document;
     source.assign(source.size(), 'X');
     parsed.document.reset();
@@ -350,6 +356,8 @@ void ownershipAndFixtures() {
     auto expected = readOwnJson(readText(fixtures / "repeater_content_group.json"));
     auto actual = readOwnJson(decoded.json);
     require(static_cast<bool>(expected) && static_cast<bool>(actual), "JSON and TGS payloads parsed");
+    checkArena(*expected.document, expected.statistics);
+    checkArena(*actual.document, actual.statistics);
     checkSameDocument(*expected.document, *actual.document);
 
     bool threadGood[2] = {true, true};
@@ -368,6 +376,7 @@ void ownershipAndFixtures() {
                 || result.document->valueBytes(1) != "own"
                 || result.document->memberName(2) != "n"
                 || result.document->valueBytes(2) != std::to_string(i)
+                || !arenaReachable(result.document->nodes())
                 || result.document->source() != text) threadGood[slot] = false;
         }
     };
@@ -385,6 +394,7 @@ int main() {
     const std::string input = R"({"a":[true,null,-0.00e+12],"s":"A\u00e9"})";
     auto parsed = readOwnJson(input);
     require(static_cast<bool>(parsed), "own JSON document parsed");
+    checkArena(*parsed.document, parsed.statistics);
     require(parsed.path.empty(), "success path empty");
     require(parsed.document->node(0)->kind == OwnJsonKind::Object, "object root");
     require(parsed.document->source() == input, "exact owned source");
