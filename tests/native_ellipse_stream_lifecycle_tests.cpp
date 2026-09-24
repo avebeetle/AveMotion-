@@ -3,7 +3,11 @@
 #include "support/NativeEllipseOracle.hpp"
 #include "support/NativeEllipseTestAssets.hpp"
 
+#include "avemotion/core/Hash.hpp"
 #include "avemotion/render/RenderPlanner.hpp"
+#include "avemotionanimationaccess.h"
+
+#include <rlottie.h>
 
 #include <algorithm>
 #include <array>
@@ -12,6 +16,7 @@
 #include <iostream>
 #include <iterator>
 #include <memory>
+#include <span>
 #include <stdexcept>
 #include <string>
 #include <thread>
@@ -212,6 +217,43 @@ render::MotionRenderPlan makePlan(render::MotionRenderPlanner& planner,
     return std::move(built.plan);
 }
 
+struct OwnedPlanSnapshot final {
+    runtime::EvaluatedScene scene;
+    render::MotionRenderPlan plan;
+    std::shared_ptr<avemotion::model::MotionAssetModel> model;
+};
+
+OwnedPlanSnapshot ownPlanValues(const runtime::EvaluatedScene& scene,
+                                const render::MotionRenderPlan& plan) {
+    require(bool(scene.assetModel) && bool(plan.sourceScene), "snapshot source model and plan");
+    OwnedPlanSnapshot snapshot;
+    snapshot.model = std::make_shared<avemotion::model::MotionAssetModel>(*scene.assetModel);
+    snapshot.scene = scene;
+    snapshot.scene.assetModel = snapshot.model;
+    for (auto& draw : snapshot.scene.drawItems) {
+        if (draw.canonicalGeometry) {
+            const auto* record = snapshot.model->geometry(draw.modelGeometry);
+            require(record && record->staticValue, "snapshot geometry static record");
+            draw.canonicalGeometry = std::shared_ptr<const runtime::CanonicalGeometry>(
+                snapshot.model, &*record->staticValue);
+        }
+        if (draw.canonicalPaint) {
+            const auto* record = snapshot.model->paint(draw.modelPaint);
+            require(record && record->staticValue, "snapshot paint static record");
+            draw.canonicalPaint = std::shared_ptr<const runtime::CanonicalPaint>(
+                snapshot.model, &*record->staticValue);
+        }
+    }
+    requireAliases(snapshot.scene);
+    snapshot.plan = plan;
+    snapshot.plan.sourceScene = std::make_shared<const runtime::EvaluatedScene>(snapshot.scene);
+    require(test::ExactSceneComparison{}.difference(snapshot.scene, scene).empty(),
+            "value-owned snapshot matches original scene before advance");
+    require(test::ExactRenderPlanComparison{}.difference(snapshot.plan, plan).empty(),
+            "value-owned snapshot matches original plan before advance");
+    return snapshot;
+}
+
 void twoStreamIdentity(const std::string& animatedJson, const std::string& staticJson) {
     test::ExactRenderPlanComparison compare;
     auto animated = runtime::detail::prepareNativeEllipseCertificate(animatedJson);
@@ -223,8 +265,6 @@ void twoStreamIdentity(const std::string& animatedJson, const std::string& stati
     auto firstScene = first.stream->emit(30, 512, 512);
     auto secondScene = second.stream->emit(60, 256, 256);
     require(firstScene && secondScene, "interleaved first scenes");
-    const auto retainedFirstScene = *firstScene.scene;
-    const auto retainedSecondScene = *secondScene.scene;
     requireAliases(*firstScene.scene);
     requireAliases(*secondScene.scene);
     auto firstPlan = makePlan(firstPlanner, *firstScene.scene);
@@ -240,8 +280,29 @@ void twoStreamIdentity(const std::string& animatedJson, const std::string& stati
     require(firstDraw.paint.scope == render::ResourceIdentityScope::Asset
         && firstDraw.paint == secondDraw.paint,
         "static paint keys match across streams");
-    const auto retainedFirst = firstPlan;
-    const auto retainedSecond = secondPlan;
+    const auto retainedFirst = ownPlanValues(*firstScene.scene, firstPlan);
+    const auto retainedSecond = ownPlanValues(*secondScene.scene, secondPlan);
+    // Corrupt only a separate test-owned clone. Its shallow twin shares the
+    // pointee and misses the change; the independent baseline catches it.
+    auto corrupted = ownPlanValues(*firstScene.scene, firstPlan);
+    const auto shallowTwin = corrupted.plan;
+    ++corrupted.model->logicalWidth;
+    require(compare.difference(shallowTwin, corrupted.plan).empty(),
+            "shallow twin demonstrates shared-model blind spot");
+    require(!compare.difference(retainedFirst.plan, corrupted.plan).empty(),
+            "independent retained snapshot detects model pointee corruption");
+    auto canonicalCorrupted = ownPlanValues(*firstScene.scene, firstPlan);
+    const auto canonicalShallowTwin = canonicalCorrupted.plan;
+    const auto paintId = canonicalCorrupted.scene.drawItems.front().modelPaint;
+    auto* paintRecord = &canonicalCorrupted.model->paints.at(paintId.index());
+    require(paintRecord->staticValue.has_value(), "test-owned canonical paint exists");
+    paintRecord->staticValue->paint.solid.r ^= 1U;
+    require(compare.difference(canonicalShallowTwin, canonicalCorrupted.plan).empty(),
+            "shallow twin demonstrates shared-canonical blind spot");
+    require(!compare.difference(retainedFirst.plan, canonicalCorrupted.plan).empty()
+        && !test::ExactSceneComparison{}.difference(
+            retainedFirst.scene, *canonicalCorrupted.plan.sourceScene).empty(),
+            "independent retained snapshot detects canonical pointee corruption");
     auto firstRepeat = first.stream->emit(30, 512, 512);
     auto secondAdvance = second.stream->emit(59, 384, 256);
     require(firstRepeat && secondAdvance, "interleaved repeat and reverse");
@@ -250,11 +311,11 @@ void twoStreamIdentity(const std::string& animatedJson, const std::string& stati
     require(repeatPlan.geometryUpdates.empty() && repeatPlan.paintUpdates.empty()
         && !firstRepeat.scene->changes.visualChanged,
         "repeated frame has no resource updates or scene visual change");
-    require(compare.difference(retainedFirst, firstPlan).empty()
-        && compare.difference(retainedSecond, secondPlan).empty()
-        && test::ExactSceneComparison{}.difference(retainedFirstScene, *firstScene.scene).empty()
-        && test::ExactSceneComparison{}.difference(retainedSecondScene, *secondScene.scene).empty(),
-        "retained plans remain immutable after other stream advances");
+    require(compare.difference(retainedFirst.plan, firstPlan).empty()
+        && compare.difference(retainedSecond.plan, secondPlan).empty()
+        && test::ExactSceneComparison{}.difference(retainedFirst.scene, *firstScene.scene).empty()
+        && test::ExactSceneComparison{}.difference(retainedSecond.scene, *secondScene.scene).empty(),
+        "value-owned retained scenes, canonical values and plans remain immutable");
     require(!advancePlan.drawItems.empty(), "reverse stream remains independently active");
 
     auto staticCertificate = runtime::detail::prepareNativeEllipseCertificate(staticJson);
@@ -273,8 +334,36 @@ void twoStreamIdentity(const std::string& animatedJson, const std::string& stati
     require(staticPlanA.drawItems.front().geometry.scope == render::ResourceIdentityScope::Asset
         && staticPlanA.drawItems.front().geometry == staticPlanB.drawItems.front().geometry,
         "static visible geometry keys share asset scope");
-    std::cout << "TWO_STREAM interleaved=4 animatedGeometryDistinct=1 staticPaintShared=1"
-              << " staticGeometryShared=1 retainedPlansStable=2\n";
+    auto staticOwnedA = ownPlanValues(*staticSceneA.scene, staticPlanA);
+    auto staticOwnedB = ownPlanValues(*staticSceneB.scene, staticPlanB);
+    auto geometryCorrupted = ownPlanValues(*staticSceneA.scene, staticPlanA);
+    const auto geometryShallowTwin = geometryCorrupted.plan;
+    const auto geometryId = geometryCorrupted.scene.drawItems.front().modelGeometry;
+    auto* geometryRecord = &geometryCorrupted.model->geometries.at(geometryId.index());
+    require(geometryRecord->staticValue && !geometryRecord->staticValue->path.points.empty(),
+            "test-owned canonical geometry has a real point");
+    geometryRecord->staticValue->path.points.front().x += 1.0F;
+    require(compare.difference(geometryShallowTwin, geometryCorrupted.plan).empty(),
+            "shallow twin demonstrates shared-geometry blind spot");
+    require(!compare.difference(staticOwnedA.plan, geometryCorrupted.plan).empty()
+        && !test::ExactSceneComparison{}.difference(
+            staticOwnedA.scene, *geometryCorrupted.plan.sourceScene).empty(),
+            "independent retained snapshot detects canonical geometry corruption");
+    auto staticAdvanceA = staticA.stream->emit(31, 512, 512);
+    auto staticAdvanceB = staticB.stream->emit(32, 384, 256);
+    require(staticAdvanceA && staticAdvanceB, "static streams advance independently");
+    auto advancedStaticPlanA = makePlan(staticPlannerA, *staticAdvanceA.scene);
+    auto advancedStaticPlanB = makePlan(staticPlannerB, *staticAdvanceB.scene);
+    require(bool(advancedStaticPlanA.sourceScene) && bool(advancedStaticPlanB.sourceScene),
+            "advanced static plans retain source scenes");
+    require(compare.difference(staticOwnedA.plan, staticPlanA).empty()
+        && compare.difference(staticOwnedB.plan, staticPlanB).empty()
+        && test::ExactSceneComparison{}.difference(staticOwnedA.scene, *staticSceneA.scene).empty()
+        && test::ExactSceneComparison{}.difference(staticOwnedB.scene, *staticSceneB.scene).empty(),
+            "static retained scene, canonical geometry and plan values remain immutable");
+    std::cout << "TWO_STREAM interleaved=8 animatedGeometryDistinct=1 staticPaintShared=1"
+              << " staticGeometryShared=1 valueOwnedRetainedPlansStable=4"
+              << " corruptionDetected=model,paint,geometry\n";
 }
 
 using Plans = std::vector<render::MotionRenderPlan>;
@@ -442,40 +531,75 @@ void referenceCounters(const std::string& json) {
     std::cout << "LIVE_COUNTER nativeEmissions=" << count << " allFieldsUnchanged=1\n";
 }
 
-void compareCpu(const runtime::CpuFrame& expected, const runtime::CpuFrame& actual,
-                const std::string& context) {
-    require(expected.frameIndex == actual.frameIndex && expected.width == actual.width
-        && expected.height == actual.height && expected.strideBytes == actual.strideBytes
-        && expected.argbPremultiplied == actual.argbPremultiplied,
+void compareCpu(const std::vector<std::uint32_t>& expectedPixels, std::size_t frame,
+                const runtime::CpuFrame& actual, const std::string& context) {
+    require(actual.frameIndex == frame && actual.width == 512 && actual.height == 512
+        && actual.strideBytes == 512 * sizeof(std::uint32_t)
+        && expectedPixels == actual.argbPremultiplied,
         context + " ordinary CPU pixels/dimensions/stride");
 }
 
 void cpuIsolation(const std::string& json) {
-    runtime::Runtime runtimeA, runtimeB;
+    const auto sourceHash = avemotion::core::fnv1a64(
+        std::as_bytes(std::span{json.data(), json.size()}));
+    const auto key = "avemotion-asset-" + avemotion::core::formatHash(sourceHash);
+    auto primaryObserver = rlottie::Animation::loadFromData(json, key, {}, true);
+    require(bool(primaryObserver), "live primary cached source observer");
+    const auto primarySource = rlottie::AveMotionAnimationAccess::model(*primaryObserver);
+    require(bool(primarySource), "primary cached source lease");
+    runtime::Runtime runtimeA;
     auto assetA = runtimeA.loadLottieJson(json, "cpu-primary");
-    auto assetB = runtimeB.loadLottieJson(json, "cpu-oracle");
-    require(assetA && assetB, "independent ordinary CPU assets");
+    require(assetA && assetA.asset->metadata().sourceHash == sourceHash,
+            "primary ordinary CPU asset uses observed source key");
     auto primary = runtimeA.createInstance(assetA.asset);
-    auto oracle = runtimeB.createInstance(assetB.asset);
-    require(primary && oracle, "independent ordinary CPU instances");
+    require(bool(primary), "primary ordinary CPU instance");
+    auto primaryFollowup = rlottie::Animation::loadFromData(json, key, {}, true);
+    require(primaryFollowup
+        && rlottie::AveMotionAnimationAccess::model(*primaryFollowup).get() == primarySource.get(),
+        "retained cached source identity stable across primary Runtime load");
+    auto oracleSeed = rlottie::Animation::loadFromData(
+        json, "cpu-isolation-cache-disabled-seed", {}, false);
+    require(bool(oracleSeed), "cache-disabled ordinary seed parse");
+    const auto oracleSource = rlottie::AveMotionAnimationAccess::model(*oracleSeed);
+    require(primarySource && oracleSource && primarySource.get() != oracleSource.get(),
+            "CPU oracle parsed source distinct from primary cached source");
+    auto oracleAnimation = rlottie::AveMotionAnimationAccess::fromModel(oracleSource);
+    require(oracleAnimation && oracleAnimation.get() != primaryObserver.get()
+        && rlottie::AveMotionAnimationAccess::model(*oracleAnimation).get() == oracleSource.get(),
+        "CPU oracle animation owns distinct retained parsed source");
+    constexpr std::array<std::size_t, 3> frames{0, 30, 60};
+    std::array<std::vector<std::uint32_t>, 3> expectedPixels;
+    std::array<runtime::CpuFrame, 3> beforeFrames;
+    for (std::size_t index = 0; index < frames.size(); ++index) {
+        auto& pixels = expectedPixels[index];
+        pixels.resize(512 * 512);
+        rlottie::Surface surface(pixels.data(), 512, 512, 512 * sizeof(std::uint32_t));
+        oracleAnimation->renderSync(frames[index], surface);
+        auto before = primary.instance->renderCpuFrame(frames[index], 512, 512);
+        require(bool(before), "ordinary CPU before all native emissions");
+        compareCpu(pixels, frames[index], before.frame,
+                   "before frame=" + std::to_string(frames[index]));
+        beforeFrames[index] = std::move(before.frame);
+    }
     auto prepared = runtime::detail::prepareNativeEllipseCertificate(json);
     require(bool(prepared), "CPU isolation certificate");
     auto made = detail::NativeEllipseStream::create(prepared.certificate, 105);
     require(bool(made), "CPU isolation stream");
-    for (auto frame : {0U, 30U, 60U}) {
-        auto expected = oracle.instance->renderCpuFrame(frame, 512, 512);
-        auto before = primary.instance->renderCpuFrame(frame, 512, 512);
-        require(expected && before, "ordinary CPU before native emission");
-        compareCpu(expected.frame, before.frame, "before frame=" + std::to_string(frame));
+    for (std::size_t frameIndex = 0; frameIndex < frames.size(); ++frameIndex) {
+        const auto frame = frames[frameIndex];
         for (std::size_t index = 0; index < 8; ++index)
             require(bool(made.stream->emit((frame + index) % 61, 512, 512)),
                     "interleaved native emission during CPU isolation");
         auto after = primary.instance->renderCpuFrame(frame, 512, 512);
         require(bool(after), "ordinary CPU after native emission");
-        compareCpu(expected.frame, after.frame, "after frame=" + std::to_string(frame));
+        compareCpu(expectedPixels[frameIndex], frame, after.frame,
+                   "after frame=" + std::to_string(frame));
+        compareCpu(beforeFrames[frameIndex].argbPremultiplied, frame, after.frame,
+                   "retained primary before/after frame=" + std::to_string(frame));
     }
-    std::cout << "CPU_ISOLATION frames=0,30,60 nativeInterleaves=24"
-              << " exactPixelVectors=6 dimensionsAndStride=6\n";
+    std::cout << "CPU_ISOLATION independentCacheDisabledSource=1 frames=0,30,60"
+              << " nativeInterleaves=24 oraclePixelComparisons=6 retainedBeforeAfter=3"
+              << " dimensionsAndStride=9\n";
 }
 }
 
