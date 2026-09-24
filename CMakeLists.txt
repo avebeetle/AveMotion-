@@ -789,6 +789,25 @@ if(BUILD_TESTING)
             add_test(NAME avemotion.render.native_ellipse_stream
                 COMMAND avemotion_native_ellipse_stream_tests)
 
+            add_executable(avemotion_native_ellipse_stream_lifecycle_tests
+                tests/native_ellipse_stream_lifecycle_tests.cpp)
+            target_include_directories(avemotion_native_ellipse_stream_lifecycle_tests PRIVATE
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/render"
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/runtime"
+                "${CMAKE_CURRENT_SOURCE_DIR}/src/model"
+                "${AVEMOTION_RLOTTIE_INCLUDE_DIR}"
+                "${AVEMOTION_RLOTTIE_INTERNAL_LOTTIE_DIR}"
+                "${AVEMOTION_RLOTTIE_INTERNAL_VECTOR_DIR}"
+                "${AVEMOTION_RLOTTIE_INTERNAL_PIXMAN_DIR}"
+                "${AVEMOTION_RLOTTIE_GENERATED_INCLUDE_DIR}")
+            target_link_libraries(avemotion_native_ellipse_stream_lifecycle_tests PRIVATE
+                AveMotion::Rendering rlottie::rlottie Threads::Threads)
+            target_compile_definitions(avemotion_native_ellipse_stream_lifecycle_tests PRIVATE
+                AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
+            avemotion_set_warnings(avemotion_native_ellipse_stream_lifecycle_tests)
+            add_test(NAME avemotion.render.native_ellipse_stream_lifecycle
+                COMMAND avemotion_native_ellipse_stream_lifecycle_tests)
+
             add_executable(avemotion_native_ellipse_admission_tests
                 tests/native_ellipse_admission_tests.cpp)
             target_include_directories(avemotion_native_ellipse_admission_tests PRIVATE
