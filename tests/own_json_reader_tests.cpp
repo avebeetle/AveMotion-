@@ -66,6 +66,61 @@ std::string arrayOfNulls(std::size_t count) {
     return result;
 }
 
+bool arenaReachable(std::span<const OwnJsonNode> nodes) {
+    if (nodes.empty()) return false;
+    std::vector<unsigned> parents(nodes.size());
+    for (const auto& node : nodes) {
+        std::size_t count = 0;
+        for (auto child = node.firstChild; child != OwnJsonNoNode;) {
+            if (child >= nodes.size() || ++count > nodes.size() || ++parents[child] != 1) return false;
+            child = nodes[child].nextSibling;
+        }
+        if (count != node.childCount) return false;
+    }
+    if (parents[0] != 0) return false;
+    for (std::size_t i = 1; i < nodes.size(); ++i) if (parents[i] != 1) return false;
+    std::vector<bool> seen(nodes.size());
+    std::vector<OwnJsonNodeId> pending{0};
+    std::size_t visited = 0;
+    while (!pending.empty()) {
+        const auto id = pending.back();
+        pending.pop_back();
+        if (id >= nodes.size() || seen[id] || ++visited > nodes.size()) return false;
+        seen[id] = true;
+        std::size_t siblings = 0;
+        for (auto child = nodes[id].firstChild; child != OwnJsonNoNode;) {
+            if (child >= nodes.size() || ++siblings > nodes.size()) return false;
+            pending.push_back(child);
+            child = nodes[child].nextSibling;
+        }
+    }
+    return visited == nodes.size();
+}
+
+void reachabilityWitness() {
+    std::vector<OwnJsonNode> valid(2);
+    valid[0].kind = OwnJsonKind::Array;
+    valid[0].firstChild = 1;
+    valid[0].childCount = 1;
+    require(arenaReachable(valid), "synthetic root tree reachable");
+    auto disconnected = valid;
+    disconnected.resize(4);
+    disconnected[2].kind = OwnJsonKind::Array;
+    disconnected[2].firstChild = 3;
+    disconnected[2].childCount = 1;
+    disconnected[3].kind = OwnJsonKind::Array;
+    disconnected[3].firstChild = 2;
+    disconnected[3].childCount = 1;
+    require(!arenaReachable(disconnected), "disconnected two-node cycle rejected");
+    auto outOfRange = valid;
+    outOfRange[0].firstChild = 2;
+    require(!arenaReachable(outOfRange), "out-of-range child rejected");
+    auto repeated = valid;
+    repeated[0].childCount = 2;
+    repeated[1].nextSibling = 1;
+    require(!arenaReachable(repeated), "repeated sibling rejected without hanging");
+}
+
 void checkArena(const OwnJsonDocument& doc, const OwnJsonReadStatistics& stats) {
     const auto nodes = doc.nodes();
     require(!nodes.empty(), "nonempty arena");
@@ -97,6 +152,7 @@ void checkArena(const OwnJsonDocument& doc, const OwnJsonReadStatistics& stats) 
     require(parents[0] == 0, "root has no parent");
     require(!nodes[0].hasKey && nodes[0].nextSibling == OwnJsonNoNode, "root unlinked");
     for (std::size_t i = 1; i < nodes.size(); ++i) require(parents[i] == 1, "no lost node");
+    require(arenaReachable(nodes), "all arena nodes reachable from root");
 }
 
 void stress(std::string_view label, const std::string& input,
@@ -209,6 +265,17 @@ void scalarAndSyntax() {
 }
 
 void resourcesAndStress() {
+    constexpr std::string_view emptyDepthPath = "/"
+        "/0/0/0/0/0/0/0/0/0/0" "/0/0/0/0/0/0/0/0/0/0"
+        "/0/0/0/0/0/0/0/0/0/0" "/0";
+    expect("{\"\":{\"a\":1,\"a\":2}}", OwnJsonReadCode::InvalidJson, "//a");
+    expect("{\"\":{\"\":1,\"\":2}}", OwnJsonReadCode::InvalidJson, "//");
+    expect("{\"outer\":{\"\":{\"a\":1,\"a\":2}}}", OwnJsonReadCode::InvalidJson, "/outer//a");
+    expect("{\"\":" + nestedArrays(32) + "}", OwnJsonReadCode::ResourceLimit, emptyDepthPath);
+    expect("{\"\":" + arrayOfNulls(4095) + "}", OwnJsonReadCode::ResourceLimit, "//4094");
+    expect("{\"\":{\"a\":1,\"a\":2}} ?", OwnJsonReadCode::InvalidJson, "/");
+    expect("{\"\":" + nestedArrays(32) + "} ?", OwnJsonReadCode::InvalidJson, "/");
+    expect("{\"\":" + arrayOfNulls(4095) + "} ?", OwnJsonReadCode::InvalidJson, "/");
     expect("{\"x\":{\"a\":1,\"a\":2},\"x\":3}", OwnJsonReadCode::InvalidJson, "/x");
     expect("{\"x\":{\"a\":1,\"a\":2},\"y\":3}", OwnJsonReadCode::InvalidJson, "/x/a");
     expect("{\"x\":{\"a\":1,\"a\":2}} {", OwnJsonReadCode::InvalidJson, "/");
@@ -314,6 +381,7 @@ void ownershipAndFixtures() {
 }
 
 int main() {
+    reachabilityWitness();
     const std::string input = R"({"a":[true,null,-0.00e+12],"s":"A\u00e9"})";
     auto parsed = readOwnJson(input);
     require(static_cast<bool>(parsed), "own JSON document parsed");

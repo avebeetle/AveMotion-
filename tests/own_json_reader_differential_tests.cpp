@@ -63,6 +63,59 @@ std::string hex(std::string_view bytes) {
     std::cerr << " raw=" << (dir / (file + ".raw")) << '\n';
     std::exit(EXIT_FAILURE);
 }
+bool arenaReachable(std::span<const OwnJsonNode> nodes) {
+    if (nodes.empty()) return false;
+    std::vector<unsigned> parents(nodes.size());
+    for (const auto& node : nodes) {
+        std::size_t count = 0;
+        for (auto child = node.firstChild; child != OwnJsonNoNode;) {
+            if (child >= nodes.size() || ++count > nodes.size() || ++parents[child] != 1) return false;
+            child = nodes[child].nextSibling;
+        }
+        if (count != node.childCount) return false;
+    }
+    if (parents[0] != 0) return false;
+    for (std::size_t i = 1; i < nodes.size(); ++i) if (parents[i] != 1) return false;
+    std::vector<bool> seen(nodes.size());
+    std::vector<OwnJsonNodeId> pending{0};
+    std::size_t visited = 0;
+    while (!pending.empty()) {
+        const auto id = pending.back();
+        pending.pop_back();
+        if (id >= nodes.size() || seen[id] || ++visited > nodes.size()) return false;
+        seen[id] = true;
+        std::size_t siblings = 0;
+        for (auto child = nodes[id].firstChild; child != OwnJsonNoNode;) {
+            if (child >= nodes.size() || ++siblings > nodes.size()) return false;
+            pending.push_back(child);
+            child = nodes[child].nextSibling;
+        }
+    }
+    return visited == nodes.size();
+}
+void reachabilityWitness() {
+    std::vector<OwnJsonNode> valid(2);
+    valid[0].kind = OwnJsonKind::Array;
+    valid[0].firstChild = 1;
+    valid[0].childCount = 1;
+    require(arenaReachable(valid), "synthetic root tree reachable");
+    auto disconnected = valid;
+    disconnected.resize(4);
+    disconnected[2].kind = OwnJsonKind::Array;
+    disconnected[2].firstChild = 3;
+    disconnected[2].childCount = 1;
+    disconnected[3].kind = OwnJsonKind::Array;
+    disconnected[3].firstChild = 2;
+    disconnected[3].childCount = 1;
+    require(!arenaReachable(disconnected), "disconnected two-node cycle rejected");
+    auto outOfRange = valid;
+    outOfRange[0].firstChild = 2;
+    require(!arenaReachable(outOfRange), "out-of-range child rejected");
+    auto repeated = valid;
+    repeated[0].childCount = 2;
+    repeated[1].nextSibling = 1;
+    require(!arenaReachable(repeated), "repeated sibling rejected without hanging");
+}
 void indexes(const OwnJsonReadResult& result, std::string_view input) {
     const auto& s = result.statistics;
     require(s.inputBytes == input.size(), "input byte count");
@@ -103,6 +156,7 @@ void indexes(const OwnJsonReadResult& result, std::string_view input) {
     }
     require(parents[0] == 0 && nodes[0].nextSibling == OwnJsonNoNode, "root links");
     for (std::size_t i = 1; i < nodes.size(); ++i) require(parents[i] == 1, "all nodes reachable");
+    require(arenaReachable(nodes), "arena traversal visits every node");
 }
 void compare(std::string_view label, std::string_view bytes) {
     const auto result = readOwnJson(bytes);
@@ -241,6 +295,29 @@ void resourceBoundaries() {
         for (int i = 0; i < 32; ++i) path += "/0";
         return path;
     }();
+    constexpr std::string_view emptyDepthOwnPath = "/"
+        "/0/0/0/0/0/0/0/0/0/0" "/0/0/0/0/0/0/0/0/0/0"
+        "/0/0/0/0/0/0/0/0/0/0" "/0";
+    constexpr std::string_view emptyDepthOldPath =
+        "/0/0/0/0/0/0/0/0/0/0" "/0/0/0/0/0/0/0/0/0/0"
+        "/0/0/0/0/0/0/0/0/0/0" "/0";
+    policy("empty-ancestor-duplicate", "{\"\":{\"a\":1,\"a\":2}}",
+        OwnJsonReadCode::InvalidJson, "//a", OwnJsonReadCode::InvalidJson, "/a");
+    policy("empty-ancestor-empty-duplicate", "{\"\":{\"\":1,\"\":2}}",
+        OwnJsonReadCode::InvalidJson, "//", OwnJsonReadCode::InvalidJson, "/");
+    policy("nonempty-prefix-empty-ancestor", "{\"outer\":{\"\":{\"a\":1,\"a\":2}}}",
+        OwnJsonReadCode::InvalidJson, "/outer//a", OwnJsonReadCode::InvalidJson, "/outer//a");
+    policy("empty-ancestor-depth", "{\"\":" + nested(32) + "}",
+        OwnJsonReadCode::ResourceLimit, emptyDepthOwnPath,
+        OwnJsonReadCode::ResourceLimit, emptyDepthOldPath);
+    policy("empty-ancestor-count", "{\"\":" + broad(4095) + "}",
+        OwnJsonReadCode::ResourceLimit, "//4094", OwnJsonReadCode::ResourceLimit, "/4094");
+    policy("empty-ancestor-duplicate-malformed", "{\"\":{\"a\":1,\"a\":2}} ?",
+        OwnJsonReadCode::InvalidJson, "/", OwnJsonReadCode::InvalidJson, "/");
+    policy("empty-ancestor-depth-malformed", "{\"\":" + nested(32) + "} ?",
+        OwnJsonReadCode::InvalidJson, "/", OwnJsonReadCode::InvalidJson, "/");
+    policy("empty-ancestor-count-malformed", "{\"\":" + broad(4095) + "} ?",
+        OwnJsonReadCode::InvalidJson, "/", OwnJsonReadCode::InvalidJson, "/");
     policy("depth-33", nested(33), OwnJsonReadCode::ResourceLimit, deepPath,
         OwnJsonReadCode::ResourceLimit, deepPath);
     policy("children-4095", broad(4095), OwnJsonReadCode::Parsed, "", OwnJsonReadCode::Parsed, "");
@@ -357,6 +434,7 @@ void fixtures() {
 }
 }
 int main() {
+    reachabilityWitness();
     observationMutations();
     numericPolicies();
     unicodePolicies();
