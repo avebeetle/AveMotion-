@@ -1,7 +1,8 @@
 # Part26C — native ellipse input/model and slot correspondence
 
-2026-09-24. Intermediate verification report; final gates and whole-stage review
-are still pending. This stage does not activate native playback or change UI.
+2026-09-24. Bounded stage accepted after task review, whole-stage review, one
+final fix wave and scoped re-review; no open blocking findings. Final product6b0be0f.
+This stage does not activate native playback or change UI.
 
 ## Delivered boundary
 
@@ -32,9 +33,14 @@ No ordinary production caller selects this API; none/Samsung do not compile it.
 - 0fa0508: reject cross-instance observations; functional mixed-instance RED
   followed by focused GREEN. Scoped independent re-review accepts the fix,
   with no new findings.
+- e7b2c32: reviewed task handoff, ordinarily pushed with exact remote equality.
+- 6b0be0f: require root/shape render-layer self IDs; six malformed-row regressions
+  reproduce the gap then pass, with poison and coherent reindexing preserved.
+  Whole-stage scoped final review accepts it with no new blocking findings.
 
-Task1 minor: the binder's long validation function remains for whole-stage review
-triage. Task2 initial review found the instance-identity omission; it was not
+Task1 minor: the binder's long validation function is explicitly deferred by
+whole-stage review/root as nonblocking maintenance debt. Task2 initial review
+found the instance-identity omission; it was not
 dismissed because the factory happened to use only one instance.
 
 ## Evidence
@@ -50,9 +56,21 @@ under out/part26c/task1 and task2. The initial Task1 full test failed solely bec
 legacy_subproject could not discover MSVC outside VsDevCmd; the corrected full run
 passed without a product or test workaround.
 
-Root focused tests at 0fa0508:4/4,0.89s and full Telegram72/72,87.76s.
-Remaining final full gates are running; do not read
-the following earlier counts as validation of the later fix:
+Root final code is6b0be0f. Final fix focused4/4,0.97s and the following fresh
+root configure/build/full CTest gates pass:
+
+| Final preset | Result |
+|---|---|
+| windows-msvc-telegram-debug |72/72,94.94s|
+| windows-msvc-win32-preview |66/66,97.92s|
+| windows-msvc-direct2d (none) |31/31,3.45s|
+
+Preview includes Direct2D capture, WARP/device recreation and Win32 preview
+selftest. These are existing graphics regression gates, not new native pixels.
+Identity logs preserve exact HEAD6b0be0f and dirty-doc state; no product edits
+occurred between them. The prior0fa0508 gate set was hash-verified into
+out/part26c/pre-final-fix-0fa0508 (25files) before rerunning. Earlier, initial
+pre-fix runs are retained separately:
 
 | Pre-fix preset at9ba9376 | Result |
 |---|---|
@@ -62,13 +80,16 @@ the following earlier counts as validation of the later fix:
 
 Those raw pre-fix logs were preserved in out/part26c/pre-fix-9ba9376 before new
 gate runs. Gate commands, each under VsDevCmd -arch=x64, are cmake --preset PRESET,
-cmake --build --preset PRESET --parallel4, and ctest --preset PRESET
+cmake --build --preset PRESET --parallel 4, and ctest --preset PRESET
 --output-on-failure. Actual command scripts/logs are out/part26c/run-preset-gate.cmd
 and root-PRESET-{identity,environment,configure,build,ctest}.log.
 
-Provenance commands: python scripts/verify_vendor.py --variant all;
-python scripts/generate_tgs_compatibility_corpus.py --check. Generated compile
-graphs for freshly configured none and Samsung are also checked. The Samsung
+Provenance commands pass: python scripts/verify_vendor.py --variant all;
+python scripts/generate_tgs_compatibility_corpus.py --check (16assets). Freshly
+configured compile graphs and build.ninja edges have zero private C sources/
+targets in none and Samsung. None has40compile entries/zero rlottie; Samsung
+has92entries/36reference sources. Fresh graph hashes were revalidated after final
+configure at6b0be0f; raw final-private-boundaries.json. The Samsung
 graph check is not a full Samsung suite pass; historical Polystar failures remain
 separate. Fixtures/goldens/vendor/licensing are unchanged.
 
@@ -104,6 +125,9 @@ build/Release is not replaced. Existing Motion Lab still uses reference CPU.
    scoped commits and exact remote checks replace branch isolation/cleanup.
 5. Add private supplied-Runtime overload: enables real live diagnostic deltas;
    costs one private API overload but no retained Runtime/public API change.
+6. Defer binder-length refactor until subset expansion: no associated correctness
+   defect was found, and this keeps the final fix bounded; costs future maintenance
+   effort and a separately verified helper extraction.
 
 ## Continuation
 

@@ -87,3 +87,40 @@ archived under out/part26c/pre-fix-9ba9376 before new runs; none were discarded.
 Post-fix root full Telegram72/72,87.76s at0fa0508 passes. Exact remote main
 e63ffe3 remains unchanged before task handoff. Scope docs include explicit
 instance identity clarification; report still marks final stage closure pending.
+
+Reviewed handoffe7b2c32 ordinarily pushed, remote exact equality/clean tree verified.
+Final post-fix gates allpass: Telegram72/72,87.76s; preview66/66,85.48s;
+none31/31,3.37s; vendorall/TGS16 and fresh compile/build.ninja boundaries. None40
+entries/0reference/0private; Samsung92/36reference/0private. Identitylogs record
+Telegram/preview source0fa0508 with docsdirty, none/provenance docsonlye7b2c32.
+Whole-stage reviewer native_binding_final_review(astra high) active over full
+d212a49..e7b2c32 range. No final acceptance or own playback claim yet.
+
+Whole-stage review With fixes: sole Important I1 is missing render-layer self-ID
+equality in finalRowsAgree; accessors only check index/presence. Root verified
+predicate and accessor. One final fix wave dispatched to certificate finalizer,
+BASEe7b2c32: two row comparisons, four malformed-row regressions, poison outcome
+and preserved coherent reindexing. Existing25 gate evidence files hash-verified
+into out/part26c/pre-final-fix-0fa0508 before subsequent reruns.
+
+Ruling: defer nonblocking binder-length refactor(M1) until subset expansion —
+linear validation already has tested guards and no associated correctness defect;
+unrelated restructuring would widen this bounded final fix — costs future review/
+maintenance effort and a later independently verified helper extraction.
+
+Final review declined items resolved by controller: geometry/history/plans remain
+D; erased ID provenance remains unproved; render diagnostic name hashes/dependency
+summaries are outside metadata certificate (not complete model/fingerprint parity);
+existing Asset's internal reference lease is intentional, not own ingestion;
+production/nativepixels/noneingress/host remain separate; Samsung/ANGLE/TSan/
+zeroallocation/speedup claims are absent; rawgrammar expansion is prohibited.
+No declined item is silently considered completed. No additional product scope.
+
+Final fix6b0be0f accepted by independent scoped final review: I1 addressed,
+no new breakage; M1 deferred. Six malformed root/shape self-ID tests have live
+functional RED0/1 and focusedGREEN4/4,0.97s. Root final fullgates at6b0be0f:
+Telegram72/72,94.94s; preview66/66,97.92s; none31/31,3.45s; all-vendor/TGS16,
+fresh none/Samsung source/build boundaries (same graph hashes verified). No
+product edits after these gates. No active writer/reviewer/build. Bounded C
+accepted, report complete. Final docs seal/push next, then D design continuation;
+no goal-complete or own playback claim, no schedule mutation or scratch cleanup.

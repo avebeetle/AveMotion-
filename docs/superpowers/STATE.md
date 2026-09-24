@@ -2,27 +2,26 @@
 
 Updated: 2026-09-24
 
-## Current work — Part26C native model / slot correspondence
+## Current handoff — Part26C complete; continue native emitter design
 
 User requests complete long-running continuation. Controller-approved spec:
 `docs/superpowers/specs/2026-09-24-native-ellipse-binding-design.md`;
 plan `docs/superpowers/plans/2026-09-24-native-ellipse-binding.md`;
 durable ledger `docs/superpowers/ledgers/2026-09-24-native-ellipse-binding.md`.
-Stage base d212a49; Part26B complete and pushed. Two read-only design audits
-complete in out/part26c-design. Task1 binder3f8bf0c complete and independently
-approved: functional RED/GREEN, full Telegram71/71, root fresh focused3/3.
-The initial full run lacked MSVC environment; corrected full run passes with
-no product workaround. Minor function-length observation retained for final
-review. Task2 cold full-timeline certificate committed9ba9376; worker full72/72,
-root fresh focused4/4 and full Telegram72/72, preview66/66, none31/31 pass.
-Task2 review found missing instance identity consistency; fix0fa0508 passed
-functional RED/GREEN and scoped independent re-review with no open findings.
-Root fresh focused4/4 passes on fixedcode; final cross-preset gates are running.
-Pre-fix gate logs are archived separately. No product writer and no
+Stage base d212a49; product binder3f8bf0c and certificate9ba9376 complete.
+Task review identity fix0fa0508 and whole-stage layer-row fix6b0be0f each have
+functional RED/GREEN and accepted scoped independent review. All blocking
+findings closed; sole binder-length minor explicitly deferred until expansion.
+Root FINAL gates at6b0be0f pass: Telegram72/72,94.94s; preview66/66,97.92s;
+none31/31,3.45s; all-vendor/TGS16 and fresh none/Samsung source/build boundaries.
+No writer/build/reviewer remains active. Report docs/PART26C_NATIVE_BINDING_REPORT.md.
+Pre-fix and pre-final-fix logs retained separately, SDD/raw preserved per user.
+Ordinary-pushed task handoff was e7b2c32; final docs seal/push follows this update.
+Verify actual Git on resume. No
 route/Runtime.cpp/UI changes in C. Future emitter audit
 out/part26d-design/emitter-contract-audit.md and controller design-draft.md.
 Extra cold scan and hidden upstream-ID provenance limitation explicitly scoped.
-Then continue D emitter parity, independent supported-subset ingestion/model,
+Continue D emitter parity, independent supported-subset ingestion/model,
 and isolated host integration; C is not the end of the long request.
 No automation resumed/created. Work directly main, one product writer, TDD,
 independent task and whole-stage review, scoped commits and ordinary push.

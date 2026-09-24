@@ -202,9 +202,9 @@ provenance limitation, API field names, raw commands/results and commit.
 
 ## Controller closure and next stage
 
-- [ ] Independent task review after each task, record/fix findings, update STATE/ledger and ordinary push only after review and successful checks.
-- [ ] Fresh full MSVC Telegram, windows-msvc-win32-preview and none/Direct2D; verify_vendor.py --variant all; generate_tgs_compatibility_corpus.py --check; inspect generated none/Samsung source/link boundaries.
-- [ ] Whole-stage independent review over d212a49..HEAD; scoped fix cycle as required, report actual counts/cost/limits and commit/push evidence.
+- [x] Independent task review after each task, record/fix findings, update STATE/ledger and ordinary push only after review and successful checks.
+- [x] Fresh full MSVC Telegram, windows-msvc-win32-preview and none/Direct2D; verify_vendor.py --variant all; generate_tgs_compatibility_corpus.py --check; inspect generated none/Samsung source/link boundaries.
+- [x] Whole-stage independent review over d212a49..HEAD; scoped fix cycle as required, report actual counts/cost/limits and commit/push evidence.
 - [ ] Continue separate Part26D design for full native emitter parity; do not report C as complete playback or stop the long request at this checkpoint.
 
 ## Plan self-review
