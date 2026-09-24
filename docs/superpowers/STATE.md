@@ -2,7 +2,7 @@
 
 Updated: 2026-09-24
 
-## Current work — Part26B owned exact native input
+## Current handoff — Part26B owned exact native input complete
 
 User's interactive "делай" resumes the separately designed native-ingress
 sequence after Part26A. No schedule resumed/created. Current spec:
@@ -16,7 +16,10 @@ certificate or none-package dependency change. Product3238191 is committed;
 task review accepted spec+quality with zero findings. Functional RED/GREEN,
 worker full70/70 and root fresh Telegram70/70, preview64/64, none31/31 pass.
 Vendor/TGS16 checks and none/Samsung generated parser-boundary checks pass.
-Whole-stage review pending, no writer. Report:
+Whole-stage review accepted350888f..894ffeb, zero findings, no writer/reviewer.
+Final seal changes docs only; ordinary push/remote equality check follows.
+Bounded descriptor stage complete; next design is raw-to-model/slot
+correspondence, NOT implicit native playback activation. Report:
 `docs/PART26B_OWNED_NATIVE_INPUT_REPORT.md`. Work directly in main;
 preserve all evidence. SDD workspace:
 `.superpowers/sdd/2026-09-24-owned-native-ellipse-input/`.
@@ -24,7 +27,11 @@ preserve all evidence. SDD workspace:
 Separate UI task owns UI/out cleanup and new build/Release paths; no UI writes,
 builds or GUI from this stage. Old Part26A diagnostics archived112/112 hash
 verified outside UI/out and ACK quiescent sent; canonical measurements already
-live in AveMotion/out. New UI path handoff remains owned by its separate task.
+live in AveMotion/out. New UI handoff712d454 is clean; do not recreate UI/out.
+Qt path is UI/build/dependencies/installed; intermediates build/cmake or
+build/diagnostics; main EXE build/Release/AvelabsUI.exe hashc92f26ee...82c2.
+These path/hash facts were checked, not new UI GUI/gates. Keep Motion Lab
+opt-in and no-install boundary. Completed heartbeat remains paused.
 
 ## Previous handoff — Part26A experimental Qt Motion Lab complete
 

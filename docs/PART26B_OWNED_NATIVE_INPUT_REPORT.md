@@ -2,8 +2,10 @@
 
 2026-09-24. Product: `32381913dc24474a78c8de4067e7b6bb28edc8f2`.
 Design/plan: `edd3ab19acca47a2f23152b43f73aa2764351490`.
-Статус на этой контрольной точке: реализация и task review завершены,
-свежие локальные gates пройдены; итоговый whole-stage review ещё ожидается.
+Статус: ограниченный этап завершён. Task review и итоговый whole-stage review
+приняли изменение без Critical/Important/Minor замечаний; свежие локальные gates
+пройдены. Обычный push следует за этим финальным documentation seal; точный
+remote SHA проверяется после отправки, CI этим отчётом не объявляется зелёным.
 
 ## Что сделано
 
@@ -88,6 +90,12 @@ Raw: `out/part26b/`; review/TDD reports:
 старта Samsung CMake и слишком широкий grep, поймавший выключающий define.
 Обе установлены и исправлены в способе проверки; продукт/тесты не ослаблялись.
 
+Whole-stage review диапазона350888f..894ffeb: Ready to merge, no findings.
+Его явно отложенные области (полная Samsung runtime correctness, последующее
+native correspondence/ingestion, ручные Qt/DPI/race-detector/UI-cleanup checks)
+сверены с текущим scope; это не скрытые дефекты Part26B и не заявленные здесь
+успешные проверки. Code после свежих gates не менялся, final seal — только docs.
+
 ## Чего этот этап не делает
 
 Это ещё не полноценное собственное Lottie-ядро. Descriptor не является
@@ -113,6 +121,15 @@ per-frame reference sampling; независимый parser/package — отде
 `1f6c9185eabd8429f96c2fce2aa9862d174b4f148e5a74d174823c585b0aae72`.
 Исторические Part26A пути в отчёте — provenance, не обещание существующей EXE.
 Compiled products/dependency trees не архивировались; scope указан в README.
+
+Новый handoff UI получен отдельно: clean HEAD712d454, `UI/out` отсутствует;
+не создавать его снова. Qt теперь `UI/build/dependencies/installed`, будущие
+промежуточные сборки — `UI/build/cmake` или `UI/build/diagnostics`. Основной
+EXE — `UI/build/Release/AvelabsUI.exe`; SHA256
+`c92f26ee8feb4ff03f6dc7f4afff4b11fb48142743d1edccb4e213aaa81f82c2`.
+Контроллер подтвердил только HEAD/clean status, наличие/отсутствие путей и hash;
+новые UI build/tests/GUI этой задачей не выполнялись. Reference-only Motion Lab
+по-прежнему отдельная opt-in сборка, не этот основной EXE.
 
 Контроллер по делегированным полномочиям выбрал отдельный exact descriptor
 (цена: ещё один этап до correspondence), одобрил spec/plan и SDD/main

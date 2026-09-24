@@ -46,7 +46,7 @@
 - Produces: `NativeEllipseInputResult decodeNativeEllipseInput(std::string_view)` and all exact private value types/fields defined verbatim in the spec Data contract. Include that spec before coding; it is the single field/type authority.
 - No Runtime, model, host or installed-public-header caller changes.
 
-- [ ] **Step 1: Declare the private contract and write the functional RED.**
+- [x] **Step 1: Declare the private contract and write the functional RED.**
 
 Use `<array>`, `<cstdint>`, `<memory>`, `<optional>`, `<string>`, `<string_view>`,
 `<variant>` plus `NativeEllipseAdmission.hpp`. Value members default to zero;
@@ -80,7 +80,7 @@ normalization to calculate expected numbers. Add CMake executable
 link, fixture/TGS directory macros, warnings, and CTest name
 `avemotion.runtime.native_ellipse_input` in the Telegram-only block.
 
-- [ ] **Step 2: Run and retain the expected assertion failure.**
+- [x] **Step 2: Run and retain the expected assertion failure.**
 
 In a process initialized by existing VS2022 BuildTools `VsDevCmd.bat -arch=x64`:
 
@@ -93,7 +93,7 @@ ctest --preset windows-msvc-telegram-debug -R avemotion.runtime.native_ellipse_i
 Expected RED: executable runs, fixture admission passes, descriptor-nonnull
 assertion fails. Compile/link errors do not satisfy RED. Keep command/output.
 
-- [ ] **Step 3: Share validation and materialize only after complete success.**
+- [x] **Step 3: Share validation and materialize only after complete success.**
 
 Extract the current bottom-level parse function into one internal helper with
 an optional output pointer. Both public-private entry points call it. Keep
@@ -117,7 +117,7 @@ DOM integer getters on numerically equivalent non-integer spellings. Copy
 names with explicit string length; preserve optional absence. No semantic
 validation duplicate, altered order, static state or parse-only cache.
 
-- [ ] **Step 4: Add complete edge assertions and run GREEN.**
+- [x] **Step 4: Add complete edge assertions and run GREEN.**
 
 Use fixture string mutations in memory (existing replaceOnce/replaceBetween
 idiom), do not change fixtures. Add these exact test cases with actual data:
@@ -164,7 +164,7 @@ ctest --preset windows-msvc-telegram-debug -R avemotion.runtime.native_ellipse -
 git diff --check
 ```
 
-- [ ] **Step 5: Self-review, scoped commit and independent task review.**
+- [x] **Step 5: Self-review, scoped commit and independent task review.**
 
 Remove the scaffold, check no public/Runtime caller changes, no conversion,
 no new references in none. Document RED/GREEN output, warnings if any, and
@@ -180,18 +180,18 @@ diff and addresses findings through the original worker, not controller edits.
 
 ## Final integration gate and handoff (controller)
 
-- [ ] Fresh configure/build/full CTest for `windows-msvc-telegram-debug`,
+- [x] Fresh configure/build/full CTest for `windows-msvc-telegram-debug`,
   `windows-msvc-win32-preview`, `windows-msvc-direct2d`, sequentially. Use
   `cmake --preset NAME`, `cmake --build --preset NAME --parallel 4`,
   `ctest --preset NAME --output-on-failure`. Keep logs/exit codes.
-- [ ] `python scripts/verify_vendor.py --variant all` and
+- [x] `python scripts/verify_vendor.py --variant all` and
   `python scripts/generate_tgs_compatibility_corpus.py --check`.
-- [ ] Inspect no-reference build graph for absence of NativeEllipseAdmission,
+- [x] Inspect no-reference build graph for absence of NativeEllipseAdmission,
   NativeEllipseInput, TelegramParsedModelBuilder and rlottie compile/link inputs;
   verify new descriptor/test remains Telegram-only in CMake. No install execution.
-- [ ] Whole-stage independent review, at most one consolidated final fix wave
+- [x] Whole-stage independent review, at most one consolidated final fix wave
   with covering fresh tests and one scoped re-review.
-- [ ] Update durable ledger, STATE and `docs/PART26B_OWNED_NATIVE_INPUT_REPORT.md`
+- [x] Update durable ledger, STATE and `docs/PART26B_OWNED_NATIVE_INPUT_REPORT.md`
   with exact SHAs/commands/gates, limitations and next correspondence stage.
 - [ ] Ordinary scoped docs commit, remote compare before push, then verify exact
   equality/clean tree. Foreign remote stops push only; no rebase/force.
