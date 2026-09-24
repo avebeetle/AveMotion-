@@ -2,7 +2,25 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26A experimental Qt Motion Lab complete
+## Current work — Part26B owned exact native input
+
+User's interactive "делай" resumes the separately designed native-ingress
+sequence after Part26A. No schedule resumed/created. Current spec:
+`docs/superpowers/specs/2026-09-24-owned-native-ellipse-input-design.md`;
+plan: `docs/superpowers/plans/2026-09-24-owned-native-ellipse-input.md`;
+durable ledger: `docs/superpowers/ledgers/2026-09-24-owned-native-ellipse-input.md`.
+Controller approved written artifacts under delegated reversible decisions;
+this is not a claim that the user reviewed these new files. Exact owned
+descriptor only, same Part25I grammar, Telegram-private, no native route/model
+certificate or none-package dependency change. One product task pending;
+read-only ingress/independence audits are complete. Work directly in main with
+TDD and independent task/final review. Preserve all evidence.
+
+Separate UI task owns UI/out cleanup and new build/Release paths; no UI writes,
+builds or GUI from this stage. Archive needed old Part26A diagnostics before
+acknowledging its deletion; canonical measurements already live in AveMotion/out.
+
+## Previous handoff — Part26A experimental Qt Motion Lab complete
 
 Bounded stage accepted, no unfinished product task. U product7093c83 and final
 docs6568155f0337bcebe2d2ba5cfa4cb2c99e483bbd are ordinarily pushed to main;
