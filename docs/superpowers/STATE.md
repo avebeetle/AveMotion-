@@ -1,8 +1,45 @@
 # AveMotion autonomous work state
 
-Updated: 2026-09-23
+Updated: 2026-09-24
 
-## Current handoff — Part25I complete; user requested wrap-up
+## Current continuation — Part26A experimental Qt Motion Lab
+
+User resumed autonomous work every 15 minutes while asleep. Heartbeat
+`avemotion-avelabs-ui` is ACTIVE; the historical `avemotion-6` remains deleted.
+Target host is `D:/rvc/c++/DragonianVoice/Avelabs-UI`, already C++20 / Qt Widgets
+6.10.0 / static CRT. Do not repeat the old C++17 migration. Long-term objective
+is an own Lottie/TGS engine statically embedded in AveVoice; the bounded current
+stage is a default-OFF experimental host integration of the existing reference
+CPU route, explicitly labelled as such, not native playback or GPU acceleration.
+
+Read these first:
+
+- Spec: `docs/superpowers/specs/2026-09-24-qt-motion-lab-design.md`.
+- Plan: `docs/superpowers/plans/2026-09-24-qt-motion-lab.md`.
+- Durable ledger: `docs/superpowers/ledgers/2026-09-24-qt-motion-lab.md`.
+
+Design/plan approval and ordinary reversible execution decisions are delegated;
+record the controller's decisions honestly, never claim user review of unseen
+artifacts. One product writer at a time; TDD and independent task/final review.
+Spec/plan are complete and independently reviewed: no open Important/Critical
+design findings. The initial stacked-page idea was corrected to an embedded
+section of existing Voices content, preserving routing state. Next is Task 1
+after UI-writer handoff. No product implementation or fresh product test yet;
+no Part26A product implementer is active at this checkpoint.
+
+The UI task `01a0c813-5b67-75e3-9d01-cda8cbb4a4bf` is finishing its own narrow
+startup-only smoke tool/docs. It requests no concurrent writes in that checkout
+until handoff. Coordinate before first UI edit; main/CMake/src are not in its
+planned changes. Keep our design work in AveMotion meanwhile; do not stop its
+work or mix commits. Read current Git/agents, not historical running labels.
+Preserve accepted UI build/Release, docking/tray/DPI/animations and reference
+install prohibition. No dependencies/Windows changes or new license decisions.
+
+After the bounded lab stage, report checks/SHAs/limitations and pause its
+heartbeat. Native parser/raw-to-model and Direct2D-Qt composition are separate
+next designs, not implied completed work.
+
+## Previous handoff — Part25I complete; user requested wrap-up
 
 User explicitly said "заканчивай". No new stage or automation is started.
 Part25I productae72a8b and test correction82e39a7 are independently accepted;
