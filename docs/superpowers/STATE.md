@@ -2,7 +2,7 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26E own JSON reader planned
+## Current handoff — Part26E own JSON reader Task1 accepted
 
 Long interactive continuation remains authorized; no automation is resumed.
 D complete/pushed85a4c34790058d39b2cc8832f794a9718025d51c, verified remote equality.
@@ -13,7 +13,16 @@ docs/superpowers/ledgers/2026-09-24-own-json-reader.md, SDD workspace
 Controller self-approved spec/plan and chose SDD under delegated authority; no
 claim of user review of unseen artifacts. Preflight complete. Task1 own bounded
 reader/all-variant direct tests; Task2 independent Telegram-only parser comparison
-with explicit differences, then final gates/review. No product writer dispatched yet.
+with explicit differences, then final gates/review. Docs06a64d4 ordinary-pushed,
+remote equality/clean tree verified; Task1 BASE06a64d4 product331765f is local,
+writer DONE. Worker final none32/32 and Telegram scoped4/4 pass; root fresh
+reader1/1,0.69s at331765f. Independent task spec/quality Approved, no code findings;
+full task report/review/diff are in SDD workspace. No product writer, Task2 not started. Resource
+gate was initially drafted before RED, then withheld/restored for observed RED/
+GREEN: retained process deviation, not strict test-first evidence for that gate
+(durable Ruling5). Task1 docs handoff/ordinary push follows, then Task2.
+Root owns docs/reviews; scratch final-gate instruments independently being refined
+by /root/own_admission_connection_audit; no shared gates until Task2 is accepted.
 E has lexical numbers and scalar Unicode in a separately named private API. Current
 admission/Runtime are unchanged; no transparent replacement/native-loading claim.
 109 probe observations and numeric audit retained under out/part26e-*; don't repeat.

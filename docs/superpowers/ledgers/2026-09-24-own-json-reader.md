@@ -38,6 +38,13 @@ out/part26e-numeric-characterization; these are probes, not E product tests.
 4. Ruling: use direct main/scoped pushes and retain raw/SDD under user choice —
    preserve append-only history and remote guard instead of worktree cleanup —
    cost if wrong: less isolation and retained scratch; no destructive cleanup.
+5. Ruling: retain Task1's reviewed resource implementation and disclose its
+   test-first sequencing lapse instead of rewriting history or claiming strict
+   chronology — worker acknowledges drafting that routine before RED; actual
+   compiling stub RED/restored GREEN and independent review establish narrower
+   behavioral evidence — cost if wrong: weaker process assurance for that block;
+   Task2 independent oracle and final review remain required, no retrospective
+   claim that the original resource implementation followed test-first order.
 
 ## Preflight
 
@@ -59,10 +66,49 @@ main selected explicitly; no worktree required under user override.
 
 ## Tasks
 
-- [ ] Task1 owned reader and direct tests. BASE/agent assigned after docs push.
+- [x] Task1 owned reader and direct tests. BASE06a64d47a250ee532149578bbcb78c42a24f7051; product331765f, independent spec/quality Approved, no code findings.
 - [ ] Task2 independent comparison/policy evidence.
 - [ ] Root final gates, whole-stage review, report and ordinary push.
 - [ ] Follow-on own admission/model connection design; not part of E reader completion.
 
 Controller owns STATE/docs/ledgers; one worker owns product files at a time.
 Minor findings must be listed here for final triage; none yet.
+Spec/plan/preflight06a64d4 ordinary-pushed, exact remote equality/clean tracked tree
+verified before Task1 dispatch. Read task-1-report.md when the worker finishes;
+do not run shared builds concurrently or start a duplicate writer.
+
+## Task1 verification and review checkpoint
+
+Product331765fb7012f67f47bf0eb23471654fe27019fb is committed locally, not pushed.
+Four-file scope checked; only controller STATE/ledger remain dirty. Functional
+reader stub RED preceded syntax implementation. Resource gate has a process
+deviation: initially drafted before its RED, then removed for successful-build
+functional RED and restored for GREEN. Preserve that distinction; no retroactive
+claim of strict test-first development for the gate. Independent Task1 review
+and Task2 oracle checks remain required before stage acceptance.
+
+Worker final none32/32,4.19s; Telegram scoped4/4,1.27s, no compiler warnings in
+these logs. Direct34288 assertions; node/frame sizes32/20 bytes, cap-deep frame
+peak524287/capacity524288; queue never above4096. These are logical storage
+observations, not process-memory/performance/TSan claims. Root fresh committed-code
+reader1/1,0.69s at out/part26e/331765f-task1-root-focused.log. Review package
+review-06a64d4..331765f.diff and task-1-report.md consumed by task reviewer
+/root/own_json_reader_task_review. Task2 brief extracted, not dispatched.
+
+Read-only future connection recommendation: out/part26f-design/admission-connection-audit.md;
+not an approved F design or product change. Separate scratch gate-instrument audit
+out/part26e-design/gate-instrument-audit.md found evidence-coverage gaps, not a
+demonstrated product leak. Its author is refining only root scratch instruments:
+complete link blocks, actual include dependencies, exact source/test identities,
+revision/graph binding, preview and protected/install checks. No gate execution
+until Task2 settles; Samsung remains configure-only in this stage.
+
+Task1 review accepted both spec and quality, zero Critical/Important/Minor code
+findings. Process exception resolved by Ruling5, not erased. Controller checked
+four-file scope/CMake diff: only own Formats source/test and shared Threads
+discovery changed, no install/vendor/runtime/fixture edit. Fresh UI check remains
+clean712d454, UI/out absent, accepted EXE SHA256
+C92F26EE8FEB4FF03F6DC7F4AFFF4B11FB48142743D1EDCCB4E213AAA81F82C2 unchanged.
+Full stage graph/provenance/Telegram/preview remains explicitly pending, not a
+Task1 completed claim. Remote main was exactly06a64d4 before this scoped handoff;
+ordinary push follows commit. Task2 may start after successful push verification.
