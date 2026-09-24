@@ -45,6 +45,14 @@ out/part26e-numeric-characterization; these are probes, not E product tests.
    behavioral evidence — cost if wrong: weaker process assurance for that block;
    Task2 independent oracle and final review remain required, no retrospective
    claim that the original resource implementation followed test-first order.
+6. Ruling: restore original all-byte deterministic deletions and pin observed
+   case184 as an exact executed scalar-policy witness, not narrow mutations to
+   unquoted bytes — retained input shows deletion of the first surrogate escape's
+   backslash, leaving literal uD83D plus escaped lone-low DE00, already a specified
+   reader-policy difference — cost if wrong: a brittle named seed witness requires
+   maintenance when generator design changes; it must assert exact input identity
+   and independently expected full legacy values, never auto-whitelist mismatches.
+   Additional witnesses require retained inputs and an explicit bounded inventory.
 
 ## Preflight
 
@@ -67,7 +75,7 @@ main selected explicitly; no worktree required under user override.
 ## Tasks
 
 - [x] Task1 owned reader and direct tests. BASE06a64d47a250ee532149578bbcb78c42a24f7051; product331765f, independent spec/quality Approved, no code findings.
-- [ ] Task2 independent comparison/policy evidence.
+- [x] Task2 independent comparison/policy evidence. BASE2c2ece7b689e93dbba7795ea82a59c1cbfee1d00; productd11a249, independent spec/quality Approved, one deferred Minor.
 - [ ] Root final gates, whole-stage review, report and ordinary push.
 - [ ] Follow-on own admission/model connection design; not part of E reader completion.
 
@@ -112,3 +120,65 @@ C92F26EE8FEB4FF03F6DC7F4AFFF4B11FB48142743D1EDCCB4E213AAA81F82C2 unchanged.
 Full stage graph/provenance/Telegram/preview remains explicitly pending, not a
 Task1 completed claim. Remote main was exactly06a64d4 before this scoped handoff;
 ordinary push follows commit. Task2 may start after successful push verification.
+
+Task1 handoff2c2ece7b689e93dbba7795ea82a59c1cbfee1d00 ordinary-pushed; exact remote
+equality and clean tracked tree verified. Task2 dispatched to fresh sol/high
+/root/own_json_differential_implementation with extracted brief and no history.
+Exact parser-policy differences remain requirements; prior process exception is
+not permission to repeat implementation-before-RED. No concurrent product writer.
+
+Scratch gate refinement handed off without executing shared gates. Controller
+read both full PowerShell scripts and wrappers, checked actual required CTest
+names against existing preview registrations and performed AST checks (zero
+errors). Read-only helper smoke resolves current HEAD, none cache variant and
+six graph paths; not a build or final acceptance. A draft execution-policy bypass
+flag was removed before any invocation; no policy/security setting was changed.
+The final runners now capture exact command exits, per-attempt raw/JUnit/graphs,
+stable HEAD/source/config/instrument hashes, and actual Ninja dependencies;
+complete link/header/install manual review remains explicit in final JSON.
+Usage/caveats: out/part26e-design/gate-instrument-audit.md. Do not alter these
+instrument files during/among the final identity-bound gate sequence.
+
+## Task2 intermediate diagnosis — not final acceptance
+
+Original successful-build functional RED and initial discrepancy outputs were
+captured only in the worker tool transcript, not redirected files. Worker now
+retains explicitly labeled transcriptions with exact commands/exits, not invented
+original raw logs. Fresh final commands must redirect their raw outputs. Original
+transcript remains the provenance; no history rewrite or RED replay to conceal it.
+
+Generated case184 original deletion witness is preserved as .raw/.hex under
+out/part26e/task2/failures. Root read hex and narrow generator hunk; worker confirmed
+exact cause. A proposed unquoted-byte-only mutator narrowed planned coverage and
+was rejected before commit (Ruling6). Restoring original selection/RNG and adding
+full independent literal legacy rows is required; no product parser fix indicated.
+Interim1579/19 counts and narrowed-generator passing runs are not final evidence.
+
+First full Telegram attempt75/76 failed only avemotion.cmake.legacy_subproject:
+its nested configure could not find C/CXX compilers because CTest ran outside
+VsDevCmd. Root read actual error and summary. Retain telegram-full-ctest.log;
+rerun in installed x64 compiler environment, no Windows change/test weakening.
+Further full runs wait until final generator correction; focused tests for iteration.
+
+Task2 productd11a24952837b8892a6e0ca313d658291e500d4c is local, not pushed. Worker
+DONE_WITH_CONCERNS (early transcript-only RED retention and diagnosed environment
+failure), no product source changes. Restored original all-byte deletion executes
+512 valid+1024 mutation cases,1578 same-policy/20 explicit differences,94955 checks;
+case184 asserts fixed bytes and five independently literal legacy rows. Final
+focused2/2 and full Telegram76/76,92.81s under VsDevCmd pass. Independent reviewer
+/root/own_json_differential_task_review sees brief/report/review-2c2ece7..d11a249.diff
+and Ruling6; Task2 not complete until accepted. Three-file scope, only controller
+STATE/ledger dirty; no live writer/build. Root final platform/evidence gates pending.
+
+Task2 independent review is spec compliant and quality Approved, no Critical or
+Important findings. Root fresh committed-code reader/differential2/2,0.83s at
+out/part26e/d11a249-task2-root-focused.log. Task1 behavior was separately reviewed;
+Task2 CMake changes only the Telegram test and does not alter Formats dependencies.
+Final none/Telegram/preview/provenance/include/link checks remain stage-owned.
+Remote exactly2c2ece7 before scoped task handoff commit/push.
+
+Task 2: minor (deferred): differential index checker counts parents but does not
+prove root reachability of every arena node; a disconnected cycle could pass.
+Location tests/own_json_reader_differential_tests.cpp:94-105. Reviewer calls this
+a coverage gap, not an observed reader defect. Whole-stage reviewer must explicitly
+triage it; no minor-only task fix loop and no silent dismissal.

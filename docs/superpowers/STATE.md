@@ -2,7 +2,7 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26E own JSON reader Task1 accepted
+## Current handoff — Part26E tasks accepted; final gates next
 
 Long interactive continuation remains authorized; no automation is resumed.
 D complete/pushed85a4c34790058d39b2cc8832f794a9718025d51c, verified remote equality.
@@ -17,12 +17,24 @@ with explicit differences, then final gates/review. Docs06a64d4 ordinary-pushed,
 remote equality/clean tree verified; Task1 BASE06a64d4 product331765f is local,
 writer DONE. Worker final none32/32 and Telegram scoped4/4 pass; root fresh
 reader1/1,0.69s at331765f. Independent task spec/quality Approved, no code findings;
-full task report/review/diff are in SDD workspace. No product writer, Task2 not started. Resource
+full task report/review/diff are in SDD workspace. Resource
 gate was initially drafted before RED, then withheld/restored for observed RED/
 GREEN: retained process deviation, not strict test-first evidence for that gate
-(durable Ruling5). Task1 docs handoff/ordinary push follows, then Task2.
-Root owns docs/reviews; scratch final-gate instruments independently being refined
-by /root/own_admission_connection_audit; no shared gates until Task2 is accepted.
+(durable Ruling5). Task1 handoff2c2ece7 ordinary-pushed, exact remote equality and
+clean tree verified. Task2 BASE2c2ece7, productd11a249 local, writer DONE.
+Full Telegram76/76,92.81s; original all-byte512+1024 matrix restored,1578 common
+results/20 explicit differences. Exact case184 surrogate witness retained and
+executed (Ruling6). Early RED record is transcript-derived, final outputs raw;
+earlier environment-only75/76 retained. Task2 report/review package in SDD;
+/root/own_json_differential_task_review Approved both spec/quality; no blocking
+findings. One Minor reachability-check gap in differential helper is deferred to
+whole-stage triage. Root fresh committed-code reader/differential2/2,0.83s. No
+product writer or live build. Task2 docs handoff/ordinary push follows; then root
+final gates/whole-stage review. Gate instruments ready under out/part26e, usage in
+out/part26e-design/gate-instrument-audit.md; all gates use the same full HEAD tag.
+Root owns docs/reviews; scratch final-gate instruments independently refined and
+read/syntax-checked; no policy overrides or settings changes. Keep them stable
+through the final identity-bound sequence; explicit manual graph checks remain.
 E has lexical numbers and scalar Unicode in a separately named private API. Current
 admission/Runtime are unchanged; no transparent replacement/native-loading claim.
 109 probe observations and numeric audit retained under out/part26e-*; don't repeat.
