@@ -49,11 +49,21 @@ passed. Earlier intermittent counter6-vs5 failure is retained, not hidden:
 controlApplied precedes the deferred paused frame; the test now waits for it.
 Protected hashes remain unchanged. Ordinary host push completed and remote main
 exact equality verified at `3b47426`; engine documentation checkpoint follows.
-Next is Task 4; check live agents/scratch ledger before dispatch. Its gate
-inventory, measurement protocol and counter-consumer audit are prepared there;
-no benchmark has run yet. Do not repeat Tasks 1/2 or those read-only inventories.
-Actual static host/UI/native-DPI gates remain open. This is a normal checkpoint,
-not completion of the lab stage; keep our heartbeat active.
+Task 4 continues under `/root/qt_lab_final_gates`; do not duplicate it. Static
+ftfix /MT host link, static smoke1/1, separate /MD lab3/3 and existing host8/8
+CTest gates passed on `3b47426`. Measurement validation then exposed active-play
+stalls: an early CoarseTimer expiry can leave the unchanged Player deadline
+without an armed host timer. Bounded repair `fde867d` is independently approved
+with no findings; deterministic RED/GREEN and root fresh /MD CTest3/3 pass
+(worker31/page9,5.63s). Player/vendor/policy remain unchanged. Independent scratch
+instrument audit found active-wrap, dropped-counter, transition-attribution and
+provenance/error-retention gaps. The same executor is fixing those and relinking
+the /MT host; accepted matrix waits for focused instrument validation/review.
+Failed and weakly validated pre-fix rows are retained, not performance evidence.
+Read the workspace scheduler review, instrument audit and live ledger.
+Final static provenance/measurements/whole-stage review are still open. Native
+DPI and normal-EXE manual acceptance remain explicitly deferred. Keep heartbeat
+active; this is not completion of the bounded stage.
 SDD ledger: `.superpowers/sdd/2026-09-24-qt-motion-lab/progress.md`.
 
 The UI task `01a0c813-5b67-75e3-9d01-cda8cbb4a4bf` handed off clean main at

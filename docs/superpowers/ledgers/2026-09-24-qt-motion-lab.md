@@ -36,7 +36,7 @@
 
 - [x] Task 1 — opt-in static dependency and no-install boundary.
 - [x] Task 2 — bounded serial worker and Qt controller.
-- [ ] Task 3 — widget, controls and guarded shell entry.
+- [x] Task 3 — widget, controls and guarded shell entry.
 - [ ] Task 4 — real-shell gates, measurements and handoff.
 
 ## Evidence and review
@@ -325,3 +325,65 @@ prepared protocol/context and does not repeat the completed development loops.
 Ordinary host push completed; remote main exact equality verified at
 `3b4742602ced90896232254b3e724834689bd5c2`. No force/rewrite, no foreign changes.
 Engine documentation checkpoint records this acceptance before Task4 dispatch.
+
+## Task 4 gates and scheduler repair checkpoint
+
+On clean host `3b47426` and engine/docs `dffd1ba`, the actual ftfix static /MT
+host linked successfully. New experimental EXE is52,682,752bytes, SHA256
+`8f89115714abe770458fcfc37c40a6f5f49ae6460c0b8596c4d950ad55f605d1`.
+Root checked cache (existing ftfix Qt, MultiThreaded, manifest flags OFF) and
+zero recursive install scripts. Static smoke1/1, separate /MD lab3/3, existing
+shell3/3, tray2/2, settings1/1 and logging2/2 CTest gates passed. Raw logs:
+`out/part26a/task4-*-ctest.log`. No normal EXE run or accepted Release replacement.
+These are pre-fix artifacts; a scheduler change requires fresh impacted gates
+and a new static binary hash, not reuse of this identity for later code.
+
+Validation then found active rendering stalls on all three selected inputs.
+Root read `out/part26a/task4-measure/validation-raw/smoke.json`: renderedFrames58
+at both warm/active end, no wrap, explicit error. Controls still execute in
+diagnostic runs, so the worker is not a dead thread. Source inspection shows
+Player publishes only changed deadlines; an early expired Qt one-shot can leave
+the same future deadline with no new callback. Current pump returns on empty
+due without rearming. Qt documents CoarseTimer early expiry:
+https://doc.qt.io/qt-6.10/qtimer.html#accuracy-and-timer-resolution.
+
+Ruling: authorize the same Task4 executor a bounded MotionWorker.cpp + worker
+test repair restoring an inactive timer from outstanding nextDeadline after
+tick, including empty-due processing — this enforces the already agreed
+monotonic one-shot host contract without changing Player/vendor/API/policy —
+cost if wrong is reversible adapter scheduling rework. Require functional RED,
+paused/hidden/cancellation regression gates and independent review before
+accepted measurements. A timer-type-only workaround or Windows timer changes
+are not the selected design. Detailed bounded brief is retained in SDD workspace.
+
+The first nine-row matrix used an insufficient activeEnd>warmEnd validity test:
+six stalls and three apparent completions are retained but unaccepted. Stop
+further known-invalid pre-fix runs. Scratch validation must demonstrate ongoing
+delivery throughout the interval, boundary frame age and maximum delivery gap;
+no failed/partial row may be relabelled as an optimization. Root has not made
+product changes or started a competing test/GUI run.
+
+## Task 4 scheduler accepted; measurement validity follow-up
+
+Host repair `fde867d20d0014373235ea26506044efaabb6ea5` changes only the worker
+and its regression test. Deterministic emulated consumed early expiry failed
+before the repair at the inactive-timer assertion, then passed with an actual
+subsequent frame. Independent scheduler review: spec compliant, quality approved,
+no Critical/Important/Minor findings. Root fresh committed-head full /MD gate:
+`ctest --test-dir out/diagnostics/motionlab-2026-09-24/tests-md -C Release -V --output-log C:/Users/USER/Desktop/AveMotion-CorpusLab-Part24/out/part26a/task4-scheduler-controller-ctest.log`
+from U with process-local dynamic Qt environment, exit0,3/3,5.63s;
+worker31/31,page9/9,zero failures/skips. Scoped diff check passed.
+
+Independent scratch-instrument audit is separate from product review. Root
+checked its cited code: the wrap flag included warmup, settled counters omitted
+mailbox replacements, transition boundaries were unrecorded, and runner identity/
+malformed-output gates were insufficient. Same Task4 executor is addressing all
+six audit sections with focused negative validation in scratch only. Existing
+matrix hashes belong to the older instrument and remain explicitly unaccepted.
+New accepted matrix requires exact source/EXE/repository/build identities and
+valid continuous active/settled phase checks. No new product API is authorized.
+
+Scheduler review's cross-task limitations remain final gates: final static relink,
+sustained looping/continuity observations, protected-byte checks and whole-stage
+review. Native/manual acceptance stays deferred per plan. Ordinary scheduler
+push is released after remote reconciliation; no force or history rewrite.
