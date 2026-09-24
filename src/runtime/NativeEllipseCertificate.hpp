@@ -76,6 +76,8 @@ private:
     const NativeEllipseModelBinding& binding_;
     const model::MotionAssetModel& model_;
     NativeEllipseSlotMetadata slot_;
+    std::uint64_t instanceId_ = 0;
+    InstanceHandle instanceHandle_;
     NativeEllipseScanCode code_ = NativeEllipseScanCode::IncompleteScan;
     bool poisoned_ = false, finished_ = false, hasActive_ = false;
 };

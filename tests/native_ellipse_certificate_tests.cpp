@@ -222,6 +222,24 @@ void testVariants(const std::string& seed) {
 
 void testMutations(const std::string& seed) {
     ScanHarness baseline{seed};
+    {
+        auto other = baseline.runtime.createInstance(baseline.asset);
+        require(static_cast<bool>(other), "second instance of same asset created");
+        auto foreign = other.instance->evaluateFrame(10, baseline.input->width,
+                                                      baseline.input->height);
+        require(static_cast<bool>(foreign), "second instance frame evaluated");
+        const auto original = baseline.frame(10);
+        require(foreign.scene.assetHandle == original.assetHandle
+            && foreign.scene.sourceAssetHash == original.sourceAssetHash
+            && foreign.scene.instanceId != original.instanceId
+            && foreign.scene.instanceHandle != original.instanceHandle,
+            "real same-asset instances have distinct scene identities");
+        auto scan = baseline.audit();
+        baseline.observeBefore(scan, 10);
+        require(!scan.observe(10, foreign.scene)
+            && scan.code() == NativeEllipseScanCode::Identity && !scan.finish(),
+            "ordered scan rejects a real frame from another same-asset instance");
+    }
     const auto reject = [&](std::size_t target,
                             const std::function<void(runtime::EvaluatedScene&)>& mutate,
                             NativeEllipseScanCode expected, std::string_view label) {
@@ -271,10 +289,21 @@ void testMutations(const std::string& seed) {
            NativeEllipseScanCode::Identity, "scene hash mismatch rejected");
     reject(10, [](auto& scene) { ++scene.assetHandle.generation; },
            NativeEllipseScanCode::Identity, "scene handle mismatch rejected");
+    reject(10, [](auto& scene) { ++scene.instanceId; },
+           NativeEllipseScanCode::Identity, "instance ID-only drift rejected");
+    reject(10, [](auto& scene) { ++scene.instanceHandle.generation; },
+           NativeEllipseScanCode::Identity, "instance handle generation drift rejected");
     reject(10, [](auto& scene) { scene.layers[1].visible = false; },
            NativeEllipseScanCode::LayerLayout, "active boundary visibility rejected");
     reject(10, [](auto& scene) { scene.layers[0].childCount = 0; },
            NativeEllipseScanCode::LayerLayout, "child layout drift rejected");
+    {
+        auto scan = baseline.audit();
+        auto scene = baseline.frame(0);
+        scene.instanceHandle = {};
+        require(!scan.observe(0, scene) && scan.code() == NativeEllipseScanCode::Identity
+            && !scan.finish(), "invalid initial instance handle poisons audit");
+    }
 
     ScanHarness activity{activityJson(seed)};
     for (std::size_t target : {9U, 10U, 19U, 20U}) {

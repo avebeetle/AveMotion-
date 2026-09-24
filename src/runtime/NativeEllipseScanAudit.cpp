@@ -237,8 +237,15 @@ bool NativeEllipseScanAudit::observe(std::size_t frame, const EvaluatedScene& sc
     if (scene.sourceAssetHash != slot_.sourceHash || scene.assetHandle != slot_.assetHandle
         || scene.assetModelApplied || scene.assetModel
         || scene.frameIndex != frame || scene.viewportWidth != slot_.width
-        || scene.viewportHeight != slot_.height)
+        || scene.viewportHeight != slot_.height
+        || scene.instanceId == 0 || !scene.instanceHandle.valid()
+        || (frame != 0 && (scene.instanceId != instanceId_
+            || scene.instanceHandle != instanceHandle_)))
         return fail(NativeEllipseScanCode::Identity);
+    if (frame == 0) {
+        instanceId_ = scene.instanceId;
+        instanceHandle_ = scene.instanceHandle;
+    }
     if (scene.modelLayerCount != model_.layers.size()
         || scene.modelNodeCount != model_.nodes.size()
         || scene.modelGeometryCount != model_.geometries.size()
