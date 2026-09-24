@@ -37,8 +37,8 @@
 - [x] Task 1 — opt-in static dependency and no-install boundary.
 - [x] Task 2 — bounded serial worker and Qt controller.
 - [x] Task 3 — widget, controls and guarded shell entry.
-- [x] Task 4 — real-shell gates, measurements and handoff (technical acceptance;
-  final A publication/heartbeat pause follows).
+- [x] Task 4 — real-shell gates, measurements, reviewed handoff, pushes and
+  stage heartbeat pause complete.
 
 ## Evidence and review
 
@@ -471,3 +471,11 @@ and their costs. No new ruling was needed for the existing slider contract fix.
 Task4 technical work is complete; final A docs commit/push and pausing this
 heartbeat remain controller bookkeeping. Preserve raw evidence and previous
 failures. No additional native/GPU/corpus development is authorized by completion.
+
+Final A report/STATE/ledger/plan commitfca355ee5cf0c1ce684aa83e8cc81341700f55c2
+ordinarily pushed after remote97fe851 guard; exact remote equality/clean tree
+confirmed. Then automation_update changed onlyavemotion-avelabs-ui toPAUSED;
+tool success and saved automation.toml status confirmed. Existing name/prompt/
+schedule/thread preserved, no new automation or changes toavelabs-ui. Final
+status-only seal records this actual outcome; compiled code, EXE and matrix
+identities are unchanged. All9Rulings/costs are retained in the final report.

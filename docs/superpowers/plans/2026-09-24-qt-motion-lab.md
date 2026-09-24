@@ -281,7 +281,7 @@ Only fix independently reproduced defects with their own RED/GREEN cycle.
 - [x] Whole-stage independent review, resolve findings and fresh impacted gates.
   Report implementation, exact verification scope, manual/native-DPI limitations
   and remaining reference dependency. Preserve raw evidence and accepted bytes.
-- [ ] Scoped final commits and ordinary pushes after remote reconciliation.
+- [x] Scoped final commits and ordinary pushes after remote reconciliation.
   Pause heartbeat `avemotion-avelabs-ui` after bounded stage completion, not after
   a normal intermediate task. Future native/GPU/corpus work needs its own design.
 
@@ -296,5 +296,6 @@ for ordinary reversible decisions. Task4 technical acceptance is complete:
 whole-stage review and one scoped final review accept product `7093c83`; U final
 docs `6568155` are pushed. Root fresh lab3/3 and static1/1 pass; matrix9/9 and
 legacy8/8 retain their exact earlier provenance. M1 loaded/error containment
-remains a disclosed nonblocking coverage gap. Only final A docs publication and
-heartbeat pause remain; do not repeat Part25I, gates or change the accepted UI.
+remains a disclosed nonblocking coverage gap. Final A docs publication fca355e
+and heartbeat PAUSED are confirmed; this status-only seal adds no product work.
+Do not repeat Part25I, gates or change the accepted UI.

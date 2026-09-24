@@ -15,9 +15,12 @@ Root final committed-code gates: /MD lab3/3 (worker31/page11,6.50s), /MT smoke1/
 (0.03s), protected157src/22Release byte matches. Final static EXE481cad66... has
 clean build identity7093c83; separate matrix9/9 retains Ufde867d/A97fe851 identity.
 No product writer/reviewer is still running. Canonical handoff:
-`docs/PART26A_QT_MOTION_LAB_REPORT.md`. Finish guarded A docs commit/push, then
-pause only `avemotion-avelabs-ui`; do not start a new native/GPU stage or repeat
-completed tasks. Retain all raw/SDD evidence. Earlier checkpoints below are history.
+`docs/PART26A_QT_MOTION_LAB_REPORT.md`, committed/pushed as fca355e; exact remote
+equality and clean tree verified. Heartbeat `avemotion-avelabs-ui` is PAUSED:
+automation_update and saved status confirmed. Only this automation changed.
+Do not start a new native/GPU stage or repeat completed tasks. Retain all raw/SDD
+evidence. This final status-only seal follows the completed handoff; earlier
+checkpoints below are history, including their old ACTIVE/running labels.
 
 ### Historical execution checkpoints
 

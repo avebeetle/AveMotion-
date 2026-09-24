@@ -263,8 +263,11 @@ Reviewer независимо сверил хэши всех9 raw rows/index/man
 соответствие таблицы исходным данным. Controller-only matrix повторять для
 widget-only исправления не нужно; её исходные SHA сохраняются, не подменяются.
 
-U final docs/push завершены (`6568155`); A final docs идут отдельным коммитом.
-После guarded A push приостановить только heartbeat `avemotion-avelabs-ui`;
-чужую automation `avelabs-ui` не менять. Весь согласованный ограниченный объём
-выполнен, новый этап разработки этим handoff не запускается. Raw и SDD workspace
-сохранены по требованию пользователя, а не удалены generic cleanup.
+U final docs/push завершены (`6568155`); A report/docs commit
+`fca355ee5cf0c1ce684aa83e8cc81341700f55c2` отправлен обычным push, точное равенство
+remote main проверено. После этого `automation_update` приостановил только
+`avemotion-avelabs-ui`; сохранённый status=PAUSED подтверждён. Чужая automation
+`avelabs-ui` не менялась. Этот status-only seal не меняет код или binary provenance.
+Весь согласованный ограниченный объём выполнен, новый этап разработки этим handoff
+не запускается. Raw и SDD workspace сохранены по требованию пользователя,
+а не удалены generic cleanup.
