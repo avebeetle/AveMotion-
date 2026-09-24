@@ -2,7 +2,7 @@
 
 Updated: 2026-09-24
 
-## Current handoff — Part26D native stream final review
+## Current handoff — Part26D complete; own reader design next
 
 User requests long complete continuation, Avelabs-UI is future static EXE host.
 C is complete and ordinary-pushed at6d154ca (product6b0be0f); do not repeat it.
@@ -24,8 +24,16 @@ two functional REDs then focused2/2 GREEN. No product writer. Root pre-fix20 log
 archived/hash-verified at out/part26d/pre-fix-e534a1e. Fresh final gates active at
 ea9facf: Telegram74/74,109.09s; preview68/68,109.83s; none31/31,4.29s;
 vendor/TGS16 and fresh private graph boundaries pass. No live build.
-Whole-stage /root/native_stream_whole_stage_review active over6d154ca..ea9facf;
-docs/PART26D_NATIVE_STREAM_REPORT.md remains draft until its verdict.
+Whole-stage /root/native_stream_whole_stage_review Approved over6d154ca..ea9facf,
+no blocking findings or final fix wave. C4251 explicitly accepted, not suppressed.
+Final report docs/PART26D_NATIVE_STREAM_REPORT.md. Task handoff5964c23 ordinarily
+pushed with exact remote equality; final docs seal follows. No active writer/build.
+Continue Part26E written spec docs/superpowers/specs/2026-09-24-own-json-reader-design.md,
+then detailed plan/preflight before implementation. E is a private first-party
+reader prerequisite; current admission/Runtime stay unchanged. Two preserved probes
+(73 general and36 numeric cases) prove legacy scalar quirks; no transparent parser
+replacement or whole-domain compatibility is assumed. Future own admission/model
+connection must explicitly select its contract. No UI/automation changes.
 Spec/plan/preflight docs ordinary-pushed atfd68aa6, exact remote equality verified.
 Task1/task2 reports and fix1 review are complete; do not duplicate them.
 Oracle refinement uses cache-disabled parse/own stamped source+frozen model,

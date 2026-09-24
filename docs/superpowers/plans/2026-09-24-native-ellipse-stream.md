@@ -395,11 +395,15 @@ CPU/concurrency/lifetime results and limitations. Controller handles review/push
 
 ## Controller gates and continuation
 
-- [ ] Independent task review after each task; fix loop, STATE/ledger and ordinary push only after evidence and exact remote guard.
-- [ ] Fresh full MSVC Telegram and windows-msvc-win32-preview (capture/WARP/device recreation), none/Direct2D; all-vendor and committed TGS16 checks.
-- [ ] Fresh none and Samsung configure graphs contain no D implementation/tests; Telegram owns exactly one primitive-generator implementation and private stream in Rendering, no Runtime cycle or installed private header.
-- [ ] Whole-stage independent review over6d154ca..HEAD; final report with product/docs SHA, exact matrix counts, cold-preparation versus zero reference-emission counters, comparison exclusions and remaining reference dependence.
+- [x] Independent task review after each task; fix loop, STATE/ledger and ordinary push only after evidence and exact remote guard.
+- [x] Fresh full MSVC Telegram and windows-msvc-win32-preview (capture/WARP/device recreation), none/Direct2D; all-vendor and committed TGS16 checks.
+- [x] Fresh none and Samsung configure graphs contain no D implementation/tests; Telegram owns exactly one primitive-generator implementation and private stream in Rendering, no Runtime cycle or installed private header.
+- [x] Whole-stage independent review over6d154ca..HEAD; final report with product/docs SHA, exact matrix counts, cold-preparation versus zero reference-emission counters, comparison exclusions and remaining reference dependence.
 - [ ] Continue separately designed bounded own ingress/model/none API, timeline, Direct2D pixel and isolated Avelabs integration. No claim that private stream completes the long user request.
+
+D closure accepted ea9facf after independent whole-stage review, no final fix wave;
+report docs/PART26D_NATIVE_STREAM_REPORT.md. The last checkbox is follow-on work,
+not unfinished D implementation. Next written design is Part26E own JSON reader.
 
 ## Controller self-review and approval
 

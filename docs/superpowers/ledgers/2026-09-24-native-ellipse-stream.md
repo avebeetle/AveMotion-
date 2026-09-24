@@ -46,13 +46,17 @@ out/part26d-design/oracle-test-contract-audit.md; no runtime test claim from aud
    source, not only a second Runtime/Instance — retained pre-emission pixels already
    prove frame stability, but a shared source can hide interference between sampled
    frames — cost if wrong: an extra test-only parse/identity check, no production API.
+5. Ruling: accept existing test-only vendor C4251 after whole-stage review — no
+   link/ownership/runtime defect observed and no changed vendor class export;
+   retain diagnostic instead of suppressing it — cost if wrong: later ABI-boundary
+   investigation, with no warning-free build claim.
 
 ## Tasks
 
 - [x] Task1 stream and independent scene matrix, writer /root/native_stream_implementation, BASE fd68aa64ea6ee96c367808fccae036b0f777e56a through product1dd5932; independently Approved, no blocking findings.
 - [x] Task2 full plan/lifetime/history/live counters/CPU isolation; writer /root/native_stream_lifecycle_implementation, BASE9ca6181 through producte534a1e/fixea9facf, independently accepted.
-- [ ] Root platform/provenance/private-boundary gates and whole-stage review.
-- [ ] D report/push and continue own-ingress design; no completed playback claim.
+- [x] Root platform/provenance/private-boundary gates and whole-stage review.
+- [x] D report and own-reader design continuation; final docs ordinary push follows seal.
 
 Spec/plan/preflight fd68aa6 ordinary-pushed; exact remote equality and clean tree
 verified before dispatch. Task1 product1dd5932 committed, no product writer.
@@ -108,3 +112,13 @@ EXEc92f26ee...82c2 and UI/out absent freshly rechecked. No new UI gate claimed.
 Whole-stage /root/native_stream_whole_stage_review active over6d154ca..ea9facf.
 The corrected graph instrument's disabled-macro false positive is preserved and
 explained in out/part26d/private-graph-instrument-note.md, no product defect.
+
+Reviewed task handoff5964c235f7eb5f197984787379883b3440d69168 ordinarily pushed;
+remote exact equality verified. Whole-stage /root/native_stream_whole_stage_review
+Approved6d154ca..ea9facf with no blocking findings; C4251 accepted by Ruling5, no
+final fix wave. Eight Declined-to-judge entries adjudicated: ingress/model,
+generic/exhaustive support, native pixels, production/UI route are future designs;
+Samsung runtime all-green, TSan/single-stream concurrency/performance, and upstream
+bits/ID-origin remain explicit nonclaims. Documentation/push is controller closure.
+No live writer/build/reviewer. Final report docs/PART26D_NATIVE_STREAM_REPORT.md.
+Proceed to written Part26E own-reader spec/plan; old admission route stays unchanged.
