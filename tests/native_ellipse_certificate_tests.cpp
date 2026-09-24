@@ -342,6 +342,24 @@ void testMutations(const std::string& seed) {
             && scan.code() == NativeEllipseScanCode::Timeline,
             "repeated frame rejected");
     }
+    const auto rejectLayerRowId = [&](std::size_t row, model::LayerId id,
+                                      std::string_view label) {
+        auto changed = *baseline.frozen;
+        changed.layers[row].id = id;
+        NativeEllipseScanAudit scan{*baseline.input, baseline.binding, changed,
+                                    baseline.asset->handle(), baseline.asset->metadata().sourceHash};
+        baseline.observeBefore(scan, baseline.input->endFrame);
+        require(!scan.finish() && scan.code() == NativeEllipseScanCode::ResourceBinding,
+                label);
+        require(!scan.observe(0, baseline.frame(0)) && !scan.finish(),
+                "bad final layer row keeps audit poisoned");
+    };
+    rejectLayerRowId(0, {}, "invalid root row ID rejected");
+    rejectLayerRowId(0, model::LayerId{7}, "mismatched root row ID rejected");
+    rejectLayerRowId(0, baseline.frozen->layers[1].id, "duplicate root row ID rejected");
+    rejectLayerRowId(1, {}, "invalid shape row ID rejected");
+    rejectLayerRowId(1, model::LayerId{7}, "mismatched shape row ID rejected");
+    rejectLayerRowId(1, baseline.frozen->layers[0].id, "duplicate shape row ID rejected");
     {
         auto changed = *baseline.frozen;
         changed.paints[0].resourceClass = model::ResourceClass::InstanceEvaluated;

@@ -145,6 +145,7 @@ bool finalRowsAgree(const model::MotionAssetModel& model,
     const auto* geometry = model.geometry(slot.draw.geometry);
     const auto* paint = model.paint(slot.draw.paint);
     if (!root || !shape || !node || !geometry || !paint
+        || root->id != slot.root.id || shape->id != slot.shape.id
         || root->parent.valid() || shape->parent != slot.root.id
         || root->matte != MatteMode::None || shape->matte != MatteMode::None
         || root->debugName != slot.root.keyPath
