@@ -478,6 +478,24 @@ if(BUILD_TESTING)
     add_test(NAME avemotion.formats.own_json_reader
         COMMAND avemotion_own_json_reader_tests)
 
+    if(AVEMOTION_RLOTTIE_AVAILABLE
+       AND AVEMOTION_RLOTTIE_VARIANT STREQUAL "telegram")
+        add_executable(avemotion_own_json_reader_differential_tests
+            tests/own_json_reader_differential_tests.cpp)
+        target_include_directories(avemotion_own_json_reader_differential_tests PRIVATE
+            "${CMAKE_CURRENT_SOURCE_DIR}/src/formats")
+        target_include_directories(avemotion_own_json_reader_differential_tests SYSTEM PRIVATE
+            "${AVEMOTION_RLOTTIE_INTERNAL_LOTTIE_DIR}")
+        target_link_libraries(avemotion_own_json_reader_differential_tests PRIVATE
+            AveMotion::Formats rlottie::rlottie)
+        target_compile_definitions(avemotion_own_json_reader_differential_tests PRIVATE
+            AVEMOTION_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures"
+            AVEMOTION_TEST_RAW_DIR="${CMAKE_CURRENT_SOURCE_DIR}/out/part26e/task2")
+        avemotion_set_warnings(avemotion_own_json_reader_differential_tests)
+        add_test(NAME avemotion.formats.own_json_reader_differential
+            COMMAND avemotion_own_json_reader_differential_tests)
+    endif()
+
     add_executable(avemotion_tgs_runtime_tests tests/tgs_runtime_tests.cpp)
     target_link_libraries(avemotion_tgs_runtime_tests PRIVATE AveMotion::Runtime)
     target_compile_definitions(avemotion_tgs_runtime_tests PRIVATE
